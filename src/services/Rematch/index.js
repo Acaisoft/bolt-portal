@@ -10,5 +10,4 @@ const store = init({
   plugins: [loadingPlugin],
 })
 
-export const { dispatch } = store
 export default store
