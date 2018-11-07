@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import RematchStore from './services/Rematch'
+import RematchStore from '~services/Rematch'
 
 import App from './App'
 

@@ -4,10 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "NODE_ENV=development REACT_APP_STAGE=local react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "test:debug": "react-app-rewired --inspect-brk test --env=jsdom --runInBand"
   },
   "dependencies": {
     "@rematch/core": "^1.0.6",
@@ -23,7 +23,8 @@
     "husky": "^1.1.3",
     "jest-enzyme": "^7.0.1",
     "lint-staged": "^8.0.4",
-    "prettier": "^1.15.1"
+    "prettier": "^1.15.1",
+    "react-app-rewired": "^1.6.2"
   },
   "browserslist": [
     ">0.2%",
