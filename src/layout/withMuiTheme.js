@@ -5,8 +5,9 @@ import theme from './theme'
 
 const muiTheme = createMuiTheme(theme)
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('theme', muiTheme)
+/* istanbul ignore next */
+if (process.env.NODE_ENV !== 'production') {
+  console.info('theme', muiTheme)
 }
 
 const withMuiTheme = (Component, injectedTheme = muiTheme) => {
