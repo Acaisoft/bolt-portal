@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core'
 
 import Authorized from './Authorized'
 import Guest from './Guest'
+import GlobalMessage from './GlobalMessage'
 
 import styles from './Layout.styles'
 
@@ -20,7 +21,10 @@ export class Layout extends Component {
     const { classes, isAuthorized } = this.props
 
     return (
-      <div className={classes.root}>{isAuthorized ? <Authorized /> : <Guest />}</div>
+      <div className={classes.root}>
+        {isAuthorized ? <Authorized /> : <Guest />}
+        <GlobalMessage />
+      </div>
     )
   }
 }
