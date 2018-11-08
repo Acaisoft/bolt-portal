@@ -1,12 +1,16 @@
+import Rematch from '~services/Rematch'
+
 export const globalHttpErrorHandler = error => {
   if (
     error &&
     Object.prototype.hasOwnProperty.call(error, 'response') &&
     error.response === undefined
   ) {
-    // Handle HTTP error here,
-    // e.g. dispatch a global message action:
-    // store.dispatch.messages.showMessage(...)
+    // Handle HTTP errors here
+    Rematch.dispatch.messages.showMessage({
+      type: 'error',
+      message: error.message,
+    })
   }
 }
 
