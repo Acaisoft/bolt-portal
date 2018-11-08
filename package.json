@@ -12,6 +12,7 @@
   "dependencies": {
     "@rematch/core": "^1.0.6",
     "@rematch/loading": "^1.1.2",
+    "axios": "^0.18.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^5.1.0",
