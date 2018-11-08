@@ -1,3 +1,8 @@
+# TODO
+
+- Add nested pages using router
+- Authorization (login, logout, authorized routes)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
