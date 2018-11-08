@@ -1,0 +1,1 @@
+export mocks from './mocks'

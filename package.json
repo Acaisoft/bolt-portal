@@ -10,6 +10,8 @@
     "test:debug": "react-app-rewired --inspect-brk test --env=jsdom --runInBand"
   },
   "dependencies": {
+    "@material-ui/core": "^3.4.0",
+    "@material-ui/icons": "^3.0.1",
     "@rematch/core": "^1.0.6",
     "@rematch/loading": "^1.1.2",
     "axios": "^0.18.0",
