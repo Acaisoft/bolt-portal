@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`layout: UserInfo rendering should render open menu properly 1`] = `
+<div
+  className="root"
+>
+  <IconButtonMock
+    aria-haspopup="true"
+    aria-owns="menu-appbar"
+    color="inherit"
+    onClick={[Function]}
+  >
+    <AccountCircleMock />
+  </IconButtonMock>
+  <MenuMock
+    anchorEl="fake ref"
+    anchorOrigin={
+      Object {
+        "horizontal": "right",
+        "vertical": "top",
+      }
+    }
+    id="menu-appbar"
+    onClose={[Function]}
+    open={true}
+    transformOrigin={
+      Object {
+        "horizontal": "right",
+        "vertical": "top",
+      }
+    }
+  >
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Products
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Jobs
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Profiles
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Log Out
+    </MenuItemMock>
+  </MenuMock>
+</div>
+`;
+
+exports[`layout: UserInfo rendering should render properly 1`] = `
+<div
+  className="root"
+>
+  <IconButtonMock
+    aria-haspopup="true"
+    aria-owns={null}
+    color="inherit"
+    onClick={[Function]}
+  >
+    <AccountCircleMock />
+  </IconButtonMock>
+  <MenuMock
+    anchorEl={null}
+    anchorOrigin={
+      Object {
+        "horizontal": "right",
+        "vertical": "top",
+      }
+    }
+    id="menu-appbar"
+    onClose={[Function]}
+    open={false}
+    transformOrigin={
+      Object {
+        "horizontal": "right",
+        "vertical": "top",
+      }
+    }
+  >
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Products
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Jobs
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Profiles
+    </MenuItemMock>
+    <MenuItemMock
+      onClick={[Function]}
+    >
+      Log Out
+    </MenuItemMock>
+  </MenuMock>
+</div>
+`;
