@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import Immutable from 'immutable'
 
 import {
   DataTable,
@@ -52,7 +53,7 @@ describe('component: DataTable', () => {
           checkboxes: true,
           multiselect: true,
         })
-        wrapper.setState({ selected: new Set([1]) })
+        wrapper.setState({ selected: Immutable.Set([1]) })
         expect(
           wrapper
             .find('TableHeadMock TableCellMock')
@@ -67,7 +68,7 @@ describe('component: DataTable', () => {
   describe('lifecycle', () => {
     describe('constructor', () => {
       it('should initialize selected with initialSelected', () => {
-        const initialSelected = new Set([1, 2, 3])
+        const initialSelected = Immutable.Set([1, 2, 3])
         const { wrapper } = initDataTable({ initialSelected })
         expect(wrapper.state('selected')).toBe(initialSelected)
       })
@@ -125,29 +126,29 @@ describe('component: DataTable', () => {
       it('should select all items if none are selected', () => {
         const { wrapper } = initDataTable({ onSelect })
         const instance = wrapper.instance()
-        instance.setState({ selected: new Set() })
+        instance.setState({ selected: Immutable.Set() })
         instance.handleSelectAll()
-        expect([...instance.state.selected]).toEqual([1, 2])
+        expect(instance.state.selected.toArray()).toEqual([1, 2])
         expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
       })
 
       it('should deselect all items if any are selected', () => {
         const { wrapper } = initDataTable({ onSelect })
         const instance = wrapper.instance()
-        instance.setState({ selected: new Set([1]) })
+        instance.setState({ selected: Immutable.Set([1]) })
         instance.handleSelectAll()
-        expect([...instance.state.selected]).toEqual([])
+        expect(instance.state.selected.toArray()).toEqual([])
         expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
       })
 
       it('should use checkboxKey to get selected keys', () => {
-        checkboxKey.mockImplementation(x => x.age)
+        checkboxKey.mockImplementation(x => x.get('age'))
         const { wrapper } = initDataTable({ onSelect, checkboxKey })
         const instance = wrapper.instance()
-        instance.setState({ selected: new Set([]) })
+        instance.setState({ selected: Immutable.Set([]) })
         instance.handleSelectAll()
         expect(checkboxKey).toHaveBeenCalledTimes(2)
-        expect([...instance.state.selected]).toEqual([30, 36])
+        expect(instance.state.selected.toArray()).toEqual([30, 36])
       })
     })
 
@@ -161,23 +162,23 @@ describe('component: DataTable', () => {
         const instance = wrapper.instance()
 
         it('should select one item if none are selected', () => {
-          instance.setState({ selected: new Set() })
+          instance.setState({ selected: Immutable.Set() })
           instance.handleSelect(1)()
-          expect([...instance.state.selected]).toEqual([1])
+          expect(instance.state.selected.toArray()).toEqual([1])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
 
         it('should deselect one item if it was previously selected', () => {
-          instance.setState({ selected: new Set([1]) })
+          instance.setState({ selected: Immutable.Set([1]) })
           instance.handleSelect(1)()
-          expect([...instance.state.selected]).toEqual([])
+          expect(instance.state.selected.toArray()).toEqual([])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
 
         it('should select one item and deselect any other previously selected', () => {
-          instance.setState({ selected: new Set([1]) })
+          instance.setState({ selected: Immutable.Set([1]) })
           instance.handleSelect(2)()
-          expect([...instance.state.selected]).toEqual([2])
+          expect(instance.state.selected.toArray()).toEqual([2])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
       })
@@ -191,23 +192,23 @@ describe('component: DataTable', () => {
         const instance = wrapper.instance()
 
         it('should select one item if none are selected', () => {
-          instance.setState({ selected: new Set() })
+          instance.setState({ selected: Immutable.Set() })
           instance.handleSelect(1)()
-          expect([...instance.state.selected]).toEqual([1])
+          expect(instance.state.selected.toArray()).toEqual([1])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
 
-        fit('should deselect one item if it was previously selected', () => {
-          instance.setState({ selected: new Set([1]) })
+        it('should deselect one item if it was previously selected', () => {
+          instance.setState({ selected: Immutable.Set([1]) })
           instance.handleSelect(1)()
-          expect([...instance.state.selected]).toEqual([])
+          expect(instance.state.selected.toArray()).toEqual([])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
 
         it('should select one item and deselect any other previously selected', () => {
-          instance.setState({ selected: new Set([1]) })
+          instance.setState({ selected: Immutable.Set([1]) })
           instance.handleSelect(2)()
-          expect([...instance.state.selected]).toEqual([1, 2])
+          expect(instance.state.selected.toArray()).toEqual([1, 2])
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
       })

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import Immutable from 'immutable'
 
 import {
   Checkbox,
@@ -39,8 +41,8 @@ export class DataTable extends Component {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     checkboxes: PropTypes.bool,
     checkboxKey: PropTypes.func,
-    data: PropTypes.arrayOf(PropTypes.object.isRequired),
-    initialSelected: PropTypes.instanceOf(Set),
+    data: ImmutablePropTypes.iterableOf(ImmutablePropTypes.record),
+    initialSelected: ImmutablePropTypes.set,
     isLoading: PropTypes.bool,
     multiselect: PropTypes.bool,
     onSelect: PropTypes.func,
@@ -48,10 +50,10 @@ export class DataTable extends Component {
   }
 
   static defaultProps = {
-    checkboxKey: row => row.id,
-    initialSelected: new Set(),
+    checkboxKey: row => row.get('id'),
+    initialSelected: Immutable.Set(),
     onSelect: () => {},
-    rowKey: row => row.id,
+    rowKey: row => row.get('id'),
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -97,8 +99,8 @@ export class DataTable extends Component {
             <TableCell key="_checkbox" padding="checkbox">
               {multiselect && (
                 <Checkbox
-                  indeterminate={!!selected.size && selected.size < data.length}
-                  checked={selected.size === data.length}
+                  indeterminate={!selected.isEmpty() && selected.size < data.size}
+                  checked={selected.size === data.size}
                   onChange={this.handleSelectAll}
                 />
               )}
@@ -128,7 +130,7 @@ export class DataTable extends Component {
 
     return (
       <TableBody>
-        {data.map(row => (
+        {data.toArray().map(row => (
           <TableRow key={rowKey(row)}>
             {checkboxes && (
               <TableCell key="_checkbox" padding="checkbox">
@@ -151,12 +153,9 @@ export class DataTable extends Component {
     const { checkboxKey, data, onSelect } = this.props
     const { selected } = this.state
 
-    let newSelected
-    if (selected.size > 0) {
-      newSelected = new Set()
-    } else {
-      newSelected = new Set(data.map(checkboxKey))
-    }
+    const newSelected = selected.size
+      ? selected.clear()
+      : Immutable.Set(data.toArray().map(checkboxKey))
 
     this.setState({ selected: newSelected })
 
@@ -167,24 +166,15 @@ export class DataTable extends Component {
     const { multiselect, onSelect } = this.props
     const { selected } = this.state
 
-    let newSelected = new Set([...selected])
+    let newSelected
     if (multiselect) {
-      if (newSelected.has(id)) {
-        newSelected.delete(id)
-      } else {
-        newSelected.add(id)
-      }
+      newSelected = selected.has(id) ? selected.remove(id) : selected.add(id)
     } else {
-      if (newSelected.size === 0) {
-        newSelected.add(id)
-      } else {
-        if (newSelected.has(id)) {
-          newSelected.delete(id)
-        } else {
-          newSelected.clear()
-          newSelected.add(id)
-        }
-      }
+      newSelected = selected.isEmpty()
+        ? selected.add(id)
+        : selected.has(id)
+        ? selected.remove(id)
+        : selected.clear().add(id)
     }
 
     this.setState({ selected: newSelected })
