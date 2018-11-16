@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`page: Products/List rendering should render DataTable with provided data 1`] = `
+<div>
+  <div>
+    Products list
+  </div>
+  <ButtonMock
+    color="primary"
+    component="LinkMock"
+    to="/products/create"
+    variant="contained"
+  >
+    Create a new product
+  </ButtonMock>
+  <DataTable
+    data={
+      Array [
+        Object {
+          "description": "Description of the first product",
+          "id": 1,
+          "name": "First product",
+        },
+        Object {
+          "description": "Description of the second product",
+          "id": 2,
+          "name": "Second product",
+        },
+        Object {
+          "description": "Description of the third product",
+          "id": 3,
+          "name": "Third product",
+        },
+      ]
+    }
+  >
+    <Column
+      key="id"
+      render={[Function]}
+      title="ID"
+    />
+    <Column
+      key="name"
+      render={[Function]}
+      title="Name"
+    />
+    <Column
+      key="actions"
+      render={[Function]}
+    />
+  </DataTable>
+</div>
+`;
+
+exports[`page: Products/List rendering should render action buttons for provided row data 1`] = `
+<div>
+  <IconButtonMock
+    aria-label="Show details"
+    component="LinkMock"
+    to="/products/1/details"
+  >
+    <InfoMock />
+  </IconButtonMock>
+  <IconButtonMock
+    aria-label="Edit product"
+    component="LinkMock"
+    to="/products/1/edit"
+  >
+    <EditMock />
+  </IconButtonMock>
+</div>
+`;
