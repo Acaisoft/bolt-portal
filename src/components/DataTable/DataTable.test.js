@@ -197,7 +197,7 @@ describe('component: DataTable', () => {
           expect(onSelect).toHaveBeenCalledWith(instance.state.selected)
         })
 
-        fit('should deselect one item if it was previously selected', () => {
+        it('should deselect one item if it was previously selected', () => {
           instance.setState({ selected: new Set([1]) })
           instance.handleSelect(1)()
           expect([...instance.state.selected]).toEqual([])
