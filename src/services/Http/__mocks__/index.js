@@ -1,5 +1,5 @@
-export const handlers = {
-  prepareResponseError: jest.fn(x => x),
+export const transformers = {
+  prepareResponseError: jest.fn(ex => ex),
 }
 
 export default {

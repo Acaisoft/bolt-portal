@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import Config from '~services/Config'
 
-import { globalHttpErrorHandler } from './handlers'
+import * as handlers from './handlers'
 
 class Http {
   constructor() {
@@ -19,7 +19,7 @@ class Http {
     this._axios.interceptors.response.use(
       response => response,
       error => {
-        globalHttpErrorHandler(error)
+        handlers.handleGlobalHttpError(error)
         return Promise.reject(error)
       }
     )

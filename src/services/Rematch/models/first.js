@@ -1,4 +1,4 @@
-import Http, { handlers } from '~services/Http'
+import Http, { transformers } from '~services/Http'
 
 const first = {
   state: {
@@ -14,7 +14,7 @@ const first = {
         this.setSomething(response.data)
       } catch (ex) {
         this.setSomething(null)
-        throw handlers.prepareResponseError(ex)
+        throw transformers.prepareResponseError(ex)
       }
     },
   },

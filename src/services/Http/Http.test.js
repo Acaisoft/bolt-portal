@@ -5,7 +5,7 @@ jest.mock('~services/Config', () => ({
 }))
 
 jest.mock('./handlers', () => ({
-  globalHttpErrorHandler: jest.fn(),
+  handleGlobalHttpError: jest.fn(),
 }))
 
 describe('service: Http', () => {

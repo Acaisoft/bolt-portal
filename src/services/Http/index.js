@@ -1,7 +1,11 @@
-import { globalHttpErrorHandler, prepareResponseError } from './handlers'
+import { handleGlobalHttpError } from './handlers'
+import { prepareResponseError } from './transformers'
 
 export const handlers = {
-  globalHttpErrorHandler,
+  handleGlobalHttpError,
+}
+
+export const transformers = {
   prepareResponseError,
 }
 

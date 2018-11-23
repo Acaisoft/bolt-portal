@@ -1,1 +1,1 @@
-export { globalHttpErrorHandler, prepareResponseError } from './errors'
+export { default as handleGlobalHttpError } from './handleGlobalHttpError'
