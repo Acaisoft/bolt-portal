@@ -23,17 +23,33 @@ describe('page: Products/List', () => {
       expect(wrapper).toBeTruthy()
     })
 
-    it('should render DataTable with provided data', () => {
-      const { wrapper } = initList()
-      expect(wrapper).toMatchSnapshot()
-    })
+    describe('table', () => {
+      it('should render DataTable with provided data', () => {
+        const { wrapper } = initList()
+        expect(wrapper).toMatchSnapshot()
+      })
 
-    it('should render action buttons for provided row data', () => {
-      const fakeRowData = { id: 1, name: 'Fake product' }
-      const { instance } = initList()
-      const renderedActionButtons = shallow(instance.renderActions(fakeRowData))
+      it('should render action buttons for provided row data', () => {
+        const fakeRowData = { id: 1, name: 'Fake product' }
+        const { instance } = initList()
+        const renderedActionButtons = shallow(instance.renderActions(fakeRowData))
 
-      expect(renderedActionButtons).toMatchSnapshot()
+        expect(renderedActionButtons).toMatchSnapshot()
+      })
+
+      describe('rendering cells', () => {
+        const { wrapper } = initList()
+        const columns = wrapper.find('Column')
+        const itemData = { id: 1, name: 'Fake Item ' }
+
+        it('should render item id', () => {
+          expect(columns.at(0).prop('render')(itemData)).toBe(itemData.id)
+        })
+
+        it('should render item name', () => {
+          expect(columns.at(1).prop('render')(itemData)).toBe(itemData.name)
+        })
+      })
     })
   })
 })

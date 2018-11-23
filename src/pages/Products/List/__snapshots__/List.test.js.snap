@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`page: Products/List rendering should render DataTable with provided data 1`] = `
+exports[`page: Products/List rendering table should render DataTable with provided data 1`] = `
 <div>
   <div>
     Products list
@@ -52,7 +52,7 @@ exports[`page: Products/List rendering should render DataTable with provided dat
 </div>
 `;
 
-exports[`page: Products/List rendering should render action buttons for provided row data 1`] = `
+exports[`page: Products/List rendering table should render action buttons for provided row data 1`] = `
 <div>
   <IconButtonMock
     aria-label="Show details"
