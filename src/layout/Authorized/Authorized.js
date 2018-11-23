@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core'
-
 import Header from './components/Header'
 
 import AuthorizedPages from '~pages/Authorized'

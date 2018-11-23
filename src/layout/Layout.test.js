@@ -4,9 +4,9 @@ import { shallow } from 'enzyme'
 import { Layout } from './Layout'
 import { mocks } from '~utils/tests'
 
-jest.mock('./Authorized', () => 'Authorized')
-jest.mock('./Guest', () => 'Guest')
-jest.mock('./GlobalMessage', () => 'GlobalMessage')
+jest.mock('./Authorized', () => 'AuthorizedMock')
+jest.mock('./Guest', () => 'GuestMock')
+jest.mock('./GlobalMessage', () => 'GlobalMessageMock')
 
 const initLayout = overrides => {
   const mockProps = {}
@@ -25,12 +25,12 @@ describe('layout: Layout', () => {
 
     it('should render Authorized if user is authorized and app is ready', () => {
       const { wrapper } = initLayout({ isAuthorized: true })
-      expect(wrapper.find('Authorized').length).toBe(1)
+      expect(wrapper.find('AuthorizedMock').length).toBe(1)
     })
 
     it('should render Guest if user is not authorized', () => {
       const { wrapper } = initLayout({ isAuthorized: false })
-      expect(wrapper.find('Guest').length).toBe(1)
+      expect(wrapper.find('GuestMock').length).toBe(1)
     })
   })
 })

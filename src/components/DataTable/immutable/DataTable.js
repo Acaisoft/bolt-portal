@@ -1,3 +1,4 @@
+// @TODO: Refactor to re-use all logic from standard DataTable
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'

@@ -3,9 +3,9 @@ import { shallow } from 'enzyme'
 
 import { Products } from './Products'
 
-jest.mock('./CreateEdit', () => 'CreateEdit')
-jest.mock('./Details', () => 'Details')
-jest.mock('./List', () => 'List')
+jest.mock('./CreateEdit', () => 'CreateEditMock')
+jest.mock('./Details', () => 'DetailsMock')
+jest.mock('./List', () => 'ListMock')
 
 const initProducts = overrides => {
   const mockProps = {

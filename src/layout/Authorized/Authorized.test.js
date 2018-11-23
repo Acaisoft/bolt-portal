@@ -4,8 +4,8 @@ import { shallow } from 'enzyme'
 import { Authorized } from './Authorized'
 import { mocks } from '~utils/tests'
 
-jest.mock('./components/Header', () => 'Header')
-jest.mock('~pages/Dashboard', () => 'Dashboard')
+jest.mock('./components/Header', () => 'HeaderMock')
+jest.mock('~pages/Authorized', () => 'AuthorizedMock')
 
 const initAuthorizedRoutes = overrides => {
   const mockProps = {}

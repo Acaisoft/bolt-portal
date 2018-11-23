@@ -3,6 +3,8 @@ import { shallow } from 'enzyme'
 
 import { App } from './App'
 
+jest.mock('~layout/Layout', () => 'LayoutMock')
+
 const initApp = overrides => {
   const mockProps = {}
   const wrapper = shallow(<App {...mockProps} {...overrides} />)
