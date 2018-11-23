@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { AppBar, Toolbar, withStyles } from '@material-ui/core'
 
 import Nav from './components/Nav'
@@ -42,4 +42,4 @@ const mapState = state => ({
   isAuthorized: true, // @TODO: e.g. state.auth.isAuthorized,
 })
 
-export default connect(mapState)(withStyles(styles)(Header))
+export default withRouter(connect(mapState)(withStyles(styles)(Header)))

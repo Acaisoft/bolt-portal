@@ -14,7 +14,6 @@ export class Nav extends Component {
   items = [
     { label: 'Dashboard', linkTo: '/dashboard' },
     { label: 'Products', linkTo: '/products' },
-    { label: 'Jobs', linkTo: '/jobs' },
   ]
 
   render() {
