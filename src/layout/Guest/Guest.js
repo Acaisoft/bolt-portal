@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core'
 
+import GuestPages from '~pages/Guest'
+
 import styles from './Guest.styles'
 
 export class Guest extends Component {
@@ -14,7 +16,14 @@ export class Guest extends Component {
   render() {
     const { classes } = this.props
 
-    return <div className={classes.root}>Guest Routes</div>
+    return (
+      <div className={classes.root}>
+        <div>
+          <div>Guest Routes</div>
+          <GuestPages />
+        </div>
+      </div>
+    )
   }
 }
 
