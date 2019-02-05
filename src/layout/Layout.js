@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Query } from 'react-apollo'
 
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core'
@@ -9,28 +9,31 @@ import Authorized from './Authorized'
 import Guest from './Guest'
 import GlobalMessage from './GlobalMessage'
 
+import { AUTH_STATE_QUERY } from '~services/GraphQL/Store'
+
 import styles from './Layout.styles'
 
 export class Layout extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    isAuthorized: PropTypes.bool,
   }
 
   render() {
-    const { classes, isAuthorized } = this.props
+    const { classes } = this.props
 
     return (
-      <div className={classes.root}>
-        {isAuthorized ? <Authorized /> : <Guest />}
-        <GlobalMessage />
-      </div>
+      <Query query={AUTH_STATE_QUERY} fetchPolicy="cache-first">
+        {({ data: { isAuthorized } }) => {
+          return (
+            <div className={classes.root}>
+              {isAuthorized ? <Authorized /> : <Guest />}
+              <GlobalMessage />
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
 
-const mapState = state => ({
-  isAuthorized: true, // @TODO: e.g. state.auth.isAuthorized,
-})
-
-export default withRouter(connect(mapState)(withStyles(styles)(Layout)))
+export default withRouter(withStyles(styles)(Layout))
