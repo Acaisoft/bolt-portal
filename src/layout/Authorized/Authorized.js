@@ -27,7 +27,6 @@ export class Authorized extends Component {
           <Sidebar />
         </div>
         <main className={classes.content}>
-          <div>Authorized routes</div>
           <AuthorizedPages />
         </main>
       </div>

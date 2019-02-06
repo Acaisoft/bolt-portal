@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import DashboardPage from './Dashboard'
-import ProductsPage from './Products'
+import ProjectsPage from './Projects'
 
 export class Authorized extends Component {
   render() {
     return (
       <Switch>
         <Route path="/dashboard" exact component={DashboardPage} />
-        <Route path="/products" component={ProductsPage} />
+        <Route path="/projects" component={ProjectsPage} />
         <Redirect from="*" to="/dashboard" />
       </Switch>
     )

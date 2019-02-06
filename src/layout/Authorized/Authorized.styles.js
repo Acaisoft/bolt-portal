@@ -7,7 +7,7 @@ export default ({ mixins, spacing }) => ({
     paddingBottom: spacing.unit * 3,
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    paddingTop: 64,
+    paddingTop: 84,
   },
   nav: {
     display: 'flex',
