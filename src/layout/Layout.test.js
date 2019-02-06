@@ -22,15 +22,5 @@ describe('layout: Layout', () => {
       const { wrapper } = initLayout()
       expect(wrapper).toBeTruthy()
     })
-
-    it('should render Authorized if user is authorized and app is ready', () => {
-      const { wrapper } = initLayout({ isAuthorized: true })
-      expect(wrapper.find('AuthorizedMock').length).toBe(1)
-    })
-
-    it('should render Guest if user is not authorized', () => {
-      const { wrapper } = initLayout({ isAuthorized: false })
-      expect(wrapper.find('GuestMock').length).toBe(1)
-    })
   })
 })
