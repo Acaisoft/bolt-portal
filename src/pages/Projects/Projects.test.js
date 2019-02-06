@@ -3,17 +3,19 @@ import { shallow } from 'enzyme'
 
 import { Projects } from './Projects'
 
+jest.mock('./List', () => 'ListMock')
+
 const initProjects = overrides => {
   const mockProps = {
     match: {
-      url: '/Products',
+      url: '/Projects',
     },
   }
   const wrapper = shallow(<Projects {...mockProps} {...overrides} />)
   return { wrapper }
 }
 
-describe('page: Products', () => {
+describe('page: Projects', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
       const { wrapper } = initProjects()

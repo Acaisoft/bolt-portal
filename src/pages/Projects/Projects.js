@@ -6,6 +6,8 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 
 import styles from './Projects.styles'
 
+import ListPage from './List'
+
 export class Projects extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -18,8 +20,8 @@ export class Projects extends Component {
 
     return (
       <div>
-        <div>Projects</div>
         <Switch>
+          <Route path={`${match.url}`} component={ListPage} />
           <Redirect from="*" to={match.url} />
         </Switch>
       </div>
