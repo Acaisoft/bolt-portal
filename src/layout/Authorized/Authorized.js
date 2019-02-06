@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core'
+import CssBaseline from '@material-ui/core/CssBaseline'
+
 import Header from './components/Header'
+import Sidebar from './components/Sidebar'
 
 import AuthorizedPages from '~pages/Authorized'
 
@@ -18,7 +21,11 @@ export class Authorized extends Component {
 
     return (
       <div className={classes.root}>
-        <Header />
+        <div className={classes.nav}>
+          <CssBaseline />
+          <Header />
+          <Sidebar />
+        </div>
         <main className={classes.content}>
           <div>Authorized routes</div>
           <AuthorizedPages />

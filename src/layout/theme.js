@@ -4,7 +4,7 @@ export default {
       default: '#fff',
     },
     primary: {
-      main: '#6467D5',
+      main: '#222046',
     },
     violet: {
       100: '#9890E6',
@@ -15,6 +15,9 @@ export default {
       100: '#7790FB',
       200: '#7275E4',
       300: '#7175DC',
+    },
+    gray: {
+      default: '#E8E8E8',
     },
   },
   typography: {

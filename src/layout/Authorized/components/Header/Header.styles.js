@@ -1,4 +1,6 @@
 export default ({ palette, spacing, typography }) => {
+  const drawerWidth = 260
+
   return {
     root: {},
     brand: {
@@ -7,9 +9,11 @@ export default ({ palette, spacing, typography }) => {
       textDecoration: 'none',
     },
 
-    AppBar: {
-      backgroundColor: palette.blue[300],
-      color: palette.common.white,
+    appBar: {
+      backgroundColor: palette.background.default,
+      color: palette.common.black,
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
     },
     Toolbar: {
       height: 67,

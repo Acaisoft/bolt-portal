@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`layout: Sidebar rendering should render properly 1`] = `
+<WithStyles(Drawer)
+  anchor="left"
+  className="drawer"
+  classes={
+    Object {
+      "paper": "drawerPaper",
+    }
+  }
+  variant="permanent"
+>
+  <div
+    className="text"
+  >
+    <div
+      className="intro"
+    >
+      <WithStyles(Avatar)>
+        A
+      </WithStyles(Avatar)>
+      <WithStyles(Typography)
+        className="introText"
+        color="inherit"
+        gutterBottom={true}
+        variant="subtitle1"
+      >
+        HELLO, Admin!
+      </WithStyles(Typography)>
+    </div>
+    <p>
+      Another great day, for testing your apps!
+    </p>
+  </div>
+  <WithStyles(List)>
+    <WithStyles(ListItem)
+      button={true}
+      className="listItem"
+      color="inherit"
+      component="LinkMock"
+      key="/dashboard"
+      to="/dashboard"
+    >
+      <WithStyles(ListItemIcon)
+        className="itemIcon"
+      >
+        <pure(DashboardIcon) />
+      </WithStyles(ListItemIcon)>
+      <WithStyles(ListItemText)
+        disableTypography={true}
+        primary={
+          <WithStyles(Typography)
+            style={
+              Object {
+                "color": "#E8E8E8",
+                "fontSize": "1.25rem",
+                "fontWeight": "normal",
+                "textTransform": "uppercase",
+              }
+            }
+            type="body2"
+          >
+            Dashboard
+          </WithStyles(Typography)>
+        }
+      />
+    </WithStyles(ListItem)>
+    <WithStyles(ListItem)
+      button={true}
+      className="listItem"
+      color="inherit"
+      component="LinkMock"
+      key="/projects"
+      to="/projects"
+    >
+      <WithStyles(ListItemIcon)
+        className="itemIcon"
+      >
+        <pure(ExtensionIcon) />
+      </WithStyles(ListItemIcon)>
+      <WithStyles(ListItemText)
+        disableTypography={true}
+        primary={
+          <WithStyles(Typography)
+            style={
+              Object {
+                "color": "#E8E8E8",
+                "fontSize": "1.25rem",
+                "fontWeight": "normal",
+                "textTransform": "uppercase",
+              }
+            }
+            type="body2"
+          >
+            Projects
+          </WithStyles(Typography)>
+        }
+      />
+    </WithStyles(ListItem)>
+    <WithStyles(ListItem)
+      button={true}
+      className="listItem"
+      color="inherit"
+      component="LinkMock"
+      key="/tests-results"
+      to="/tests-results"
+    >
+      <WithStyles(ListItemIcon)
+        className="itemIcon"
+      >
+        <pure(ShowChartIcon) />
+      </WithStyles(ListItemIcon)>
+      <WithStyles(ListItemText)
+        disableTypography={true}
+        primary={
+          <WithStyles(Typography)
+            style={
+              Object {
+                "color": "#E8E8E8",
+                "fontSize": "1.25rem",
+                "fontWeight": "normal",
+                "textTransform": "uppercase",
+              }
+            }
+            type="body2"
+          >
+            Tests Results
+          </WithStyles(Typography)>
+        }
+      />
+    </WithStyles(ListItem)>
+  </WithStyles(List)>
+  <WithStyles(List)>
+    <WithStyles(ListItem)
+      button={true}
+      className="listItem"
+      color="inherit"
+    >
+      <WithStyles(ListItemIcon)
+        className="itemIcon"
+      >
+        <pure(ExitToAppIcon) />
+      </WithStyles(ListItemIcon)>
+      <WithStyles(ListItemText)
+        disableTypography={true}
+        primary={
+          <WithStyles(Typography)
+            style={
+              Object {
+                "color": "#E8E8E8",
+                "fontSize": "1.25rem",
+                "fontWeight": "normal",
+                "textTransform": "uppercase",
+              }
+            }
+            type="body2"
+          >
+            log out
+          </WithStyles(Typography)>
+        }
+      />
+    </WithStyles(ListItem)>
+  </WithStyles(List)>
+</WithStyles(Drawer)>
+`;
