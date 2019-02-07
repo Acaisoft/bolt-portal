@@ -6,7 +6,7 @@ properties(
 
 def DEV_BRANCH = "master"
 def PROD_BRANCH = "prod"
-def FIREBASE_CI_TOKEN = "jenkins-firebase-token"
+def FIREBASE_CI_TOKEN = "bolt-firebase-token"
 
 node('docker') {
 
