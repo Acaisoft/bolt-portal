@@ -18,6 +18,8 @@ import styles from './List.styles'
 
 import fakeProjects from '../projectsData.mock'
 
+import CreateProject from './components/CreateProject'
+
 export class List extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -26,13 +28,27 @@ export class List extends Component {
     classes: PropTypes.object.isRequired,
   }
 
+  state = {
+    openForm: false,
+  }
+
+  handleOpenForm = () => {
+    this.setState({ openForm: true })
+  }
+
+  handleClose = () => {
+    this.setState({ openForm: false })
+  }
+
   render() {
     const { match, classes } = this.props
+    const { openForm } = this.state
 
     return (
       <div className={classes.root}>
+        <CreateProject open={openForm} close={this.handleClose} />
         <div className={classes.btnContainer}>
-          <Fab color="primary" aria-label="Add">
+          <Fab color="primary" aria-label="Add" onClick={this.handleOpenForm}>
             <AddIcon />
           </Fab>
         </div>
