@@ -43,8 +43,6 @@ node('docker') {
 
 
         stage('Deploy') {
-            echo "Skipping deployment."
-            return;
 
             if (env.BRANCH_NAME == DEV_BRANCH) {
                 echo "Deploy to dev"
