@@ -12,25 +12,32 @@ import Typography from '@material-ui/core/Typography'
 import FormField from '~components/FormField'
 import { formFields, validationSchema, initialValues } from './formSchema'
 
-import styles from './CreateProject.styles'
+import styles from './ProjectForm.styles'
 
-export class CreateProject extends Component {
+export class ProjectForm extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
+    courseInitData: PropTypes.object,
   }
 
   handleSubmit = values => {
     console.log('submit:', values)
-    this.props.close()
+    this.props.close(null, false)
   }
 
   renderForm = ({ handleSubmit, isSubmitting, isValid }) => (
     <React.Fragment>
       <AppBar className={this.props.classes.appBar} position="static">
-        <Typography variant="h3">NEW PROJECT</Typography>
-        <Typography variant="body1">Here you can define your new project</Typography>
+        <Typography variant="h3">
+          {this.props.type === 'create' ? 'NEW PROJECT' : 'UPDATE PROJECT'}
+        </Typography>
+        <Typography variant="body1">
+          {this.props.type === 'create'
+            ? 'Add new project to your library'
+            : `Update ${this.props.courseInitData.name} project data.`}
+        </Typography>
       </AppBar>
       <form onSubmit={handleSubmit}>
         {Object.entries(formFields).map(([name, options]) => {
@@ -50,7 +57,7 @@ export class CreateProject extends Component {
           color="primary"
           variant="text"
           disabled={isSubmitting}
-          onClick={this.props.close}
+          onClick={() => this.props.close(null, false)}
         >
           Cancel
         </Button>
@@ -60,15 +67,14 @@ export class CreateProject extends Component {
           type="submit"
           disabled={!isValid || isSubmitting}
         >
-          Add Configuration
+          {this.props.type === 'create' ? 'ADD CONFIGURATION' : 'UPDATE'}
         </Button>
       </form>
     </React.Fragment>
   )
 
   render() {
-    const { classes, open } = this.props
-
+    const { classes, open, courseInitData } = this.props
     return (
       <div>
         <Drawer
@@ -79,7 +85,7 @@ export class CreateProject extends Component {
           }}
         >
           <Formik
-            initialValues={initialValues}
+            initialValues={courseInitData}
             onSubmit={values => this.handleSubmit(values)}
             validationSchema={validationSchema}
           >
@@ -91,4 +97,4 @@ export class CreateProject extends Component {
   }
 }
 
-export default withStyles(styles)(CreateProject)
+export default withStyles(styles)(ProjectForm)

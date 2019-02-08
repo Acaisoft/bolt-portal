@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid'
 
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import { Edit } from '@material-ui/icons'
 
 import AcaiBoltImg from '~assets/images/img.png'
 
@@ -18,7 +19,7 @@ import styles from './List.styles'
 
 import fakeProjects from '../projectsData.mock'
 
-import CreateProject from './components/CreateProject'
+import ProjectForm from './components/ProjectForm'
 
 export class List extends Component {
   static propTypes = {
@@ -29,31 +30,64 @@ export class List extends Component {
   }
 
   state = {
-    openForm: false,
+    open: false,
+    type: null,
+    updateFormValues: {
+      name: null,
+      description: null,
+      image: null,
+    },
   }
 
-  handleOpenForm = () => {
-    this.setState({ openForm: true })
+  toggleDrawer = (type, status) => {
+    this.setState({
+      open: status,
+      type: type,
+      updateFormValues: {
+        name: null,
+        description: null,
+        image: null,
+      },
+    })
   }
 
-  handleClose = () => {
-    this.setState({ openForm: false })
+  openUpdateProject = (name, description) => {
+    this.setState({
+      open: true,
+      type: 'update',
+      updateFormValues: {
+        name,
+        description,
+        image: 'path/to/img.png',
+      },
+    })
   }
 
   render() {
     const { match, classes } = this.props
-    const { openForm } = this.state
+    const { open, updateFormValues, type } = this.state
 
     return (
       <div className={classes.root}>
-        <CreateProject open={openForm} close={this.handleClose} />
+        <ProjectForm
+          open={open}
+          type={type}
+          courseInitData={updateFormValues}
+          close={this.toggleDrawer}
+        />
         <div className={classes.btnContainer}>
-          <Fab color="primary" aria-label="Add" onClick={this.handleOpenForm}>
+          <Fab
+            color="primary"
+            aria-label="Add"
+            onClick={() => this.toggleDrawer('create', true)}
+          >
             <AddIcon />
           </Fab>
         </div>
         <Grid container spacing={24}>
-          {fakeProjects.map(project => (
+          {fakeProjects.map((
+            project // Update mock projects
+          ) => (
             <Grid item xs={3} key={project.id}>
               <Card
                 className={classes.card}
@@ -67,6 +101,12 @@ export class List extends Component {
                   </Typography>
                   <Typography variant="body1">{project.description}</Typography>
                   <img src={AcaiBoltImg} alt="Acai Bolt" />
+                  <Edit
+                    className={classes.editIcon}
+                    onClick={() =>
+                      this.openUpdateProject(project.name, project.description)
+                    }
+                  />
                 </CardContent>
               </Card>
             </Grid>

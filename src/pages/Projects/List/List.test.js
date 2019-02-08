@@ -26,20 +26,35 @@ describe('page: Projects/List', () => {
     })
   })
   describe('events', () => {
-    describe('handleOpenForm', () => {
-      it('should open drawer and change openForm state to true', () => {
+    describe('toggleDrawer', () => {
+      it('should open new-project drawer and change status state to true', () => {
         const { instance } = initList()
-        instance.handleOpenForm()
-        expect(instance.state.openForm).toBe(true)
+        instance.toggleDrawer('create', true)
+        expect(instance.state.open).toBe(true)
+        expect(instance.state.type).toBe('create')
+      })
+      it('should close new-project drawer and change status state to true', () => {
+        const { instance } = initList()
+        instance.toggleDrawer('create', false)
+        expect(instance.state.open).toBe(false)
+        expect(instance.state.type).toBe('create')
+      })
+
+      it('should close udpdate-project drawer and change status state to true', () => {
+        const { instance } = initList()
+        instance.toggleDrawer('update', false)
+        expect(instance.state.open).toBe(false)
+        expect(instance.state.type).toBe('update')
       })
     })
-  })
-  describe('events', () => {
-    describe('handleClose', () => {
-      it('should close drawer and change openForm state to false', () => {
+    describe('openUpdateProject', () => {
+      it('should open update-project drawer with initial form data', () => {
         const { instance } = initList()
-        instance.handleClose()
-        expect(instance.state.openForm).toBe(false)
+        const name = 'testName'
+        const description = 'testDesc'
+        instance.openUpdateProject(name, description)
+        expect(instance.state.updateFormValues.name).toBe('testName')
+        expect(instance.state.updateFormValues.description).toBe('testDesc')
       })
     })
   })

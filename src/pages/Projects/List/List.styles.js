@@ -12,6 +12,12 @@ export default ({ palette, spacing, typography }) => {
       display: 'flex',
       justifyContent: 'center',
       textAlign: 'center',
+      position: 'relative',
+    },
+    editIcon: {
+      position: 'absolute',
+      bottom: 5,
+      right: 5,
     },
   }
 }
