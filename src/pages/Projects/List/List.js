@@ -9,11 +9,10 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add'
 import { Edit } from '@material-ui/icons'
 
 import AcaiBoltImg from '~assets/images/img.png'
+import AddButton from '~components/AddButton'
 
 import styles from './List.styles'
 
@@ -77,13 +76,7 @@ export class List extends Component {
           close={this.toggleDrawer}
         />
         <div className={classes.btnContainer}>
-          <Fab
-            color="primary"
-            aria-label="Add"
-            onClick={() => this.toggleDrawer('create', true)}
-          >
-            <AddIcon />
-          </Fab>
+          <AddButton open={this.toggleDrawer} />
         </div>
         <Grid container spacing={24}>
           {fakeProjects.map((
