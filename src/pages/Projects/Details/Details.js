@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid'
 import DataTable from '~components/DataTable'
 import styles from './Details.styles'
 
-import faketestsData from './testExecutionsData.mock'
+import faketestsData from '../testExecutionsData.mock'
 
 export class Details extends Component {
   static propTypes = {
@@ -39,7 +39,7 @@ export class Details extends Component {
     {
       id: 3,
       label: 'TESTS EXECUTIONS',
-      linkTo: `${this.props.match.url}/tests-execs`,
+      linkTo: `${this.props.match.url}/test-execs`,
       description: 'See all tests executions results.',
     },
     {
@@ -78,7 +78,7 @@ export class Details extends Component {
             </Grid>
           ))}
         </Grid>
-        <Typography variant="h2" gutterBottom>
+        <Typography variant="h3" gutterBottom>
           Last Tests Executions
         </Typography>
         <div className={classes.tableContainer}>
@@ -142,7 +142,7 @@ export class Details extends Component {
           </DataTable>
         </div>
         <div className={classes.linkContainer}>
-          <Link to={`${match.url}/tests-execs`} className={classes.link}>
+          <Link to={`${match.url}/test-execs`} className={classes.link}>
             See All
           </Link>
         </div>
