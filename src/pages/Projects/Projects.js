@@ -7,6 +7,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import styles from './Projects.styles'
 
 import ListPage from './List'
+import DetailsPage from './Details'
 
 export class Projects extends Component {
   static propTypes = {
@@ -17,11 +18,11 @@ export class Projects extends Component {
 
   render() {
     const { match } = this.props
-
     return (
       <div>
         <Switch>
-          <Route path={`${match.url}`} component={ListPage} />
+          <Route path={`${match.url}`} exact component={ListPage} />
+          <Route path={`${match.url}/:id`} component={DetailsPage} />
           <Redirect from="*" to={match.url} />
         </Switch>
       </div>

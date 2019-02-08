@@ -52,7 +52,10 @@ describe('page: Projects/List', () => {
         const { instance } = initList()
         const name = 'testName'
         const description = 'testDesc'
-        instance.openUpdateProject(name, description)
+        const event = {
+          preventDefault() {},
+        }
+        instance.openUpdateProject(event, name, description)
         expect(instance.state.updateFormValues.name).toBe('testName')
         expect(instance.state.updateFormValues.description).toBe('testDesc')
       })

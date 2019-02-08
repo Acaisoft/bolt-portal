@@ -19,6 +19,7 @@ export default {
     gray: {
       default: '#E8E8E8',
     },
+    black: '#000000',
   },
   typography: {
     useNextVariants: true,

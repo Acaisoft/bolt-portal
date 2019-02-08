@@ -10,7 +10,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 
 import FormField from '~components/FormField'
-import { formFields, validationSchema, initialValues } from './formSchema'
+import { formFields, validationSchema } from './formSchema'
 
 import styles from './ProjectForm.styles'
 

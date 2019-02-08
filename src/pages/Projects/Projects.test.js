@@ -8,7 +8,7 @@ jest.mock('./List', () => 'ListMock')
 const initProjects = overrides => {
   const mockProps = {
     match: {
-      url: '/Projects',
+      url: '/projects',
     },
   }
   const wrapper = shallow(<Projects {...mockProps} {...overrides} />)

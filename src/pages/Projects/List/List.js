@@ -51,7 +51,8 @@ export class List extends Component {
     })
   }
 
-  openUpdateProject = (name, description) => {
+  openUpdateProject = (e, name, description) => {
+    e.preventDefault()
     this.setState({
       open: true,
       type: 'update',
@@ -92,7 +93,7 @@ export class List extends Component {
               <Card
                 className={classes.card}
                 component={Link}
-                to={`${match.url}/${project.id}/details`}
+                to={`${match.url}/${project.id}`}
                 aria-label="Project Deitals"
               >
                 <CardContent>
@@ -103,8 +104,12 @@ export class List extends Component {
                   <img src={AcaiBoltImg} alt="Acai Bolt" />
                   <Edit
                     className={classes.editIcon}
-                    onClick={() =>
-                      this.openUpdateProject(project.name, project.description)
+                    onClick={event =>
+                      this.openUpdateProject(
+                        event,
+                        project.name,
+                        project.description
+                      )
                     }
                   />
                 </CardContent>
