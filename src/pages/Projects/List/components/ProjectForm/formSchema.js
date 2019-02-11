@@ -6,18 +6,17 @@ const formFields = {
   name: {
     label: 'Project Name',
     validator: Yup.string()
+      .required()
       .ensure()
       .min(2),
   },
   description: {
     label: 'Project Descripiton',
-    validator: Yup.string()
-      .ensure()
-      .min(2),
+    validator: Yup.string().ensure(),
   },
   image: {
     label: 'Project Image',
-    validator: Yup.string().required('Image URL is required'),
+    validator: Yup.string().ensure(),
   },
 }
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
+import { Mutation } from 'react-apollo'
+import { toast } from 'react-toastify'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -14,6 +16,9 @@ import { formFields, validationSchema } from './formSchema'
 
 import styles from './ProjectForm.styles'
 
+import { ADD_PROJECT_MUTATION } from '~services/GraphQL/Mutations'
+import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
+
 export class ProjectForm extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -22,12 +27,17 @@ export class ProjectForm extends Component {
     courseInitData: PropTypes.object,
   }
 
-  handleSubmit = values => {
-    console.log('submit:', values)
+  handleSubmit = (values, { addProject }) => {
+    const { name, description, image } = values
+    try {
+      addProject({ variables: { name, description, img: image } })
+    } catch (err) {
+      toast.error('An error has occured. Project was not created.')
+    }
     this.props.close(null, false)
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, isValid }) => (
+  renderForm = ({ handleSubmit, isSubmitting, dirty }) => (
     <React.Fragment>
       <AppBar className={this.props.classes.appBar} position="static">
         <Typography variant="h3">
@@ -65,7 +75,7 @@ export class ProjectForm extends Component {
           color="primary"
           variant="contained"
           type="submit"
-          disabled={!isValid || isSubmitting}
+          disabled={!dirty || isSubmitting}
         >
           {this.props.type === 'create' ? 'ADD CONFIGURATION' : 'UPDATE'}
         </Button>
@@ -84,13 +94,20 @@ export class ProjectForm extends Component {
             paper: classes.drawer,
           }}
         >
-          <Formik
-            initialValues={courseInitData}
-            onSubmit={values => this.handleSubmit(values)}
-            validationSchema={validationSchema}
+          <Mutation
+            mutation={ADD_PROJECT_MUTATION}
+            refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
           >
-            {this.renderForm}
-          </Formik>
+            {(addProject, { data }) => (
+              <Formik
+                initialValues={courseInitData}
+                onSubmit={values => this.handleSubmit(values, { addProject })}
+                validationSchema={validationSchema}
+              >
+                {this.renderForm}
+              </Formik>
+            )}
+          </Mutation>
         </Drawer>
       </div>
     )

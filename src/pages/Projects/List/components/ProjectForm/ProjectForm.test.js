@@ -28,7 +28,9 @@ describe('component Projects/List - CreateProject', () => {
     describe('handleSubmit', () => {
       it('should close drawer', () => {
         const { instance, mockProps } = initProjectForm()
-        instance.handleSubmit()
+        const values = {}
+        const addProjectMock = jest.fn()
+        instance.handleSubmit(values, { addProjectMock })
         expect(mockProps.close).toHaveBeenCalled()
       })
     })
