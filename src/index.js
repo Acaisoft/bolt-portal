@@ -27,14 +27,15 @@ persistCache({
 })
 
 //TODO - init token is necessary?
-const initToken = ''
-const token = localStorage.getItem('token') || initToken
+// const initToken = ''
+// const token = localStorage.getItem('token') || initToken
 
 const request = async operation => {
-  const authToken = localStorage.getItem('token') || initToken
+  // const authToken = localStorage.getItem('token') || initToken
   operation.setContext({
     headers: {
-      Authorization: token ? `Bearer ${authToken}` : '',
+      'X-Hasura-Access-Key': 'FF662305FF444E1CB81BB1D7DD310BC0',
+      // Authorization: token ? `Bearer ${authToken}` : '',
     },
   })
 }
@@ -61,15 +62,16 @@ const requestLink = new ApolloLink(
 )
 
 const wsLink = new WebSocketLink({
-  uri: `wss://ocalhost:8080/v1alpha1/graphql`, //TODO: change ws url
+  uri: `wss://hasura.bolt.acaisoft.io/v1alpha1/graphql`, //TODO: change ws url
   options: {
     lazy: true,
     reconnect: true,
     connectionParams: async () => {
-      const authToken = localStorage.getItem('token') || initToken
+      // const authToken = localStorage.getItem('token') || initToken
       return {
         headers: {
-          Authorization: token ? `Bearer ${authToken}` : '',
+          'X-Hasura-Access-Key': 'FF662305FF444E1CB81BB1D7DD310BC0',
+          // Authorization: token ? `Bearer ${authToken}` : '',
         },
       }
     },
@@ -77,7 +79,7 @@ const wsLink = new WebSocketLink({
 })
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:8080/v1alpha1/graphql', //TODO: change http url
+  uri: 'https://hasura.bolt.acaisoft.io/v1alpha1/graphql', //TODO: change http url
 })
 
 const link = split(

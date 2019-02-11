@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Query } from 'react-apollo'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -8,17 +9,12 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-
 import { Edit } from '@material-ui/icons'
 
-import AcaiBoltImg from '~assets/images/img.png'
 import AddButton from '~components/AddButton'
-
 import styles from './List.styles'
-
-import fakeProjects from '../projectsData.mock'
-
 import ProjectForm from './components/ProjectForm'
+import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
 export class List extends Component {
   static propTypes = {
@@ -68,49 +64,62 @@ export class List extends Component {
     const { open, updateFormValues, type } = this.state
 
     return (
-      <div className={classes.root}>
-        <ProjectForm
-          open={open}
-          type={type}
-          courseInitData={updateFormValues}
-          close={this.toggleDrawer}
-        />
-        <div className={classes.btnContainer}>
-          <AddButton open={this.toggleDrawer} />
-        </div>
-        <Grid container spacing={24}>
-          {fakeProjects.map((
-            project // Update mock projects
-          ) => (
-            <Grid item xs={3} key={project.id}>
-              <Card
-                className={classes.card}
-                component={Link}
-                to={`${match.url}/${project.id}`}
-                aria-label="Project Deitals"
-              >
-                <CardContent>
-                  <Typography variant="h5" gutterBottom>
-                    {project.name}
-                  </Typography>
-                  <Typography variant="body1">{project.description}</Typography>
-                  <img src={AcaiBoltImg} alt="Acai Bolt" />
-                  <Edit
-                    className={classes.editIcon}
-                    onClick={event =>
-                      this.openUpdateProject(
-                        event,
-                        project.name,
-                        project.description
-                      )
-                    }
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+      <Query query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>
+          if (error) return <p>Error :(</p>
+          const projects = data.project
+
+          return (
+            <div className={classes.root}>
+              <ProjectForm
+                open={open}
+                type={type}
+                courseInitData={updateFormValues}
+                close={this.toggleDrawer}
+              />
+              <div className={classes.btnContainer}>
+                <AddButton open={this.toggleDrawer} />
+              </div>
+              <Grid container spacing={24}>
+                {projects.map(project => (
+                  <Grid item xs={3} key={project.id}>
+                    <Card
+                      className={classes.card}
+                      component={Link}
+                      to={`${match.url}/${project.name.split(' ').join('-')}`}
+                      aria-label="Project Deitals"
+                    >
+                      <CardContent>
+                        <Typography variant="h5" gutterBottom>
+                          {project.name}
+                        </Typography>
+                        {project.description && (
+                          <Typography variant="body1">
+                            {project.description.length > 200
+                              ? `${project.description.slice(0, 200)}...`
+                              : project.description}
+                          </Typography>
+                        )}
+                        <Edit
+                          className={classes.editIcon}
+                          onClick={event =>
+                            this.openUpdateProject(
+                              event,
+                              project.name,
+                              project.description
+                            )
+                          }
+                        />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
