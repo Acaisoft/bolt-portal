@@ -97,7 +97,7 @@ const client = new ApolloClient({
       if (graphQLErrors) {
         //TODO: check errors and delete localstorage if necessary
         console.log('error:', graphQLErrors)
-        client.writeData({ data: { isAuthorized: false } })
+        // client.writeData({ data: { isAuthorized: false } })
       }
     }),
     requestLink,

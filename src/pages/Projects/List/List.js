@@ -31,6 +31,7 @@ export class List extends Component {
       name: null,
       description: null,
       image: null,
+      id: null,
     },
   }
 
@@ -42,11 +43,12 @@ export class List extends Component {
         name: null,
         description: null,
         image: null,
+        id: null,
       },
     })
   }
 
-  openUpdateProject = (e, name, description) => {
+  openUpdateProject = (e, name, description, id) => {
     e.preventDefault()
     this.setState({
       open: true,
@@ -55,6 +57,7 @@ export class List extends Component {
         name,
         description,
         image: 'path/to/img.png',
+        id,
       },
     })
   }
@@ -107,7 +110,8 @@ export class List extends Component {
                             this.openUpdateProject(
                               event,
                               project.name,
-                              project.description
+                              project.description,
+                              project.id
                             )
                           }
                         />

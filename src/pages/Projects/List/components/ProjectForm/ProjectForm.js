@@ -17,6 +17,7 @@ import { formFields, validationSchema } from './formSchema'
 import styles from './ProjectForm.styles'
 
 import { ADD_PROJECT_MUTATION } from '~services/GraphQL/Mutations'
+import { EDIT_PROJECT_MUTATION } from '~services/GraphQL/Mutations'
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
 export class ProjectForm extends Component {
@@ -27,10 +28,16 @@ export class ProjectForm extends Component {
     courseInitData: PropTypes.object,
   }
 
-  handleSubmit = (values, { addProject }) => {
+  handleSubmit = (values, { projectMutation }) => {
     const { name, description, image } = values
     try {
-      addProject({ variables: { name, description, img: image } })
+      if (this.props.type === 'create') {
+        projectMutation({ variables: { name, description, img: image } })
+      } else {
+        projectMutation({
+          variables: { name, description, img: image, id: values.id },
+        })
+      }
     } catch (err) {
       toast.error('An error has occured. Project was not created.')
     }
@@ -84,7 +91,7 @@ export class ProjectForm extends Component {
   )
 
   render() {
-    const { classes, open, courseInitData } = this.props
+    const { classes, open, courseInitData, type } = this.props
     return (
       <div>
         <Drawer
@@ -95,13 +102,15 @@ export class ProjectForm extends Component {
           }}
         >
           <Mutation
-            mutation={ADD_PROJECT_MUTATION}
+            mutation={
+              type === 'create' ? ADD_PROJECT_MUTATION : EDIT_PROJECT_MUTATION
+            }
             refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
           >
-            {(addProject, { data }) => (
+            {(projectMutation, { data }) => (
               <Formik
                 initialValues={courseInitData}
-                onSubmit={values => this.handleSubmit(values, { addProject })}
+                onSubmit={values => this.handleSubmit(values, { projectMutation })}
                 validationSchema={validationSchema}
               >
                 {this.renderForm}
