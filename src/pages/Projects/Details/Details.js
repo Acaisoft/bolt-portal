@@ -33,7 +33,7 @@ export class Details extends Component {
     {
       id: 2,
       label: 'TEST REPOSITORIES',
-      linkTo: `${this.props.match.url}/test-repos`,
+      linkTo: `${this.props.match.url}/test-repositories`,
       description: 'Manage Test Repositories for My Super App.',
     },
     {

@@ -9,6 +9,7 @@ import styles from './Projects.styles'
 import ListPage from './List'
 import DetailsPage from './Details'
 import TestExecutionsPage from './TestExecutions'
+import TestRepositoriesPage from './TestRepositories'
 
 export class Projects extends Component {
   static propTypes = {
@@ -27,6 +28,10 @@ export class Projects extends Component {
           <Route
             path={`${match.url}/:id/test-execs`}
             component={TestExecutionsPage}
+          />
+          <Route
+            path={`${match.url}/:id/test-repositories`}
+            component={TestRepositoriesPage}
           />
           <Redirect from="*" to={match.url} />
         </Switch>
