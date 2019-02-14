@@ -1,2 +1,4 @@
 export { default as ADD_PROJECT_MUTATION } from './ADD_PROJECT_MUTATION'
+export { default as ADD_REPOSITORY_MUTATION } from './ADD_REPOSITORY_MUTATION'
 export { default as EDIT_PROJECT_MUTATION } from './EDIT_PROJECT_MUTATION'
+export { default as EDIT_REPOSITORY_MUTATION } from './EDIT_REPOSITORY_MUTATION'

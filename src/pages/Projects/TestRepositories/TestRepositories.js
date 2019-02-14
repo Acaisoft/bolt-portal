@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
-import { Link } from 'react-router-dom'
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 
 import DataTable from '~components/DataTable'
 import styles from './TestRepositories.styles'
 import AddButton from '~components/AddButton'
+import RepositoryForm from './components/RepositoryForm'
 
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
@@ -17,13 +17,47 @@ export class TestRepositories extends Component {
     classes: PropTypes.object.isRequired,
   }
 
+  state = {
+    open: false,
+    type: null,
+    updateFormValues: {
+      name: null,
+      url: null,
+      id: null,
+    },
+  }
+
+  toggleDrawer = (type, status) => {
+    this.setState({
+      open: status,
+      type: type,
+      updateFormValues: {
+        name: '',
+        url: '',
+      },
+    })
+  }
+
+  updateFormDrawer = (e, name, url, id) => {
+    e.preventDefault()
+    this.setState({
+      open: true,
+      type: 'update',
+      updateFormValues: {
+        name,
+        url,
+        id,
+      },
+    })
+  }
+
   addTestConfigs = configs => {
     let text = ''
     configs.map((conf, i) => {
       if (configs.length === i + 1) {
-        text += conf.configurationType.name
+        return (text += conf.configurationType.name)
       } else {
-        text += `${conf.configurationType.name} | `
+        return (text += `${conf.configurationType.name} | `)
       }
     })
     return text
@@ -31,12 +65,19 @@ export class TestRepositories extends Component {
 
   render() {
     const { classes } = this.props
+    const { open, updateFormValues, type } = this.state
 
     return (
       <div className={classes.root}>
         <Typography variant="body2">
           Here you see results of all tests performed in project
         </Typography>
+        <RepositoryForm
+          open={open}
+          type={type}
+          courseInitData={updateFormValues}
+          close={this.toggleDrawer}
+        />
         <div className={classes.btnContainer}>
           <AddButton open={this.toggleDrawer} />
         </div>
@@ -75,13 +116,18 @@ export class TestRepositories extends Component {
                   />
                   <DataTable.Column
                     key="actions"
-                    render={profile => (
+                    render={test => (
                       <div>
                         <IconButton
                           aria-label="Edit repository"
-                          component={Link}
-                          disabled
-                          to={`/profiles/details/${profile.id}`}
+                          onClick={event =>
+                            this.updateFormDrawer(
+                              event,
+                              test.name,
+                              test.url,
+                              test.id
+                            )
+                          }
                         >
                           <Edit />
                         </IconButton>
