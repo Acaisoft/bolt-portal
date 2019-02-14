@@ -5,6 +5,8 @@ import { TestRepositories } from './TestRepositories'
 import { mocks } from '~utils/tests'
 
 jest.mock('./components/RepositoryForm', () => 'RepositoryFormMock')
+jest.mock('~components/DeleteModal', () => 'DeleteModalMock')
+jest.mock('~components/AddButton', () => 'AddButtonMock')
 
 const initComponent = overrides => {
   const mockProps = {
@@ -78,6 +80,29 @@ describe('page: TestRepositories', () => {
         const fakeConfigs = [{ configurationType: { name: 'fakeName1' } }]
         const result = instance.addTestConfigs(fakeConfigs)
         expect(result).toBe('fakeName1')
+      })
+    })
+    describe('handleSubmit', () => {
+      it('should close delete repo and close modal', () => {
+        const { instance } = initComponent()
+        const fakeId = 'fakeID'
+        const deleteRepoMock = jest.fn()
+        instance.handleSubmit(fakeId, { deleteRepoMock })
+        expect(instance.state.openDeleteModal).toBe(false)
+      })
+    })
+    describe('handleModalOpen', () => {
+      it('should open modal', () => {
+        const { instance } = initComponent()
+        const fakeID = 'faleId'
+        const fakeName = 'fakeName'
+        instance.handleModalOpen(fakeID, fakeName)
+        expect(instance.state.openDeleteModal).toBe(true)
+      })
+      it('should close modal', () => {
+        const { instance } = initComponent()
+        instance.handleModalClose()
+        expect(instance.state.openDeleteModal).toBe(false)
       })
     })
   })

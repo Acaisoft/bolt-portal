@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 
 import { IconButton, Typography, withStyles } from '@material-ui/core'
-import { Edit } from '@material-ui/icons'
+import { Edit, Delete } from '@material-ui/icons'
 
 import DataTable from '~components/DataTable'
 import styles from './TestRepositories.styles'
 import AddButton from '~components/AddButton'
+import DeleteModal from '~components/DeleteModal'
 import RepositoryForm from './components/RepositoryForm'
 
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
+import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
 
 export class TestRepositories extends Component {
   static propTypes = {
@@ -20,6 +22,7 @@ export class TestRepositories extends Component {
 
   state = {
     open: false,
+    openDeleteModal: false,
     type: null,
     updateFormValues: {
       name: null,
@@ -27,6 +30,21 @@ export class TestRepositories extends Component {
       id: null,
       projectId: this.props.projectId,
     },
+    repoName: null,
+    deleteRepoId: null,
+  }
+
+  handleSubmit = async (id, { delMutation }) => {
+    await delMutation({ variables: { id } })
+    this.setState({ openDeleteModal: false })
+  }
+
+  handleModalOpen = (id, name) => {
+    this.setState({ openDeleteModal: true, repoName: name, deleteRepoId: id })
+  }
+
+  handleModalClose = () => {
+    this.setState({ openDeleteModal: false })
   }
 
   toggleDrawer = (type, status) => {
@@ -68,13 +86,36 @@ export class TestRepositories extends Component {
 
   render() {
     const { classes, projectId } = this.props
-    const { open, updateFormValues, type } = this.state
+    const {
+      open,
+      updateFormValues,
+      type,
+      openDeleteModal,
+      repoName,
+      deleteRepoId,
+    } = this.state
 
     return (
       <div className={classes.root}>
         <Typography variant="body2">
           Here you see results of all tests performed in project
         </Typography>
+        <Mutation
+          mutation={DELETE_REPOSITORY_MUTATION}
+          refetchQueries={[
+            { query: GET_REPOSITORIES_QUERY, variables: { projectId } },
+          ]}
+        >
+          {(delMutation, { data }) => (
+            <DeleteModal
+              open={openDeleteModal}
+              handleClose={this.handleModalClose}
+              handleSubmit={() => this.handleSubmit(deleteRepoId, { delMutation })}
+              type="repository"
+              name={repoName}
+            />
+          )}
+        </Mutation>
         <RepositoryForm
           open={open}
           type={type}
@@ -124,9 +165,10 @@ export class TestRepositories extends Component {
                   <DataTable.Column
                     key="actions"
                     render={test => (
-                      <div>
+                      <div className={classes.iconsContainer}>
                         <IconButton
                           aria-label="Edit repository"
+                          className={classes.icon}
                           onClick={event =>
                             this.updateFormDrawer(
                               event,
@@ -137,6 +179,13 @@ export class TestRepositories extends Component {
                           }
                         >
                           <Edit />
+                        </IconButton>
+                        <IconButton
+                          aria-label="Delete repository"
+                          className={classes.icon}
+                          onClick={() => this.handleModalOpen(test.id, test.name)}
+                        >
+                          <Delete />
                         </IconButton>
                       </div>
                     )}

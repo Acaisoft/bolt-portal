@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: DeleteModal rendering should render as expected 1`] = `
+<div>
+  <WithStyles(Dialog)
+    aria-describedby="delete-dialog-description"
+    aria-labelledby="delete-dialog-title"
+    onClose={[MockFunction]}
+    open={false}
+  >
+    <WithStyles(DialogTitle)
+      id="delete-dialog-title"
+    >
+      Delete 
+      mockType
+    </WithStyles(DialogTitle)>
+    <WithStyles(DialogContent)>
+      <WithStyles(DialogContentText)
+        id="delete-dialog-description"
+      >
+        Are you sure want delete 
+        mockName
+         
+        mockType
+        ?
+      </WithStyles(DialogContentText)>
+    </WithStyles(DialogContent)>
+    <WithStyles(DialogActions)>
+      <WithStyles(Button)
+        color="primary"
+        onClick={[MockFunction]}
+      >
+        Cancel
+      </WithStyles(Button)>
+      <WithStyles(Button)
+        autoFocus={true}
+        color="primary"
+        onClick={[MockFunction]}
+        variant="contained"
+      >
+        Delete
+      </WithStyles(Button)>
+    </WithStyles(DialogActions)>
+  </WithStyles(Dialog)>
+</div>
+`;

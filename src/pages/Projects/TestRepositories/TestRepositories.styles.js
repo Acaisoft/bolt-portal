@@ -13,5 +13,11 @@ export default ({ palette, spacing, typography }) => {
       justifyContent: 'flex-end',
       marginBottom: 20,
     },
+    iconsContainer: {
+      display: 'flex',
+    },
+    icon: {
+      padding: '0.25em',
+    },
   }
 }
