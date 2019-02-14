@@ -15,6 +15,7 @@ import FormField from '~components/FormField'
 import { formFields, validationSchema } from './formSchema'
 
 import styles from './RepositoryForm.styles'
+import KeyRepositoryModal from '../KeyRepositoryModal'
 
 import { ADD_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
 import { EDIT_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
@@ -26,6 +27,18 @@ export class RepositoryForm extends Component {
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
     courseInitData: PropTypes.object,
+  }
+
+  state = {
+    openModal: false,
+  }
+
+  handleModalOpen = () => {
+    this.setState({ openModal: true })
+  }
+
+  handleModalClose = () => {
+    this.setState({ openModal: false })
   }
 
   handleSubmit = (values, { repoMutation }) => {
@@ -69,6 +82,11 @@ export class RepositoryForm extends Component {
             />
           )
         })}
+        <div className={this.props.classes.keyContainer}>
+          <Button color="primary" variant="contained" onClick={this.handleModalOpen}>
+            GENERATE KEY
+          </Button>
+        </div>
 
         <Button
           color="primary"
@@ -92,8 +110,10 @@ export class RepositoryForm extends Component {
 
   render() {
     const { classes, open, courseInitData, type } = this.props
+    const { openModal } = this.state
     return (
       <div>
+        <KeyRepositoryModal open={openModal} handleClose={this.handleModalClose} />
         <Drawer
           open={open}
           anchor="right"

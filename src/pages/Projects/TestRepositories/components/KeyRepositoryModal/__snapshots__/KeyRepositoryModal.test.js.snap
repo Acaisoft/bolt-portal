@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: KeyRepositoryModal rendering should render as expected 1`] = `
+<div>
+  <WithStyles(Dialog)
+    aria-describedby="modal-key-description"
+    aria-labelledby="modal-key-title"
+    open={false}
+  >
+    <WithStyles(DialogTitle)
+      id="modal-key-title"
+    >
+      REPOSITORY KEY
+    </WithStyles(DialogTitle)>
+    <WithStyles(DialogContent)>
+      <WithStyles(DialogContentText)
+        id="modal-key-description"
+      >
+        Copy it and do the magic in your repository: 
+        <br />
+        Generated Key(TODO)...
+      </WithStyles(DialogContentText)>
+    </WithStyles(DialogContent)>
+    <WithStyles(DialogActions)>
+      <WithStyles(Button)
+        autoFocus={true}
+        color="primary"
+        variant="contained"
+      >
+        OK
+      </WithStyles(Button)>
+    </WithStyles(DialogActions)>
+  </WithStyles(Dialog)>
+</div>
+`;

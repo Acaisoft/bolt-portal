@@ -38,4 +38,8 @@ export default ({ palette, spacing }) => ({
     right: 15,
     padding: '30px 15px',
   },
+  keyContainer: {
+    marginTop: 20,
+    marginBottom: 50,
+  },
 })
