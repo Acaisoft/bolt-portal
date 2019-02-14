@@ -21,6 +21,7 @@ export class Details extends Component {
       url: PropTypes.string.isRequired,
     }).isRequired,
     classes: PropTypes.object.isRequired,
+    projectId: PropTypes.string,
   }
 
   items = [

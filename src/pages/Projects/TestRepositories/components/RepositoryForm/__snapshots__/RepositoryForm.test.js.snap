@@ -256,14 +256,56 @@ exports[`component: RepositoryForm rendering should render as expected 1`] = `
                 Object {
                   "directives": Array [],
                   "kind": "OperationDefinition",
-                  "name": undefined,
+                  "name": Object {
+                    "kind": "Name",
+                    "value": "getRepositories",
+                  },
                   "operation": "query",
                   "selectionSet": Object {
                     "kind": "SelectionSet",
                     "selections": Array [
                       Object {
                         "alias": undefined,
-                        "arguments": Array [],
+                        "arguments": Array [
+                          Object {
+                            "kind": "Argument",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "where",
+                            },
+                            "value": Object {
+                              "fields": Array [
+                                Object {
+                                  "kind": "ObjectField",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "project_id",
+                                  },
+                                  "value": Object {
+                                    "fields": Array [
+                                      Object {
+                                        "kind": "ObjectField",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "_eq",
+                                        },
+                                        "value": Object {
+                                          "kind": "Variable",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "projectId",
+                                          },
+                                        },
+                                      },
+                                    ],
+                                    "kind": "ObjectValue",
+                                  },
+                                },
+                              ],
+                              "kind": "ObjectValue",
+                            },
+                          },
+                        ],
                         "directives": Array [],
                         "kind": "Field",
                         "name": Object {
@@ -385,12 +427,32 @@ exports[`component: RepositoryForm rendering should render as expected 1`] = `
                       },
                     ],
                   },
-                  "variableDefinitions": Array [],
+                  "variableDefinitions": Array [
+                    Object {
+                      "defaultValue": undefined,
+                      "directives": Array [],
+                      "kind": "VariableDefinition",
+                      "type": Object {
+                        "kind": "NamedType",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "uuid",
+                        },
+                      },
+                      "variable": Object {
+                        "kind": "Variable",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "projectId",
+                        },
+                      },
+                    },
+                  ],
                 },
               ],
               "kind": "Document",
               "loc": Object {
-                "end": 155,
+                "end": 235,
                 "start": 0,
               },
             },

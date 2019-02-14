@@ -104,6 +104,7 @@ const client = new ApolloClient({
     withClientState({
       defaults: {
         isAuthorized: true, //TODO: isAuthorized: token !== initToken ? true : false
+        currentProject: null,
       },
       cache,
     }),

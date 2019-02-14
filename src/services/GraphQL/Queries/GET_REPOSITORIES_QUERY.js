@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 export default gql(`
-{
-  repository {
+query getRepositories($projectId: uuid) {
+  repository(where: {project_id: {_eq: $projectId}}) {
     id
     name
     username

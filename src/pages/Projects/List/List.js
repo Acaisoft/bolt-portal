@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
+import { Query, ApolloConsumer } from 'react-apollo'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -33,6 +33,10 @@ export class List extends Component {
       image: null,
       id: null,
     },
+  }
+
+  handleClick = (client, projectId) => {
+    client.writeData({ data: { currentProject: projectId } })
   }
 
   toggleDrawer = (type, status) => {
@@ -84,42 +88,47 @@ export class List extends Component {
               <div className={classes.btnContainer}>
                 <AddButton open={this.toggleDrawer} />
               </div>
-              <Grid container spacing={24}>
-                {projects.map(project => (
-                  <Grid item xs={3} key={project.id}>
-                    <Card
-                      className={classes.card}
-                      component={Link}
-                      to={`${match.url}/${project.name.split(' ').join('-')}`}
-                      aria-label="Project Deitals"
-                    >
-                      <CardContent>
-                        <Typography variant="h5" gutterBottom>
-                          {project.name}
-                        </Typography>
-                        {project.description && (
-                          <Typography variant="body1">
-                            {project.description.length > 200
-                              ? `${project.description.slice(0, 200)}...`
-                              : project.description}
-                          </Typography>
-                        )}
-                        <Edit
-                          className={classes.editIcon}
-                          onClick={event =>
-                            this.openUpdateProject(
-                              event,
-                              project.name,
-                              project.description,
-                              project.id
-                            )
-                          }
-                        />
-                      </CardContent>
-                    </Card>
+              <ApolloConsumer>
+                {client => (
+                  <Grid container spacing={24}>
+                    {projects.map(project => (
+                      <Grid item xs={3} key={project.id}>
+                        <Card
+                          className={classes.card}
+                          component={Link}
+                          to={`${match.url}/${project.name.split(' ').join('-')}`}
+                          aria-label="Project Deitals"
+                          onClick={() => this.handleClick(client, project.id)}
+                        >
+                          <CardContent>
+                            <Typography variant="h5" gutterBottom>
+                              {project.name}
+                            </Typography>
+                            {project.description && (
+                              <Typography variant="body1">
+                                {project.description.length > 200
+                                  ? `${project.description.slice(0, 200)}...`
+                                  : project.description}
+                              </Typography>
+                            )}
+                            <Edit
+                              className={classes.editIcon}
+                              onClick={event =>
+                                this.openUpdateProject(
+                                  event,
+                                  project.name,
+                                  project.description,
+                                  project.id
+                                )
+                              }
+                            />
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
+                )}
+              </ApolloConsumer>
             </div>
           )
         }}

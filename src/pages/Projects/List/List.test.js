@@ -60,5 +60,20 @@ describe('page: Projects/List', () => {
         expect(instance.state.updateFormValues.description).toBe('testDesc')
       })
     })
+    describe('handleClick', () => {
+      it('should save currentProject at apollo client state with received project id', async () => {
+        const { instance } = initList()
+        const clientMock = {
+          writeData: jest.fn(),
+        }
+        const fakeProjectId = 'fakeProjectId'
+        instance.handleClick(clientMock, fakeProjectId)
+        expect(clientMock.writeData).toHaveBeenCalledWith({
+          data: {
+            currentProject: fakeProjectId,
+          },
+        })
+      })
+    })
   })
 })

@@ -15,6 +15,7 @@ import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 export class TestRepositories extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    projectId: PropTypes.string,
   }
 
   state = {
@@ -24,6 +25,7 @@ export class TestRepositories extends Component {
       name: null,
       url: null,
       id: null,
+      projectId: this.props.projectId,
     },
   }
 
@@ -34,6 +36,7 @@ export class TestRepositories extends Component {
       updateFormValues: {
         name: '',
         url: '',
+        projectId: this.props.projectId,
       },
     })
   }
@@ -64,7 +67,7 @@ export class TestRepositories extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, projectId } = this.props
     const { open, updateFormValues, type } = this.state
 
     return (
@@ -81,7 +84,11 @@ export class TestRepositories extends Component {
         <div className={classes.btnContainer}>
           <AddButton open={this.toggleDrawer} />
         </div>
-        <Query query={GET_REPOSITORIES_QUERY} fetchPolicy="cache-and-network">
+        <Query
+          query={GET_REPOSITORIES_QUERY}
+          variables={{ projectId }}
+          fetchPolicy="cache-and-network"
+        >
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>
             if (error) return <p>Error :(</p>

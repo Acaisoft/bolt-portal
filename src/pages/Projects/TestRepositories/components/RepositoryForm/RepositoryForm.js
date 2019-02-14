@@ -45,7 +45,7 @@ export class RepositoryForm extends Component {
     const { name, url } = values
     try {
       if (this.props.type === 'create') {
-        repoMutation({ variables: { name, url } }) //TODO: Add projectId
+        repoMutation({ variables: { name, url, projectId: values.projectId } })
       } else {
         repoMutation({
           variables: { name, url, id: values.id },
