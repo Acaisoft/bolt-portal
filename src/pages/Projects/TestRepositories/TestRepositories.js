@@ -17,6 +17,18 @@ export class TestRepositories extends Component {
     classes: PropTypes.object.isRequired,
   }
 
+  addTestConfigs = configs => {
+    let text = ''
+    configs.map((conf, i) => {
+      if (configs.length === i + 1) {
+        text += conf.configurationType.name
+      } else {
+        text += `${conf.configurationType.name} | `
+      }
+    })
+    return text
+  }
+
   render() {
     const { classes } = this.props
 
@@ -58,7 +70,7 @@ export class TestRepositories extends Component {
                   />
                   <DataTable.Column
                     key="testRunConfigs"
-                    render={test => 'Test Static Text'}
+                    render={test => this.addTestConfigs(test.configurations)}
                     title="Test Run Configurations"
                   />
                   <DataTable.Column
