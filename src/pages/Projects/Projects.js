@@ -11,6 +11,7 @@ import ListPage from './List'
 import DetailsPage from './Details'
 import TestExecutionsPage from './TestExecutions'
 import TestRepositoriesPage from './TestRepositories'
+import TestConfigurationsPage from './TestConfigurations'
 import { CURRENT_PROJECT_QUERY } from '~services/GraphQL/Store'
 
 export class Projects extends Component {
@@ -44,6 +45,15 @@ export class Projects extends Component {
                   path={`${match.url}/:id/test-repositories`}
                   render={props => (
                     <TestRepositoriesPage
+                      {...props}
+                      projectId={data.currentProject}
+                    />
+                  )}
+                />
+                <Route
+                  path={`${match.url}/:id/test-configurations`}
+                  render={props => (
+                    <TestConfigurationsPage
                       {...props}
                       projectId={data.currentProject}
                     />

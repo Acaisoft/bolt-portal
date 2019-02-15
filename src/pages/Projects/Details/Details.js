@@ -28,7 +28,7 @@ export class Details extends Component {
     {
       id: 1,
       label: 'TEST RUN CONFIGURATIONS',
-      linkTo: `${this.props.match.url}/test-run-config`,
+      linkTo: `${this.props.match.url}/test-configurations`,
       description: 'Manage Test Run Configurations for My Super App.',
     },
     {

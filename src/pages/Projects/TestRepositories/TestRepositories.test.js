@@ -7,6 +7,7 @@ import { mocks } from '~utils/tests'
 jest.mock('./components/RepositoryForm', () => 'RepositoryFormMock')
 jest.mock('~components/DeleteModal', () => 'DeleteModalMock')
 jest.mock('~components/AddButton', () => 'AddButtonMock')
+jest.mock('~components/DataTable', () => 'DataTableMock')
 
 const initComponent = overrides => {
   const mockProps = {

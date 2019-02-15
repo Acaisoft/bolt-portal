@@ -30,7 +30,7 @@ export class TestRepositories extends Component {
       id: null,
       projectId: this.props.projectId,
     },
-    repoName: null,
+    repoName: '',
     deleteRepoId: null,
   }
 
