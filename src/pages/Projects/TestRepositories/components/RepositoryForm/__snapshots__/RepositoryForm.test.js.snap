@@ -412,6 +412,17 @@ exports[`component: RepositoryForm rendering should render as expected 1`] = `
                                           "kind": "Field",
                                           "name": Object {
                                             "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
                                             "value": "name",
                                           },
                                           "selectionSet": undefined,
@@ -452,7 +463,7 @@ exports[`component: RepositoryForm rendering should render as expected 1`] = `
               ],
               "kind": "Document",
               "loc": Object {
-                "end": 235,
+                "end": 246,
                 "start": 0,
               },
             },

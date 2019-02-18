@@ -5,12 +5,15 @@ query getTestConfigurations($projectId: uuid) {
       id
       name
       executions {
+        id
         start
       }
       repository {
+        id
         url
       }
       configurationType {
+        id
         name
       }
     }

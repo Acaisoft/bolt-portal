@@ -10,6 +10,7 @@ query getRepositories($projectId: uuid) {
       id
       name
       configurationType {
+        id
         name
       }
     }
