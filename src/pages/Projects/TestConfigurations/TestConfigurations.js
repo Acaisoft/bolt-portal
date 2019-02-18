@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Query } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
 import DataTable from '~components/DataTable'
 import styles from './TestConfigurations.styles'
+import DeleteModal from '~components/DeleteModal'
 
+import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
 export class TestConfigurations extends Component {
@@ -17,14 +19,48 @@ export class TestConfigurations extends Component {
     projectId: PropTypes.string,
   }
 
+  state = {
+    openDeleteModal: false,
+    configName: '',
+    deleteConfigId: null,
+  }
+
+  handleSubmit = async (id, { delMutation }) => {
+    await delMutation({ variables: { id } })
+    this.setState({ openDeleteModal: false })
+  }
+
+  handleModalOpen = (id, name) => {
+    this.setState({ openDeleteModal: true, configName: name, deleteConfigId: id })
+  }
+
+  handleModalClose = () => {
+    this.setState({ openDeleteModal: false })
+  }
+
   render() {
     const { classes, projectId } = this.props
+    const { openDeleteModal, configName, deleteConfigId } = this.state
 
     return (
       <div className={classes.root}>
         <Typography variant="body2">
           Here you can manage all Test Run Configurations
         </Typography>
+        <Mutation
+          mutation={DELETE_CONFIG_MUTATION}
+          refetchQueries={[{ query: GET_CONFIGS_QUERY, variables: { projectId } }]}
+        >
+          {(delMutation, { data }) => (
+            <DeleteModal
+              open={openDeleteModal}
+              handleClose={this.handleModalClose}
+              handleSubmit={() => this.handleSubmit(deleteConfigId, { delMutation })}
+              type="repository"
+              name={configName}
+            />
+          )}
+        </Mutation>
         <Query
           query={GET_CONFIGS_QUERY}
           variables={{ projectId }}
@@ -99,6 +135,7 @@ export class TestConfigurations extends Component {
                         <IconButton
                           aria-label="Delete configuration"
                           className={classes.icon}
+                          onClick={() => this.handleModalOpen(test.id, test.name)}
                         >
                           <Delete />
                         </IconButton>
