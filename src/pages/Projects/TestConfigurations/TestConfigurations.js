@@ -84,11 +84,6 @@ export class TestConfigurations extends Component {
                     title="Name"
                   />
                   <DataTable.Column
-                    key="type"
-                    render={test => test.configurationType.name}
-                    title="Type"
-                  />
-                  <DataTable.Column
                     key="source"
                     render={test => test.repository.url}
                     title="Source"

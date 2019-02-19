@@ -12,10 +12,6 @@ query getTestConfigurations($projectId: uuid) {
         id
         url
       }
-      configurationType {
-        id
-        name
-      }
     }
   }
 `)
