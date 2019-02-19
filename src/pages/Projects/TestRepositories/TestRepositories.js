@@ -76,9 +76,9 @@ export class TestRepositories extends Component {
     let text = ''
     configs.map((conf, i) => {
       if (configs.length === i + 1) {
-        return (text += conf.configurationType.name)
+        return (text += conf.name)
       } else {
-        return (text += `${conf.configurationType.name} | `)
+        return (text += `${conf.name} | `)
       }
     })
     return text
@@ -153,9 +153,9 @@ export class TestRepositories extends Component {
                     title="URL"
                   />
                   <DataTable.Column
-                    key="username"
-                    render={test => test.username}
-                    title="Username"
+                    key="testRunType"
+                    render={test => test.configurationType.name}
+                    title="Test Type"
                   />
                   <DataTable.Column
                     key="testRunConfigs"
