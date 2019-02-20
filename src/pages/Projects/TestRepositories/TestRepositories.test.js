@@ -69,16 +69,13 @@ describe('page: TestRepositories', () => {
     describe('addTestConfigs', () => {
       it('should create new text with divider', () => {
         const { instance } = initComponent()
-        const fakeConfigs = [
-          { configurationType: { name: 'fakeName1' } },
-          { configurationType: { name: 'fakeName2' } },
-        ]
+        const fakeConfigs = [{ name: 'fakeName1' }, { name: 'fakeName2' }]
         const result = instance.addTestConfigs(fakeConfigs)
         expect(result).toBe('fakeName1 | fakeName2')
       })
       it('should create new text without divider', () => {
         const { instance } = initComponent()
-        const fakeConfigs = [{ configurationType: { name: 'fakeName1' } }]
+        const fakeConfigs = [{ name: 'fakeName1' }]
         const result = instance.addTestConfigs(fakeConfigs)
         expect(result).toBe('fakeName1')
       })
