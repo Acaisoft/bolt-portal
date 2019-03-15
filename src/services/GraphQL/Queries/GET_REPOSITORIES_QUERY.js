@@ -1,18 +1,18 @@
 import gql from 'graphql-tag'
-export default gql(`
-query getRepositories($projectId: uuid) {
-  repository(where: {project_id: {_eq: $projectId}}) {
-    id
-    name
-    url
-    configurations {
+export default gql`
+  query getRepositories($projectId: uuid) {
+    repository(where: { project_id: { _eq: $projectId } }) {
       id
       name
-    }
-    configurationType {
+      url
+      configurations {
         id
         name
       }
+      configurationType {
+        id
+        name
+      }
+    }
   }
-}
-`)
+`

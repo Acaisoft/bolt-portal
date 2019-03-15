@@ -143,7 +143,7 @@ exports[`page: TestRepositories rendering should render as expected 1`] = `
         ],
         "kind": "Document",
         "loc": Object {
-          "end": 161,
+          "end": 167,
           "start": 0,
         },
       }
@@ -352,7 +352,7 @@ exports[`page: TestRepositories rendering should render as expected 1`] = `
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 231,
+              "end": 259,
               "start": 0,
             },
           },
@@ -587,7 +587,7 @@ exports[`page: TestRepositories rendering should render as expected 1`] = `
         ],
         "kind": "Document",
         "loc": Object {
-          "end": 231,
+          "end": 259,
           "start": 0,
         },
       }

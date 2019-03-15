@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core'
 
 import Authorized from './Authorized'
 import Guest from './Guest'
-import GlobalMessage from './GlobalMessage'
 
 import { AUTH_STATE_QUERY } from '~services/GraphQL/Store'
 
@@ -27,7 +26,6 @@ export class Layout extends Component {
           return (
             <div className={classes.root}>
               {isAuthorized ? <Authorized /> : <Guest />}
-              <GlobalMessage />
             </div>
           )
         }}

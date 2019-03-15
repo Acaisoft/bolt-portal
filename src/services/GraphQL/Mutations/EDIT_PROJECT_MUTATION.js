@@ -1,8 +1,11 @@
 import gql from 'graphql-tag'
 
-export default gql(`
-mutation ($name: String!, $description: String, $img: String, $id: uuid!) {
-    project: update_project(_set:{name: $name, description: $description, image_url: $img}, where:{id: {_eq: $id}}) {
+export default gql`
+  mutation($name: String!, $description: String, $img: String, $id: uuid!) {
+    project: update_project(
+      _set: { name: $name, description: $description, image_url: $img }
+      where: { id: { _eq: $id } }
+    ) {
       returning {
         id
         name
@@ -10,5 +13,5 @@ mutation ($name: String!, $description: String, $img: String, $id: uuid!) {
         image_url
       }
     }
-  }  
-`)
+  }
+`

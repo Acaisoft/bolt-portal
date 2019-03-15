@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
-export default gql(`
-query getTestConfigurations($projectId: uuid) {
-    configuration(where: {project_id: {_eq: $projectId}}) {
+export default gql`
+  query getTestConfigurations($projectId: uuid) {
+    configuration(where: { project_id: { _eq: $projectId } }) {
       id
       name
       executions {
@@ -14,4 +14,4 @@ query getTestConfigurations($projectId: uuid) {
       }
     }
   }
-`)
+`

@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
-export default gql(`
-	{
-		project {
-			id,
-      name,
+export default gql`
+  query getProjectsQuery {
+    project {
+      id
+      name
       description
-		}
-	}
-`)
+    }
+  }
+`

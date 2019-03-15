@@ -6,7 +6,6 @@ import { mocks } from '~utils/tests'
 
 jest.mock('./Authorized', () => 'AuthorizedMock')
 jest.mock('./Guest', () => 'GuestMock')
-jest.mock('./GlobalMessage', () => 'GlobalMessageMock')
 
 const initLayout = overrides => {
   const mockProps = {}
