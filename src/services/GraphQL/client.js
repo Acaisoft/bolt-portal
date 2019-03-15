@@ -3,19 +3,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { persistCache } from 'apollo-cache-persist'
 import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
-import { withClientState } from 'apollo-link-state'
 import { ApolloLink, Observable } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { split } from 'apollo-link'
 import { getMainDefinition } from 'apollo-utilities'
 
-const cache = new InMemoryCache()
-
-persistCache({
-  cache,
-  storage: window.localStorage,
-})
-
+/*
+ * Links
+ */
 const errorHandlingLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) {
     //TODO: check errors and delete localstorage if necessary
@@ -75,7 +70,6 @@ const wsLink = new WebSocketLink({
     },
   },
 })
-
 const httpLink = new HttpLink({
   uri: 'https://hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
 })
@@ -89,16 +83,28 @@ const link = split(
   httpLink
 )
 
-const localStateLink = withClientState({
-  defaults: {
-    isAuthorized: true, //TODO: isAuthorized: token !== initToken ? true : false
-    currentProject: null,
-  },
+/*
+ * Cache & Local State
+ */
+const cache = new InMemoryCache()
+
+persistCache({
   cache,
+  storage: window.localStorage,
 })
 
+cache.writeData({
+  data: {
+    isAuthorized: true,
+    currentProject: null,
+  },
+})
+
+/*
+ * Client
+ */
 const client = new ApolloClient({
-  link: ApolloLink.from([errorHandlingLink, requestLink, localStateLink, link]),
+  link: ApolloLink.from([errorHandlingLink, requestLink, link]),
   cache,
 })
 
