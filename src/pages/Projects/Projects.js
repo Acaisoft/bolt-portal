@@ -12,7 +12,54 @@ import DetailsPage from './Details'
 import TestExecutionsPage from './TestExecutions'
 import TestRepositoriesPage from './TestRepositories'
 import TestConfigurationsPage from './TestConfigurations'
-import { CURRENT_PROJECT_QUERY } from '~services/GraphQL/Store'
+import { GET_PROJECT_BY_SLUG_QUERY } from '~services/GraphQL/Queries'
+
+const SingleProjectPage = ({ match, rootUrl }) => {
+  return (
+    <Query
+      query={GET_PROJECT_BY_SLUG_QUERY}
+      variables={{ projectSlug: match.params.projectSlug }}
+      skip={!match.params.projectSlug}
+      fetchPolicy="cache-first"
+    >
+      {({ data, loading, error }) => {
+        if (loading) return <p>Loading</p>
+
+        if (data.project.length === 0) return <Redirect to={rootUrl} />
+
+        const projectId = data.project[0].id
+
+        return (
+          <Switch>
+            <Route
+              exact
+              path={`${match.url}`}
+              render={props => <DetailsPage {...props} projectId={projectId} />}
+            />
+            <Route
+              path={`${match.url}/test-execs`}
+              render={props => (
+                <TestExecutionsPage {...props} projectId={projectId} />
+              )}
+            />
+            <Route
+              path={`${match.url}/test-repositories`}
+              render={props => (
+                <TestRepositoriesPage {...props} projectId={projectId} />
+              )}
+            />
+            <Route
+              path={`${match.url}/test-configurations`}
+              render={props => (
+                <TestConfigurationsPage {...props} projectId={projectId} />
+              )}
+            />
+          </Switch>
+        )
+      }}
+    </Query>
+  )
+}
 
 export class Projects extends Component {
   static propTypes = {
@@ -24,47 +71,17 @@ export class Projects extends Component {
   render() {
     const { match } = this.props
     return (
-      <Query query={CURRENT_PROJECT_QUERY} fetchPolicy="cache-first">
-        {({ data, client }) => {
-          return (
-            <div>
-              <Switch>
-                <Route path={`${match.url}`} exact component={ListPage} />
-                <Route
-                  path={`${match.url}/:id`}
-                  exact
-                  render={props => (
-                    <DetailsPage {...props} projectId={data.currentProject} />
-                  )}
-                />
-                <Route
-                  path={`${match.url}/:id/test-execs`}
-                  component={TestExecutionsPage}
-                />
-                <Route
-                  path={`${match.url}/:id/test-repositories`}
-                  render={props => (
-                    <TestRepositoriesPage
-                      {...props}
-                      projectId={data.currentProject}
-                    />
-                  )}
-                />
-                <Route
-                  path={`${match.url}/:id/test-configurations`}
-                  render={props => (
-                    <TestConfigurationsPage
-                      {...props}
-                      projectId={data.currentProject}
-                    />
-                  )}
-                />
-                <Redirect from="*" to={match.url} />
-              </Switch>
-            </div>
-          )
-        }}
-      </Query>
+      <div>
+        <Switch>
+          <Route path={`${match.url}`} exact component={ListPage} />
+          <Route
+            path={`${match.url}/:projectSlug`}
+            render={props => <SingleProjectPage {...props} rootUrl={match.url} />}
+          />
+
+          <Redirect from="*" to={match.url} />
+        </Switch>
+      </div>
     )
   }
 }

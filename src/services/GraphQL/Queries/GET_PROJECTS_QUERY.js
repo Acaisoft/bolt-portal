@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 export default gql`
-  query getProjectsQuery {
+  query getProjects {
     project {
       id
       name
