@@ -11,12 +11,17 @@ import { getMainDefinition } from 'apollo-utilities'
 /*
  * Links
  */
-const errorHandlingLink = onError(({ graphQLErrors }) => {
-  if (graphQLErrors) {
+const errorHandlingLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
     //TODO: check errors and delete localstorage if necessary
-    console.log('error:', graphQLErrors)
     // client.writeData({ data: { isAuthorized: false } })
-  }
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    )
+
+  if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
 //TODO - init token is necessary?
