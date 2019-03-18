@@ -6,9 +6,8 @@ import { Mutation, Query } from 'react-apollo'
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
-import DataTable from '~components/DataTable'
+import { DataTable, DeleteModal } from '~components'
 import styles from './TestConfigurations.styles'
-import DeleteModal from '~components/DeleteModal'
 
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'

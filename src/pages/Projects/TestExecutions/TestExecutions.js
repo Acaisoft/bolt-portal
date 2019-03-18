@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 
-import DataTable from '~components/DataTable'
+import { DataTable } from '~components'
 import styles from './TestExecutions.styles'
 
 import faketestsData from '../testExecutionsData.mock'

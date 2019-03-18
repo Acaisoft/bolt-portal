@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo'
 import { toast } from 'react-toastify'
 import { AppBar, Button, Drawer, Typography, withStyles } from '@material-ui/core'
 
-import FormField from '~components/FormField'
+import { FormField } from '~components'
 import { formFields, validationSchema } from './formSchema'
 
 import styles from './RepositoryForm.styles'

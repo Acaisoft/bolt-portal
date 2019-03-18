@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 
-import DataTable from '~components/DataTable'
+import { DataTable } from '~components'
 import styles from './Details.styles'
 
 import faketestsData from '../testExecutionsData.mock'

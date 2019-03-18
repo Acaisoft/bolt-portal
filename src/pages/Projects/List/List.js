@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 
-import AddButton from '~components/AddButton'
+import { AddButton } from '~components'
 import styles from './List.styles'
 import ProjectForm from './components/ProjectForm'
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'

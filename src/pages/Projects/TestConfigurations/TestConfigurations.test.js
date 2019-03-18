@@ -4,8 +4,10 @@ import { shallow } from 'enzyme'
 import { TestConfigurations } from './TestConfigurations'
 import { mocks } from '~utils/tests'
 
-jest.mock('~components/DataTable', () => 'DataTableMock')
-jest.mock('~components/DeleteModal', () => 'DeleteModalMock')
+jest.mock('~components', () => ({
+  DataTable: 'DataTableMock',
+  DeleteModal: 'DeleteModalMock',
+}))
 
 const initComponent = overrides => {
   const mockProps = {

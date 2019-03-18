@@ -5,10 +5,8 @@ import { Query, Mutation } from 'react-apollo'
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
 
-import DataTable from '~components/DataTable'
+import { AddButton, DataTable, DeleteModal } from '~components'
 import styles from './TestRepositories.styles'
-import AddButton from '~components/AddButton'
-import DeleteModal from '~components/DeleteModal'
 import RepositoryForm from './components/RepositoryForm'
 
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
