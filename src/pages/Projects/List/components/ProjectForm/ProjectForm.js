@@ -11,8 +11,10 @@ import { formFields, validationSchema } from './formSchema'
 
 import styles from './ProjectForm.styles'
 
-import { ADD_PROJECT_MUTATION } from '~services/GraphQL/Mutations'
-import { EDIT_PROJECT_MUTATION } from '~services/GraphQL/Mutations'
+import {
+  ADD_PROJECT_MUTATION,
+  EDIT_PROJECT_MUTATION,
+} from '~services/GraphQL/Mutations'
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
 export class ProjectForm extends Component {

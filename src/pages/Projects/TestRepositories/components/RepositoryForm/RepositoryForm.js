@@ -12,8 +12,10 @@ import { formFields, validationSchema } from './formSchema'
 import styles from './RepositoryForm.styles'
 import KeyRepositoryModal from '../KeyRepositoryModal'
 
-import { ADD_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
-import { EDIT_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
+import {
+  ADD_REPOSITORY_MUTATION,
+  EDIT_REPOSITORY_MUTATION,
+} from '~services/GraphQL/Mutations'
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
 export class RepositoryForm extends Component {
