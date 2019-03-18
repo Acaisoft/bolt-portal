@@ -6,6 +6,9 @@ import { mocks } from '~utils/tests'
 
 const initTestExecutions = overrides => {
   const mockProps = {
+    match: {
+      url: '/projects/project-1/test-execs',
+    },
     projectId: 'project-1',
   }
   const wrapper = shallow(

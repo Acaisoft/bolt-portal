@@ -2,22 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
 import { Mutation } from 'react-apollo'
+
 import { toast } from 'react-toastify'
-
 import { AppBar, Button, Drawer, Typography, withStyles } from '@material-ui/core'
+import { FormField, KeyRepositoryModal } from '~components'
 
-import { FormField } from '~components'
 import { formFields, validationSchema } from './formSchema'
-
-import styles from './ProjectForm.styles'
+import styles from './RepositoryForm.styles'
 
 import {
-  ADD_PROJECT_MUTATION,
-  EDIT_PROJECT_MUTATION,
+  ADD_REPOSITORY_MUTATION,
+  EDIT_REPOSITORY_MUTATION,
 } from '~services/GraphQL/Mutations'
-import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
+import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
-export class ProjectForm extends Component {
+export class RepositoryForm extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
@@ -25,14 +24,26 @@ export class ProjectForm extends Component {
     courseInitData: PropTypes.object,
   }
 
-  handleSubmit = (values, { projectMutation }) => {
-    const { name, description, image } = values
+  state = {
+    openModal: false,
+  }
+
+  handleModalOpen = () => {
+    this.setState({ openModal: true })
+  }
+
+  handleModalClose = () => {
+    this.setState({ openModal: false })
+  }
+
+  handleSubmit = (values, { repoMutation }) => {
+    const { name, url } = values
     try {
       if (this.props.type === 'create') {
-        projectMutation({ variables: { name, description, img: image } })
+        repoMutation({ variables: { name, url, projectId: values.projectId } })
       } else {
-        projectMutation({
-          variables: { name, description, img: image, id: values.id },
+        repoMutation({
+          variables: { name, url, id: values.id },
         })
       }
     } catch (err) {
@@ -45,12 +56,12 @@ export class ProjectForm extends Component {
     <React.Fragment>
       <AppBar className={this.props.classes.appBar} position="static">
         <Typography variant="h3">
-          {this.props.type === 'create' ? 'NEW PROJECT' : 'UPDATE PROJECT'}
+          {this.props.type === 'create' ? 'NEW REPOSITORY' : 'UPDATE REPOSITORY'}
         </Typography>
         <Typography variant="body1">
-          {this.props.type === 'create'
-            ? 'Add new project to your library'
-            : `Update ${this.props.courseInitData.name} project data.`}
+          Here you can define your new test run repository, you can edit the data
+          until first test run. After that you will be able only to change
+          configuration name.
         </Typography>
       </AppBar>
       <form onSubmit={handleSubmit}>
@@ -66,6 +77,11 @@ export class ProjectForm extends Component {
             />
           )
         })}
+        <div className={this.props.classes.keyContainer}>
+          <Button color="primary" variant="contained" onClick={this.handleModalOpen}>
+            GENERATE KEY
+          </Button>
+        </div>
 
         <Button
           color="primary"
@@ -81,7 +97,7 @@ export class ProjectForm extends Component {
           type="submit"
           disabled={!dirty || isSubmitting}
         >
-          {this.props.type === 'create' ? 'ADD CONFIGURATION' : 'UPDATE'}
+          {this.props.type === 'create' ? 'ADD REPOSITORY' : 'UPDATE'}
         </Button>
       </form>
     </React.Fragment>
@@ -89,9 +105,10 @@ export class ProjectForm extends Component {
 
   render() {
     const { classes, open, courseInitData, type } = this.props
-
+    const { openModal } = this.state
     return (
       <div>
+        <KeyRepositoryModal open={openModal} handleClose={this.handleModalClose} />
         <Drawer
           open={open}
           anchor="right"
@@ -101,14 +118,14 @@ export class ProjectForm extends Component {
         >
           <Mutation
             mutation={
-              type === 'create' ? ADD_PROJECT_MUTATION : EDIT_PROJECT_MUTATION
+              type === 'create' ? ADD_REPOSITORY_MUTATION : EDIT_REPOSITORY_MUTATION
             }
-            refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
+            refetchQueries={[{ query: GET_REPOSITORIES_QUERY }]}
           >
-            {(projectMutation, { data }) => (
+            {(repoMutation, { data }) => (
               <Formik
                 initialValues={courseInitData}
-                onSubmit={values => this.handleSubmit(values, { projectMutation })}
+                onSubmit={values => this.handleSubmit(values, { repoMutation })}
                 validationSchema={validationSchema}
               >
                 {this.renderForm}
@@ -121,4 +138,4 @@ export class ProjectForm extends Component {
   }
 }
 
-export default withStyles(styles)(ProjectForm)
+export default withStyles(styles)(RepositoryForm)

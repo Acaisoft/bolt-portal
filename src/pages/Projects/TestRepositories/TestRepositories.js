@@ -6,9 +6,9 @@ import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
 
 import { AddButton, DataTable, DeleteModal } from '~components'
-import styles from './TestRepositories.styles'
-import RepositoryForm from './components/RepositoryForm'
+import { RepositoryForm } from '~containers'
 
+import styles from './TestRepositories.styles'
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
 

@@ -5,7 +5,9 @@ import { RepositoryForm } from './RepositoryForm'
 
 import { mocks } from '~utils/tests'
 
-jest.mock('../KeyRepositoryModal', () => 'KeyRepositoryModal')
+jest.mock('~components', () => ({
+  KeyRepositoryModal: 'KeyRepositoryModal',
+}))
 
 const initComponent = overrides => {
   const mockProps = {
