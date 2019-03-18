@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
+import 'react-toastify/dist/ReactToastify.min.css'
+import { ToastContainer } from 'react-toastify'
+
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core'
 
@@ -21,15 +24,18 @@ export class Layout extends Component {
     const { classes } = this.props
 
     return (
-      <Query query={AUTH_STATE_QUERY} fetchPolicy="cache-first">
-        {({ data: { isAuthorized } }) => {
-          return (
-            <div className={classes.root}>
-              {isAuthorized ? <Authorized /> : <Guest />}
-            </div>
-          )
-        }}
-      </Query>
+      <React.Fragment>
+        <ToastContainer autoClose={8000} />
+        <Query query={AUTH_STATE_QUERY} fetchPolicy="cache-first">
+          {({ data: { isAuthorized } }) => {
+            return (
+              <div className={classes.root}>
+                {isAuthorized ? <Authorized /> : <Guest />}
+              </div>
+            )
+          }}
+        </Query>
+      </React.Fragment>
     )
   }
 }
