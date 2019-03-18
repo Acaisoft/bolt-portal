@@ -2,20 +2,20 @@
 
 exports[`component: DeleteModal rendering should render as expected 1`] = `
 <div>
-  <WithStyles(Dialog)
+  <DialogMock
     aria-describedby="delete-dialog-description"
     aria-labelledby="delete-dialog-title"
     onClose={[MockFunction]}
     open={false}
   >
-    <WithStyles(DialogTitle)
+    <DialogTitleMock
       id="delete-dialog-title"
     >
       Delete 
       mockType
-    </WithStyles(DialogTitle)>
-    <WithStyles(DialogContent)>
-      <WithStyles(DialogContentText)
+    </DialogTitleMock>
+    <DialogContentMock>
+      <DialogContentTextMock
         id="delete-dialog-description"
       >
         Are you sure want delete 
@@ -23,24 +23,24 @@ exports[`component: DeleteModal rendering should render as expected 1`] = `
          
         mockType
         ?
-      </WithStyles(DialogContentText)>
-    </WithStyles(DialogContent)>
-    <WithStyles(DialogActions)>
-      <WithStyles(Button)
+      </DialogContentTextMock>
+    </DialogContentMock>
+    <DialogActionsMock>
+      <ButtonMock
         color="primary"
         onClick={[MockFunction]}
       >
         Cancel
-      </WithStyles(Button)>
-      <WithStyles(Button)
+      </ButtonMock>
+      <ButtonMock
         autoFocus={true}
         color="primary"
         onClick={[MockFunction]}
         variant="contained"
       >
         Delete
-      </WithStyles(Button)>
-    </WithStyles(DialogActions)>
-  </WithStyles(Dialog)>
+      </ButtonMock>
+    </DialogActionsMock>
+  </DialogMock>
 </div>
 `;

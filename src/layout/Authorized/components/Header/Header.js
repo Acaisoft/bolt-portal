@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Typography from '@material-ui/core/Typography'
 
-import { AppBar, Toolbar, withStyles } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, withStyles } from '@material-ui/core'
 
 import styles from './Header.styles'
 

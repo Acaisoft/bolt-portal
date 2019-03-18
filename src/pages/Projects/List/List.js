@@ -2,13 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query, ApolloConsumer } from 'react-apollo'
 
-import { withStyles } from '@material-ui/core/styles'
-
 import { Link } from 'react-router-dom'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
+import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 
 import AddButton from '~components/AddButton'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add'
+import { Fab } from '@material-ui/core'
+import { Add } from '@material-ui/icons'
 
 export class AddButton extends Component {
   handleClick = () => {
@@ -11,7 +11,7 @@ export class AddButton extends Component {
   render() {
     return (
       <Fab color="primary" aria-label="Add" onClick={this.handleClick}>
-        <AddIcon />
+        <Add />
       </Fab>
     )
   }

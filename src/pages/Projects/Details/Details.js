@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withStyles } from '@material-ui/core/styles'
-
 import { Link } from 'react-router-dom'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import { IconButton, Typography } from '@material-ui/core'
+import {
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
-import Grid from '@material-ui/core/Grid'
 
 import DataTable from '~components/DataTable'
 import styles from './Details.styles'

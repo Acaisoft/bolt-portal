@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout: Sidebar rendering should render properly 1`] = `
-<WithStyles(Drawer)
+<DrawerMock
   anchor="left"
   className="drawer"
   classes={
@@ -17,24 +17,24 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
     <div
       className="intro"
     >
-      <WithStyles(Avatar)>
+      <AvatarMock>
         A
-      </WithStyles(Avatar)>
-      <WithStyles(Typography)
+      </AvatarMock>
+      <TypographyMock
         className="introText"
         color="inherit"
         gutterBottom={true}
         variant="subtitle1"
       >
         HELLO, Admin!
-      </WithStyles(Typography)>
+      </TypographyMock>
     </div>
     <p>
       Another great day, for testing your apps!
     </p>
   </div>
-  <WithStyles(List)>
-    <WithStyles(ListItem)
+  <ListMock>
+    <ListItemMock
       button={true}
       className="listItem"
       color="inherit"
@@ -42,15 +42,15 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
       key="/dashboard"
       to="/dashboard"
     >
-      <WithStyles(ListItemIcon)
+      <ListItemIconMock
         className="itemIcon"
       >
-        <pure(DashboardIcon) />
-      </WithStyles(ListItemIcon)>
-      <WithStyles(ListItemText)
+        <DashboardMock />
+      </ListItemIconMock>
+      <ListItemTextMock
         disableTypography={true}
         primary={
-          <WithStyles(Typography)
+          <TypographyMock
             style={
               Object {
                 "color": "#E8E8E8",
@@ -62,11 +62,11 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
             type="body2"
           >
             Dashboard
-          </WithStyles(Typography)>
+          </TypographyMock>
         }
       />
-    </WithStyles(ListItem)>
-    <WithStyles(ListItem)
+    </ListItemMock>
+    <ListItemMock
       button={true}
       className="listItem"
       color="inherit"
@@ -74,15 +74,15 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
       key="/projects"
       to="/projects"
     >
-      <WithStyles(ListItemIcon)
+      <ListItemIconMock
         className="itemIcon"
       >
-        <pure(ExtensionIcon) />
-      </WithStyles(ListItemIcon)>
-      <WithStyles(ListItemText)
+        <ExtensionMock />
+      </ListItemIconMock>
+      <ListItemTextMock
         disableTypography={true}
         primary={
-          <WithStyles(Typography)
+          <TypographyMock
             style={
               Object {
                 "color": "#E8E8E8",
@@ -94,11 +94,11 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
             type="body2"
           >
             Projects
-          </WithStyles(Typography)>
+          </TypographyMock>
         }
       />
-    </WithStyles(ListItem)>
-    <WithStyles(ListItem)
+    </ListItemMock>
+    <ListItemMock
       button={true}
       className="listItem"
       color="inherit"
@@ -106,15 +106,15 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
       key="/tests-results"
       to="/tests-results"
     >
-      <WithStyles(ListItemIcon)
+      <ListItemIconMock
         className="itemIcon"
       >
-        <pure(ShowChartIcon) />
-      </WithStyles(ListItemIcon)>
-      <WithStyles(ListItemText)
+        <ShowChartMock />
+      </ListItemIconMock>
+      <ListItemTextMock
         disableTypography={true}
         primary={
-          <WithStyles(Typography)
+          <TypographyMock
             style={
               Object {
                 "color": "#E8E8E8",
@@ -126,26 +126,26 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
             type="body2"
           >
             Tests Results
-          </WithStyles(Typography)>
+          </TypographyMock>
         }
       />
-    </WithStyles(ListItem)>
-  </WithStyles(List)>
-  <WithStyles(List)>
-    <WithStyles(ListItem)
+    </ListItemMock>
+  </ListMock>
+  <ListMock>
+    <ListItemMock
       button={true}
       className="listItem"
       color="inherit"
     >
-      <WithStyles(ListItemIcon)
+      <ListItemIconMock
         className="itemIcon"
       >
-        <pure(ExitToAppIcon) />
-      </WithStyles(ListItemIcon)>
-      <WithStyles(ListItemText)
+        <ExitToAppMock />
+      </ListItemIconMock>
+      <ListItemTextMock
         disableTypography={true}
         primary={
-          <WithStyles(Typography)
+          <TypographyMock
             style={
               Object {
                 "color": "#E8E8E8",
@@ -157,10 +157,10 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
             type="body2"
           >
             log out
-          </WithStyles(Typography)>
+          </TypographyMock>
         }
       />
-    </WithStyles(ListItem)>
-  </WithStyles(List)>
-</WithStyles(Drawer)>
+    </ListItemMock>
+  </ListMock>
+</DrawerMock>
 `;

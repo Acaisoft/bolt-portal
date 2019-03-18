@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withStyles } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { CssBaseline, withStyles } from '@material-ui/core'
 
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'

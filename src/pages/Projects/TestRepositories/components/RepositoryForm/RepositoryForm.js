@@ -2,14 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
 import { Mutation } from 'react-apollo'
+
 import { toast } from 'react-toastify'
-
-import { withStyles } from '@material-ui/core/styles'
-
-import Drawer from '@material-ui/core/Drawer'
-import Button from '@material-ui/core/Button'
-import AppBar from '@material-ui/core/AppBar'
-import Typography from '@material-ui/core/Typography'
+import { AppBar, Button, Drawer, Typography, withStyles } from '@material-ui/core'
 
 import FormField from '~components/FormField'
 import { formFields, validationSchema } from './formSchema'

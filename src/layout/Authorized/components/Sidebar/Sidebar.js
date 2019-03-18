@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
+
 import { Link, withRouter } from 'react-router-dom'
-import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import Avatar from '@material-ui/core/Avatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import ShowChartIcon from '@material-ui/icons/ShowChart'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import ExtensionIcon from '@material-ui/icons/Extension'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import Typography from '@material-ui/core/Typography'
+import {
+  Avatar,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
+import { Dashboard, Extension, ExitToApp, ShowChart } from '@material-ui/icons'
 
 import styles from './Sidebar.styles'
 
@@ -22,9 +22,9 @@ export class Sidebar extends Component {
   }
 
   items = [
-    { label: 'Dashboard', linkTo: '/dashboard', icon: <DashboardIcon /> },
-    { label: 'Projects', linkTo: '/projects', icon: <ExtensionIcon /> },
-    { label: 'Tests Results', linkTo: '/tests-results', icon: <ShowChartIcon /> },
+    { label: 'Dashboard', linkTo: '/dashboard', icon: <Dashboard /> },
+    { label: 'Projects', linkTo: '/projects', icon: <Extension /> },
+    { label: 'Tests Results', linkTo: '/tests-results', icon: <ShowChart /> },
   ]
 
   render() {
@@ -86,7 +86,7 @@ export class Sidebar extends Component {
         <List>
           <ListItem button color="inherit" className={classes.listItem}>
             <ListItemIcon className={classes.itemIcon}>
-              <ExitToAppIcon />
+              <ExitToApp />
             </ListItemIcon>
             <ListItemText
               disableTypography
