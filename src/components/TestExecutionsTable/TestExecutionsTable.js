@@ -17,7 +17,7 @@ export function TestExecutionsTable({
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
       <DataTable.Column
         key="runDate"
-        render={test => moment(test.start).format('YYYY-MM-DD')}
+        render={test => moment(test.start).format('YYYY-MM-DD HH:mm')}
         title="Run Date"
       />
       {!projectId && (
