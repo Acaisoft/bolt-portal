@@ -92,7 +92,7 @@ export class List extends Component {
                         <Card
                           className={classes.card}
                           component={Link}
-                          to={`${match.url}/${project.name.split(' ').join('-')}`}
+                          to={`${match.url}/${project.id}`}
                           aria-label="Project Deitals"
                           onClick={() => this.handleClick(client, project.id)}
                         >
