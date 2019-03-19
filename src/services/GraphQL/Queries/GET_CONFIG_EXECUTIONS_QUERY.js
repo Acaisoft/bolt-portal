@@ -16,6 +16,12 @@ export default gql`
     ) {
       ...executionForList
     }
+
+    execution_aggregate(where: { configuration_id: { _eq: $configurationId } }) {
+      aggregate {
+        count
+      }
+    }
   }
 
   ${EXECUTION_FOR_LIST_FRAGMENT}

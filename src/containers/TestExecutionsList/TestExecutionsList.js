@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
 import { TestExecutionsTable } from '~components'
+import { Pagination } from '~containers'
 import {
   GET_CONFIG_EXECUTIONS_QUERY,
   GET_EXECUTIONS_QUERY,
@@ -42,7 +43,7 @@ export class TestExecutionsList extends Component {
 
     return (
       <Query query={query} variables={variables}>
-        {({ data, loading, error }) => (
+        {({ data, loading, error, refetch }) => (
           <React.Fragment>
             <TestExecutionsTable
               executions={data && data.execution}
@@ -50,7 +51,17 @@ export class TestExecutionsList extends Component {
               projectId={projectId}
               getDetailsUrl={execution => `/test-runs/${execution.id}`}
             />
-            {pagination && <div>Pagination placeholder</div>}
+            {pagination && data.execution_aggregate && (
+              <Pagination
+                onChange={pagination => {
+                  refetch({
+                    limit: pagination.limit,
+                    offset: pagination.offset,
+                  })
+                }}
+                totalCount={data.execution_aggregate.aggregate.count}
+              />
+            )}
           </React.Fragment>
         )}
       </Query>

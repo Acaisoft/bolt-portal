@@ -6,6 +6,12 @@ export default gql`
     execution(limit: $limit, offset: $offset, order_by: $order_by) {
       ...executionForList
     }
+
+    execution_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 
   ${EXECUTION_FOR_LIST_FRAGMENT}
