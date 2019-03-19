@@ -9,7 +9,7 @@ export default gql`
     $order_by: [execution_order_by!]
   ) {
     execution(
-      where: { configuration_id: { _eq: $projectId } }
+      where: { configuration_id: { _eq: $configurationId } }
       limit: $limit
       offset: $offset
       order_by: $order_by

@@ -6,7 +6,7 @@ import { Mutation, Query } from 'react-apollo'
 import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
-import { DataTable, DeleteModal } from '~components'
+import { DataTable, DeleteModal, LinkIconButton } from '~components'
 import styles from './TestConfigurations.styles'
 
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
@@ -75,26 +75,28 @@ export class TestConfigurations extends Component {
                 <DataTable
                   data={configurations}
                   isLoading={loading}
-                  rowKey={test => test.id}
+                  rowKey={configuration => configuration.id}
                 >
                   <DataTable.Column
                     key="name"
-                    render={test => test.name}
+                    render={configuration => configuration.name}
                     title="Name"
                   />
                   <DataTable.Column
                     key="source"
-                    render={test => test.repository.url}
+                    render={configuration => configuration.repository.url}
                     title="Source"
                   />
                   <DataTable.Column
                     key="lastRun"
-                    render={test => (
+                    render={configuration => (
                       <div className={classes.dateContainer}>
-                        {test.executions[0] && (
+                        {configuration.executions[0] && (
                           <React.Fragment>
                             <span>
-                              {moment(test.executions[0].start).format('YYYY-MM-DD')}
+                              {moment(configuration.executions[0].start).format(
+                                'YYYY-MM-DD'
+                              )}
                             </span>
                             <IconButton
                               aria-label="Delete repository"
@@ -111,7 +113,7 @@ export class TestConfigurations extends Component {
                   />
                   <DataTable.Column
                     key="actions"
-                    render={test => (
+                    render={configuration => (
                       <div className={classes.iconsContainer}>
                         <IconButton
                           aria-label="Start execution"
@@ -120,16 +122,22 @@ export class TestConfigurations extends Component {
                         >
                           <PlayArrow />
                         </IconButton>
-                        <IconButton
+                        <LinkIconButton
                           aria-label="Edit configuration"
                           className={classes.icon}
+                          to={`/test-configurations/${configuration.id}`}
                         >
                           <Edit />
-                        </IconButton>
+                        </LinkIconButton>
                         <IconButton
                           aria-label="Delete configuration"
                           className={classes.icon}
-                          onClick={() => this.handleModalOpen(test.id, test.name)}
+                          onClick={() =>
+                            this.handleModalOpen(
+                              configuration.id,
+                              configuration.name
+                            )
+                          }
                         >
                           <Delete />
                         </IconButton>
