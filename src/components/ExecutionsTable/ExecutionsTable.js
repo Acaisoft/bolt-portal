@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 import { Link } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
@@ -9,7 +10,11 @@ import { DataTable } from '~components'
 export function ExecutionsTable({ executions, loading, getDetailsRoute }) {
   return (
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
-      <DataTable.Column key="runDate" render={test => test.start} title="Run Date" />
+      <DataTable.Column
+        key="runDate"
+        render={test => moment(test.start).format('YYYY-MM-DD')}
+        title="Run Date"
+      />
       <DataTable.Column key="status" render={test => test.status} title="Status" />
       <DataTable.Column
         key="type"
