@@ -13,11 +13,18 @@ import {
 export class TestExecutionsList extends Component {
   static propTypes = {
     configurationId: PropTypes.string,
+    limit: PropTypes.number,
+    pagination: PropTypes.bool,
     projectId: PropTypes.string,
   }
 
+  static defaultProps = {
+    limit: 10,
+    pagination: true,
+  }
+
   render() {
-    const { configurationId, projectId } = this.props
+    const { configurationId, limit, pagination, projectId } = this.props
 
     const query = configurationId
       ? GET_CONFIG_EXECUTIONS_QUERY
@@ -25,24 +32,26 @@ export class TestExecutionsList extends Component {
       ? GET_PROJECT_EXECUTIONS_QUERY
       : GET_EXECUTIONS_QUERY
 
+    const variables = {
+      configurationId,
+      projectId,
+      limit,
+      offset: 0,
+      order_by: [{ start: 'desc' }],
+    }
+
     return (
-      <Query
-        query={query}
-        variables={{
-          configurationId,
-          projectId,
-          limit: 10,
-          offset: 0,
-          order_by: [{ start: 'desc' }],
-        }}
-      >
+      <Query query={query} variables={variables}>
         {({ data, loading, error }) => (
-          <TestExecutionsTable
-            executions={data && data.execution}
-            loading={loading}
-            projectId={projectId}
-            getDetailsUrl={execution => `/test-runs/${execution.id}`}
-          />
+          <React.Fragment>
+            <TestExecutionsTable
+              executions={data && data.execution}
+              loading={loading}
+              projectId={projectId}
+              getDetailsUrl={execution => `/test-runs/${execution.id}`}
+            />
+            {pagination && <div>Pagination placeholder</div>}
+          </React.Fragment>
         )}
       </Query>
     )

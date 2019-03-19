@@ -2,20 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Link } from 'react-router-dom'
-import {
-  Card,
-  CardContent,
-  Grid,
-  IconButton,
-  Typography,
-  withStyles,
-} from '@material-ui/core'
-import { Pageview } from '@material-ui/icons'
+import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 
-import { DataTable } from '~components'
+import { TestExecutionsList } from '~containers'
 import styles from './Details.styles'
-
-import faketestsData from '../testExecutionsData.mock'
 
 export class Details extends Component {
   static propTypes = {
@@ -42,7 +32,7 @@ export class Details extends Component {
     {
       id: 3,
       label: 'TESTS EXECUTIONS',
-      linkTo: `${this.props.match.url}/test-execs`,
+      linkTo: `${this.props.match.url}/test-runs`,
       description: 'See all tests executions results.',
     },
     {
@@ -54,8 +44,7 @@ export class Details extends Component {
   ]
 
   render() {
-    const { classes, match } = this.props
-    const latestData = faketestsData.slice(0, 5)
+    const { classes, match, projectId } = this.props
 
     return (
       <div className={classes.root}>
@@ -85,67 +74,10 @@ export class Details extends Component {
           Last Tests Executions
         </Typography>
         <div className={classes.tableContainer}>
-          <DataTable
-            data={latestData}
-            // isLoading={loading} TODO: Add loading with graphQL
-            rowKey={test => test.id}
-          >
-            <DataTable.Column
-              key="runDate"
-              render={test => test.runDate}
-              title="Run Date"
-            />
-            <DataTable.Column
-              key="status"
-              render={test => test.status}
-              title="Status"
-            />
-            <DataTable.Column key="type" render={test => test.type} title="Type" />
-            <DataTable.Column
-              key="config"
-              render={test => test.config}
-              title="Configuration"
-            />
-            <DataTable.Column
-              key="total"
-              render={test => test.total}
-              title="Total"
-            />
-            <DataTable.Column
-              key="passed"
-              render={test => test.passed}
-              title="passed"
-            />
-            <DataTable.Column
-              key="fails"
-              render={test => test.fails}
-              title="Fails"
-            />
-            <DataTable.Column
-              key="skipped"
-              render={test => test.skipped}
-              title="Skipped"
-            />
-            <DataTable.Column
-              key="actions"
-              render={profile => (
-                <div>
-                  <IconButton
-                    aria-label="Show details"
-                    component={Link}
-                    disabled
-                    to={`/profiles/details/${profile.id}`}
-                  >
-                    <Pageview />
-                  </IconButton>
-                </div>
-              )}
-              title="Actions"
-            />
-          </DataTable>
+          <TestExecutionsList projectId={projectId} pagination={false} limit={5} />
         </div>
         <div className={classes.linkContainer}>
-          <Link to={`${match.url}/test-execs`} className={classes.link}>
+          <Link to={`${match.url}/test-runs`} className={classes.link}>
             See All
           </Link>
         </div>

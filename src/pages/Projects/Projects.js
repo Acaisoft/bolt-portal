@@ -38,7 +38,7 @@ export function ProjectSubpages({ match, rootUrl }) {
         render={props => <DetailsPage {...props} projectId={projectId} />}
       />
       <Route
-        path={`${match.url}/test-execs`}
+        path={`${match.url}/test-runs`}
         render={props => <TestExecutionsPage {...props} projectId={projectId} />}
       />
       <Route
