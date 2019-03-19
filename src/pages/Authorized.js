@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 
 import DashboardPage from './Dashboard'
 import ProjectsPage from './Projects'
+import TestExecutionsPage from './TestExecutions'
 
 export class Authorized extends Component {
   render() {
@@ -11,6 +12,7 @@ export class Authorized extends Component {
       <Switch>
         <Route path="/dashboard" exact component={DashboardPage} />
         <Route path="/projects" component={ProjectsPage} />
+        <Route path="/test-executions" component={TestExecutionsPage} />
         <Redirect from="*" to="/dashboard" />
       </Switch>
     )

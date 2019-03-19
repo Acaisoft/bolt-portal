@@ -103,8 +103,8 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
       className="listItem"
       color="inherit"
       component="LinkMock"
-      key="/tests-results"
-      to="/tests-results"
+      key="/test-executions"
+      to="/test-executions"
     >
       <ListItemIconMock
         className="itemIcon"

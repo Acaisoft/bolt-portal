@@ -24,7 +24,7 @@ export class Sidebar extends Component {
   items = [
     { label: 'Dashboard', linkTo: '/dashboard', icon: <Dashboard /> },
     { label: 'Projects', linkTo: '/projects', icon: <Extension /> },
-    { label: 'Tests Results', linkTo: '/tests-results', icon: <ShowChart /> },
+    { label: 'Tests Results', linkTo: '/test-executions', icon: <ShowChart /> },
   ]
 
   render() {

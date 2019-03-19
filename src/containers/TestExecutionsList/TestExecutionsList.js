@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
 import { TestExecutionsTable } from '~components'
-import { GET_PROJECT_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
+import {
+  GET_EXECUTIONS_QUERY,
+  GET_PROJECT_EXECUTIONS_QUERY,
+} from '~services/GraphQL/Queries'
 
 export class TestExecutionsList extends Component {
   static propTypes = {
@@ -17,7 +20,7 @@ export class TestExecutionsList extends Component {
 
     return (
       <Query
-        query={GET_PROJECT_EXECUTIONS_QUERY}
+        query={projectId ? GET_PROJECT_EXECUTIONS_QUERY : GET_EXECUTIONS_QUERY}
         variables={{
           projectId,
           limit: 10,

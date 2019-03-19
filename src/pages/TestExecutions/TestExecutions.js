@@ -9,23 +9,21 @@ import styles from './TestExecutions.styles'
 export class TestExecutions extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     match: PropTypes.shape({
       url: PropTypes.string.isRequired,
     }).isRequired,
   }
 
   render() {
-    const { classes, projectId, match } = this.props
+    const { classes, match } = this.props
 
     return (
       <div className={classes.root}>
         <Typography variant="body2">
-          Here you see results of all tests performed in the project
+          Here you see results of all tests performed in all of your projects
         </Typography>
         <div className={classes.tableContainer}>
           <TestExecutionsList
-            projectId={projectId}
             getDetailsUrl={execution => `${match.url}/${execution.id}`}
           />
         </div>
