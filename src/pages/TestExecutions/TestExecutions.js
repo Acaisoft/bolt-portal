@@ -1,35 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Typography, withStyles } from '@material-ui/core'
-import { TestExecutionsList } from '~containers'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
-import styles from './TestExecutions.styles'
+import ListPage from './List'
+// import DetailsPage from './Details'
 
-export class TestExecutions extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    match: PropTypes.shape({
-      url: PropTypes.string.isRequired,
-    }).isRequired,
-  }
-
-  render() {
-    const { classes, match } = this.props
-
-    return (
-      <div className={classes.root}>
-        <Typography variant="body2">
-          Here you see results of all tests performed in all of your projects
-        </Typography>
-        <div className={classes.tableContainer}>
-          <TestExecutionsList
-            getDetailsUrl={execution => `${match.url}/${execution.id}`}
-          />
-        </div>
-      </div>
-    )
-  }
+export function TestExecutions({ match }) {
+  return (
+    <Switch>
+      <Route path={`${match.url}`} exact component={ListPage} />
+      {/* <Route path={`${match.url}/:executionId`} exact component={DetailsPage} /> */}
+      <Redirect from="*" to={match.url} />
+    </Switch>
+  )
+}
+TestExecutions.propTypes = {
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
-export default withStyles(styles)(TestExecutions)
+export default TestExecutions

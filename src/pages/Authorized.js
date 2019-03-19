@@ -12,7 +12,7 @@ export class Authorized extends Component {
       <Switch>
         <Route path="/dashboard" exact component={DashboardPage} />
         <Route path="/projects" component={ProjectsPage} />
-        <Route path="/test-executions" component={TestExecutionsPage} />
+        <Route path="/test-runs" component={TestExecutionsPage} />
         <Redirect from="*" to="/dashboard" />
       </Switch>
     )
