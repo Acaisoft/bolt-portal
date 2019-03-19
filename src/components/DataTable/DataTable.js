@@ -20,8 +20,8 @@ Column.propTypes = {
 Column.displayName = 'Column'
 
 export const haveColumnsChanged = (prevColumnNodes, nextColumnNodes) => {
-  const prevKeys = React.Children.map(prevColumnNodes, child => child.key)
-  const nextKeys = React.Children.map(nextColumnNodes, child => child.key)
+  const prevKeys = React.Children.map(prevColumnNodes, child => child && child.key)
+  const nextKeys = React.Children.map(nextColumnNodes, child => child && child.key)
 
   return !areArraysEqual(prevKeys, nextKeys)
 }
