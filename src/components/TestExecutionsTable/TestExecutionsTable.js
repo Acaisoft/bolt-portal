@@ -7,7 +7,12 @@ import { Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-export function ExecutionsTable({ executions, loading, getDetailsRoute }) {
+export function TestExecutionsTable({
+  executions,
+  getDetailsUrl,
+  loading,
+  projectId,
+}) {
   return (
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
       <DataTable.Column
@@ -15,17 +20,24 @@ export function ExecutionsTable({ executions, loading, getDetailsRoute }) {
         render={test => moment(test.start).format('YYYY-MM-DD')}
         title="Run Date"
       />
-      <DataTable.Column key="status" render={test => test.status} title="Status" />
+      {!projectId && (
+        <DataTable.Column
+          key="project"
+          render={test => test.configuration.project.name}
+          title="Project"
+        />
+      )}
+      <DataTable.Column
+        key="scenario"
+        render={test => test.configuration.name}
+        title="Scenario"
+      />
       <DataTable.Column
         key="type"
         render={test => test.configuration.configuration_type.name}
         title="Type"
       />
-      <DataTable.Column
-        key="config"
-        render={test => test.configuration.name}
-        title="Configuration"
-      />
+      <DataTable.Column key="status" render={test => test.status} title="Status" />
       <DataTable.Column
         key="total"
         render={test =>
@@ -56,7 +68,7 @@ export function ExecutionsTable({ executions, loading, getDetailsRoute }) {
             <IconButton
               aria-label="Show details"
               component={Link}
-              to={getDetailsRoute(execution)}
+              to={getDetailsUrl(execution)}
             >
               <Pageview />
             </IconButton>
@@ -68,4 +80,4 @@ export function ExecutionsTable({ executions, loading, getDetailsRoute }) {
   )
 }
 
-export default ExecutionsTable
+export default TestExecutionsTable
