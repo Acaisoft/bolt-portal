@@ -41,9 +41,8 @@ export function TestExecutionsTable({
       <DataTable.Column
         key="total"
         render={test =>
-          test.result_aggregate_aggregate.aggregate.sum.number_of_fails ||
-          0 + test.result_aggregate_aggregate.aggregate.sum.number_of_successes ||
-          0
+          (test.result_aggregate_aggregate.aggregate.sum.number_of_fails || 0) +
+          (test.result_aggregate_aggregate.aggregate.sum.number_of_successes || 0)
         }
         title="Total"
       />
