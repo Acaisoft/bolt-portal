@@ -6,7 +6,7 @@ import { IconButton, Typography, withStyles } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
 
 import { AddButton, DataTable, DeleteModal } from '~components'
-import { RepositoryForm } from '~containers'
+import { forms } from '~containers'
 
 import styles from './TestRepositories.styles'
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
@@ -114,7 +114,7 @@ export class TestRepositories extends Component {
             />
           )}
         </Mutation>
-        <RepositoryForm
+        <forms.Repository
           open={open}
           type={type}
           courseInitData={updateFormValues}

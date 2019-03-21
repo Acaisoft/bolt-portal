@@ -7,7 +7,7 @@ import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/co
 import { Edit } from '@material-ui/icons'
 
 import { AddButton } from '~components'
-import { ProjectForm } from '~containers'
+import { forms } from '~containers'
 
 import styles from './List.styles'
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
@@ -75,7 +75,7 @@ export class List extends Component {
 
           return (
             <div className={classes.root}>
-              <ProjectForm
+              <forms.Project
                 open={open}
                 type={type}
                 courseInitData={updateFormValues}

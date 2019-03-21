@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { RepositoryForm } from './RepositoryForm'
+import { Repository } from './Repository'
 
 import { mocks } from '~utils/tests'
 
@@ -15,13 +15,13 @@ const initComponent = overrides => {
     close: jest.fn(),
   }
   const wrapper = shallow(
-    <RepositoryForm {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
+    <Repository {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
   )
   const instance = wrapper.instance()
   return { instance, mockProps, wrapper }
 }
 
-describe('component: RepositoryForm', () => {
+describe('component: Repository', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
       const { wrapper } = initComponent()

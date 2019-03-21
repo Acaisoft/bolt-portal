@@ -4,7 +4,7 @@ import { shallow } from 'enzyme'
 import { TestRepositories } from './TestRepositories'
 import { mocks } from '~utils/tests'
 
-jest.mock('~containers', () => ({ RepositoryForm: 'RepositoryFormMock' }))
+jest.mock('~containers', () => ({ forms: { Repository: 'RepositoryMock' } }))
 jest.mock('~components', () => ({
   AddButton: 'AddButtonMock',
   DataTable: 'DataTableMock',
