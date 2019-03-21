@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
-import { TestExecutionsList } from '~containers'
+import { lists } from '~containers'
 
 import styles from './List.styles'
 
@@ -20,7 +20,7 @@ export class List extends Component {
           Here you see results of all tests performed in all of your projects
         </Typography>
         <div className={classes.tableContainer}>
-          <TestExecutionsList />
+          <lists.TestExecutions />
         </div>
       </div>
     )

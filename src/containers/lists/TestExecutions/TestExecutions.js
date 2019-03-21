@@ -11,7 +11,7 @@ import {
   GET_PROJECT_EXECUTIONS_QUERY,
 } from '~services/GraphQL/Queries'
 
-export class TestExecutionsList extends Component {
+export class TestExecutions extends Component {
   static propTypes = {
     configurationId: PropTypes.string,
     limit: PropTypes.number,
@@ -69,4 +69,4 @@ export class TestExecutionsList extends Component {
   }
 }
 
-export default TestExecutionsList
+export default TestExecutions

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 
-import { TestExecutionsList } from '~containers'
+import { lists } from '~containers'
 import styles from './Details.styles'
 
 export class Details extends Component {
@@ -74,7 +74,7 @@ export class Details extends Component {
           Last Tests Executions
         </Typography>
         <div className={classes.tableContainer}>
-          <TestExecutionsList projectId={projectId} pagination={false} limit={5} />
+          <lists.TestExecutions projectId={projectId} pagination={false} limit={5} />
         </div>
         <div className={classes.linkContainer}>
           <Link to={`${match.url}/test-runs`} className={classes.link}>
