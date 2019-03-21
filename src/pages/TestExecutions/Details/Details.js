@@ -7,10 +7,7 @@ import { Typography, withStyles } from '@material-ui/core'
 import { GET_EXECUTION_RESULTS_PER_TICK_QUERY } from '~services/GraphQL/Queries'
 
 import styles from './Details.styles'
-import {
-  ChartTestExecutionRequests,
-  ChartTestExecutionResponseTime,
-} from '~containers'
+import { charts } from '~containers'
 
 export class Details extends Component {
   static propTypes = {
@@ -44,13 +41,13 @@ export class Details extends Component {
             return (
               <React.Fragment>
                 <Typography variant="h6">REQUESTS</Typography>
-                <ChartTestExecutionRequests
+                <charts.TestExecutionRequests
                   execution={data.execution_by_pk}
                   results={resultsWithDates}
                   syncId="sync-chart"
                 />
                 <Typography variant="h6">REQUESTS RESPONSE TIME</Typography>
-                <ChartTestExecutionResponseTime
+                <charts.TestExecutionResponseTime
                   execution={data.execution_by_pk}
                   results={resultsWithDates}
                   syncId="sync-chart"

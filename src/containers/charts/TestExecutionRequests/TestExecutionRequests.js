@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
@@ -13,7 +13,7 @@ import {
 
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
 
-export class ChartTestExecutionRequests extends Component {
+export class TestExecutionRequests extends PureComponent {
   static propTypes = {
     execution: PropTypes.object,
     results: PropTypes.array,
@@ -72,4 +72,4 @@ export class ChartTestExecutionRequests extends Component {
   }
 }
 
-export default ChartTestExecutionRequests
+export default TestExecutionRequests

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
@@ -11,9 +11,8 @@ import {
 } from 'recharts'
 
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
-import { formatDuration } from '~utils/datetime'
 
-export class ChartTestExecutionResponseTime extends Component {
+export class TestExecutionResponseTime extends PureComponent {
   static propTypes = {
     execution: PropTypes.object,
     results: PropTypes.array,
@@ -21,7 +20,6 @@ export class ChartTestExecutionResponseTime extends Component {
   }
 
   formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
-  formatResponseTime = responseTime => formatDuration(responseTime, 'mm:ss.SSS')
 
   render() {
     const { execution, results, syncId } = this.props
@@ -48,7 +46,7 @@ export class ChartTestExecutionResponseTime extends Component {
             type="number"
             label={{ value: 'Time', position: 'bottom' }}
           />
-          <YAxis tickFormatter={this.formatResponseTime} />
+          <YAxis unit="ms" />
 
           <Tooltip
             isAnimationActive={false}
@@ -68,4 +66,4 @@ export class ChartTestExecutionResponseTime extends Component {
   }
 }
 
-export default ChartTestExecutionResponseTime
+export default TestExecutionResponseTime
