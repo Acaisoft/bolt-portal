@@ -31,11 +31,4 @@ export default ({ palette, spacing }) => ({
   uploadButton: {
     marginLeft: spacing.unit * 1,
   },
-  drawer: {
-    width: 475,
-    height: 'calc(100% - 30px)',
-    top: 15,
-    right: 15,
-    padding: '30px 15px',
-  },
 })

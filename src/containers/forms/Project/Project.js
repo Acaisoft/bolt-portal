@@ -4,7 +4,7 @@ import { Formik } from 'formik'
 import { Mutation } from 'react-apollo'
 import { toast } from 'react-toastify'
 
-import { AppBar, Button, Drawer, Typography, withStyles } from '@material-ui/core'
+import { AppBar, Button, Typography, withStyles } from '@material-ui/core'
 import { FormField } from '~components'
 
 import { formFields, validationSchema } from './formSchema'
@@ -19,103 +19,95 @@ import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 export class Project extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    open: PropTypes.bool.isRequired,
-    close: PropTypes.func.isRequired,
-    courseInitData: PropTypes.object,
+    initialValues: PropTypes.object,
+    onCancel: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
   }
 
   handleSubmit = (values, { projectMutation }) => {
-    const { name, description, image } = values
+    const { name, description, image, id } = values
     try {
-      if (this.props.type === 'create') {
-        projectMutation({ variables: { name, description, img: image } })
-      } else {
-        projectMutation({
-          variables: { name, description, img: image, id: values.id },
-        })
-      }
+      projectMutation({
+        variables: {
+          id: this.props.type === 'create' ? undefined : id,
+          name,
+          description,
+          img: image,
+        },
+      })
     } catch (err) {
       toast.error('An error has occured. Project was not created.')
     }
-    this.props.close(null, false)
+    this.props.onSubmit(values)
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, dirty }) => (
-    <React.Fragment>
-      <AppBar className={this.props.classes.appBar} position="static">
-        <Typography variant="h3">
-          {this.props.type === 'create' ? 'NEW PROJECT' : 'UPDATE PROJECT'}
-        </Typography>
-        <Typography variant="body1">
-          {this.props.type === 'create'
-            ? 'Add new project to your library'
-            : `Update ${this.props.courseInitData.name} project data.`}
-        </Typography>
-      </AppBar>
-      <form onSubmit={handleSubmit}>
-        {Object.entries(formFields).map(([name, options]) => {
-          return (
-            <FormField
-              key={name}
-              name={name}
-              label={options.label}
-              margin="normal"
-              fullWidth
-              {...options.input}
-            />
-          )
-        })}
+  renderForm = ({ handleSubmit, isSubmitting, dirty }) => {
+    const createMode = this.props.type === 'create'
+    return (
+      <React.Fragment>
+        <AppBar className={this.props.classes.appBar} position="static">
+          <Typography variant="h3">
+            {createMode ? 'NEW PROJECT' : 'UPDATE PROJECT'}
+          </Typography>
+          <Typography variant="body1">
+            {createMode
+              ? 'Add new project to your library'
+              : `Update ${this.props.initialValues.name} project data.`}
+          </Typography>
+        </AppBar>
+        <form onSubmit={handleSubmit}>
+          {Object.entries(formFields).map(([name, options]) => {
+            return (
+              <FormField
+                key={name}
+                name={name}
+                label={options.label}
+                margin="normal"
+                fullWidth
+                {...options.input}
+              />
+            )
+          })}
 
-        <Button
-          color="primary"
-          variant="text"
-          disabled={isSubmitting}
-          onClick={() => this.props.close(null, false)}
-        >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          disabled={!dirty || isSubmitting}
-        >
-          {this.props.type === 'create' ? 'ADD CONFIGURATION' : 'UPDATE'}
-        </Button>
-      </form>
-    </React.Fragment>
-  )
+          <Button
+            color="primary"
+            variant="text"
+            disabled={isSubmitting}
+            onClick={() => this.props.onCancel()}
+          >
+            Cancel
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            disabled={!dirty || isSubmitting}
+          >
+            {createMode ? 'ADD CONFIGURATION' : 'UPDATE'}
+          </Button>
+        </form>
+      </React.Fragment>
+    )
+  }
 
   render() {
-    const { classes, open, courseInitData, type } = this.props
+    const { initialValues, type } = this.props
 
     return (
-      <div>
-        <Drawer
-          open={open}
-          anchor="right"
-          classes={{
-            paper: classes.drawer,
-          }}
-        >
-          <Mutation
-            mutation={
-              type === 'create' ? ADD_PROJECT_MUTATION : EDIT_PROJECT_MUTATION
-            }
-            refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
+      <Mutation
+        mutation={type === 'create' ? ADD_PROJECT_MUTATION : EDIT_PROJECT_MUTATION}
+        refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
+      >
+        {(projectMutation, { data }) => (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={values => this.handleSubmit(values, { projectMutation })}
+            validationSchema={validationSchema}
           >
-            {(projectMutation, { data }) => (
-              <Formik
-                initialValues={courseInitData}
-                onSubmit={values => this.handleSubmit(values, { projectMutation })}
-                validationSchema={validationSchema}
-              >
-                {this.renderForm}
-              </Formik>
-            )}
-          </Mutation>
-        </Drawer>
-      </div>
+            {this.renderForm}
+          </Formik>
+        )}
+      </Mutation>
     )
   }
 }

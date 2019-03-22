@@ -7,8 +7,8 @@ import { mocks } from '~utils/tests'
 
 const initProject = overrides => {
   const mockProps = {
-    open: false,
-    close: jest.fn(),
+    onCancel: jest.fn(),
+    onSubmit: jest.fn(),
   }
   const wrapper = shallow(
     <Project {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
@@ -22,17 +22,6 @@ describe('component Projects/List - CreateProject', () => {
     it('should render without crashing', () => {
       const { wrapper } = initProject()
       expect(wrapper).toBeTruthy()
-    })
-  })
-  describe('events', () => {
-    describe('handleSubmit', () => {
-      it('should close drawer', () => {
-        const { instance, mockProps } = initProject()
-        const values = {}
-        const addProjectMock = jest.fn()
-        instance.handleSubmit(values, { addProjectMock })
-        expect(mockProps.close).toHaveBeenCalled()
-      })
     })
   })
 })

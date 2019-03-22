@@ -205,6 +205,48 @@ exports[`page: TestConfigurations rendering should render as expected 1`] = `
                             "kind": "ObjectValue",
                           },
                         },
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "limit",
+                          },
+                          "value": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "limit",
+                            },
+                          },
+                        },
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "offset",
+                          },
+                          "value": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "offset",
+                            },
+                          },
+                        },
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "order_by",
+                          },
+                          "value": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "order_by",
+                            },
+                          },
+                        },
                       ],
                       "directives": Array [],
                       "kind": "Field",
@@ -314,6 +356,86 @@ exports[`page: TestConfigurations rendering should render as expected 1`] = `
                         ],
                       },
                     },
+                    Object {
+                      "alias": undefined,
+                      "arguments": Array [
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "where",
+                          },
+                          "value": Object {
+                            "fields": Array [
+                              Object {
+                                "kind": "ObjectField",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "project_id",
+                                },
+                                "value": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "kind": "ObjectField",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "_eq",
+                                      },
+                                      "value": Object {
+                                        "kind": "Variable",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "projectId",
+                                        },
+                                      },
+                                    },
+                                  ],
+                                  "kind": "ObjectValue",
+                                },
+                              },
+                            ],
+                            "kind": "ObjectValue",
+                          },
+                        },
+                      ],
+                      "directives": Array [],
+                      "kind": "Field",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "configuration_aggregate",
+                      },
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "aggregate",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "count",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
                   ],
                 },
                 "variableDefinitions": Array [
@@ -336,12 +458,75 @@ exports[`page: TestConfigurations rendering should render as expected 1`] = `
                       },
                     },
                   },
+                  Object {
+                    "defaultValue": undefined,
+                    "directives": Array [],
+                    "kind": "VariableDefinition",
+                    "type": Object {
+                      "kind": "NamedType",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "Int",
+                      },
+                    },
+                    "variable": Object {
+                      "kind": "Variable",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "limit",
+                      },
+                    },
+                  },
+                  Object {
+                    "defaultValue": undefined,
+                    "directives": Array [],
+                    "kind": "VariableDefinition",
+                    "type": Object {
+                      "kind": "NamedType",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "Int",
+                      },
+                    },
+                    "variable": Object {
+                      "kind": "Variable",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "offset",
+                      },
+                    },
+                  },
+                  Object {
+                    "defaultValue": undefined,
+                    "directives": Array [],
+                    "kind": "VariableDefinition",
+                    "type": Object {
+                      "kind": "ListType",
+                      "type": Object {
+                        "kind": "NonNullType",
+                        "type": Object {
+                          "kind": "NamedType",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "execution_order_by",
+                          },
+                        },
+                      },
+                    },
+                    "variable": Object {
+                      "kind": "Variable",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "order_by",
+                      },
+                    },
+                  },
                 ],
               },
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 247,
+              "end": 526,
               "start": 0,
             },
           },
@@ -354,211 +539,9 @@ exports[`page: TestConfigurations rendering should render as expected 1`] = `
   >
     <Component />
   </Mutation>
-  <Query
-    fetchPolicy="cache-and-network"
-    query={
-      Object {
-        "definitions": Array [
-          Object {
-            "directives": Array [],
-            "kind": "OperationDefinition",
-            "name": Object {
-              "kind": "Name",
-              "value": "getTestConfigurations",
-            },
-            "operation": "query",
-            "selectionSet": Object {
-              "kind": "SelectionSet",
-              "selections": Array [
-                Object {
-                  "alias": undefined,
-                  "arguments": Array [
-                    Object {
-                      "kind": "Argument",
-                      "name": Object {
-                        "kind": "Name",
-                        "value": "where",
-                      },
-                      "value": Object {
-                        "fields": Array [
-                          Object {
-                            "kind": "ObjectField",
-                            "name": Object {
-                              "kind": "Name",
-                              "value": "project_id",
-                            },
-                            "value": Object {
-                              "fields": Array [
-                                Object {
-                                  "kind": "ObjectField",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "_eq",
-                                  },
-                                  "value": Object {
-                                    "kind": "Variable",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "projectId",
-                                    },
-                                  },
-                                },
-                              ],
-                              "kind": "ObjectValue",
-                            },
-                          },
-                        ],
-                        "kind": "ObjectValue",
-                      },
-                    },
-                  ],
-                  "directives": Array [],
-                  "kind": "Field",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "configuration",
-                  },
-                  "selectionSet": Object {
-                    "kind": "SelectionSet",
-                    "selections": Array [
-                      Object {
-                        "alias": undefined,
-                        "arguments": Array [],
-                        "directives": Array [],
-                        "kind": "Field",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "id",
-                        },
-                        "selectionSet": undefined,
-                      },
-                      Object {
-                        "alias": undefined,
-                        "arguments": Array [],
-                        "directives": Array [],
-                        "kind": "Field",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "name",
-                        },
-                        "selectionSet": undefined,
-                      },
-                      Object {
-                        "alias": undefined,
-                        "arguments": Array [],
-                        "directives": Array [],
-                        "kind": "Field",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "executions",
-                        },
-                        "selectionSet": Object {
-                          "kind": "SelectionSet",
-                          "selections": Array [
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "id",
-                              },
-                              "selectionSet": undefined,
-                            },
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "start",
-                              },
-                              "selectionSet": undefined,
-                            },
-                          ],
-                        },
-                      },
-                      Object {
-                        "alias": undefined,
-                        "arguments": Array [],
-                        "directives": Array [],
-                        "kind": "Field",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "repository",
-                        },
-                        "selectionSet": Object {
-                          "kind": "SelectionSet",
-                          "selections": Array [
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "id",
-                              },
-                              "selectionSet": undefined,
-                            },
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "url",
-                              },
-                              "selectionSet": undefined,
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-            "variableDefinitions": Array [
-              Object {
-                "defaultValue": undefined,
-                "directives": Array [],
-                "kind": "VariableDefinition",
-                "type": Object {
-                  "kind": "NamedType",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "uuid",
-                  },
-                },
-                "variable": Object {
-                  "kind": "Variable",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "projectId",
-                  },
-                },
-              },
-            ],
-          },
-        ],
-        "kind": "Document",
-        "loc": Object {
-          "end": 247,
-          "start": 0,
-        },
-      }
-    }
-    variables={
-      Object {
-        "projectId": undefined,
-      }
-    }
-  >
-    <Component />
-  </Query>
+  <TestConfigurations
+    onDelete={[Function]}
+    showPagination={true}
+  />
 </div>
 `;

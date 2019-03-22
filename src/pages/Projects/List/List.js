@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Query, ApolloConsumer } from 'react-apollo'
 
-import { Link } from 'react-router-dom'
-import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
-import { Edit } from '@material-ui/icons'
+import { withStyles, Drawer } from '@material-ui/core'
 
 import { AddButton } from '~components'
-import { forms } from '~containers'
+import { forms, lists } from '~containers'
 
 import styles from './List.styles'
-import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
 export class List extends Component {
   static propTypes = {
@@ -20,40 +16,39 @@ export class List extends Component {
     classes: PropTypes.object.isRequired,
   }
 
+  emptyFormValues = {
+    name: '',
+    description: '',
+    image: '',
+    id: null,
+  }
+
   state = {
     open: false,
     type: null,
-    updateFormValues: {
-      name: null,
-      description: null,
-      image: null,
-      id: null,
-    },
+    formValues: this.emptyFormValues,
   }
 
-  handleClick = (client, projectId) => {
-    client.writeData({ data: { currentProject: projectId } })
-  }
-
-  toggleDrawer = (type, status) => {
+  openDrawer = type => {
     this.setState({
-      open: status,
-      type: type,
-      updateFormValues: {
-        name: null,
-        description: null,
-        image: null,
-        id: null,
-      },
+      open: true,
+      type,
     })
   }
 
-  openUpdateProject = (e, name, description, id) => {
+  closeDrawer = () => {
+    this.setState({
+      open: false,
+      formValues: this.emptyFormValues,
+    })
+  }
+
+  handleEdit = (e, { name, description, id }) => {
     e.preventDefault()
     this.setState({
       open: true,
       type: 'update',
-      updateFormValues: {
+      formValues: {
         name,
         description,
         image: 'path/to/img.png',
@@ -63,72 +58,30 @@ export class List extends Component {
   }
 
   render() {
-    const { match, classes } = this.props
-    const { open, updateFormValues, type } = this.state
+    const { classes } = this.props
+    const { open, formValues, type } = this.state
 
     return (
-      <Query query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
-        {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>
-          if (error) return <p>Error :(</p>
-          const projects = data.project
-
-          return (
-            <div className={classes.root}>
-              <forms.Project
-                open={open}
-                type={type}
-                courseInitData={updateFormValues}
-                close={this.toggleDrawer}
-              />
-              <div className={classes.btnContainer}>
-                <AddButton open={this.toggleDrawer} />
-              </div>
-              <ApolloConsumer>
-                {client => (
-                  <Grid container spacing={24}>
-                    {projects.map(project => (
-                      <Grid item xs={3} key={project.id}>
-                        <Card
-                          className={classes.card}
-                          component={Link}
-                          to={`${match.url}/${project.id}`}
-                          aria-label="Project Deitals"
-                          onClick={() => this.handleClick(client, project.id)}
-                        >
-                          <CardContent>
-                            <Typography variant="h5" gutterBottom>
-                              {project.name}
-                            </Typography>
-                            {project.description && (
-                              <Typography variant="body1">
-                                {project.description.length > 200
-                                  ? `${project.description.slice(0, 200)}...`
-                                  : project.description}
-                              </Typography>
-                            )}
-                            <Edit
-                              className={classes.editIcon}
-                              onClick={event =>
-                                this.openUpdateProject(
-                                  event,
-                                  project.name,
-                                  project.description,
-                                  project.id
-                                )
-                              }
-                            />
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                )}
-              </ApolloConsumer>
-            </div>
-          )
-        }}
-      </Query>
+      <div className={classes.root}>
+        <Drawer
+          open={open}
+          anchor="right"
+          classes={{
+            paper: classes.drawer,
+          }}
+        >
+          <forms.Project
+            initialValues={formValues}
+            onCancel={this.closeDrawer}
+            onSubmit={this.closeDrawer}
+            type={type}
+          />
+        </Drawer>
+        <div className={classes.btnContainer}>
+          <AddButton onClick={() => this.openDrawer('create')} />
+        </div>
+        <lists.Projects onEdit={this.handleEdit} />
+      </div>
     )
   }
 }

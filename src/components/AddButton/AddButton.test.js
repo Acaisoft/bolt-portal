@@ -5,7 +5,7 @@ import { AddButton } from './AddButton'
 
 const initAddButton = overrides => {
   const mockProps = {
-    open: jest.fn(),
+    onClick: jest.fn(),
   }
   const wrapper = shallow(<AddButton {...mockProps} {...overrides} />)
   const instance = wrapper.instance()
@@ -17,15 +17,6 @@ describe('component: AddButton', () => {
     it('should render without crashing', () => {
       const { wrapper } = initAddButton()
       expect(wrapper).toBeTruthy()
-    })
-  })
-  describe('events', () => {
-    describe('handleClick', () => {
-      it('should induce props function open', () => {
-        const { instance, mockProps } = initAddButton()
-        instance.handleClick()
-        expect(mockProps.open).toHaveBeenCalledWith('create', true)
-      })
     })
   })
 })

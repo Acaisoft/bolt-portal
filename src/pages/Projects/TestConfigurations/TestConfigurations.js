@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
-import { Mutation, Query } from 'react-apollo'
+import { Mutation } from 'react-apollo'
 
-import { IconButton, Typography, withStyles } from '@material-ui/core'
-import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
+import { Typography, withStyles } from '@material-ui/core'
 
-import { DataTable, DeleteModal, LinkIconButton } from '~components'
+import { DeleteModal } from '~components'
+import { lists } from '~containers'
 import styles from './TestConfigurations.styles'
 
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
@@ -29,7 +28,7 @@ export class TestConfigurations extends Component {
     this.setState({ openDeleteModal: false })
   }
 
-  handleModalOpen = (id, name) => {
+  handleModalOpen = ({ id, name }) => {
     this.setState({ openDeleteModal: true, configName: name, deleteConfigId: id })
   }
 
@@ -60,96 +59,11 @@ export class TestConfigurations extends Component {
             />
           )}
         </Mutation>
-        <Query
-          query={GET_CONFIGS_QUERY}
-          variables={{ projectId }}
-          fetchPolicy="cache-and-network"
-        >
-          {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>
-            if (error) return <p>Error :(</p>
-            const configurations = data.configuration
-
-            return (
-              <div className={classes.tableContainer}>
-                <DataTable
-                  data={configurations}
-                  isLoading={loading}
-                  rowKey={configuration => configuration.id}
-                >
-                  <DataTable.Column
-                    key="name"
-                    render={configuration => configuration.name}
-                    title="Name"
-                  />
-                  <DataTable.Column
-                    key="source"
-                    render={configuration => configuration.repository.url}
-                    title="Source"
-                  />
-                  <DataTable.Column
-                    key="lastRun"
-                    render={configuration => (
-                      <div className={classes.dateContainer}>
-                        {configuration.executions[0] && (
-                          <React.Fragment>
-                            <span>
-                              {moment(configuration.executions[0].start).format(
-                                'YYYY-MM-DD'
-                              )}
-                            </span>
-                            <IconButton
-                              aria-label="Delete repository"
-                              className={classes.icon}
-                              disabled
-                            >
-                              <History />
-                            </IconButton>
-                          </React.Fragment>
-                        )}
-                      </div>
-                    )}
-                    title="Last Run"
-                  />
-                  <DataTable.Column
-                    key="actions"
-                    render={configuration => (
-                      <div className={classes.iconsContainer}>
-                        <IconButton
-                          aria-label="Start execution"
-                          className={classes.icon}
-                          disabled
-                        >
-                          <PlayArrow />
-                        </IconButton>
-                        <LinkIconButton
-                          aria-label="Edit configuration"
-                          className={classes.icon}
-                          to={`/test-configurations/${configuration.id}`}
-                        >
-                          <Edit />
-                        </LinkIconButton>
-                        <IconButton
-                          aria-label="Delete configuration"
-                          className={classes.icon}
-                          onClick={() =>
-                            this.handleModalOpen(
-                              configuration.id,
-                              configuration.name
-                            )
-                          }
-                        >
-                          <Delete />
-                        </IconButton>
-                      </div>
-                    )}
-                    title="Actions"
-                  />
-                </DataTable>
-              </div>
-            )
-          }}
-        </Query>
+        <lists.TestConfigurations
+          projectId={projectId}
+          showPagination
+          onDelete={this.handleModalOpen}
+        />
       </div>
     )
   }
