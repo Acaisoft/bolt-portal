@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 
 import { TestExecutionsTable } from '~components'
 import { List } from '~containers'
-import {
-  GET_CONFIG_EXECUTIONS_QUERY,
-  GET_EXECUTIONS_QUERY,
-  GET_PROJECT_EXECUTIONS_QUERY,
-} from '~services/GraphQL/Queries'
+import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
 
 export class TestExecutionsList extends Component {
   static propTypes = {
@@ -18,11 +14,7 @@ export class TestExecutionsList extends Component {
   render() {
     const { configurationId, projectId, ...listProps } = this.props
 
-    const query = configurationId
-      ? GET_CONFIG_EXECUTIONS_QUERY
-      : projectId
-      ? GET_PROJECT_EXECUTIONS_QUERY
-      : GET_EXECUTIONS_QUERY
+    const query = GET_EXECUTIONS_QUERY
 
     const variables = {
       configurationId,
