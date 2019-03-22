@@ -21,7 +21,7 @@ export class RepositoryForm extends Component {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
-    courseInitData: PropTypes.object,
+    initialValues: PropTypes.object,
   }
 
   state = {
@@ -104,7 +104,7 @@ export class RepositoryForm extends Component {
   )
 
   render() {
-    const { classes, open, courseInitData, type } = this.props
+    const { classes, open, initialValues, type } = this.props
     const { openModal } = this.state
     return (
       <div>
@@ -124,7 +124,7 @@ export class RepositoryForm extends Component {
           >
             {(repoMutation, { data }) => (
               <Formik
-                initialValues={courseInitData}
+                initialValues={initialValues}
                 onSubmit={values => this.handleSubmit(values, { repoMutation })}
                 validationSchema={validationSchema}
               >
