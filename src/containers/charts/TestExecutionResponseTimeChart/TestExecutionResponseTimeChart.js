@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
-  AreaChart,
-  Area,
-  Legend,
+  LineChart,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,10 +12,11 @@ import {
 
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
 
-export class TestExecutionRequests extends PureComponent {
+export class TestExecutionResponseTimeChart extends PureComponent {
   static propTypes = {
     execution: PropTypes.object,
     results: PropTypes.array,
+    syncId: PropTypes.string,
   }
 
   formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
@@ -28,7 +28,7 @@ export class TestExecutionRequests extends PureComponent {
 
     return (
       <ResponsiveContainer width="100%" height={400}>
-        <AreaChart
+        <LineChart
           data={results}
           margin={{
             top: 10,
@@ -46,30 +46,24 @@ export class TestExecutionRequests extends PureComponent {
             type="number"
             label={{ value: 'Time', position: 'bottom' }}
           />
-          <YAxis />
-          <Legend verticalAlign="top" iconType="rect" />
+          <YAxis unit="ms" />
 
-          <Tooltip isAnimationActive={false} labelFormatter={this.formatTimestamp} />
-          <Area
-            type="linear"
-            stroke="#e6978e"
-            fill="#e6978e"
-            dataKey="number_of_fails"
-            name="Fail"
-            stackId={1}
+          <Tooltip
+            isAnimationActive={false}
+            labelFormatter={this.formatTimestamp}
+            formatter={(value, name, props) => `${value} ms`}
           />
-          <Area
+          <Line
             type="linear"
-            stroke="#399839"
-            fill="#399839"
-            dataKey="number_of_successes"
-            name="Success"
-            stackId={1}
+            stroke="#4b8ef8"
+            fill="#4b8ef8"
+            dataKey="average_response_time"
+            name="Avg. response time"
           />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
     )
   }
 }
 
-export default TestExecutionRequests
+export default TestExecutionResponseTimeChart

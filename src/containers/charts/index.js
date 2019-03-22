@@ -1,7 +1,4 @@
-import TestExecutionRequests from './TestExecutionRequests'
-import TestExecutionResponseTime from './TestExecutionResponseTime'
-
-export default {
-  TestExecutionRequests,
-  TestExecutionResponseTime,
-}
+export {
+  default as TestExecutionResponseTimeChart,
+} from './TestExecutionResponseTimeChart'
+export { default as TestExecutionRequestsChart } from './TestExecutionRequestsChart'

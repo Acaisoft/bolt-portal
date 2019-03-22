@@ -8,7 +8,7 @@ import { AppBar, Button, Typography, withStyles } from '@material-ui/core'
 import { FormField } from '~components'
 
 import { formFields, validationSchema } from './formSchema'
-import styles from './Project.styles'
+import styles from './ProjectForm.styles'
 
 import {
   ADD_PROJECT_MUTATION,
@@ -16,7 +16,7 @@ import {
 } from '~services/GraphQL/Mutations'
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
-export class Project extends Component {
+export class ProjectForm extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     initialValues: PropTypes.object,
@@ -112,4 +112,4 @@ export class Project extends Component {
   }
 }
 
-export default withStyles(styles)(Project)
+export default withStyles(styles)(ProjectForm)

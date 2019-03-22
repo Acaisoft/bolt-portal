@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`component: Repository rendering should render as expected 1`] = `
+exports[`component: RepositoryForm rendering should render as expected 1`] = `
 <div>
   <KeyRepositoryModal
     handleClose={[Function]}

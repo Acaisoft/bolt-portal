@@ -5,7 +5,7 @@ import { TestConfigurationsTable } from '~components'
 import { List } from '~containers'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
-export class TestConfigurations extends Component {
+export class TestConfigurationsList extends Component {
   static propTypes = {
     projectId: PropTypes.string,
     onDelete: PropTypes.func,
@@ -44,4 +44,4 @@ export class TestConfigurations extends Component {
   }
 }
 
-export default TestConfigurations
+export default TestConfigurationsList

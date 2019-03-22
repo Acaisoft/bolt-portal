@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import { Typography, withStyles } from '@material-ui/core'
 
 import { DeleteModal } from '~components'
-import { lists } from '~containers'
+import { TestConfigurationsList } from '~containers/lists'
 import styles from './TestConfigurations.styles'
 
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
@@ -59,7 +59,7 @@ export class TestConfigurations extends Component {
             />
           )}
         </Mutation>
-        <lists.TestConfigurations
+        <TestConfigurationsList
           projectId={projectId}
           showPagination
           onDelete={this.handleModalOpen}

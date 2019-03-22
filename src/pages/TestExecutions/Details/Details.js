@@ -4,10 +4,13 @@ import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { Typography, withStyles } from '@material-ui/core'
 
+import {
+  TestExecutionRequestsChart,
+  TestExecutionResponseTimeChart,
+} from '~containers/charts'
 import { GET_EXECUTION_RESULTS_PER_TICK_QUERY } from '~services/GraphQL/Queries'
 
 import styles from './Details.styles'
-import { charts } from '~containers'
 
 export class Details extends Component {
   static propTypes = {
@@ -41,13 +44,13 @@ export class Details extends Component {
             return (
               <React.Fragment>
                 <Typography variant="h6">REQUESTS</Typography>
-                <charts.TestExecutionRequests
+                <TestExecutionRequestsChart
                   execution={data.execution_by_pk}
                   results={resultsWithDates}
                   syncId="sync-chart"
                 />
                 <Typography variant="h6">REQUESTS RESPONSE TIME</Typography>
-                <charts.TestExecutionResponseTime
+                <TestExecutionResponseTimeChart
                   execution={data.execution_by_pk}
                   results={resultsWithDates}
                   syncId="sync-chart"

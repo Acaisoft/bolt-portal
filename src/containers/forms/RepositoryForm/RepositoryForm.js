@@ -8,7 +8,7 @@ import { AppBar, Button, Drawer, Typography, withStyles } from '@material-ui/cor
 import { FormField, KeyRepositoryModal } from '~components'
 
 import { formFields, validationSchema } from './formSchema'
-import styles from './Repository.styles'
+import styles from './RepositoryForm.styles'
 
 import {
   ADD_REPOSITORY_MUTATION,
@@ -16,7 +16,7 @@ import {
 } from '~services/GraphQL/Mutations'
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
-export class Repository extends Component {
+export class RepositoryForm extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
@@ -138,4 +138,4 @@ export class Repository extends Component {
   }
 }
 
-export default withStyles(styles)(Repository)
+export default withStyles(styles)(RepositoryForm)

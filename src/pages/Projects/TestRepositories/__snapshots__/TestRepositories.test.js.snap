@@ -365,7 +365,7 @@ exports[`page: TestRepositories rendering should render as expected 1`] = `
   >
     <Component />
   </Mutation>
-  <RepositoryMock
+  <RepositoryFormMock
     close={[Function]}
     courseInitData={
       Object {

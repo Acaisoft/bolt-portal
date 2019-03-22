@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { withStyles, Drawer } from '@material-ui/core'
 
 import { AddButton } from '~components'
-import { forms, lists } from '~containers'
+import { ProjectForm } from '~containers/forms'
+import { ProjectsList } from '~containers/lists'
 
 import styles from './List.styles'
 
@@ -70,7 +71,7 @@ export class List extends Component {
             paper: classes.drawer,
           }}
         >
-          <forms.Project
+          <ProjectForm
             initialValues={formValues}
             onCancel={this.closeDrawer}
             onSubmit={this.closeDrawer}
@@ -80,7 +81,7 @@ export class List extends Component {
         <div className={classes.btnContainer}>
           <AddButton onClick={() => this.openDrawer('create')} />
         </div>
-        <lists.Projects onEdit={this.handleEdit} />
+        <ProjectsList onEdit={this.handleEdit} />
       </div>
     )
   }

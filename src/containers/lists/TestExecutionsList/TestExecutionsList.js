@@ -9,7 +9,7 @@ import {
   GET_PROJECT_EXECUTIONS_QUERY,
 } from '~services/GraphQL/Queries'
 
-export class TestExecutions extends Component {
+export class TestExecutionsList extends Component {
   static propTypes = {
     configurationId: PropTypes.string,
     projectId: PropTypes.string,
@@ -50,4 +50,4 @@ export class TestExecutions extends Component {
   }
 }
 
-export default TestExecutions
+export default TestExecutionsList

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
-import { lists } from '~containers'
+import { TestExecutionsList } from '~containers/lists'
 
 import styles from './Details.styles'
 
@@ -22,7 +22,7 @@ export class Details extends Component {
         <Typography variant="body2">Here you see all test scenarios</Typography>
         <div className={classes.tableContainer}>
           Test Configuration details for {match.params.configurationId}
-          <lists.TestExecutions configurationId={match.params.configurationId} />
+          <TestExecutionsList configurationId={match.params.configurationId} />
         </div>
       </div>
     )

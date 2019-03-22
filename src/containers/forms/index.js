@@ -1,7 +1,2 @@
-import Project from './Project'
-import Repository from './Repository'
-
-export default {
-  Project,
-  Repository,
-}
+export { default as ProjectForm } from './ProjectForm'
+export { default as RepositoryForm } from './RepositoryForm'

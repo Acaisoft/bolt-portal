@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
-import { lists } from '~containers'
+import { TestExecutionsList } from '~containers/lists'
 
 import styles from './TestExecutions.styles'
 
@@ -24,7 +24,7 @@ export class TestExecutions extends Component {
           Here you see results of all tests performed in the project
         </Typography>
         <div className={classes.tableContainer}>
-          <lists.TestExecutions
+          <TestExecutionsList
             projectId={projectId}
             getDetailsUrl={execution => `${match.url}/${execution.id}`}
           />

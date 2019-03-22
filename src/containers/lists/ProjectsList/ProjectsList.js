@@ -7,9 +7,9 @@ import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/co
 import { Edit } from '@material-ui/icons'
 
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
-import styles from './Projects.styles'
+import styles from './ProjectsList.styles'
 
-export class Projects extends Component {
+export class ProjectsList extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     onEdit: PropTypes.func.isRequired,
@@ -62,4 +62,4 @@ export class Projects extends Component {
   }
 }
 
-export default withStyles(styles)(Projects)
+export default withStyles(styles)(ProjectsList)

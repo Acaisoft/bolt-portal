@@ -1,26 +1,26 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { Project } from './Project'
+import { ProjectForm } from './ProjectForm'
 
 import { mocks } from '~utils/tests'
 
-const initProject = overrides => {
+const initProjectForm = overrides => {
   const mockProps = {
     onCancel: jest.fn(),
     onSubmit: jest.fn(),
   }
   const wrapper = shallow(
-    <Project {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
+    <ProjectForm {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
   )
   const instance = wrapper.instance()
   return { instance, mockProps, wrapper }
 }
 
-describe('component Projects/List - CreateProject', () => {
+describe('component ProjectForm', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      const { wrapper } = initProject()
+      const { wrapper } = initProjectForm()
       expect(wrapper).toBeTruthy()
     })
   })

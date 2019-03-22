@@ -1,9 +1,3 @@
-import Projects from './Projects'
-import TestConfigurations from './TestConfigurations'
-import TestExecutions from './TestExecutions'
-
-export default {
-  Projects,
-  TestConfigurations,
-  TestExecutions,
-}
+export { default as ProjectsList } from './ProjectsList'
+export { default as TestConfigurationsList } from './TestConfigurationsList'
+export { default as TestExecutionsList } from './TestExecutionsList'

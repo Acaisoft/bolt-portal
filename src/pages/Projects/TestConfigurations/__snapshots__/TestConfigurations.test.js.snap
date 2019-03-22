@@ -539,7 +539,7 @@ exports[`page: TestConfigurations rendering should render as expected 1`] = `
   >
     <Component />
   </Mutation>
-  <TestConfigurations
+  <TestConfigurationsList
     onDelete={[Function]}
     showPagination={true}
   />
