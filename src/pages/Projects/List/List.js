@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withStyles, Drawer } from '@material-ui/core'
+import { withStyles, Drawer, Typography } from '@material-ui/core'
 
 import { AddButton } from '~components'
 import { ProjectForm } from '~containers/forms'
@@ -11,10 +11,13 @@ import styles from './List.styles'
 
 export class List extends Component {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     match: PropTypes.shape({
       url: PropTypes.string.isRequired,
     }).isRequired,
-    classes: PropTypes.object.isRequired,
   }
 
   emptyFormValues = {
@@ -25,30 +28,29 @@ export class List extends Component {
   }
 
   state = {
-    open: false,
-    type: null,
+    isDrawerOpen: false,
+    mode: 'create',
     formValues: this.emptyFormValues,
-  }
-
-  openDrawer = type => {
-    this.setState({
-      open: true,
-      type,
-    })
   }
 
   closeDrawer = () => {
     this.setState({
-      open: false,
+      isDrawerOpen: false,
       formValues: this.emptyFormValues,
     })
   }
 
-  handleEdit = (e, { name, description, id }) => {
-    e.preventDefault()
+  handleCreate = () => {
     this.setState({
-      open: true,
-      type: 'update',
+      isDrawerOpen: true,
+      mode: 'create',
+    })
+  }
+
+  handleEdit = ({ name, description, id }) => {
+    this.setState({
+      isDrawerOpen: true,
+      mode: 'edit',
       formValues: {
         name,
         description,
@@ -58,30 +60,43 @@ export class List extends Component {
     })
   }
 
+  handleDetails = ({ id }) => {
+    const { history, match } = this.props
+    history.push(`${match.url}/${id}`)
+  }
+
   render() {
     const { classes } = this.props
-    const { open, formValues, type } = this.state
+    const { isDrawerOpen, formValues, mode } = this.state
 
     return (
       <div className={classes.root}>
         <Drawer
-          open={open}
+          open={isDrawerOpen}
           anchor="right"
           classes={{
             paper: classes.drawer,
           }}
         >
+          <Typography variant="h3">
+            {mode ? 'NEW PROJECT' : 'UPDATE PROJECT'}
+          </Typography>
+          <Typography variant="body1">
+            {mode
+              ? 'Add new project to your library'
+              : `Update ${this.props.initialValues.name} project data.`}
+          </Typography>
           <ProjectForm
             initialValues={formValues}
+            mode={mode}
             onCancel={this.closeDrawer}
             onSubmit={this.closeDrawer}
-            type={type}
           />
         </Drawer>
         <div className={classes.btnContainer}>
-          <AddButton onClick={() => this.openDrawer('create')} />
+          <AddButton onClick={this.handleCreate} />
         </div>
-        <ProjectsList onEdit={this.handleEdit} />
+        <ProjectsList onDetails={this.handleDetails} onEdit={this.handleEdit} />
       </div>
     )
   }

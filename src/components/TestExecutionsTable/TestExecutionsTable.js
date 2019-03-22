@@ -1,18 +1,12 @@
 import React from 'react'
 import moment from 'moment'
 
-import { Link } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-export function TestExecutionsTable({
-  executions,
-  getDetailsUrl,
-  loading,
-  projectId,
-}) {
+export function TestExecutionsTable({ executions, loading, onDetails, projectId }) {
   return (
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
       <DataTable.Column
@@ -66,8 +60,7 @@ export function TestExecutionsTable({
           <div>
             <IconButton
               aria-label="Show details"
-              component={Link}
-              to={getDetailsUrl(execution)}
+              onClick={() => onDetails(execution)}
             >
               <Pageview />
             </IconButton>

@@ -8,7 +8,10 @@ import { Details } from './Details'
 const initDetails = overrides => {
   const mockProps = {
     match: {
-      url: '/projects/:id/details',
+      url: '/projects/:projectId/details',
+      params: {
+        projectId: 'p123',
+      },
     },
   }
   const wrapper = shallow(

@@ -16,21 +16,25 @@ export class Details extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     match: PropTypes.shape({
+      params: PropTypes.shape({
+        executionId: PropTypes.string.isRequired,
+      }).isRequired,
       url: PropTypes.string.isRequired,
     }).isRequired,
   }
 
   render() {
     const { classes, match } = this.props
+    const { executionId } = match.params
 
     return (
       <div className={classes.root}>
         <div className={classes.tableContainer}>
-          Test Run details for {match.params.executionId}
+          Test Run details for {executionId}
         </div>
         <Query
           query={GET_EXECUTION_RESULTS_PER_TICK_QUERY}
-          variables={{ executionId: match.params.executionId }}
+          variables={{ executionId }}
         >
           {({ data, loading, error }) => {
             if (loading) return <p>Loading...</p>

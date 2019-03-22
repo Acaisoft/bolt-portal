@@ -9,11 +9,10 @@ import styles from './Details.styles'
 
 export class Details extends Component {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     match: PropTypes.shape({
       url: PropTypes.string.isRequired,
     }).isRequired,
-    classes: PropTypes.object.isRequired,
-    projectId: PropTypes.string,
   }
 
   items = [
@@ -26,7 +25,7 @@ export class Details extends Component {
     {
       id: 2,
       label: 'TEST REPOSITORIES',
-      linkTo: `${this.props.match.url}/test-repositories`,
+      linkTo: `${this.props.match.url}/repositories`,
       description: 'Manage Test Repositories for My Super App.',
     },
     {
@@ -43,8 +42,14 @@ export class Details extends Component {
     },
   ]
 
+  handleExecutionDetails = execution => {
+    const { history, match } = this.props
+    history.push(`${match.url}/test-runs/${execution.id}`)
+  }
+
   render() {
-    const { classes, match, projectId } = this.props
+    const { classes, match } = this.props
+    const { projectId } = match.params
 
     return (
       <div className={classes.root}>
@@ -74,7 +79,12 @@ export class Details extends Component {
           Last Tests Executions
         </Typography>
         <div className={classes.tableContainer}>
-          <TestExecutionsList projectId={projectId} pagination={false} limit={5} />
+          <TestExecutionsList
+            onDetails={this.handleExecutionDetails}
+            projectId={projectId}
+            pagination={false}
+            limit={5}
+          />
         </div>
         <div className={classes.linkContainer}>
           <Link to={`${match.url}/test-runs`} className={classes.link}>

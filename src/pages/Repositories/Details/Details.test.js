@@ -1,26 +1,28 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { TestExecutions } from './TestExecutions'
+import { Details } from './Details'
 import { mocks } from '~utils/tests'
 
-const initTestExecutions = overrides => {
+const initDetails = overrides => {
   const mockProps = {
     match: {
       url: '/projects/project-1/test-execs',
+      params: {
+        configurationId: 'configuration-123',
+      },
     },
-    projectId: 'project-1',
   }
   const wrapper = shallow(
-    <TestExecutions classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
+    <Details classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
   )
   return { wrapper }
 }
 
-describe('page: TestExecutions', () => {
+describe('page: Details', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      const { wrapper } = initTestExecutions()
+      const { wrapper } = initDetails()
       expect(wrapper).toBeTruthy()
     })
   })

@@ -8,11 +8,12 @@ import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 export class TestConfigurationsList extends Component {
   static propTypes = {
     projectId: PropTypes.string,
-    onDelete: PropTypes.func,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
   }
 
   render() {
-    const { projectId, onDelete, ...listProps } = this.props
+    const { projectId, onDelete, onEdit, ...listProps } = this.props
 
     const query = GET_CONFIGS_QUERY
 
@@ -31,11 +32,9 @@ export class TestConfigurationsList extends Component {
         {({ data, loading }) => (
           <TestConfigurationsTable
             configurations={data && data.configuration}
-            getDetailsUrl={configuration =>
-              `/test-configurations/${configuration.id}`
-            }
             loading={loading}
             onDelete={onDelete}
+            onEdit={onEdit}
             projectId={projectId}
           />
         )}

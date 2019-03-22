@@ -8,6 +8,7 @@ jest.mock('./List', () => 'ListMock')
 const initProjects = overrides => {
   const mockProps = {
     match: {
+      path: '/projects',
       url: '/projects',
     },
   }

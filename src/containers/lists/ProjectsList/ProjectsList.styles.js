@@ -7,6 +7,8 @@ export default ({ palette, spacing, typography }) => {
       justifyContent: 'center',
       textAlign: 'center',
       position: 'relative',
+      cursor: 'pointer',
+
       '&::after': {
         content: "''",
         background: `url(${AcaiBoltImg})`,

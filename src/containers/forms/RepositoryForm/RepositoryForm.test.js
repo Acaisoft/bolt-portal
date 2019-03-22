@@ -10,10 +10,7 @@ jest.mock('~components', () => ({
 }))
 
 const initComponent = overrides => {
-  const mockProps = {
-    open: false,
-    close: jest.fn(),
-  }
+  const mockProps = {}
   const wrapper = shallow(
     <RepositoryForm {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
   )

@@ -7,10 +7,9 @@ import { mocks } from '~utils/tests'
 
 const initComponent = overrides => {
   const mockProps = {
-    open: false,
-    handleClose: jest.fn(),
-    handleSubmit: jest.fn(),
     name: 'mockName',
+    onClose: jest.fn(),
+    onSubmit: jest.fn(),
     type: 'mockType',
   }
   const wrapper = shallow(

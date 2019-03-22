@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 
-import { Link } from 'react-router-dom'
 import { IconButton, withStyles } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
@@ -12,9 +11,9 @@ import styles from './TestConfigurationsTable.styles'
 export function TestConfigurationsTable({
   classes,
   configurations,
-  getDetailsUrl,
   loading,
   onDelete,
+  onEdit,
   projectId,
 }) {
   return (
@@ -30,7 +29,7 @@ export function TestConfigurationsTable({
       />
       <DataTable.Column
         key="source"
-        render={configuration => configuration.repository.url}
+        render={configuration => (configuration.repository || {}).url}
         title="Source"
       />
       <DataTable.Column
@@ -69,8 +68,7 @@ export function TestConfigurationsTable({
             <IconButton
               aria-label="Edit configuration"
               className={classes.icon}
-              component={Link}
-              to={getDetailsUrl(configuration)}
+              onClick={() => onEdit(configuration)}
             >
               <Edit />
             </IconButton>

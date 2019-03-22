@@ -5,7 +5,14 @@ import { List } from './List'
 import { mocks } from '~utils/tests'
 
 const initList = overrides => {
-  const mockProps = {}
+  const mockProps = {
+    match: {
+      url: '/test-runs',
+      params: {
+        projectId: 'p123',
+      },
+    },
+  }
   const wrapper = shallow(
     <List classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
   )

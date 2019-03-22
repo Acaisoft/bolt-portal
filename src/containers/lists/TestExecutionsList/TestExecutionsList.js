@@ -8,11 +8,12 @@ import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
 export class TestExecutionsList extends Component {
   static propTypes = {
     configurationId: PropTypes.string,
+    onDetails: PropTypes.func.isRequired,
     projectId: PropTypes.string,
   }
 
   render() {
-    const { configurationId, projectId, ...listProps } = this.props
+    const { configurationId, onDetails, projectId, ...listProps } = this.props
 
     const query = GET_EXECUTIONS_QUERY
 
@@ -34,7 +35,7 @@ export class TestExecutionsList extends Component {
             executions={data && data.execution}
             loading={loading}
             projectId={projectId}
-            getDetailsUrl={execution => `/test-runs/${execution.id}`}
+            onDetails={onDetails}
           />
         )}
       </List>

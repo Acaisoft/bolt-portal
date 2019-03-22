@@ -7,6 +7,7 @@ import { mocks } from '~utils/tests'
 const initTestExecutions = overrides => {
   const mockProps = {
     match: {
+      path: '/test-runs',
       url: '/test-runs',
     },
   }
