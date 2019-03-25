@@ -31,7 +31,7 @@ export class ProjectForm extends Component {
     onSubmit: () => {},
   }
 
-  handleSubmit = async (values, { projectMutation }) => {
+  handleSubmit = async (values, { projectMutation, setSubmitting }) => {
     const { id, name, description } = values
     try {
       await projectMutation({
@@ -45,6 +45,8 @@ export class ProjectForm extends Component {
     } catch (err) {
       toast.error(err.message)
     }
+
+    setSubmitting(false)
   }
 
   render() {
@@ -58,7 +60,9 @@ export class ProjectForm extends Component {
         {(projectMutation, { data }) => (
           <Formik
             initialValues={initialValues}
-            onSubmit={values => this.handleSubmit(values, { projectMutation })}
+            onSubmit={(values, formikActions) =>
+              this.handleSubmit(values, { projectMutation, ...formikActions })
+            }
             validationSchema={validationSchema}
           >
             {({ handleSubmit, isSubmitting, dirty }) => {
