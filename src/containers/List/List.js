@@ -31,14 +31,14 @@ export class List extends Component {
     return (
       <React.Fragment>
         {children}
-        {showPagination && totalCount && (
+        {showPagination && totalCount ? (
           <Pagination
             limit={limit}
             offset={offset}
             onChange={onPaginationChange}
             totalCount={totalCount}
           />
-        )}
+        ) : null}
       </React.Fragment>
     )
   }
