@@ -74,10 +74,17 @@ export class Details extends Component {
         >
           {({ data, loading, error }) => {
             if (loading) return <p>Loading...</p>
+
+            let responses = []
+            if (data.result_distribution.length > 0) {
+              const result = data.result_distribution[0].request_result
+              if (Array.isArray(result)) {
+                responses = result
+              }
+            }
+
             return (
-              <TestExecutionResponsesList
-                responses={data.result_distribution[0].request_result}
-              />
+              <TestExecutionResponsesList responses={responses} showPagination />
             )
           }}
         </Query>
