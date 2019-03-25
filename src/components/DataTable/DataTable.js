@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
 } from '@material-ui/core'
+import { Loading } from '~components'
 
 import { areArraysEqual } from '~utils/collections'
 
@@ -120,7 +121,9 @@ export class DataTable extends Component {
       return (
         <TableBody>
           <TableRow>
-            <TableCell colSpan={columns.length}>Loading...</TableCell>
+            <TableCell colSpan={columns.length}>
+              <Loading />
+            </TableCell>
           </TableRow>
         </TableBody>
       )
