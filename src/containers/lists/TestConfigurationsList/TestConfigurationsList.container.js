@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { TestConfigurationsTable } from '~components'
 import { RemoteList } from '~containers'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
-export class TestConfigurationsList extends Component {
+import TestConfigurationsList from './TestConfigurationsList.component'
+
+export class TestConfigurationsListContainer extends Component {
   static propTypes = {
     projectId: PropTypes.string,
     onEdit: PropTypes.func.isRequired,
@@ -30,7 +31,7 @@ export class TestConfigurationsList extends Component {
         {...listProps}
       >
         {({ data, loading }) => (
-          <TestConfigurationsTable
+          <TestConfigurationsList
             configurations={data && data.configuration}
             loading={loading}
             onDelete={onDelete}
@@ -43,4 +44,4 @@ export class TestConfigurationsList extends Component {
   }
 }
 
-export default TestConfigurationsList
+export default TestConfigurationsListContainer

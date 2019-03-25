@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { RepositoriesTable } from '~components'
 import { RemoteList } from '~containers'
+
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
-export class RepositoriesList extends Component {
+import RepositoriesList from './RepositoriesList.component'
+
+export class RepositoriesListContainer extends Component {
   static propTypes = {
     projectId: PropTypes.string,
     onDelete: PropTypes.func.isRequired,
@@ -30,7 +32,7 @@ export class RepositoriesList extends Component {
         {...listProps}
       >
         {({ data, loading }) => (
-          <RepositoriesTable
+          <RepositoriesList
             repositories={data && data.repository}
             loading={loading}
             projectId={projectId}
@@ -43,4 +45,4 @@ export class RepositoriesList extends Component {
   }
 }
 
-export default RepositoriesList
+export default RepositoriesListContainer

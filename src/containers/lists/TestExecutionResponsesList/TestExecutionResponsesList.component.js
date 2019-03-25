@@ -5,9 +5,9 @@ import { Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-import styles from './TestExecutionResponsesTable.styles'
+import styles from './TestExecutionResponsesList.component.styles'
 
-export function TestExecutionResponsesTable({
+export function TestExecutionResponsesList({
   classes,
   responses,
   loading,
@@ -76,4 +76,4 @@ export function TestExecutionResponsesTable({
   )
 }
 
-export default withStyles(styles)(TestExecutionResponsesTable)
+export default withStyles(styles)(TestExecutionResponsesList)

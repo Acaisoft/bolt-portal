@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { TestExecutionResponsesTable } from '~components'
 import { LocalList } from '~containers'
 
-export class TestExecutionResponsesList extends Component {
+import TestExecutionResponsesList from './TestExecutionResponsesList.component'
+
+export class TestExecutionResponsesListContainer extends Component {
   static propTypes = {
     responses: PropTypes.array.isRequired,
   }
@@ -17,7 +18,7 @@ export class TestExecutionResponsesList extends Component {
     return (
       <LocalList data={responses} showPagination>
         {({ data }) => (
-          <TestExecutionResponsesTable
+          <TestExecutionResponsesList
             responses={data}
             onDetails={this.handleDetails}
           />
@@ -27,4 +28,4 @@ export class TestExecutionResponsesList extends Component {
   }
 }
 
-export default TestExecutionResponsesList
+export default TestExecutionResponsesListContainer

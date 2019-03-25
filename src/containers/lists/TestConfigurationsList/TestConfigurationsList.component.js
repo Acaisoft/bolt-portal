@@ -6,9 +6,9 @@ import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-import styles from './TestConfigurationsTable.styles'
+import styles from './TestConfigurationsList.component.styles'
 
-export function TestConfigurationsTable({
+export function TestConfigurationsList({
   classes,
   configurations,
   loading,
@@ -87,4 +87,4 @@ export function TestConfigurationsTable({
   )
 }
 
-export default withStyles(styles)(TestConfigurationsTable)
+export default withStyles(styles)(TestConfigurationsList)

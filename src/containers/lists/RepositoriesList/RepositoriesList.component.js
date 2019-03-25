@@ -5,9 +5,9 @@ import { Edit, Delete } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-import styles from './RepositoriesTable.styles'
+import styles from './RepositoriesList.component.styles'
 
-export function RepositoriesTable({
+export function RepositoriesList({
   classes,
   repositories,
   loading,
@@ -66,4 +66,4 @@ export function RepositoriesTable({
   )
 }
 
-export default withStyles(styles)(RepositoriesTable)
+export default withStyles(styles)(RepositoriesList)

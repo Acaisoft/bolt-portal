@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { TestExecutionsTable } from '~components'
 import { RemoteList } from '~containers'
 import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
 
-export class TestExecutionsList extends Component {
+import TestExecutionsList from './TestExecutionsList.component'
+
+export class TestExecutionsListContainer extends Component {
   static propTypes = {
     configurationId: PropTypes.string,
     onDetails: PropTypes.func.isRequired,
@@ -22,7 +23,6 @@ export class TestExecutionsList extends Component {
       projectId,
       order_by: [{ start: 'desc' }],
     }
-
     return (
       <RemoteList
         paginationDataKey="execution_aggregate"
@@ -30,17 +30,19 @@ export class TestExecutionsList extends Component {
         variables={variables}
         {...listProps}
       >
-        {({ data, loading }) => (
-          <TestExecutionsTable
-            executions={data && data.execution}
-            loading={loading}
-            projectId={projectId}
-            onDetails={onDetails}
-          />
-        )}
+        {({ data, loading, error }) => {
+          return (
+            <TestExecutionsList
+              executions={data && data.execution}
+              loading={loading}
+              projectId={projectId}
+              onDetails={onDetails}
+            />
+          )
+        }}
       </RemoteList>
     )
   }
 }
 
-export default TestExecutionsList
+export default TestExecutionsListContainer

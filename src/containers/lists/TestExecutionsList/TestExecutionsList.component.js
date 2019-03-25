@@ -6,7 +6,12 @@ import { Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-export function TestExecutionsTable({ executions, loading, onDetails, projectId }) {
+export function TestExecutionsList({
+  executions = [],
+  loading,
+  onDetails,
+  projectId,
+}) {
   return (
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
       <DataTable.Column
@@ -72,4 +77,4 @@ export function TestExecutionsTable({ executions, loading, onDetails, projectId 
   )
 }
 
-export default TestExecutionsTable
+export default TestExecutionsList
