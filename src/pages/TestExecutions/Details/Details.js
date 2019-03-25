@@ -8,7 +8,11 @@ import {
   TestExecutionRequestsChart,
   TestExecutionResponseTimeChart,
 } from '~containers/charts'
-import { GET_EXECUTION_RESULTS_PER_TICK_QUERY } from '~services/GraphQL/Queries'
+import { TestExecutionResponsesList } from '~containers/lists'
+import {
+  GET_EXECUTION_RESULTS_PER_TICK_QUERY,
+  GET_EXECUTION_RESULTS_DISTRIBUTION_QUERY,
+} from '~services/GraphQL/Queries'
 
 import styles from './Details.styles'
 
@@ -59,7 +63,21 @@ export class Details extends Component {
                   results={resultsWithDates}
                   syncId="sync-chart"
                 />
+                <Typography variant="h6">RESPONSES</Typography>
               </React.Fragment>
+            )
+          }}
+        </Query>
+        <Query
+          query={GET_EXECUTION_RESULTS_DISTRIBUTION_QUERY}
+          variables={{ executionId }}
+        >
+          {({ data, loading, error }) => {
+            if (loading) return <p>Loading...</p>
+            return (
+              <TestExecutionResponsesList
+                responses={data.result_distribution[0].request_result}
+              />
             )
           }}
         </Query>

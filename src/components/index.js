@@ -7,3 +7,6 @@ export { default as KeyRepositoryModal } from './KeyRepositoryModal'
 export { default as RepositoriesTable } from './RepositoriesTable'
 export { default as TestConfigurationsTable } from './TestConfigurationsTable'
 export { default as TestExecutionsTable } from './TestExecutionsTable'
+export {
+  default as TestExecutionResponsesTable,
+} from './TestExecutionResponsesTable'
