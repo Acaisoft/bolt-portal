@@ -8,11 +8,13 @@ const formFields = {
     validator: Yup.string()
       .required()
       .ensure()
-      .min(2),
+      .min(3),
   },
   description: {
-    label: 'Project Descripiton',
-    validator: Yup.string().ensure(),
+    label: 'Project Description',
+    validator: Yup.string()
+      .ensure()
+      .max(512),
   },
   image: {
     label: 'Project Image',
