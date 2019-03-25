@@ -33,6 +33,7 @@ const request = async operation => {
   operation.setContext({
     headers: {
       'X-Hasura-Access-Key': 'FF662305FF444E1CB81BB1D7DD310BC0',
+      'X-Hasura-User-Id': 'aaaaaaaa-ef65-4556-a1a5-96ff1f0068cb',
       // Authorization: token ? `Bearer ${authToken}` : '',
     },
   })

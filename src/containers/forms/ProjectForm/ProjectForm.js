@@ -31,21 +31,20 @@ export class ProjectForm extends Component {
     onSubmit: () => {},
   }
 
-  handleSubmit = (values, { projectMutation }) => {
-    const { name, description, image, id } = values
+  handleSubmit = async (values, { projectMutation }) => {
+    const { id, name, description } = values
     try {
-      projectMutation({
+      await projectMutation({
         variables: {
           id: this.props.mode === 'create' ? undefined : id,
           name,
           description,
-          img: image,
         },
       })
+      this.props.onSubmit(values)
     } catch (err) {
-      toast.error('An error has occured. Project was not created.')
+      toast.error(err.message)
     }
-    this.props.onSubmit(values)
   }
 
   render() {

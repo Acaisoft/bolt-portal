@@ -1,11 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  mutation($name: String!, $description: String, $img: String, $id: uuid!) {
-    project: update_project(
-      _set: { name: $name, description: $description, image_url: $img }
-      where: { id: { _eq: $id } }
-    ) {
+  mutation($id: UUID!, $name: String!, $description: String) {
+    testrun_project_update(id: $id, name: $name, description: $description) {
       returning {
         id
         name
