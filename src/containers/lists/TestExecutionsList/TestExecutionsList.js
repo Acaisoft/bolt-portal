@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { TestExecutionsTable } from '~components'
-import { List } from '~containers'
+import { RemoteList } from '~containers'
 import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
 
 export class TestExecutionsList extends Component {
@@ -24,7 +24,7 @@ export class TestExecutionsList extends Component {
     }
 
     return (
-      <List
+      <RemoteList
         paginationDataKey="execution_aggregate"
         query={query}
         variables={variables}
@@ -38,7 +38,7 @@ export class TestExecutionsList extends Component {
             onDetails={onDetails}
           />
         )}
-      </List>
+      </RemoteList>
     )
   }
 }

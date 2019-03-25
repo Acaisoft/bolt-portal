@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { RepositoriesTable } from '~components'
-import { List } from '~containers'
+import { RemoteList } from '~containers'
 import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
 
 export class RepositoriesList extends Component {
@@ -23,7 +23,7 @@ export class RepositoriesList extends Component {
     }
 
     return (
-      <List
+      <RemoteList
         paginationDataKey="repository_aggregate"
         query={query}
         variables={variables}
@@ -38,7 +38,7 @@ export class RepositoriesList extends Component {
             onEdit={onEdit}
           />
         )}
-      </List>
+      </RemoteList>
     )
   }
 }

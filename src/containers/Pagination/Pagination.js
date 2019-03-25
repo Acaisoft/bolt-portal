@@ -13,9 +13,16 @@ export class Pagination extends Component {
     onChange: () => {},
   }
 
-  state = {
-    page: 0,
-    rowsPerPage: 10,
+  constructor(props) {
+    super(props)
+
+    const rowsPerPage = props.rowsPerPage || 10
+    const page = props.offset ? props.offset / rowsPerPage : 0
+
+    this.state = {
+      page,
+      rowsPerPage,
+    }
   }
 
   componentDidUpdate(_, prevState) {
@@ -23,8 +30,9 @@ export class Pagination extends Component {
 
     if (prevState.page !== page || prevState.rowsPerPage !== rowsPerPage) {
       const calculated = {
-        limit: rowsPerPage,
         offset: page * rowsPerPage,
+        page,
+        rowsPerPage,
       }
       this.props.onChange(calculated)
     }

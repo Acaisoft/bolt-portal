@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { TestConfigurationsTable } from '~components'
-import { List } from '~containers'
+import { RemoteList } from '~containers'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
 export class TestConfigurationsList extends Component {
@@ -23,7 +23,7 @@ export class TestConfigurationsList extends Component {
     }
 
     return (
-      <List
+      <RemoteList
         paginationDataKey="configuration_aggregate"
         query={query}
         variables={variables}
@@ -38,7 +38,7 @@ export class TestConfigurationsList extends Component {
             projectId={projectId}
           />
         )}
-      </List>
+      </RemoteList>
     )
   }
 }

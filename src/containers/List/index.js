@@ -1,1 +1,1 @@
-export { default } from './List'
+export { default as RemoteList } from './RemoteList'
