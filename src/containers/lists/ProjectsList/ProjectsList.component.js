@@ -11,9 +11,13 @@ import {
 } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 
+import { Loading } from '~components'
+
 import styles from './ProjectsList.component.styles'
 
-function ProjectsList({ classes, onDetails, onEdit, projects }) {
+function ProjectsList({ classes, loading, onDetails, onEdit, projects }) {
+  if (loading) return <Loading />
+
   return (
     <Grid container spacing={24}>
       {projects.map(project => (

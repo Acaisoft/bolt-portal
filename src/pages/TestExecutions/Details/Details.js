@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { Typography, withStyles } from '@material-ui/core'
 
+import { Loading } from '~components'
 import {
   TestExecutionRequestsChart,
   TestExecutionResponseTimeChart,
@@ -41,7 +42,7 @@ export class Details extends Component {
           variables={{ executionId }}
         >
           {({ data, loading, error }) => {
-            if (loading) return <p>Loading...</p>
+            if (loading) return <Loading />
             if (error) return <p>Error: {error.message}</p>
 
             const resultsWithDates = data.result_aggregate.map(result => ({

@@ -16,7 +16,7 @@ export function TestExecutionResponsesList({
   return (
     <DataTable
       data={responses}
-      isLoading={false}
+      isLoading={loading}
       rowKey={response => `${response.Method} ${response.Name}`}
     >
       <DataTable.Column

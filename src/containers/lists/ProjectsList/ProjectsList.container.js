@@ -20,16 +20,16 @@ export class ProjectsListContainer extends Component {
     return (
       <Query query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
         {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>
           if (error) return <p>Error :(</p>
           const projects = data.project
 
-          if (projects.length === 0) {
+          if (projects && projects.length === 0) {
             return <Typography variant="body1">No projects</Typography>
           }
 
           return (
             <ProjectsList
+              loading={loading}
               projects={projects}
               onDetails={onDetails}
               onEdit={onEdit}
