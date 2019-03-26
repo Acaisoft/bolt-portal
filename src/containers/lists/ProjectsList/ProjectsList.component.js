@@ -15,7 +15,7 @@ import { Loading } from '~components'
 
 import styles from './ProjectsList.component.styles'
 
-function ProjectsList({ classes, loading, onDetails, onEdit, projects }) {
+function ProjectsList({ classes, loading, onDetails, onEdit, projects = [] }) {
   if (loading) return <Loading />
 
   return (
@@ -58,7 +58,7 @@ function ProjectsList({ classes, loading, onDetails, onEdit, projects }) {
 }
 ProjectsList.propTypes = {
   classes: PropTypes.object.isRequired,
-  projects: PropTypes.array.isRequired,
+  projects: PropTypes.array,
   onDetails: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
 }

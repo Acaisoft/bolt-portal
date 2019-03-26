@@ -47,15 +47,13 @@ export class List extends Component {
     })
   }
 
-  handleEdit = ({ name, description, id }) => {
+  handleEdit = project => {
     this.setState({
       isDrawerOpen: true,
       mode: 'edit',
       formValues: {
-        name,
-        description,
-        image: 'path/to/img.png',
-        id,
+        ...project,
+        image_preview_url: project.image_url,
       },
     })
   }

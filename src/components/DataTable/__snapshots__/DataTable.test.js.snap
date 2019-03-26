@@ -268,7 +268,7 @@ exports[`component: DataTable rendering should render loader if isLoading is set
       <TableCellMock
         colSpan={3}
       >
-        Loading...
+        <Loading />
       </TableCellMock>
     </TableRowMock>
   </TableBodyMock>

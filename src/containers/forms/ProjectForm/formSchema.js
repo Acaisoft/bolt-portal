@@ -16,10 +16,6 @@ const formFields = {
       .ensure()
       .max(512),
   },
-  image: {
-    label: 'Project Image',
-    validator: Yup.string().ensure(),
-  },
 }
 
 const validationSchema = makeValidationSchema(formFields)

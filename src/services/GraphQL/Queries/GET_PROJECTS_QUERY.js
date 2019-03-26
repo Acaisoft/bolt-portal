@@ -5,6 +5,7 @@ export default gql`
       id
       name
       description
+      image_url
     }
   }
 `
