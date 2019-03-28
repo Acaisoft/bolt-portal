@@ -21,12 +21,10 @@ export default {
   },
   typography: {
     useNextVariants: true,
-    fontFamily: 'Arial, sans-serif',
+    fontSize: 15,
+    fontFamily: 'Montserrat, Arial, sans-serif',
     button: {
       textTransform: 'none',
-      fontWeight: 'bold',
-    },
-    body2: {
       fontWeight: 'bold',
     },
   },
