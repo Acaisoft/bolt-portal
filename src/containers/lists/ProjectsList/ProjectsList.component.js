@@ -50,7 +50,11 @@ const ProjectCard = ({ classes, project, onDetails, onMenuOpen }) => (
         </IconButton>
       }
       title={project.name}
-      titleTypographyProps={{ component: 'p', paragraph: true }}
+      titleTypographyProps={{
+        component: 'p',
+        paragraph: true,
+        style: { fontWeight: 'bold' },
+      }}
       subheader={
         <div className={classes.chips}>
           <Chip label="13 Test Scenarios" className={classes.chip} />
