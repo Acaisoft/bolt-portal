@@ -4,17 +4,23 @@ import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms'
 
 const formFields = {
   name: {
-    label: 'Project Name',
+    label: 'Name',
     validator: Yup.string()
       .required()
       .ensure()
       .min(3),
+    input: {
+      variant: 'filled',
+    },
   },
   description: {
-    label: 'Project Description',
+    label: 'Description',
     validator: Yup.string()
       .ensure()
       .max(512),
+    input: {
+      variant: 'filled',
+    },
   },
 }
 

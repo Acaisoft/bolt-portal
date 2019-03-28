@@ -19,11 +19,11 @@ export default ({ palette, spacing, typography }) => {
       marginTop: 20,
       display: 'flex',
       justifyContent: 'flex-end',
-      background: palette.gray.default,
+      background: palette.grey.default,
       padding: '10px 5px',
     },
     link: {
-      color: palette.black,
+      color: palette.common.black,
       textDecoration: 'none',
       textTransform: 'uppercase',
     },

@@ -1,34 +1,42 @@
 export default ({ palette, spacing }) => ({
-  appBar: {
-    background: palette.background.default,
-    boxShadow: 'none',
-    color: palette.primary.main,
-  },
-  formContainer: {
-    background: palette.background.accent,
-    display: 'flex',
+  root: {
     flexGrow: 1,
-    overflowY: 'scroll',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'stretch',
     padding: spacing.unit * 3,
   },
-  formWrapper: {
-    background: palette.background.paper,
+  header: {
+    flexGrow: 1,
     display: 'flex',
-    flex: '1 1 auto',
-    flexDirection: 'column',
-    minHeight: '100%',
-    overflowY: 'auto',
-    padding: spacing.unit * 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '150%',
+    marginBottom: spacing.unit * 3,
   },
-  row: {
-    paddingBottom: spacing.unit * 2,
-    paddingTop: spacing.unit * 2,
+  headerIcon: {
+    height: 78,
+    marginRight: spacing.unit * 3,
   },
-  sizeNotification: {
-    color: palette.error.main,
-    marginTop: spacing.unit * 0.5,
+  headerTitle: {
+    fontWeight: 'bold',
   },
-  uploadButton: {
-    marginLeft: spacing.unit * 1,
+  form: {
+    paddingLeft: spacing.unit * 4,
+    paddingRight: spacing.unit * 4,
+  },
+  formFields: {
+    flexGrow: 1,
+  },
+  actionButtons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& > button': {
+      marginLeft: spacing.unit,
+    },
+  },
+  imagePreviewContainer: {
+    maxWidth: '100%',
+    width: 200,
   },
 })

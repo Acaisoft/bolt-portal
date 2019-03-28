@@ -1,25 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  Button,
-  FormControl,
-  withStyles,
-  FormLabel,
-  FormHelperText,
-} from '@material-ui/core'
+import { FormControl, withStyles, FormHelperText } from '@material-ui/core'
+import { Image } from '@material-ui/icons'
+import { ButtonWithIcon } from '~components'
 
 import styles from './FileUploader.component.styles'
 
 function FileUploader({ classes, error, id, label, loading, onChange }) {
   return (
-    <FormControl error={!!error} fullWidth margin="normal">
-      <FormLabel className={classes.label}>{label}</FormLabel>
+    <FormControl error={!!error} margin="normal">
       <input id={id} type="file" onChange={onChange} className={classes.input} />
       <label htmlFor={id}>
-        <Button variant="contained" component="span">
-          Upload a file
-        </Button>
+        <ButtonWithIcon
+          variant="outlined"
+          color="default"
+          component="span"
+          icon={Image}
+        >
+          {label}
+        </ButtonWithIcon>
       </label>
       {loading && <p>Loading: {loading}</p>}
       {error && <FormHelperText>{error}</FormHelperText>}

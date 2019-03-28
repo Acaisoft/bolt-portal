@@ -5,7 +5,7 @@ export default ({ palette, spacing }) => ({
     alignItems: 'center',
     height: '100vh',
     padding: spacing.unit * 4,
-    backgroundColor: palette.blue[300],
+    backgroundColor: 'lightBlue',
     color: palette.common.white,
   },
 })

@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 
 import { CssBaseline, withStyles } from '@material-ui/core'
 
-import Header from './components/Header'
-import Sidebar from './components/Sidebar'
-
 import AuthorizedPages from '~pages/Authorized'
 
+import TopBar from './components/TopBar'
 import styles from './Authorized.styles'
 
 export class Authorized extends Component {
@@ -22,8 +20,7 @@ export class Authorized extends Component {
       <div className={classes.root}>
         <div className={classes.nav}>
           <CssBaseline />
-          <Header />
-          <Sidebar />
+          <TopBar />
         </div>
         <main className={classes.content}>
           <AuthorizedPages />

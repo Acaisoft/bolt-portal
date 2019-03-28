@@ -1,13 +1,9 @@
-const drawerWidth = 260
-
 export default ({ mixins, spacing }) => ({
   root: {},
   content: {
     ...mixins.gutters(),
+    paddingTop: spacing.unit * 3,
     paddingBottom: spacing.unit * 3,
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    paddingTop: 84,
   },
   nav: {
     display: 'flex',
