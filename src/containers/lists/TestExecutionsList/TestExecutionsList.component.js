@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
+import { TestRun } from '~assets/icons'
 
 import { DataTable } from '~components'
 
@@ -14,6 +15,7 @@ export function TestExecutionsList({
 }) {
   return (
     <DataTable data={executions} isLoading={loading} rowKey={test => test.id}>
+      <DataTable.Column key="icon" render={() => <TestRun />} title="" width={20} />
       <DataTable.Column
         key="runDate"
         render={test => moment(test.start).format('YYYY-MM-DD HH:mm')}

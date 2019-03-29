@@ -5,6 +5,7 @@ import { IconButton, withStyles } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
 
 import { DataTable } from '~components'
+import { TestConfiguration } from '~assets/icons'
 
 import styles from './TestConfigurationsList.component.styles'
 
@@ -22,6 +23,12 @@ export function TestConfigurationsList({
       isLoading={loading}
       rowKey={configuration => configuration.id}
     >
+      <DataTable.Column
+        key="icon"
+        render={() => <TestConfiguration />}
+        title=""
+        width={20}
+      />
       <DataTable.Column
         key="name"
         render={configuration => configuration.name}
