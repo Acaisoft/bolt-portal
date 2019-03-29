@@ -43,7 +43,7 @@ export default ({ palette, shape, spacing, typography }) => {
       // For browsers supporting grid.
       '&': {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
       },
     },
     gridItem: {
