@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 
-import { Typography, withStyles } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 
 import { DeleteModal } from '~components'
 import { TestConfigurationsList } from '~containers/lists'

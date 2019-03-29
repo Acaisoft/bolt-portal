@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Query } from 'react-apollo'
 import { Menu, MenuItem, Typography } from '@material-ui/core'
 import { RemoteList } from '~containers'
 import { SectionHeader } from '~components'
