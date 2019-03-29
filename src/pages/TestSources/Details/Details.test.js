@@ -7,9 +7,10 @@ import { mocks } from '~utils/tests'
 const initDetails = overrides => {
   const mockProps = {
     match: {
-      url: '/projects/project-1/test-execs',
+      url: '/projects/project-1/test-sources/source-2',
+      path: '/projects/:projectId/test-sources/:testSourceId',
       params: {
-        configurationId: 'configuration-123',
+        testSourceId: 'source-2',
       },
     },
   }

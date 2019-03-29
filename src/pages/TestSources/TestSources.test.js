@@ -1,27 +1,27 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { Repositories } from './Repositories'
+import { TestSources } from './TestSources'
 import { mocks } from '~utils/tests'
 
-const initRepositories = overrides => {
+const initTestSources = overrides => {
   const mockProps = {
     match: {
-      path: '/test-configurations',
-      url: '/test-configurations',
+      path: '/test-sources',
+      url: '/test-sources',
       params: {},
     },
   }
   const wrapper = shallow(
-    <Repositories classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
+    <TestSources classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
   )
   return { wrapper }
 }
 
-describe('page: Repositories', () => {
+describe('page: TestSources', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      const { wrapper } = initRepositories()
+      const { wrapper } = initTestSources()
       expect(wrapper).toBeTruthy()
     })
   })

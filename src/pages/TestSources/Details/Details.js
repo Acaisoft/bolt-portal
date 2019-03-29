@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
-import { RepositoriesList } from '~containers/lists'
 
 import styles from './Details.styles'
 
@@ -11,7 +10,7 @@ export class Details extends Component {
     classes: PropTypes.object.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
-        repositoryId: PropTypes.string,
+        testSourceId: PropTypes.string,
       }).isRequired,
       url: PropTypes.string.isRequired,
     }).isRequired,
@@ -19,13 +18,13 @@ export class Details extends Component {
 
   render() {
     const { classes, match } = this.props
-    const { repositoryId } = match.params
+    const { testSourceId } = match.params
 
     return (
       <div className={classes.root}>
-        <Typography variant="body2">Here you see repository details</Typography>
+        <Typography variant="body2">Here you see test source details</Typography>
         <div className={classes.tableContainer}>
-          Repository details for {repositoryId}
+          Test source details for {testSourceId}
         </div>
       </div>
     )

@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 
 import { Mutation } from 'react-apollo'
 import { withStyles } from '@material-ui/core'
-import { AddButton, DeleteModal } from '~components'
+import { DeleteModal } from '~components'
 import { TestSourcesList } from '~containers/lists'
 
-import styles from './List.styles'
 import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
+
+import styles from './List.styles'
 
 export class List extends Component {
   static propTypes = {
@@ -87,7 +88,6 @@ export class List extends Component {
           onCreate={this.handleCreate}
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
-          showPagination
         />
       </div>
     )
