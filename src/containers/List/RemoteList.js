@@ -6,7 +6,7 @@ import { Query } from 'react-apollo'
 export class RemoteList extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-    paginationDataKey: PropTypes.string.isRequired,
+    paginationDataKey: PropTypes.string,
   }
 
   render() {
@@ -24,7 +24,8 @@ export class RemoteList extends Component {
                 })
               },
               totalCount:
-                (queryResult.data &&
+                (paginationDataKey &&
+                  queryResult.data &&
                   queryResult.data[paginationDataKey] &&
                   queryResult.data[paginationDataKey].aggregate.count) ||
                 0,
