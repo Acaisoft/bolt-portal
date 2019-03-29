@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Query } from 'react-apollo'
 import { Menu, MenuItem, Typography } from '@material-ui/core'
+import { SectionHeader } from '~components'
 
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
 
@@ -84,6 +85,10 @@ export class ProjectsListContainer extends Component {
 
           return (
             <React.Fragment>
+              <SectionHeader
+                title="Your Projects"
+                subtitle={`(${projects.length})`}
+              />
               <ProjectsList
                 loading={loading}
                 projects={projects}

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core'
 import { ProjectsList } from '~containers/lists'
-import { SectionHeader } from '~components'
 
 import styles from './List.styles'
 
@@ -28,7 +27,6 @@ export class List extends Component {
 
     return (
       <div className={classes.root}>
-        <SectionHeader title="Your Projects" subtitle="(4)" />
         <ProjectsList onDetails={this.handleDetails} />
       </div>
     )
