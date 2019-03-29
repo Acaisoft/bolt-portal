@@ -47,8 +47,8 @@ export class TestSourcesListContainer extends Component {
                 </div>
               </Grid>
               <TestSourcesList
-                repositories={testSources}
                 loading={loading}
+                testSources={testSources}
                 projectId={projectId}
                 onDelete={onDelete}
                 onEdit={onEdit}

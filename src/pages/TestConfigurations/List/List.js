@@ -62,7 +62,7 @@ export class List extends Component {
               <DeleteModal
                 onClose={this.handleDeleteModalClose}
                 onSubmit={() => this.handleDeleteSubmit({ delMutation })}
-                type="repository"
+                type="test source"
                 name={selectedItem.name}
               />
             )

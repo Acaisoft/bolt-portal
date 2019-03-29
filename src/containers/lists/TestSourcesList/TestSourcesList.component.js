@@ -9,13 +9,13 @@ import styles from './TestSourcesList.component.styles'
 
 export function TestSourcesList({
   classes,
-  repositories,
+  testSources,
   loading,
   onDelete,
   onEdit,
 }) {
   return (
-    <DataTable data={repositories} isLoading={loading} rowKey={source => source.id}>
+    <DataTable data={testSources} isLoading={loading} rowKey={source => source.id}>
       <DataTable.Column
         key="name"
         render={source => (source[source.source_type] || {}).name}

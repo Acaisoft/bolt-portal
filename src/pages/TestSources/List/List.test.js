@@ -17,7 +17,7 @@ const initComponent = overrides => {
       push: jest.fn(),
     },
     match: {
-      url: '/repositories',
+      url: '/test-sources',
       params: {},
     },
   }

@@ -32,7 +32,7 @@ export class List extends Component {
 
   state = {
     isDeleteModalOpen: false,
-    selectedRepository: '',
+    selectedTestSource: '',
   }
 
   handleCreate = () => {
@@ -45,13 +45,13 @@ export class List extends Component {
     history.push(`${match.url}/${id}`)
   }
 
-  handleDelete = repository => {
-    this.setState({ isDeleteModalOpen: true, selectedRepository: repository })
+  handleDelete = testSource => {
+    this.setState({ isDeleteModalOpen: true, selectedTestSource: testSource })
   }
 
   handleDeleteSubmit = async ({ delMutation }) => {
-    const { selectedRepository } = this.state
-    await delMutation({ variables: { id: selectedRepository.id } })
+    const { selectedTestSource } = this.state
+    await delMutation({ variables: { id: selectedTestSource.id } })
     this.handleCloseDeleteModal()
   }
 
@@ -62,7 +62,7 @@ export class List extends Component {
   render() {
     const { classes, match } = this.props
     const { projectId } = match.params
-    const { isDeleteModalOpen, selectedRepository } = this.state
+    const { isDeleteModalOpen, selectedTestSource } = this.state
 
     return (
       <div className={classes.root}>
@@ -77,8 +77,8 @@ export class List extends Component {
               <DeleteModal
                 onClose={this.handleCloseDeleteModal}
                 onSubmit={() => this.handleDeleteSubmit({ delMutation })}
-                type="repository"
-                name={selectedRepository.name}
+                type="test source"
+                name={selectedTestSource.name}
               />
             )
           }

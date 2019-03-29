@@ -18,21 +18,21 @@ export class Details extends Component {
   items = [
     {
       id: 1,
-      label: 'TEST RUN CONFIGURATIONS',
+      label: 'TEST SCENARIOS',
       linkTo: `${this.props.match.url}/test-configurations`,
-      description: 'Manage Test Run Configurations for My Super App.',
+      description: 'Manage Test Scenarios for My Super App.',
     },
     {
       id: 2,
-      label: 'TEST REPOSITORIES',
-      linkTo: `${this.props.match.url}/repositories`,
-      description: 'Manage Test Repositories for My Super App.',
+      label: 'TEST SOURCES',
+      linkTo: `${this.props.match.url}/test-sources`,
+      description: 'Manage Test Sources for My Super App.',
     },
     {
       id: 3,
-      label: 'TESTS EXECUTIONS',
+      label: 'TESTS RUNS',
       linkTo: `${this.props.match.url}/test-runs`,
-      description: 'See all tests executions results.',
+      description: 'See all tests run results.',
     },
     {
       id: 4,

@@ -46,16 +46,12 @@ export function TestConfigurationsList({
           <div className={classes.dateContainer}>
             {(configuration.executions[0] || {}).start && (
               <React.Fragment>
+                <IconButton className={classes.icon} disabled>
+                  <History />
+                </IconButton>
                 <span>
                   {moment(configuration.executions[0].start).format('YYYY-MM-DD')}
                 </span>
-                <IconButton
-                  aria-label="Delete repository"
-                  className={classes.icon}
-                  disabled
-                >
-                  <History />
-                </IconButton>
               </React.Fragment>
             )}
           </div>

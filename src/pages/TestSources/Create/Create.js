@@ -10,11 +10,11 @@ export class Create extends Component {
   render() {
     return (
       <div>
-        <Typography variant="h6">Repository Data</Typography>
+        <Typography variant="h6">Test Source Data</Typography>
         <Typography variant="body1">
-          Here you can define your new test run repository, you can edit the data
-          until first test run. After that you will be able only to change
-          configuration name.
+          Here you can define your new test run source, you can edit the data until
+          first test run. After that you will be able only to change configuration
+          name.
         </Typography>
 
         <RepositoryForm mode="create" />
