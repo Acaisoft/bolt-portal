@@ -33,6 +33,7 @@ exports[`component: DataTable rendering checkboxes should render checkbox for se
   </TableHeadMock>
   <TableBodyMock>
     <TableRowMock
+      className=""
       key="1"
     >
       <TableCellMock
@@ -61,6 +62,7 @@ exports[`component: DataTable rendering checkboxes should render checkbox for se
       </TableCellMock>
     </TableRowMock>
     <TableRowMock
+      className=""
       key="2"
     >
       <TableCellMock
@@ -119,6 +121,7 @@ exports[`component: DataTable rendering checkboxes should render checkboxes in e
   </TableHeadMock>
   <TableBodyMock>
     <TableRowMock
+      className=""
       key="1"
     >
       <TableCellMock
@@ -147,6 +150,7 @@ exports[`component: DataTable rendering checkboxes should render checkboxes in e
       </TableCellMock>
     </TableRowMock>
     <TableRowMock
+      className=""
       key="2"
     >
       <TableCellMock
@@ -201,6 +205,7 @@ exports[`component: DataTable rendering should render data according to Column s
   </TableHeadMock>
   <TableBodyMock>
     <TableRowMock
+      className=""
       key="1"
     >
       <TableCellMock
@@ -220,6 +225,7 @@ exports[`component: DataTable rendering should render data according to Column s
       </TableCellMock>
     </TableRowMock>
     <TableRowMock
+      className=""
       key="2"
     >
       <TableCellMock
@@ -264,7 +270,9 @@ exports[`component: DataTable rendering should render loader if isLoading is set
     </TableRowMock>
   </TableHeadMock>
   <TableBodyMock>
-    <TableRowMock>
+    <TableRowMock
+      className=""
+    >
       <TableCellMock
         colSpan={3}
       >

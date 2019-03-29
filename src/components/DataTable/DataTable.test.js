@@ -1,6 +1,8 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
+import { mocks } from '~utils/tests'
+
 import {
   DataTable,
   Column,
@@ -10,7 +12,9 @@ import {
 import { children, checkboxKey, data, onSelect } from './DataTable.test.mock'
 
 const initDataTable = overrides => {
-  const wrapper = shallow(<DataTable data={data} {...overrides} />)
+  const wrapper = shallow(
+    <DataTable classes={mocks.ClassesProxy} data={data} {...overrides} />
+  )
   return { wrapper }
 }
 
