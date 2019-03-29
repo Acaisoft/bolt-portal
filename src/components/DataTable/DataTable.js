@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import {
   Checkbox,
@@ -8,10 +9,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  withStyles,
 } from '@material-ui/core'
 import { Loading } from '~components'
 
 import { areArraysEqual } from '~utils/collections'
+
+import styles from './DataTable.styles'
 
 export const Column = () => null
 Column.propTypes = {
@@ -46,6 +50,7 @@ export class DataTable extends Component {
     multiselect: PropTypes.bool,
     onSelect: PropTypes.func,
     rowKey: PropTypes.func,
+    striped: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -53,6 +58,7 @@ export class DataTable extends Component {
     initialSelected: new Set(),
     onSelect: () => {},
     rowKey: row => row.id,
+    striped: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -114,13 +120,21 @@ export class DataTable extends Component {
   }
 
   renderBody = () => {
-    const { checkboxes, checkboxKey, data, isLoading, rowKey } = this.props
+    const {
+      classes,
+      checkboxes,
+      checkboxKey,
+      data,
+      isLoading,
+      rowKey,
+      striped,
+    } = this.props
     const { columns, selected } = this.state
 
     if (isLoading) {
       return (
         <TableBody>
-          <TableRow>
+          <TableRow className={classNames({ [classes.striped]: striped })}>
             <TableCell colSpan={columns.length}>
               <Loading />
             </TableCell>
@@ -131,8 +145,15 @@ export class DataTable extends Component {
 
     return (
       <TableBody>
-        {data.map(row => (
-          <TableRow key={rowKey(row)}>
+        {data.map((row, index) => (
+          <TableRow
+            key={rowKey(row)}
+            className={classNames({
+              // Indices are zero-based, so we need to shift by one.
+              [classes.stripedOdd]: striped && index % 2 === 0,
+              [classes.stripedEven]: striped && index % 2 === 1,
+            })}
+          >
             {checkboxes && (
               <TableCell key="_checkbox" padding="checkbox">
                 <Checkbox
@@ -196,4 +217,4 @@ export class DataTable extends Component {
   }
 }
 
-export default DataTable
+export default withStyles(styles, { name: 'DataTable' })(DataTable)

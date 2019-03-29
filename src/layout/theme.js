@@ -7,6 +7,10 @@ export default {
     background: {
       default: '#24223B',
       paper: '#302F4C',
+      striped: {
+        odd: 'rgba(106, 104, 140, 0.24)',
+        even: 'trasparent',
+      },
     },
     primary: {
       light: '#302F4C',
@@ -53,10 +57,22 @@ export default {
         },
       },
     },
+    MuiTableCell: {
+      root: {
+        borderBottom: 'none',
+      },
+      head: {
+        color: '#fff',
+        fontWeight: 'bold',
+      },
+    },
   },
   props: {
     MuiButtonBase: {
       // disableRipple: true, // No more ripple, on the whole application!
+    },
+    DataTable: {
+      striped: true,
     },
   },
 }
