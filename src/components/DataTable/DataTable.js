@@ -111,8 +111,10 @@ export class DataTable extends Component {
               )}
             </TableCell>
           )}
-          {columns.map(({ key, title }) => (
-            <TableCell key={key}>{title}</TableCell>
+          {columns.map(({ key, title, width }) => (
+            <TableCell key={key} width={width}>
+              {title}
+            </TableCell>
           ))}
         </TableRow>
       </TableHead>
