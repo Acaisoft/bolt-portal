@@ -7,10 +7,16 @@ import { ButtonWithIcon } from '~components'
 
 import styles from './FileUploader.component.styles'
 
-function FileUploader({ classes, error, id, label, loading, onChange }) {
+function FileUploader({ accept, classes, error, id, label, loading, onChange }) {
   return (
     <FormControl error={!!error} margin="normal">
-      <input id={id} type="file" onChange={onChange} className={classes.input} />
+      <input
+        type="file"
+        accept={accept}
+        onChange={onChange}
+        id={id}
+        className={classes.input}
+      />
       <label htmlFor={id}>
         <ButtonWithIcon
           variant="outlined"
@@ -28,6 +34,7 @@ function FileUploader({ classes, error, id, label, loading, onChange }) {
 }
 
 FileUploader.propTypes = {
+  accept: PropTypes.string,
   classes: PropTypes.object.isRequired,
   error: PropTypes.string,
   id: PropTypes.string.isRequired,

@@ -118,6 +118,7 @@ export class ProjectForm extends Component {
 
                       <div>
                         <FileUploader
+                          accept="image/png, image/jpeg, image/gif"
                           label="Upload Image"
                           id="project_image"
                           onStart={() => this.handleFileUploadStart(formikBag)}

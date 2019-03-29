@@ -9,6 +9,7 @@ import { getFileHash, readFile, uploadFileToGCS } from './FileUploader.module'
 
 export class FileUploadContainer extends Component {
   static propTypes = {
+    accept: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.string,
     onError: PropTypes.func,
@@ -73,7 +74,7 @@ export class FileUploadContainer extends Component {
   }
 
   render() {
-    const { id, label } = this.props
+    const { accept, id, label } = this.props
 
     return (
       <Mutation mutation={REQUEST_UPLOAD_URL_MUTATION}>
@@ -82,6 +83,7 @@ export class FileUploadContainer extends Component {
 
           return (
             <FileUploader
+              accept={accept}
               id={id}
               label={label}
               loading={loading}
