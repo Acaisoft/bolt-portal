@@ -35,9 +35,10 @@ function SectionHeader({
 }
 SectionHeader.propTypes = {
   classes: PropTypes.object.isRequired,
+  description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   marginBottom: PropTypes.bool,
-  subtitle: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
 }
 
 export default withStyles(styles)(SectionHeader)
