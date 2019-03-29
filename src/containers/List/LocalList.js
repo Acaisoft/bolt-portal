@@ -1,7 +1,5 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import PropTypes from 'prop-types'
-
-import List from './List'
 
 const getVisibleData = (data, { limit = 10, offset = 0, orderBy = {} } = {}) => {
   return data.slice(offset, offset + limit)
@@ -36,20 +34,19 @@ export class LocalList extends Component {
   }
 
   render() {
-    const { children, data, showPagination } = this.props
+    const { children, data } = this.props
     const { limit, offset, orderBy } = this.state
 
     const visibleData = getVisibleData(data, { limit, offset, orderBy })
 
-    return (
-      <List
-        onPaginationChange={this.handlePaginationChange}
-        showPagination={showPagination}
-        totalCount={data.length}
-      >
-        {children({ data: visibleData, loading: false })}
-      </List>
-    )
+    return children({
+      data: visibleData,
+      loading: false,
+      pagination: {
+        onChange: this.handlePaginationChange,
+        totalCount: data.length,
+      },
+    })
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { RemoteList } from '~containers'
+import { Pagination, RemoteList } from '~containers'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
 import TestConfigurationsList from './TestConfigurationsList.component'
@@ -14,7 +14,7 @@ export class TestConfigurationsListContainer extends Component {
   }
 
   render() {
-    const { projectId, onDelete, onEdit, ...listProps } = this.props
+    const { projectId, onDelete, onEdit } = this.props
 
     const query = GET_CONFIGS_QUERY
 
@@ -28,17 +28,21 @@ export class TestConfigurationsListContainer extends Component {
         paginationDataKey="configuration_aggregate"
         query={query}
         variables={variables}
-        {...listProps}
       >
-        {({ data, loading }) => (
-          <TestConfigurationsList
-            configurations={data && data.configuration}
-            loading={loading}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            projectId={projectId}
-          />
-        )}
+        {({ data, loading, pagination }) => {
+          return (
+            <React.Fragment>
+              <Pagination {...pagination} />
+              <TestConfigurationsList
+                configurations={(data && data.configuration) || []}
+                loading={loading}
+                onDelete={onDelete}
+                onEdit={onEdit}
+                projectId={projectId}
+              />
+            </React.Fragment>
+          )
+        }}
       </RemoteList>
     )
   }

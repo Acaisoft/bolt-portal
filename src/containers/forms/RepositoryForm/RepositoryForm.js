@@ -14,7 +14,7 @@ import {
   ADD_REPOSITORY_MUTATION,
   EDIT_REPOSITORY_MUTATION,
 } from '~services/GraphQL/Mutations'
-import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
+import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 
 export class RepositoryForm extends Component {
   static propTypes = {
@@ -59,7 +59,7 @@ export class RepositoryForm extends Component {
         mutation={
           mode === 'create' ? ADD_REPOSITORY_MUTATION : EDIT_REPOSITORY_MUTATION
         }
-        refetchQueries={[{ query: GET_REPOSITORIES_QUERY }]}
+        refetchQueries={[{ query: GET_TEST_SOURCES_QUERY }]}
       >
         {(repoMutation, { data }) => (
           <Formik

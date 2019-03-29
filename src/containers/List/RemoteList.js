@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Query } from 'react-apollo'
-import List from './List'
 
 export class RemoteList extends Component {
   static propTypes = {
@@ -10,47 +9,35 @@ export class RemoteList extends Component {
     query: PropTypes.object.isRequired,
     variables: PropTypes.object,
     paginationDataKey: PropTypes.string.isRequired,
-    showPagination: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    showPagination: true,
-    variables: {},
   }
 
   render() {
-    const {
-      children,
-      paginationDataKey,
-      showPagination,
-      query,
-      variables,
-    } = this.props
-
-    const queryVariables = {
-      ...variables,
-    }
+    const { children, paginationDataKey, query, variables } = this.props
 
     return (
-      <Query query={query} variables={queryVariables}>
-        {result => (
-          <List
-            data={result.data}
-            onPaginationChange={pagination => {
-              result.refetch({
-                limit: pagination.rowsPerPage,
-                offset: pagination.offset,
-              })
-            }}
-            showPagination={showPagination}
-            totalCount={
-              result.data[paginationDataKey] &&
-              result.data[paginationDataKey].aggregate.count
-            }
-          >
-            {children(result)}
-          </List>
-        )}
+      <Query query={query} variables={variables}>
+        {queryProps => {
+          const paginationProps = {
+            pagination: {
+              onChange: pagination => {
+                queryProps.refetch({
+                  limit: pagination.rowsPerPage,
+                  offset: pagination.offset,
+                })
+              },
+              totalCount:
+                (queryProps.data &&
+                  queryProps.data[paginationDataKey] &&
+                  queryProps.data[paginationDataKey].aggregate.count) ||
+                0,
+            },
+          }
+
+          return children({
+            ...queryProps,
+            ...paginationProps,
+          })
+        }}
       </Query>
     )
   }

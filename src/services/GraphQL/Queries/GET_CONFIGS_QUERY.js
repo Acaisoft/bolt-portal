@@ -15,16 +15,27 @@ export default gql`
     ) {
       id
       name
+      configuration_type {
+        id
+        name
+      }
       executions {
         id
         start
       }
-      repository {
+      test_source {
         id
-        url
+        source_type
+        repository {
+          id
+          name
+        }
+        test_creator {
+          id
+          name
+        }
       }
     }
-
     configuration_aggregate(where: { project_id: { _eq: $projectId } }) {
       aggregate {
         count

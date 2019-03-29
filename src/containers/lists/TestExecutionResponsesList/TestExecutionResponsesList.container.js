@@ -19,7 +19,7 @@ export class TestExecutionResponsesListContainer extends Component {
       <LocalList data={responses} showPagination>
         {({ data }) => (
           <TestExecutionResponsesList
-            responses={data}
+            responses={data || []}
             onDetails={this.handleDetails}
           />
         )}

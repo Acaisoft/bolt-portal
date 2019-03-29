@@ -28,15 +28,23 @@ export function TestConfigurationsList({
         title="Name"
       />
       <DataTable.Column
+        key="type"
+        render={configuration => configuration.configuration_type.name}
+        title="Type"
+      />
+      <DataTable.Column
         key="source"
-        render={configuration => (configuration.repository || {}).url}
+        render={configuration =>
+          configuration.test_source &&
+          configuration.test_source[configuration.test_source.source_type].name
+        }
         title="Source"
       />
       <DataTable.Column
         key="lastRun"
         render={configuration => (
           <div className={classes.dateContainer}>
-            {configuration.executions[0] && (
+            {(configuration.executions[0] || {}).start && (
               <React.Fragment>
                 <span>
                   {moment(configuration.executions[0].start).format('YYYY-MM-DD')}

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 import { Typography, withStyles } from '@material-ui/core'
 import { AddButton, DeleteModal } from '~components'
-import { RepositoriesList } from '~containers/lists'
+import { TestSourcesList } from '~containers/lists'
 
 import styles from './List.styles'
-import { GET_REPOSITORIES_QUERY } from '~services/GraphQL/Queries'
+import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
 
 export class List extends Component {
@@ -71,7 +71,7 @@ export class List extends Component {
         <Mutation
           mutation={DELETE_REPOSITORY_MUTATION}
           refetchQueries={[
-            { query: GET_REPOSITORIES_QUERY, variables: { projectId } },
+            { query: GET_TEST_SOURCES_QUERY, variables: { projectId } },
           ]}
         >
           {(delMutation, { data }) =>
@@ -88,7 +88,7 @@ export class List extends Component {
         <div className={classes.btnContainer}>
           <AddButton onClick={this.handleCreate} />
         </div>
-        <RepositoriesList
+        <TestSourcesList
           projectId={projectId}
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}

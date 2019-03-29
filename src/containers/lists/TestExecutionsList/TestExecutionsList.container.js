@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { RemoteList } from '~containers'
+import { Pagination, RemoteList } from '~containers'
 import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
 
 import TestExecutionsList from './TestExecutionsList.component'
@@ -11,10 +11,11 @@ export class TestExecutionsListContainer extends Component {
     configurationId: PropTypes.string,
     onDetails: PropTypes.func.isRequired,
     projectId: PropTypes.string,
+    showPagination: PropTypes.bool,
   }
 
   render() {
-    const { configurationId, onDetails, projectId, ...listProps } = this.props
+    const { configurationId, onDetails, projectId, showPagination } = this.props
 
     const query = GET_EXECUTIONS_QUERY
 
@@ -28,16 +29,18 @@ export class TestExecutionsListContainer extends Component {
         paginationDataKey="execution_aggregate"
         query={query}
         variables={variables}
-        {...listProps}
       >
-        {({ data, loading, error }) => {
+        {({ data, loading, pagination }) => {
           return (
-            <TestExecutionsList
-              executions={data && data.execution}
-              loading={loading}
-              projectId={projectId}
-              onDetails={onDetails}
-            />
+            <React.Fragment>
+              {showPagination && <Pagination {...pagination} />}
+              <TestExecutionsList
+                executions={(data && data.execution) || []}
+                loading={loading}
+                projectId={projectId}
+                onDetails={onDetails}
+              />
+            </React.Fragment>
           )
         }}
       </RemoteList>

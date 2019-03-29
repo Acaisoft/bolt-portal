@@ -5,9 +5,9 @@ import { Edit, Delete } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
-import styles from './RepositoriesList.component.styles'
+import styles from './TestSourcesList.component.styles'
 
-export function RepositoriesList({
+export function TestSourcesList({
   classes,
   repositories,
   loading,
@@ -15,46 +15,42 @@ export function RepositoriesList({
   onEdit,
 }) {
   return (
-    <DataTable
-      data={repositories}
-      isLoading={loading}
-      rowKey={repository => repository.id}
-    >
+    <DataTable data={repositories} isLoading={loading} rowKey={source => source.id}>
       <DataTable.Column
         key="name"
-        render={repository => repository.name}
+        render={source => (source[source.source_type] || {}).name}
         title="Name"
       />
+      {/* <DataTable.Column
+        key="configuration_type"
+        render={source => source.configuration_type.name}
+        title="Test Type"
+      /> */}
       <DataTable.Column
         key="source_type"
-        render={repository => 'Repository'}
-        title="Source Type"
-      />
-      <DataTable.Column
-        key="configuration_type"
-        render={repository => repository.configuration_type.name}
-        title="Test Type"
+        render={source => source.source_type}
+        title="Source"
       />
       <DataTable.Column
         key="scenarios"
-        render={repository => repository.configurations.map(c => c.name).join(', ')}
+        render={source => source.configurations.map(c => c.name).join(', ')}
         title="Scenarios"
       />
       <DataTable.Column
         key="actions"
-        render={repository => (
+        render={source => (
           <div className={classes.iconsContainer}>
             <IconButton
-              aria-label="Edit repository"
+              aria-label="Edit source"
               className={classes.icon}
-              onClick={() => onEdit(repository)}
+              onClick={() => onEdit(source)}
             >
               <Edit />
             </IconButton>
             <IconButton
-              aria-label="Delete repository"
+              aria-label="Delete source"
               className={classes.icon}
-              onClick={() => onDelete(repository)}
+              onClick={() => onDelete(source)}
             >
               <Delete />
             </IconButton>
@@ -66,4 +62,4 @@ export function RepositoriesList({
   )
 }
 
-export default withStyles(styles)(RepositoriesList)
+export default withStyles(styles)(TestSourcesList)
