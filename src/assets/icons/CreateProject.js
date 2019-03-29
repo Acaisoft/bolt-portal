@@ -3,71 +3,65 @@ import React from 'react'
 function CreateProject(props) {
   return (
     <svg
-      viewBox="0 0 106 78"
+      height="79"
+      viewBox="0 0 108 79"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid meet"
-      height={78}
       {...props}
     >
+      <path
+        d="M81 69H53.7819H5C2.79086 69 1 67.2091 1 65V5C1 2.79086 2.79086 1 5 1H102.564C104.773 1 106.564 2.79086 106.564 5V35V42"
+        stroke="#A7A7C5"
+        stroke-width="2"
+      />
+      <rect x="3" y="58" width="78" height="2" fill="#A7A7C5" />
+      <ellipse cx="9.87928" cy="9" rx="1.97315" ry="2" fill="#9696D1" />
+      <ellipse cx="16.7852" cy="9" rx="1.97315" ry="2" fill="#9696D1" />
+      <ellipse cx="23.6913" cy="9" rx="1.97315" ry="2" fill="#9696D1" />
+      <path
+        d="M14.2039 24V46.1311H40.463M14.2039 24L11.8523 27.6885M14.2039 24L16.5554 27.6885M40.463 46.1311L36.9357 43.2623M40.463 46.1311L36.9357 49"
+        stroke="#A7A7C5"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M18.7583 40L21.9153 34.5L28.2294 37.6429L34.5435 29"
+        stroke="#A7A7C5"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M49.8354 19H84.3657"
+        stroke="#A7A7C5"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M49.3423 25H83.8725"
+        stroke="#A7A7C5"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M49.3423 32H83.8725"
+        stroke="#A7A7C5"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M40.6772 78L42.3328 69H62.2438L64.7916 78H40.6772Z"
+        stroke="#A7A7C5"
+        stroke-width="2"
+      />
+      <rect x="32.5704" y="77" width="41.4362" height="2" rx="1" fill="#A7A7C5" />
+      <rect x="90.7786" y="58" width="13.8121" height="2" rx="1" fill="#32D4C0" />
       <rect
-        x="1"
-        y="1"
-        width="103.564"
-        height="66"
-        rx="3"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-      />
-      <rect x="1.97302" y="57" width="102.604" height="2" fill="#A7A7C5" />
-      <ellipse cx="8.87928" cy="8" rx="1.97315" ry="2" fill="#9696D1" />
-      <ellipse cx="15.7852" cy="8" rx="1.97315" ry="2" fill="#9696D1" />
-      <ellipse cx="22.6913" cy="8" rx="1.97315" ry="2" fill="#9696D1" />
-      <path
-        d="M13.2039 23V45.1311H39.463M13.2039 23L10.8523 26.6885M13.2039 23L15.5554 26.6885M39.463 45.1311L35.9357 42.2623M39.463 45.1311L35.9357 48"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M17.7583 39L20.9153 33.5L27.2294 36.6429L33.5435 28"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M48.8354 18H83.3657"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M48.3423 24H82.8725"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M48.3423 31H82.8725"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M39.6543 77L41.2985 67H61.3709L63.8374 77H39.6543Z"
-        stroke="#A7A7C5"
-        strokeWidth="2"
-      />
-      <rect x="31.5704" y="76" width="41.4362" height="2" rx="1" fill="#A7A7C5" />
-      <rect x="79.9127" y="42" width="30" height="30" fill="#24223B" />
-      <rect x="89.7786" y="57" width="13.8121" height="2" rx="1" fill="#32D4C0" />
-      <rect
-        x="97.671"
-        y="51"
+        x="98.671"
+        y="52"
         width="14"
         height="1.97315"
         rx="0.986577"
-        transform="rotate(90 97.671 51)"
+        transform="rotate(90 98.671 52)"
         fill="#32D4C0"
       />
     </svg>
