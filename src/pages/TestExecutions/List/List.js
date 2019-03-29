@@ -32,7 +32,11 @@ export class List extends Component {
           Here you see results of all tests performed in all of your projects
         </Typography>
         <div className={classes.tableContainer}>
-          <TestExecutionsList projectId={projectId} onDetails={this.handleDetails} />
+          <TestExecutionsList
+            projectId={projectId}
+            onDetails={this.handleDetails}
+            showPagination
+          />
         </div>
       </div>
     )

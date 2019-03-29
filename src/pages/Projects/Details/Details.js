@@ -75,21 +75,18 @@ export class Details extends Component {
             </Grid>
           ))}
         </Grid>
-        <Typography variant="h3" gutterBottom>
-          Last Tests Executions
-        </Typography>
         <div className={classes.tableContainer}>
           <TestExecutionsList
+            title={
+              <Link to={`${match.url}/test-runs`} className={classes.link}>
+                Latest Test Runs
+              </Link>
+            }
             onDetails={this.handleExecutionDetails}
             projectId={projectId}
-            pagination={false}
+            hideCounter
             limit={5}
           />
-        </div>
-        <div className={classes.linkContainer}>
-          <Link to={`${match.url}/test-runs`} className={classes.link}>
-            See All
-          </Link>
         </div>
       </div>
     )

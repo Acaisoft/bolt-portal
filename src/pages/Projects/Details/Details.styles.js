@@ -23,9 +23,8 @@ export default ({ palette, spacing, typography }) => {
       padding: '10px 5px',
     },
     link: {
-      color: palette.common.black,
+      color: 'inherit',
       textDecoration: 'none',
-      textTransform: 'uppercase',
     },
   }
 }
