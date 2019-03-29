@@ -9,6 +9,7 @@ export default gql`
       id
       name
       configuration_type {
+        id
         name
       }
       project {
