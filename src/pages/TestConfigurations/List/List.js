@@ -53,9 +53,6 @@ export class List extends Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant="body2">
-          Here you can manage all Test Run Configurations
-        </Typography>
         <Mutation
           mutation={DELETE_CONFIG_MUTATION}
           refetchQueries={[{ query: GET_CONFIGS_QUERY, variables: { projectId } }]}

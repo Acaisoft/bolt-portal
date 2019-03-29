@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Mutation } from 'react-apollo'
-import { Typography, withStyles } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 import { AddButton, DeleteModal } from '~components'
 import { TestSourcesList } from '~containers/lists'
 
@@ -65,9 +65,6 @@ export class List extends Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant="body2">
-          Here you see results of all tests performed in project
-        </Typography>
         <Mutation
           mutation={DELETE_REPOSITORY_MUTATION}
           refetchQueries={[
@@ -85,11 +82,9 @@ export class List extends Component {
             )
           }
         </Mutation>
-        <div className={classes.btnContainer}>
-          <AddButton onClick={this.handleCreate} />
-        </div>
         <TestSourcesList
           projectId={projectId}
+          onCreate={this.handleCreate}
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
           showPagination

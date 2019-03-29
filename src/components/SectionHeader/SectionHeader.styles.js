@@ -1,5 +1,5 @@
 export default ({ spacing }) => ({
-  root: {
+  marginBottom: {
     marginBottom: spacing.unit * 3,
   },
   subtitle: {

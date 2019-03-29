@@ -6,35 +6,33 @@ import { Query } from 'react-apollo'
 export class RemoteList extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-    query: PropTypes.object.isRequired,
-    variables: PropTypes.object,
     paginationDataKey: PropTypes.string.isRequired,
   }
 
   render() {
-    const { children, paginationDataKey, query, variables } = this.props
+    const { children, paginationDataKey, ...queryProps } = this.props
 
     return (
-      <Query query={query} variables={variables}>
-        {queryProps => {
+      <Query {...queryProps}>
+        {queryResult => {
           const paginationProps = {
             pagination: {
               onChange: pagination => {
-                queryProps.refetch({
+                queryResult.refetch({
                   limit: pagination.rowsPerPage,
                   offset: pagination.offset,
                 })
               },
               totalCount:
-                (queryProps.data &&
-                  queryProps.data[paginationDataKey] &&
-                  queryProps.data[paginationDataKey].aggregate.count) ||
+                (queryResult.data &&
+                  queryResult.data[paginationDataKey] &&
+                  queryResult.data[paginationDataKey].aggregate.count) ||
                 0,
             },
           }
 
           return children({
-            ...queryProps,
+            ...queryResult,
             ...paginationProps,
           })
         }}

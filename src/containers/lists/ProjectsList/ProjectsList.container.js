@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Query } from 'react-apollo'
 import { Menu, MenuItem, Typography } from '@material-ui/core'
+import { RemoteList } from '~containers'
 import { SectionHeader } from '~components'
 
 import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
@@ -73,11 +74,12 @@ export class ProjectsListContainer extends Component {
     const { editedItem, menuAnchorEl } = this.state
 
     return (
-      <Query query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
+      <RemoteList query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
         {({ loading, error, data }) => {
           if (error) return <Typography variant="body1">Error :(</Typography>
+
           const projects = !loading
-            ? data.project.map(project => ({
+            ? (data.project || []).map(project => ({
                 ...project,
                 progress: 70, // Mock project progress
               }))
@@ -113,7 +115,7 @@ export class ProjectsListContainer extends Component {
             </React.Fragment>
           )
         }}
-      </Query>
+      </RemoteList>
     )
   }
 }

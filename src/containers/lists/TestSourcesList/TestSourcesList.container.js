@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { Grid } from '@material-ui/core'
 import { Pagination, RemoteList } from '~containers'
+import { SectionHeader } from '~components'
 
 import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 
@@ -30,18 +32,30 @@ export class TestSourcesListContainer extends Component {
         query={query}
         variables={variables}
       >
-        {({ data, loading, pagination }) => (
-          <React.Fragment>
-            <Pagination {...pagination} />
-            <TestSourcesList
-              repositories={data && data.test_source}
-              loading={loading}
-              projectId={projectId}
-              onDelete={onDelete}
-              onEdit={onEdit}
-            />
-          </React.Fragment>
-        )}
+        {({ data, loading, pagination }) => {
+          const testSources = (data && data.test_source) || []
+
+          return (
+            <React.Fragment>
+              <Grid container justify="space-between" alignItems="center">
+                <SectionHeader
+                  title="Test Sources"
+                  subtitle={`(${testSources.length})`}
+                />
+                <div>
+                  <Pagination {...pagination} />
+                </div>
+              </Grid>
+              <TestSourcesList
+                repositories={testSources}
+                loading={loading}
+                projectId={projectId}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              />
+            </React.Fragment>
+          )
+        }}
       </RemoteList>
     )
   }
