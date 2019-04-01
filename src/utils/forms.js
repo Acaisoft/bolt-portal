@@ -35,6 +35,7 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
   return traverseRecursively(fieldsSchema, {
     childKey: 'fields',
     nodeCallback: ({ newSubtree }) => newSubtree,
-    leafCallback: ({ path }) => getIn(values, path, ''),
+    leafCallback: ({ path, value = {} }) =>
+      getIn(values, path, value.defaultValue || ''),
   })
 }
