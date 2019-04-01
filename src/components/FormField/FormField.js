@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Field } from 'formik'
+import { Field, getIn } from 'formik'
 import { TextField } from '@material-ui/core'
 
 export class FormField extends Component {
   static propTypes = {
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   }
@@ -15,9 +16,9 @@ export class FormField extends Component {
   }
 
   renderInput = ({ field, form }) => {
-    const { component: Component, name, ...inputProps } = this.props
+    const { children, component: Component, name, ...inputProps } = this.props
 
-    const errors = form.touched[name] && form.errors[name]
+    const errors = getIn(form.touched, name) && getIn(form.errors, name)
     const helperText = inputProps.helperText || ''
 
     return (
@@ -26,7 +27,9 @@ export class FormField extends Component {
         {...inputProps}
         error={!!errors}
         helperText={errors || helperText}
-      />
+      >
+        {children}
+      </Component>
     )
   }
 
