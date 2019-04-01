@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
+import { Add } from '@material-ui/icons'
 import { Pagination, RemoteList } from '~containers'
-import { SectionHeader } from '~components'
+import { ButtonWithIcon, SectionHeader } from '~components'
 
 import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 
@@ -17,7 +18,7 @@ export class TestSourcesListContainer extends Component {
   }
 
   render() {
-    const { projectId, onDelete, onEdit } = this.props
+    const { projectId, onCreate, onDelete, onEdit } = this.props
 
     const query = GET_TEST_SOURCES_QUERY
 
@@ -42,9 +43,19 @@ export class TestSourcesListContainer extends Component {
                   title="Test Sources"
                   subtitle={`(${testSources.length})`}
                 />
-                <div>
-                  <Pagination {...pagination} />
-                </div>
+                <Grid item>
+                  <Grid container justify="flex-end" alignItems="center">
+                    <Pagination {...pagination} />
+                    <ButtonWithIcon
+                      icon={Add}
+                      color="secondary"
+                      variant="contained"
+                      onClick={onCreate}
+                    >
+                      New
+                    </ButtonWithIcon>
+                  </Grid>
+                </Grid>
               </Grid>
               <TestSourcesList
                 loading={loading}
