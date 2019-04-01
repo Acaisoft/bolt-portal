@@ -41,9 +41,19 @@ export class List extends Component {
     this.setState({ isDeleteModalOpen: false })
   }
 
-  handleEdit = configuration => {
+  handleCreate = () => {
+    const { history, match } = this.props
+    history.push(`${match.url}/create`)
+  }
+
+  handleDetails = configuration => {
     const { history, match } = this.props
     history.push(`${match.url}/${configuration.id}`)
+  }
+
+  handleEdit = configuration => {
+    const { history, match } = this.props
+    history.push(`${match.url}/${configuration.id}/edit`)
   }
 
   render() {
@@ -71,8 +81,10 @@ export class List extends Component {
         <TestConfigurationsList
           projectId={projectId}
           showPagination
+          onCreate={this.handleCreate}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
+          onDetails={this.handleDetails}
         />
       </div>
     )

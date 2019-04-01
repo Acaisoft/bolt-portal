@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
+import { Add } from '@material-ui/icons'
 import { Pagination, RemoteList } from '~containers'
-import { SectionHeader } from '~components'
+import { ButtonWithIcon, SectionHeader } from '~components'
 
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
@@ -12,12 +13,14 @@ import TestConfigurationsList from './TestConfigurationsList.component'
 export class TestConfigurationsListContainer extends Component {
   static propTypes = {
     projectId: PropTypes.string,
-    onEdit: PropTypes.func.isRequired,
+    onCreate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onDetails: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
   }
 
   render() {
-    const { projectId, onDelete, onEdit } = this.props
+    const { projectId, onCreate, onDelete, onDetails, onEdit } = this.props
 
     const query = GET_CONFIGS_QUERY
 
@@ -41,17 +44,27 @@ export class TestConfigurationsListContainer extends Component {
                 <SectionHeader
                   title="Scenarios"
                   subtitle={`(${configurations.length})`}
-                  description="Here you see results of all tests performed in the project"
                 />
 
-                <div>
-                  <Pagination {...pagination} />
-                </div>
+                <Grid item>
+                  <Grid container justify="flex-end" alignItems="center">
+                    <Pagination {...pagination} />
+                    <ButtonWithIcon
+                      icon={Add}
+                      variant="contained"
+                      color="secondary"
+                      onClick={onCreate}
+                    >
+                      New
+                    </ButtonWithIcon>
+                  </Grid>
+                </Grid>
               </Grid>
               <TestConfigurationsList
                 configurations={configurations}
                 loading={loading}
                 onDelete={onDelete}
+                onDetails={onDetails}
                 onEdit={onEdit}
                 projectId={projectId}
               />

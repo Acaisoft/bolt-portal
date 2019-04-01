@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 
 import { IconButton, withStyles } from '@material-ui/core'
-import { Edit, Delete, History, PlayArrow } from '@material-ui/icons'
+import { Edit, Delete, History, PlayArrow, Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 import { TestConfiguration } from '~assets/icons'
@@ -14,6 +14,7 @@ export function TestConfigurationsList({
   configurations,
   loading,
   onDelete,
+  onDetails,
   onEdit,
   projectId,
 }) {
@@ -69,6 +70,13 @@ export function TestConfigurationsList({
         key="actions"
         render={configuration => (
           <div className={classes.iconsContainer}>
+            <IconButton
+              aria-label="Show configuration details"
+              className={classes.icon}
+              onClick={() => onDetails(configuration)}
+            >
+              <Pageview />
+            </IconButton>
             <IconButton
               aria-label="Start execution"
               className={classes.icon}
