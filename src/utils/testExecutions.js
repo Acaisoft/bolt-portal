@@ -6,7 +6,6 @@ export const getExecutionTimestampDomain = execution => {
     'seconds'
   )
   const startTimestamp = +new Date(execution.start_locust)
-  const endTimestamp = +new Date(execution.end_locust)
 
-  return [startTimestamp, Math.max(endTimestamp, estimatedEndTimestamp)]
+  return [startTimestamp, estimatedEndTimestamp]
 }
