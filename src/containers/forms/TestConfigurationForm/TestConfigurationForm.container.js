@@ -10,9 +10,10 @@ import { createFormConfig } from './formSchema'
 
 import { validateForm } from '~utils/forms'
 import {
+  GET_CONFIGURATION_QUERY,
   ADD_CONFIGURATION_MUTATION,
-  EDIT_REPOSITORY_MUTATION,
-} from '~services/GraphQL/Mutations'
+  EDIT_CONFIGURATION_MUTATION,
+} from './graphql'
 import {
   GET_CONFIGURATION_TYPES_QUERY,
   GET_PARAMETERS_QUERY,
@@ -30,6 +31,19 @@ export class TestConfigurationForm extends Component {
   static defaultProps = {
     mode: 'create',
     onSubmit: () => {},
+  }
+
+  static prepareData = data => {
+    if (data) {
+      return {
+        name: data.name,
+        configuration_type: data.type_slug,
+        parameters: data.configuration_parameters.reduce((acc, parameter) => ({
+          ...acc,
+          [parameter.parameter_slug]: parameter.value,
+        })),
+      }
+    }
   }
 
   handleSubmit = (values, { configurationMutation }) => {
@@ -62,11 +76,11 @@ export class TestConfigurationForm extends Component {
   render() {
     const {
       children,
-      initialValues,
       mode,
       projectId,
       parametersQuery,
       configurationTypesQuery,
+      initialValues,
     } = this.props
 
     if (parametersQuery.loading || configurationTypesQuery.loading)
@@ -80,7 +94,9 @@ export class TestConfigurationForm extends Component {
     return (
       <Mutation
         mutation={
-          mode === 'create' ? ADD_CONFIGURATION_MUTATION : EDIT_REPOSITORY_MUTATION
+          mode === 'create'
+            ? ADD_CONFIGURATION_MUTATION
+            : EDIT_CONFIGURATION_MUTATION
         }
         refetchQueries={[{ query: GET_CONFIGS_QUERY, variables: { projectId } }]}
       >
@@ -104,5 +120,16 @@ export class TestConfigurationForm extends Component {
 
 export default compose(
   graphql(GET_PARAMETERS_QUERY, { name: 'parametersQuery' }),
-  graphql(GET_CONFIGURATION_TYPES_QUERY, { name: 'configurationTypesQuery' })
+  graphql(GET_CONFIGURATION_TYPES_QUERY, { name: 'configurationTypesQuery' }),
+  graphql(GET_CONFIGURATION_QUERY, {
+    props: props => ({
+      initialValues:
+        props.data &&
+        TestConfigurationForm.prepareData(props.data.configuration_by_pk),
+    }),
+    skip: props => props.mode !== 'edit',
+    options: props => ({
+      variables: { configurationId: props.configurationId },
+    }),
+  })
 )(TestConfigurationForm)

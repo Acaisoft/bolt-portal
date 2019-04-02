@@ -27,7 +27,7 @@ export class CreateOrEdit extends Component {
 
   handleSubmit = () => {
     const { history, match } = this.props
-    history.push(`/projects/${match.projectId}/test-configurations`)
+    history.push(`/projects/${match.params.projectId}/test-configurations`)
   }
 
   render() {
