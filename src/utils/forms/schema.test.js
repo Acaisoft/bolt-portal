@@ -1,8 +1,6 @@
-import * as Yup from 'yup'
+import { makeEmptyInitialValues, makeValidationSchema } from './schema'
 
-import { makeEmptyInitialValues, makeValidationSchema } from './forms'
-
-describe('utils: forms', () => {
+describe('utils: forms/schema', () => {
   describe('makeEmptyInitialValues', () => {
     it('should throw an exception on invalid schema', () => {
       expect(() => makeEmptyInitialValues(null)).toThrow()

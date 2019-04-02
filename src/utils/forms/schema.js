@@ -1,9 +1,7 @@
 import { getIn } from 'formik'
 import * as Yup from 'yup'
-import validate from 'validate.js'
 
-import { traverseRecursively } from './iterators'
-import { createObjectFromDotNotation } from './collections'
+import { traverseRecursively } from '../iterators'
 
 const validateFieldsSchema = fieldsSchema => {
   if (typeof fieldsSchema !== 'object' || Object.keys(fieldsSchema).length === 0) {
@@ -55,19 +53,4 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
     leafCallback: ({ path, value = {} }) =>
       getIn(values, path, value.defaultValue || ''),
   })
-}
-
-export const validateForm = schema => values => {
-  const result = validate(values, schema)
-  if (!result) {
-    return
-  }
-
-  // Get first error message for each field.
-  Object.keys(result).forEach(key => {
-    result[key] = result[key][0]
-  })
-
-  // Convert { path.to.field: value } into { path: { to: { field: value } } }
-  return createObjectFromDotNotation(result)
 }
