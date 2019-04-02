@@ -9,6 +9,7 @@ export default gql`
       param_type
       default_value
       slug_name
+      type_slug
     }
   }
 `

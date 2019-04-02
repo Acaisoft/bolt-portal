@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, MenuItem, Grid, withStyles } from '@material-ui/core'
+import { Button, Grid, MenuItem, withStyles } from '@material-ui/core'
+import { FormField } from '~containers'
 import { TestConfigurationForm } from '~containers/forms'
-import { ExpandablePanel, FormField, SectionHeader } from '~components'
+import { ExpandablePanel, SectionHeader } from '~components'
 
 import styles from './CreateOrEdit.styles'
 
@@ -41,6 +42,7 @@ export class CreateOrEdit extends Component {
           mode={mode}
           configurationId={configurationId}
           projectId={projectId}
+          onSubmit={this.handleSubmit}
         >
           {({ form, fields }) => (
             <form onSubmit={form.handleSubmit}>
@@ -77,7 +79,7 @@ export class CreateOrEdit extends Component {
                   <Grid item xs={6}>
                     <FormField
                       name="name"
-                      label={fields.name.label}
+                      field={fields.name}
                       fullWidth
                       variant="filled"
                     />
@@ -85,10 +87,9 @@ export class CreateOrEdit extends Component {
                   <Grid item xs={6}>
                     <FormField
                       name="configuration_type"
-                      label={fields.configuration_type.label}
-                      fullWidth
+                      field={fields.configuration_type}
                       variant="filled"
-                      select
+                      fullWidth
                     >
                       {fields.configuration_type.options.map(option => (
                         <MenuItem key={option.key} value={option.value}>
@@ -102,16 +103,21 @@ export class CreateOrEdit extends Component {
 
               <ExpandablePanel defaultExpanded title="2. Test Parameters">
                 <Grid container spacing={32}>
-                  {Object.entries(fields.parameters.fields).map(([id, options]) => (
-                    <Grid key={id} item xs={6}>
-                      <FormField
-                        name={`parameters.${id}`}
-                        label={options.label}
-                        fullWidth
-                        variant="filled"
-                      />
-                    </Grid>
-                  ))}
+                  {Object.entries(fields.parameters.fields || [])
+                    .filter(
+                      ([name, options]) =>
+                        options.group === form.values.configuration_type
+                    )
+                    .map(([id, options]) => (
+                      <Grid key={id} item xs={6}>
+                        <FormField
+                          name={`parameters.${id}`}
+                          field={options}
+                          fullWidth
+                          variant="filled"
+                        />
+                      </Grid>
+                    ))}
                 </Grid>
               </ExpandablePanel>
             </form>

@@ -1,6 +1,8 @@
-import * as Yup from 'yup'
+import { makeFlatValidationSchema, makeEmptyInitialValues } from '~utils/forms'
 
-import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms'
+const paramTypeValidators = {
+  int: { numericality: { onlyInteger: true } },
+}
 
 const createFormConfig = ({ configurationTypes, parameters }) => {
   const configurationTypeOptions = configurationTypes.map(ct => ({
@@ -11,35 +13,41 @@ const createFormConfig = ({ configurationTypes, parameters }) => {
 
   const fields = {
     name: {
-      label: 'Name',
-      validator: Yup.string()
-        .required()
-        .ensure()
-        .min(2),
+      validator: {
+        presence: { allowEmpty: false },
+      },
+      inputProps: {
+        label: 'Name',
+      },
     },
     configuration_type: {
-      label: 'Test Type',
-      validator: Yup.string()
-        .oneOf(configurationTypeOptions.map(cto => cto.value))
-        .required(),
+      validator: {
+        inclusion: configurationTypeOptions.map(cto => cto.value),
+      },
       options: configurationTypeOptions,
+      inputProps: {
+        select: true,
+        label: 'Test Type',
+      },
     },
     parameters: {
       fields: parameters.reduce(
         (acc, parameter) => ({
           ...acc,
           [parameter.slug_name]: {
-            label: parameter.name,
-            validator:
-              parameter.param_type === 'str'
-                ? Yup.string()
-                    .ensure()
-                    .required()
-                : Yup.number()
-                    .positive()
-                    .integer()
-                    .required(),
+            validator: (value, attributes, attributeName) => {
+              if (attributes.configuration_type === parameter.type_slug) {
+                return {
+                  presence: { allowEmpty: true },
+                  ...paramTypeValidators[parameter.param_type],
+                }
+              }
+            },
+            inputProps: {
+              label: parameter.name,
+            },
             defaultValue: parameter.default_value,
+            group: parameter.type_slug,
           },
         }),
         {}
@@ -47,7 +55,7 @@ const createFormConfig = ({ configurationTypes, parameters }) => {
     },
   }
 
-  const validationSchema = makeValidationSchema(fields)
+  const validationSchema = makeFlatValidationSchema(fields)
   const mergeInitialValues = values => makeEmptyInitialValues(fields, values)
 
   return { fields, validationSchema, mergeInitialValues }
