@@ -5,12 +5,15 @@ export default gql`
   query getExecutionResultsPerTick($executionId: uuid!) {
     execution_by_pk(id: $executionId) {
       id
-      start
-      end
+      start_locust
+      end_locust
       ...executionTimeParameter
     }
 
-    result_aggregate(where: { execution_id: { _eq: $executionId } }) {
+    result_aggregate(
+      where: { execution_id: { _eq: $executionId } }
+      order_by: { timestamp: asc }
+    ) {
       id
       number_of_fails
       number_of_successes
