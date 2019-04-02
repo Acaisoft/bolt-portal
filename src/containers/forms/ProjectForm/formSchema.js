@@ -1,30 +1,51 @@
-import * as Yup from 'yup'
+import { makeFlatValidationSchema, makeEmptyInitialValues } from '~utils/forms'
 
-import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms'
+const createFormConfig = () => {
+  const fields = {
+    name: {
+      validator: {
+        presence: { allowEmpty: false },
+        length: { minimum: 3 },
+      },
+      inputProps: {
+        variant: 'filled',
+        label: 'Name',
+      },
+    },
+    description: {
+      validator: {
+        length: { maximum: 512 },
+      },
+      inputProps: {
+        variant: 'filled',
+        label: 'Description',
+      },
+    },
+    uploaded_image: {
+      inputProps: {
+        accept: 'image/png, image/jpeg, image/gif',
+        label: 'Upload Image',
+        id: 'project_image',
+      },
+      handlers: (form, input) => ({
+        onStart: () =>
+          form.form.mutators.setFieldData('uploaded_image', {
+            started: true,
+          }),
+        onSuccess: info => form.form.change('image_url', info.download_url),
+        onError: err => form.form.change('image_url', undefined),
+        onLoad: fileAsDataUrl =>
+          form.form.change('image_preview_url', fileAsDataUrl),
+      }),
+    },
+    image_url: {},
+    image_preview_url: {},
+  }
 
-const formFields = {
-  name: {
-    label: 'Name',
-    validator: Yup.string()
-      .required()
-      .ensure()
-      .min(3),
-    input: {
-      variant: 'filled',
-    },
-  },
-  description: {
-    label: 'Description',
-    validator: Yup.string()
-      .ensure()
-      .max(512),
-    input: {
-      variant: 'filled',
-    },
-  },
+  const validationSchema = makeFlatValidationSchema(fields)
+  const makeInitialValues = values => makeEmptyInitialValues(fields, values)
+
+  return { fields, validationSchema, makeInitialValues }
 }
 
-const validationSchema = makeValidationSchema(formFields)
-const initialValues = makeEmptyInitialValues(formFields)
-
-export { formFields, validationSchema, initialValues }
+export { createFormConfig }

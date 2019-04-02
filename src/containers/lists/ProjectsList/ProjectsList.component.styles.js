@@ -7,33 +7,6 @@ export default ({ palette, shape, spacing, typography }) => {
       flexDirection: 'column',
       borderRadius: shape.borderRadius * 2,
     },
-    cardHeader: {
-      alignItems: 'flex-start',
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    chips: {
-      display: 'flex',
-    },
-    chip: {
-      padding: `${spacing.unit * 0.25}px ${spacing.unit}px`,
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      height: 'auto',
-      borderRadius: shape.borderRadius,
-
-      '& + &': {
-        marginLeft: spacing.unit * 1.5,
-      },
-
-      '& > span': {
-        padding: 0,
-      },
-    },
-    actions: {
-      padding: `0 ${spacing.unit * 2 - 4}px ${spacing.unit}px`,
-      justifyContent: 'flex-end',
-    },
     gridContainer: {
       // Fallback for browsers not supporting CSS grid.
       display: 'flex',
@@ -65,15 +38,6 @@ export default ({ palette, shape, spacing, typography }) => {
       justifyContent: 'stretch',
       alignItems: 'stretch',
       height: '100%',
-    },
-    newProjectContent: {
-      flexGrow: 1,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    newProjectActions: {
-      justifyContent: 'center',
     },
   }
 }
