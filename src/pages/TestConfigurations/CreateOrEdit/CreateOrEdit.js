@@ -46,34 +46,29 @@ export class CreateOrEdit extends Component {
         >
           {({ form, fields }) => (
             <form onSubmit={form.handleSubmit}>
-              <Grid container justify="space-between" alignItems="center">
-                <SectionHeader
-                  title={mode === 'create' ? 'New Scenario' : 'Update Scenario'}
-                />
-
-                <Grid item>
-                  <Grid container alignItems="center">
-                    <Button
-                      color="default"
-                      variant="text"
-                      disabled={form.isSubmitting}
-                      onClick={this.handleCancel}
-                      className={classes.button}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      type="submit"
-                      disabled={!form.dirty || form.isSubmitting}
-                      className={classes.button}
-                    >
-                      {mode === 'create' ? 'Create' : 'Update'}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
+              <SectionHeader
+                title={mode === 'create' ? 'New Scenario' : 'Update Scenario'}
+                marginBottom
+              >
+                <Button
+                  color="default"
+                  variant="text"
+                  disabled={form.isSubmitting}
+                  onClick={this.handleCancel}
+                  className={classes.button}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  type="submit"
+                  disabled={!form.dirty || form.isSubmitting}
+                  className={classes.button}
+                >
+                  {mode === 'create' ? 'Create' : 'Update'}
+                </Button>
+              </SectionHeader>
               <ExpandablePanel defaultExpanded title="1. Scenario">
                 <Grid container spacing={32}>
                   <Grid item xs={6}>

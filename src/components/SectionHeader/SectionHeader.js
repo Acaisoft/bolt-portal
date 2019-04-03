@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Typography, withStyles } from '@material-ui/core'
+import { Typography, withStyles, Grid } from '@material-ui/core'
 
 import styles from './SectionHeader.styles'
 
 function SectionHeader({
+  children,
   classes,
   description,
   marginBottom = false,
@@ -14,23 +15,34 @@ function SectionHeader({
   title,
 }) {
   return (
-    <div className={classNames({ [classes.marginBottom]: marginBottom })}>
-      <div>
-        <Typography variant="h2" className={classes.title} inline>
-          {title}
-        </Typography>
-        {subtitle && (
-          <Typography variant="h3" className={classes.subtitle} inline>
-            {subtitle}
-          </Typography>
-        )}
-      </div>
-      {description && (
-        <Typography variant="subtitle2" className={classes.description}>
-          {description}
-        </Typography>
+    <Grid container justify="space-between" alignItems="center" spacing={32}>
+      <Grid item>
+        <div className={classNames({ [classes.marginBottom]: marginBottom })}>
+          <div>
+            <Typography variant="h2" className={classes.title} inline>
+              {title}
+            </Typography>
+            {subtitle && (
+              <Typography variant="h3" className={classes.subtitle} inline>
+                {subtitle}
+              </Typography>
+            )}
+          </div>
+          {description && (
+            <Typography variant="subtitle2" className={classes.description}>
+              {description}
+            </Typography>
+          )}
+        </div>
+      </Grid>
+      {children && (
+        <Grid item>
+          <Grid container justify="flex-end" alignItems="center">
+            {children}
+          </Grid>
+        </Grid>
       )}
-    </div>
+    </Grid>
   )
 }
 SectionHeader.propTypes = {

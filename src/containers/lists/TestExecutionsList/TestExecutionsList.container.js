@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Grid } from '@material-ui/core'
 import { Pagination, RemoteList } from '~containers'
 import { SectionHeader } from '~components'
 
@@ -54,13 +53,13 @@ export class TestExecutionsListContainer extends Component {
 
           return (
             <React.Fragment>
-              <Grid container justify="space-between" alignItems="center">
-                <SectionHeader
-                  title={title}
-                  subtitle={!hideCounter && `(${pagination.totalCount})`}
-                />
-                <div>{showPagination && <Pagination {...pagination} />}</div>
-              </Grid>
+              <SectionHeader
+                title={title}
+                subtitle={!hideCounter && `(${pagination.totalCount})`}
+                marginBottom
+              >
+                {showPagination && <Pagination {...pagination} />}
+              </SectionHeader>
               <TestExecutionsList
                 executions={executions}
                 loading={loading}

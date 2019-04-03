@@ -89,6 +89,7 @@ export class ProjectsListContainer extends Component {
               <SectionHeader
                 title="Your Projects"
                 subtitle={`(${projects.length})`}
+                marginBottom
               />
               <ProjectsList
                 loading={loading}

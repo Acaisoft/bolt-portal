@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Grid } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { Pagination, RemoteList } from '~containers'
 import { ButtonWithIcon, SectionHeader } from '~components'
@@ -40,26 +39,21 @@ export class TestConfigurationsListContainer extends Component {
 
           return (
             <React.Fragment>
-              <Grid container justify="space-between" alignItems="center">
-                <SectionHeader
-                  title="Scenarios"
-                  subtitle={`(${configurations.length})`}
-                />
-
-                <Grid item>
-                  <Grid container justify="flex-end" alignItems="center">
-                    <Pagination {...pagination} />
-                    <ButtonWithIcon
-                      icon={Add}
-                      variant="contained"
-                      color="secondary"
-                      onClick={onCreate}
-                    >
-                      New
-                    </ButtonWithIcon>
-                  </Grid>
-                </Grid>
-              </Grid>
+              <SectionHeader
+                title="Scenarios"
+                subtitle={`(${configurations.length})`}
+                marginBottom
+              >
+                <Pagination {...pagination} />
+                <ButtonWithIcon
+                  icon={Add}
+                  variant="contained"
+                  color="secondary"
+                  onClick={onCreate}
+                >
+                  New
+                </ButtonWithIcon>
+              </SectionHeader>
               <TestConfigurationsList
                 configurations={configurations}
                 loading={loading}
