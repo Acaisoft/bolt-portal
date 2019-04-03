@@ -27,27 +27,6 @@ Opinionated routing library for React. Provides different types of routing modes
 
 Router links should be treated like `if` statements, rendering different components conditionally based on url match.
 
-### > axios ([docs](https://github.com/axios/axios))
-
-Promise based HTTP client for the browser and node.js.
-
-Its advantage over standard `fetch` API is that it handles server errors gracefully, throwing `Error` instances merged with the response data, instead of throwing not useful standard errors. Also, it allows to add custom handlers and has the ability to cancel pending requests.
-
-### > @rematch ([docs](https://rematch.gitbooks.io/rematch/))
-
-A library that extends standard Redux. Easy to use and configure, has most of the boilerplate available out-of-the-box. Allows to write logic within well-structurized models, enforcing best practices. Handles asynchronous effects by default, without the need of installing third-party libraries like `redux-thunk`.
-
-It has a few useful plugins that solve common problems and integrate with opinionated third-party libraries used together with Redux:
-
-- `@rematch/loading` - adds a `loading` branch to the store, which is updated every time an asynchronous effect is launched in any model; this way we don't need to add `isLoading` flag to every model
-- `@rematch/select` - integrates with `reselect` library, allowing to use selectors - a memoization technique that optimizes expensive calculations by caching the last result and returning it as long as the selector arguments are the same
-- `@rematch/persist` - allows to save parts of the store to browser's local storage, and load it on app start
-- and many others, [described in the official docs](https://rematch.gitbooks.io/rematch/)
-
-### > immutable ([docs](https://facebook.github.io/immutable-js/))
-
-A library for creating immutable objects (Lists, Maps, Records, Sets), written by the Facebook team. It solves a common problem of object identity comparison: modifying anything within an immutable structure creates a brand new instance, with a different reference. This way we can optimize reconciliation (updating the DOM by React engine) and let PureComponent do its job efficiently - immutable props are always different if anything inside them has been changed.
-
 ### > @material-ui ([docs](https://material-ui.com))
 
 React components that implement Google's Material Design. Contains lots of reusable and functional components. Allows full customization in terms of styling and event handlers.
