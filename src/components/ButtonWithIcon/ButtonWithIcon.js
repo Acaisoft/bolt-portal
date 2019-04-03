@@ -7,7 +7,6 @@ import styles from './ButtonWithIcon.styles'
 function ButtonWithIcon({
   children,
   classes,
-  className,
   button: ButtonComponent = Button,
   icon: IconComponent,
   ...buttonProps
