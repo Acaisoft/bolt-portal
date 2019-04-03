@@ -12,6 +12,7 @@ function FormCondition({ when, is, elseDo = () => {}, children }) {
         }
 
         elseDo({ name: when, value })
+        return null
       }}
     </Field>
   )

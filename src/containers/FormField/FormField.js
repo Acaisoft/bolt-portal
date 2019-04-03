@@ -7,7 +7,7 @@ import { Field } from 'react-final-form'
 function FormField({
   children,
   component = TextField,
-  field: { inputProps },
+  field: { inputProps = {} },
   name,
   subscription = {
     value: true,
