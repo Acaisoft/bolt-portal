@@ -5,7 +5,6 @@ export default ({ palette, spacing, typography }) => {
     },
     tableContainer: {
       width: '100%',
-      overflowX: 'scroll',
       marginTop: 30,
     },
   }

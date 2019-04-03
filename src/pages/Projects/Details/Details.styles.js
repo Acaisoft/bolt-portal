@@ -13,7 +13,6 @@ export default ({ palette, spacing, typography }) => {
     },
     tableContainer: {
       width: '100%',
-      overflowX: 'scroll',
     },
     linkContainer: {
       marginTop: 20,
