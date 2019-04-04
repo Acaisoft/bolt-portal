@@ -13,7 +13,7 @@ import DetailsPage from './Details'
 export function Projects({ match }) {
   return (
     <Switch>
-      <Route path={`${match.path}`} exact component={ListPage} />
+      <Route path={`${match.path}`} strict={false} exact component={ListPage} />
       <Route path={`${match.path}/:projectId`} component={ProjectSubpages} />
       <Redirect from="*" to={match.url} />
     </Switch>

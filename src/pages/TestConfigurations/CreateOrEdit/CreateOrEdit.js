@@ -6,6 +6,8 @@ import { FormField } from '~containers'
 import { TestConfigurationForm } from '~containers/forms'
 import { ExpandablePanel, SectionHeader } from '~components'
 
+import { getSubpageUrl } from '~utils/router'
+
 import styles from './CreateOrEdit.styles'
 
 export class CreateOrEdit extends Component {
@@ -27,7 +29,7 @@ export class CreateOrEdit extends Component {
 
   handleSubmit = () => {
     const { history, match } = this.props
-    history.push(`/projects/${match.params.projectId}/test-configurations`)
+    history.push(getSubpageUrl(match, '/test-configuration'))
   }
 
   render() {

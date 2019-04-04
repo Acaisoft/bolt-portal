@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 
 import { TestExecutionsList } from '~containers/lists'
+
+import { getSubpageUrl } from '~utils/router'
+
 import styles from './Details.styles'
 
 export class Details extends Component {
@@ -15,36 +18,47 @@ export class Details extends Component {
     }).isRequired,
   }
 
-  items = [
-    {
-      id: 1,
-      label: 'TEST SCENARIOS',
-      linkTo: `${this.props.match.url}/test-configurations`,
-      description: 'Manage Test Scenarios for My Super App.',
-    },
-    {
-      id: 2,
-      label: 'TEST SOURCES',
-      linkTo: `${this.props.match.url}/test-sources`,
-      description: 'Manage Test Sources for My Super App.',
-    },
-    {
-      id: 3,
-      label: 'TESTS RUNS',
-      linkTo: `${this.props.match.url}/test-runs`,
-      description: 'See all tests run results.',
-    },
-    {
-      id: 4,
-      label: 'USERS',
-      linkTo: `${this.props.match.url}/users`,
-      description: 'Manage Users for My Super App.',
-    },
-  ]
+  constructor(props) {
+    super(props)
+
+    const getUrl = relativePath => getSubpageUrl(props.match, relativePath, {})
+
+    this.items = [
+      {
+        id: 1,
+        label: 'TEST SCENARIOS',
+        linkTo: getUrl('/test-configurations'),
+        description: 'Manage Test Scenarios for My Super App.',
+      },
+      {
+        id: 2,
+        label: 'TEST SOURCES',
+        linkTo: getUrl('/test-sources'),
+        description: 'Manage Test Sources for My Super App.',
+      },
+      {
+        id: 3,
+        label: 'TESTS RUNS',
+        linkTo: getUrl('/test-runs'),
+        description: 'See all tests run results.',
+      },
+      {
+        id: 4,
+        label: 'USERS',
+        linkTo: getUrl('/users'),
+        description: 'Manage Users for My Super App.',
+      },
+    ]
+  }
 
   handleExecutionDetails = execution => {
     const { history, match } = this.props
-    history.push(`${match.url}/test-runs/${execution.id}`)
+
+    history.push(
+      getSubpageUrl(match, '/test-runs/:executionId', {
+        executionId: execution.id,
+      })
+    )
   }
 
   render() {

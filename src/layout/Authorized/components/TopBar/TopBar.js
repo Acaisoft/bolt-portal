@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
-  IconButton,
   Typography,
   Menu,
   MenuItem,
   withStyles,
 } from '@material-ui/core'
-import { AccountCircle, MoreVert, Extension, ShowChart } from '@material-ui/icons'
+import { Extension, ShowChart } from '@material-ui/icons'
 
 import styles from './TopBar.styles'
 import ProjectSelector from '../ProjectSelector'
@@ -58,7 +57,7 @@ export class TopBar extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, history, location } = this.props
     const { anchorEl } = this.state
 
     const isMenuOpen = !!anchorEl
@@ -77,14 +76,11 @@ export class TopBar extends Component {
             </Typography>
 
             <div className={classes.projectSelector}>
-              <Route path="/projects/:projectId?">
-                {routeProps => (
-                  <ProjectSelector
-                    onChange={this.handleProjectChange}
-                    {...routeProps}
-                  />
-                )}
-              </Route>
+              <ProjectSelector
+                onChange={this.handleProjectChange}
+                history={history}
+                location={location}
+              />
             </div>
 
             <div className={classes.grow} />

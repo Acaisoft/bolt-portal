@@ -8,6 +8,7 @@ import { DeleteModal } from '~components'
 import { TestConfigurationsList } from '~containers/lists'
 import styles from './List.styles'
 
+import { getSubpageUrl } from '~utils/router'
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
 import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
@@ -41,19 +42,26 @@ export class List extends Component {
     this.setState({ isDeleteModalOpen: false })
   }
 
-  handleCreate = () => {
+  redirectToSubpage = (relativePath, params = {}) => {
     const { history, match } = this.props
-    history.push(`${match.url}/create`)
+
+    history.push(getSubpageUrl(match, relativePath, params))
+  }
+
+  handleCreate = () => {
+    this.redirectToSubpage('/create')
   }
 
   handleDetails = configuration => {
-    const { history, match } = this.props
-    history.push(`${match.url}/${configuration.id}`)
+    this.redirectToSubpage('/:configurationId', {
+      configurationId: configuration.id,
+    })
   }
 
   handleEdit = configuration => {
-    const { history, match } = this.props
-    history.push(`${match.url}/${configuration.id}/edit`)
+    this.redirectToSubpage('/:configurationId/edit', {
+      configurationId: configuration.id,
+    })
   }
 
   render() {

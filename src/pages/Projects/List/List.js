@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core'
 import { ProjectsList } from '~containers/lists'
 
+import { getSubpageUrl } from '~utils/router'
+
 import styles from './List.styles'
 
 export class List extends Component {
@@ -19,7 +21,7 @@ export class List extends Component {
 
   handleDetails = ({ id }) => {
     const { history, match } = this.props
-    history.push(`${match.url}/${id}`)
+    history.push(getSubpageUrl(match, '/:projectId', { projectId: id }))
   }
 
   render() {

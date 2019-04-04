@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { generatePath } from 'react-router-dom'
 import { Typography, withStyles } from '@material-ui/core'
 import { TestExecutionsList } from '~containers/lists'
 
@@ -19,11 +20,13 @@ export class Details extends Component {
 
   handleExecutionDetails = execution => {
     const { history, match } = this.props
-    const projectPrefix = match.params.projectId
-      ? `/projects/${match.params.projectId}`
-      : ''
 
-    history.push(`${projectPrefix}/test-runs/${execution.id}`)
+    history.push(
+      generatePath('/projects/:projectId/test-runs/:executionId', {
+        ...match.params,
+        executionId: execution.id,
+      })
+    )
   }
 
   render() {

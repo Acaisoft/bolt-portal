@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { Typography, withStyles } from '@material-ui/core'
 import { TestExecutionsList } from '~containers/lists'
 
+import { getSubpageUrl } from '~utils/router'
+
 import styles from './List.styles'
 
 export class List extends Component {
@@ -19,7 +21,9 @@ export class List extends Component {
 
   handleDetails = execution => {
     const { history, match } = this.props
-    history.push(`${match.url}/${execution.id}`)
+    history.push(
+      getSubpageUrl(match, '/:executionId', { executionId: execution.id })
+    )
   }
 
   render() {

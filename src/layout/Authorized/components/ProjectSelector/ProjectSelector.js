@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 
+import { generatePath } from 'react-router-dom'
 import { Query } from 'react-apollo'
-import { Loading } from '~components'
 import { MenuItem, Select, Divider, withStyles } from '@material-ui/core'
+import { Computer } from '@material-ui/icons'
+import { Loading } from '~components'
 
 import styles from './ProjectSelector.styles'
-import { Computer } from '@material-ui/icons'
 
 const GET_PROJECTS = gql`
   query getProjectsForSelector {
@@ -23,29 +24,39 @@ class ProjectSelector extends React.Component {
     history: PropTypes.shape({
       push: PropTypes.func.isRequired,
     }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        projectId: PropTypes.string,
-      }).isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
     }).isRequired,
   }
 
-  handleProjectChange = e => {
-    const { history, match } = this.props
+  getProjectId = () => {
+    const { location } = this.props
+    const matches = location.pathname.match(/^\/projects\/([^/]+)/i)
+    return matches && matches[1]
+  }
 
-    const oldId = match.params.projectId || 'all'
+  handleProjectChange = (e, projectId) => {
+    const { history } = this.props
+
+    const oldId = projectId || 'all'
     const newId = e.target.value
 
     if (newId === oldId) {
       return
     }
 
-    history.push(`/projects/${newId === 'all' ? '' : newId}`)
+    history.push(
+      generatePath('/projects/:projectId?', {
+        projectId: newId === 'all' ? undefined : newId,
+      })
+    )
   }
 
   render() {
-    const { classes, match } = this.props
-    const { projectId = 'all' } = match.params
+    const { classes } = this.props
+
+    const projectId = this.getProjectId()
+    console.log({ projectId })
 
     return (
       <Query query={GET_PROJECTS}>
@@ -58,8 +69,8 @@ class ProjectSelector extends React.Component {
           return (
             <Select
               classes={{ select: classes.select, icon: classes.downIcon }}
-              value={projectId}
-              onChange={this.handleProjectChange}
+              value={projectId || 'all'}
+              onChange={e => this.handleProjectChange(e, projectId)}
               variant="filled"
               disableUnderline
             >
