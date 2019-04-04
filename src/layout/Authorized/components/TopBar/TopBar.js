@@ -89,7 +89,7 @@ export class TopBar extends Component {
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton
+              {/* <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
                 onClick={this.handleProfileMenuOpen}
@@ -97,7 +97,7 @@ export class TopBar extends Component {
               >
                 <AccountCircle />
                 <MoreVert />
-              </IconButton>
+              </IconButton> */}
             </div>
           </Toolbar>
         </AppBar>
