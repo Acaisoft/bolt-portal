@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withRouter } from 'react-router-dom'
+import { withRouter, Route } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -14,6 +14,7 @@ import {
 import { AccountCircle, MoreVert, Extension, ShowChart } from '@material-ui/icons'
 
 import styles from './TopBar.styles'
+import ProjectSelector from '../ProjectSelector'
 
 export class TopBar extends Component {
   static propTypes = {
@@ -74,6 +75,18 @@ export class TopBar extends Component {
             >
               Acai Bolt
             </Typography>
+
+            <div className={classes.projectSelector}>
+              <Route path="/projects/:projectId?">
+                {routeProps => (
+                  <ProjectSelector
+                    onChange={this.handleProjectChange}
+                    {...routeProps}
+                  />
+                )}
+              </Route>
+            </div>
+
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton

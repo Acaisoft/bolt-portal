@@ -6,6 +6,11 @@ export default ({ breakpoints, palette, spacing }) => ({
     borderBottom: `1px solid ${palette.divider}`,
     backgroundColor: palette.background.default,
   },
+  projectSelector: {
+    marginLeft: spacing.unit * 4,
+    marginTop: spacing.unit * 2,
+    marginBottom: spacing.unit * 2,
+  },
   grow: {
     flexGrow: 1,
   },
