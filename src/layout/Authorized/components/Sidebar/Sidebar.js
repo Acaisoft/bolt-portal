@@ -12,7 +12,7 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core'
-import { Dashboard, Extension, ExitToApp, ShowChart } from '@material-ui/icons'
+import { Extension, ExitToApp, ShowChart } from '@material-ui/icons'
 
 import styles from './Sidebar.styles'
 
@@ -22,7 +22,6 @@ export class Sidebar extends Component {
   }
 
   items = [
-    { label: 'Dashboard', linkTo: '/dashboard', icon: <Dashboard /> },
     { label: 'Projects', linkTo: '/projects', icon: <Extension /> },
     { label: 'Tests Results', linkTo: '/test-runs', icon: <ShowChart /> },
   ]

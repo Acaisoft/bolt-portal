@@ -11,13 +11,7 @@ import {
   MenuItem,
   withStyles,
 } from '@material-ui/core'
-import {
-  AccountCircle,
-  MoreVert,
-  Dashboard,
-  Extension,
-  ShowChart,
-} from '@material-ui/icons'
+import { AccountCircle, MoreVert, Extension, ShowChart } from '@material-ui/icons'
 
 import styles from './TopBar.styles'
 
@@ -30,7 +24,6 @@ export class TopBar extends Component {
   }
 
   items = [
-    { label: 'Dashboard', linkTo: '/dashboard', icon: Dashboard },
     { label: 'Projects', linkTo: '/projects', icon: Extension },
     { label: 'Tests Results', linkTo: '/test-runs', icon: ShowChart },
   ]

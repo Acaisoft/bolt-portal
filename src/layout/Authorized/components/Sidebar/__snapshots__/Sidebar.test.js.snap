@@ -39,38 +39,6 @@ exports[`layout: Sidebar rendering should render properly 1`] = `
       className="listItem"
       color="inherit"
       component="LinkMock"
-      key="/dashboard"
-      to="/dashboard"
-    >
-      <ListItemIconMock
-        className="itemIcon"
-      >
-        <DashboardMock />
-      </ListItemIconMock>
-      <ListItemTextMock
-        disableTypography={true}
-        primary={
-          <TypographyMock
-            style={
-              Object {
-                "color": "#E8E8E8",
-                "fontSize": "1.25rem",
-                "fontWeight": "normal",
-                "textTransform": "uppercase",
-              }
-            }
-            type="body2"
-          >
-            Dashboard
-          </TypographyMock>
-        }
-      />
-    </ListItemMock>
-    <ListItemMock
-      button={true}
-      className="listItem"
-      color="inherit"
-      component="LinkMock"
       key="/projects"
       to="/projects"
     >

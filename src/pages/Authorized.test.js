@@ -3,7 +3,6 @@ import { shallow } from 'enzyme'
 
 import { Authorized } from './Authorized'
 
-jest.mock('./Dashboard', () => 'DashboardMock')
 jest.mock('./Projects', () => 'ProjectsMock')
 
 const initAuthorized = overrides => {
