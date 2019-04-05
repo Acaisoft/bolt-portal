@@ -48,6 +48,10 @@ export class DataTable extends Component {
     initialSelected: PropTypes.instanceOf(Set),
     isLoading: PropTypes.bool,
     multiselect: PropTypes.bool,
+    // Re-renders only on children change.
+    // If set to `true` the table will be re-rendered only if any of the columns change.
+    // If set to `false` will re-render always (like any other component).
+    pure: PropTypes.bool,
     onSelect: PropTypes.func,
     rowKey: PropTypes.func,
     striped: PropTypes.bool,
@@ -57,16 +61,18 @@ export class DataTable extends Component {
     checkboxKey: row => row.id,
     initialSelected: new Set(),
     onSelect: () => {},
+    pure: false,
     rowKey: row => row.id,
     striped: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const nextState = {}
-
     if (
-      !prevState.columnNodes ||
-      haveColumnsChanged(nextProps.children, prevState.columnNodes)
+      (nextProps.pure &&
+        (!prevState.columnNodes ||
+          haveColumnsChanged(nextProps.children, prevState.columnNodes))) ||
+      !nextProps.pure
     ) {
       nextState.columnNodes = nextProps.children
       nextState.columns = calculateColumnSettings(nextProps.children)
