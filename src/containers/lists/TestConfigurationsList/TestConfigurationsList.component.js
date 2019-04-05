@@ -16,7 +16,9 @@ export function TestConfigurationsList({
   onDelete,
   onDetails,
   onEdit,
+  onRun,
   projectId,
+  runningConfigurationId,
 }) {
   return (
     <DataTable
@@ -68,38 +70,44 @@ export function TestConfigurationsList({
       />
       <DataTable.Column
         key="actions"
-        render={configuration => (
-          <div className={classes.iconsContainer}>
-            <IconButton
-              aria-label="Show configuration details"
-              className={classes.icon}
-              onClick={() => onDetails(configuration)}
-            >
-              <Pageview />
-            </IconButton>
-            <IconButton
-              aria-label="Start execution"
-              className={classes.icon}
-              disabled
-            >
-              <PlayArrow />
-            </IconButton>
-            <IconButton
-              aria-label="Edit configuration"
-              className={classes.icon}
-              onClick={() => onEdit(configuration)}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="Delete configuration"
-              className={classes.icon}
-              onClick={() => onDelete(configuration)}
-            >
-              <Delete />
-            </IconButton>
-          </div>
-        )}
+        render={configuration => {
+          if (runningConfigurationId === configuration.id) {
+            return 'Starting...'
+          }
+          return (
+            <div className={classes.iconsContainer}>
+              <IconButton
+                aria-label="Start execution"
+                className={classes.icon}
+                onClick={() => onRun(configuration)}
+                disabled={!configuration.test_source}
+              >
+                <PlayArrow />
+              </IconButton>
+              <IconButton
+                aria-label="Show configuration details"
+                className={classes.icon}
+                onClick={() => onDetails(configuration)}
+              >
+                <Pageview />
+              </IconButton>
+              <IconButton
+                aria-label="Edit configuration"
+                className={classes.icon}
+                onClick={() => onEdit(configuration)}
+              >
+                <Edit />
+              </IconButton>
+              <IconButton
+                aria-label="Delete configuration"
+                className={classes.icon}
+                onClick={() => onDelete(configuration)}
+              >
+                <Delete />
+              </IconButton>
+            </div>
+          )
+        }}
         title="Actions"
       />
     </DataTable>

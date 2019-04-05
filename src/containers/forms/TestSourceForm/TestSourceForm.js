@@ -17,7 +17,6 @@ import {
 
 import { TestSourceType } from '~config/constants'
 import { validateForm } from '~utils/forms'
-import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 
 export class TestSourceForm extends PureComponent {
   static propTypes = {
