@@ -3,7 +3,7 @@ export const mutators = {
   setFieldData,
 }
 
-export { validateForm } from './validation'
+export { validateForm, validateWhen, validateOnFieldValue } from './validation'
 
 export {
   makeEmptyInitialValues,

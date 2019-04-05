@@ -4,6 +4,7 @@ const path = require('path')
 const dirAliases = [
   'assets',
   'components',
+  'config',
   'containers',
   'layout',
   'pages',
