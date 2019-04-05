@@ -112,7 +112,7 @@ describe('component: DataTable', () => {
       })
 
       it('should return null if nothing has changed', () => {
-        const nextProps = { children: fakeChildren }
+        const nextProps = { children: fakeChildren, pure: true }
         const prevState = { columnNodes: fakeChildren }
         expect(DataTable.getDerivedStateFromProps(nextProps, prevState)).toBe(null)
       })
