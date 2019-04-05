@@ -1,4 +1,9 @@
+const spacingUnit = 8
+
 export default {
+  spacing: {
+    unit: spacingUnit,
+  },
   palette: {
     type: 'dark',
     actions: {
@@ -74,5 +79,14 @@ export default {
     DataTable: {
       striped: true,
     },
+    MuiPaper: {
+      elevation: 0,
+    },
+  },
+  mixins: {
+    // Usage: scaledSpaceAround(2, 3, 4, 5) produces string: '16px 24px 32px 40px'.
+    // You can provide any number of sides
+    scaledSpaceAround: (...sideScales) =>
+      sideScales.map(scale => `${scale * spacingUnit}px`).join(' '),
   },
 }

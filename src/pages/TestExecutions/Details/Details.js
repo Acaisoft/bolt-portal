@@ -1,21 +1,39 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import gql from 'graphql-tag'
+import moment from 'moment'
 
+import { generatePath, Link as RouterLink } from 'react-router-dom'
 import { Query } from 'react-apollo'
-import { Typography, withStyles } from '@material-ui/core'
+import { Typography, withStyles, Paper, Grid, Link } from '@material-ui/core'
 
-import { Loading } from '~components'
+import { Loading, SectionHeader } from '~components'
 import {
   TestExecutionRequestsChart,
   TestExecutionResponseTimeChart,
 } from '~containers/charts'
 import { TestExecutionResponsesList } from '~containers/lists'
+import { ChevronRight } from '@material-ui/icons'
+
 import {
   GET_EXECUTION_RESULTS_PER_TICK_QUERY,
   GET_EXECUTION_RESULTS_DISTRIBUTION_QUERY,
 } from '~services/GraphQL/Queries'
 
 import styles from './Details.styles'
+
+const GET_EXECUTION_QUERY = gql`
+  query getExecution($executionId: uuid!) {
+    execution_by_pk(id: $executionId) {
+      id
+      start_locust
+      configuration {
+        id
+        name
+      }
+    }
+  }
+`
 
 export class Details extends Component {
   static propTypes = {
@@ -28,67 +46,133 @@ export class Details extends Component {
     }).isRequired,
   }
 
+  getScenarioUrl = configurationId => {
+    const { match } = this.props
+
+    return generatePath(
+      '/projects/:projectId/test-configurations/:configurationId',
+      { ...match.params, configurationId }
+    )
+  }
+
   render() {
     const { classes, match } = this.props
     const { executionId } = match.params
 
     return (
       <div className={classes.root}>
-        <div className={classes.tableContainer}>
-          Test Run details for {executionId}
-        </div>
-        <Query
-          query={GET_EXECUTION_RESULTS_PER_TICK_QUERY}
-          variables={{ executionId }}
-        >
+        <Query query={GET_EXECUTION_QUERY} variables={{ executionId }}>
           {({ data, loading, error }) => {
             if (loading) return <Loading />
-            if (error) return <p>Error: {error.message}</p>
 
-            const resultsWithDates = data.result_aggregate.map(result => ({
-              ...result,
-              timestamp: +new Date(result.timestamp),
-            }))
+            const execution = data.execution_by_pk
 
             return (
-              <React.Fragment>
-                <Typography variant="h6">REQUESTS</Typography>
-                <TestExecutionRequestsChart
-                  execution={data.execution_by_pk}
-                  results={resultsWithDates}
-                  syncId="sync-chart"
-                />
-                <Typography variant="h6">REQUESTS RESPONSE TIME</Typography>
-                <TestExecutionResponseTimeChart
-                  execution={data.execution_by_pk}
-                  results={resultsWithDates}
-                  syncId="sync-chart"
-                />
-                <Typography variant="h6">RESPONSES</Typography>
-              </React.Fragment>
+              <SectionHeader
+                title={
+                  <div className={classes.header}>
+                    <div className={classes.headerScenario}>
+                      <Link
+                        component={RouterLink}
+                        color="inherit"
+                        to={this.getScenarioUrl(execution.configuration.id)}
+                      >
+                        {execution.configuration.name}
+                      </Link>
+                    </div>
+                    <div className={classes.headerSeparator}>
+                      <ChevronRight />
+                    </div>
+                    <div className={classes.headerDate}>
+                      {moment(execution.start_locust).format('YYYY-MM-DD')}
+                    </div>
+                  </div>
+                }
+                marginBottom
+              />
             )
           }}
         </Query>
-        <Query
-          query={GET_EXECUTION_RESULTS_DISTRIBUTION_QUERY}
-          variables={{ executionId }}
-        >
-          {({ data, loading, error }) => {
-            if (loading) return <p>Loading...</p>
 
-            let responses = []
-            if (data.result_distribution.length > 0) {
-              const result = data.result_distribution[0].request_result
-              if (Array.isArray(result)) {
-                responses = result
+        <Grid container spacing={16}>
+          <Query
+            query={GET_EXECUTION_RESULTS_PER_TICK_QUERY}
+            variables={{ executionId }}
+          >
+            {({ data, loading, error }) => {
+              if (loading) return <Loading />
+              if (error) return <p>Error: {error.message}</p>
+
+              const resultsWithDates = data.result_aggregate.map(result => ({
+                ...result,
+                timestamp: +new Date(result.timestamp),
+              }))
+
+              return (
+                <React.Fragment>
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <Typography variant="subtitle2" className={classes.tileTitle}>
+                        All Requests
+                      </Typography>
+                      <div className={classes.chartContainer}>
+                        <TestExecutionRequestsChart
+                          execution={data.execution_by_pk}
+                          results={resultsWithDates}
+                          syncId="sync-chart"
+                        />
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <Typography variant="subtitle2" className={classes.tileTitle}>
+                        Requests Response Time
+                      </Typography>
+                      <div className={classes.chartContainer}>
+                        <TestExecutionResponseTimeChart
+                          execution={data.execution_by_pk}
+                          results={resultsWithDates}
+                          syncId="sync-chart"
+                        />
+                      </div>
+                    </Paper>
+                  </Grid>
+                </React.Fragment>
+              )
+            }}
+          </Query>
+          <Query
+            query={GET_EXECUTION_RESULTS_DISTRIBUTION_QUERY}
+            variables={{ executionId }}
+          >
+            {({ data, loading, error }) => {
+              if (loading) return <Loading />
+
+              let responses = []
+              if (data.result_distribution.length > 0) {
+                const result = data.result_distribution[0].request_result
+                if (Array.isArray(result)) {
+                  responses = result
+                }
               }
-            }
 
-            return (
-              <TestExecutionResponsesList responses={responses} showPagination />
-            )
-          }}
-        </Query>
+              return (
+                <Grid item xs={12}>
+                  <Paper square className={classes.tile}>
+                    <Typography variant="subtitle2" className={classes.tileTitle}>
+                      Responses
+                    </Typography>
+                    <TestExecutionResponsesList
+                      responses={responses}
+                      showPagination
+                    />
+                  </Paper>
+                </Grid>
+              )
+            }}
+          </Query>
+        </Grid>
       </div>
     )
   }

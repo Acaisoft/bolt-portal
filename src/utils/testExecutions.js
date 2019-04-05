@@ -1,11 +1,13 @@
 import moment from 'moment'
 
 export const getExecutionTimestampDomain = execution => {
-  const estimatedEndTimestamp = moment(execution.start_locust).add(
-    execution.configuration.configuration_parameters[0].value,
-    'seconds'
-  )
-  const startTimestamp = +new Date(execution.start_locust)
+  const executionDuration = +execution.configuration.configuration_parameters[0]
+    .value
 
-  return [startTimestamp, estimatedEndTimestamp]
+  const startTimestamp = new Date(execution.start_locust)
+  const estimatedEndTimestamp = moment(startTimestamp)
+    .add(executionDuration, 'seconds')
+    .toDate()
+
+  return [+startTimestamp, +estimatedEndTimestamp]
 }
