@@ -52,6 +52,7 @@ export class DataTable extends Component {
     // If set to `true` the table will be re-rendered only if any of the columns change.
     // If set to `false` will re-render always (like any other component).
     pure: PropTypes.bool,
+    responsive: PropTypes.bool,
     onSelect: PropTypes.func,
     rowKey: PropTypes.func,
     striped: PropTypes.bool,
@@ -62,6 +63,7 @@ export class DataTable extends Component {
     initialSelected: new Set(),
     onSelect: () => {},
     pure: false,
+    responsive: true,
     rowKey: row => row.id,
     striped: false,
   }
@@ -91,11 +93,15 @@ export class DataTable extends Component {
   }
 
   render() {
+    const { classes, responsive } = this.props
+
     return (
-      <Table>
-        {this.renderHeader()}
-        {this.renderBody()}
-      </Table>
+      <div className={classNames({ [classes.responsiveContainer]: responsive })}>
+        <Table>
+          {this.renderHeader()}
+          {this.renderBody()}
+        </Table>
+      </div>
     )
   }
 

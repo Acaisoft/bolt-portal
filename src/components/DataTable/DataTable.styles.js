@@ -1,4 +1,7 @@
 export default ({ palette }) => ({
+  responsiveContainer: {
+    overflowX: 'auto',
+  },
   stripedOdd: {
     backgroundColor: palette.background.striped.odd,
   },
