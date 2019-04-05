@@ -63,43 +63,50 @@ export class TestSourceForm extends PureComponent {
   submitRepository = async values => {
     const { client, mode, projectId } = this.props
 
-    await client.mutate({
+    return client.mutate({
+      errorPolicy: 'all',
       mutation:
         mode === 'create' ? ADD_REPOSITORY_MUTATION : EDIT_REPOSITORY_MUTATION,
       variables: {
         id: mode === 'edit' ? values.id : undefined,
         project_id: mode === 'create' ? projectId : undefined,
-        name: values.name,
-        url: values.url,
+        name: values.repository.name,
+        repository_url: values.repository.url,
+        type_slug: values.repository.type_slug,
       },
-      refetchQueries: [{ query: GET_TEST_SOURCES_QUERY }],
+      refetchQueries: ['getTestSources'],
     })
   }
 
   validateRepository = async values => {
+    const { client, mode, projectId } = this.props
+
+    return client.mutate({
+      errorPolicy: 'all',
+      mutation:
+        mode === 'create'
+          ? ADD_REPOSITORY_VALIDATE_MUTATION
+          : EDIT_REPOSITORY_VALIDATE_MUTATION,
+      variables: {
+        id: mode === 'edit' ? values.id : undefined,
+        project_id: mode === 'create' ? projectId : undefined,
+        name: values.repository.name,
+        repository_url: values.repository.url,
+        type_slug: values.repository.type_slug,
+      },
+    })
+  }
+
+  handleTestRepositoryConnection = async values => {
     this.setState({ isTestingConnection: true })
 
-    const { client, mode, projectId } = this.props
     try {
-      const res = await client.mutate({
-        errorPolicy: 'all',
-        mutation:
-          mode === 'create'
-            ? ADD_REPOSITORY_VALIDATE_MUTATION
-            : EDIT_REPOSITORY_VALIDATE_MUTATION,
-        variables: {
-          id: mode === 'edit' ? values.id : undefined,
-          project_id: mode === 'create' ? projectId : undefined,
-          name: values.repository.name,
-          repository_url: values.repository.url,
-          type_slug: values.repository.type_slug,
-        },
-      })
+      const res = await this.validateRepository(values)
+      const error = res.errors && res.errors[0].message
 
-      this.setState({ isTestingConnection: false, isConnectionOk: !res.errors })
-
-      if (res.errors) {
-        toast.error(res.errors[0].message)
+      this.setState({ isTestingConnection: false, isConnectionOk: !error })
+      if (error) {
+        toast.error(error)
       } else {
         toast.success('Connection test passed!')
       }
@@ -111,26 +118,27 @@ export class TestSourceForm extends PureComponent {
 
   handleSubmit = async values => {
     try {
+      let response
       if (values.source_type === TestSourceType.REPOSITORY) {
-        await this.submitRepository(values)
+        response = await this.submitRepository(values)
       }
-      this.props.onSubmit(values)
+
+      const responseData = !response.errors
+        ? response.data.repository.returning
+        : null
+
+      this.props.onSubmit({
+        values,
+        response,
+        responseData,
+      })
     } catch (err) {
       toast.error('An error has occured. Test source was not created.')
     }
   }
 
   handleValidate = async values => {
-    const formErrors = validateForm(values, this.state.formConfig.validationSchema)
-    if (formErrors || !this.state.isTestingConnection) {
-      return formErrors
-    }
-
-    if (!formErrors) {
-      return this.validateRepository(values)
-    }
-
-    return null
+    return validateForm(values, this.state.formConfig.validationSchema)
   }
 
   render() {
@@ -152,7 +160,7 @@ export class TestSourceForm extends PureComponent {
             fields: formConfig.fields,
             handlers: {
               testConnection: () => {
-                this.validateRepository(form.values)
+                this.handleTestRepositoryConnection(form.values)
               },
             },
             isTestingConnection: this.state.isTestingConnection,

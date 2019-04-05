@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
+import { generatePath } from 'react-router-dom'
 import {
   Button,
   MenuItem,
@@ -40,6 +41,13 @@ export class Create extends PureComponent {
     e.currentTarget.focus()
   }
 
+  handleSubmit = values => {
+    const { history, match } = this.props
+    history.push(
+      generatePath('/projects/:projectId/test-sources', { ...match.params })
+    )
+  }
+
   render() {
     const { classes, match } = this.props
     const { projectId, testSourceId } = match.params
@@ -48,7 +56,11 @@ export class Create extends PureComponent {
 
     return (
       <div>
-        <TestSourceForm mode="create" projectId={projectId}>
+        <TestSourceForm
+          mode="create"
+          projectId={projectId}
+          onSubmit={this.handleSubmit}
+        >
           {({ form, fields, handlers, isTestingConnection, isConnectionOk }) => {
             const repositoryFields = fields.repository.fields
 

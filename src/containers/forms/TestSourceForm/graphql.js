@@ -1,18 +1,20 @@
 import gql from 'graphql-tag'
 
 export const ADD_REPOSITORY_MUTATION = gql`
-  mutation($name: String, $url: String, $projectId: uuid, $typeId: uuid) {
-    repository: insert_repository(
-      objects: [{ name: $name, url: $url, project_id: $projectId, type_id: $typeId }]
+  mutation addRepository(
+    $name: String!
+    $project_id: UUID!
+    $repository_url: String!
+    $type_slug: String!
+  ) {
+    repository: testrun_repository_create(
+      name: $name
+      project_id: $project_id
+      repository_url: $repository_url
+      type_slug: $type_slug
     ) {
       returning {
         id
-        url
-        name
-        project {
-          id
-          name
-        }
       }
     }
   }

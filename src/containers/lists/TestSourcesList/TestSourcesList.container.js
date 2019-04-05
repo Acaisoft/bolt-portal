@@ -31,6 +31,7 @@ export class TestSourcesListContainer extends Component {
         paginationDataKey="test_source_aggregate"
         query={query}
         variables={variables}
+        fetchPolicy="cache-and-network"
       >
         {({ data, loading, pagination }) => {
           const testSources = (data && data.test_source) || []
