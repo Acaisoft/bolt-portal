@@ -29,9 +29,12 @@ node('docker') {
         }
 
         stage('Build') {
+
+          def stage = env.BRANCH_NAME == PROD_BRANCH ? "prod" : (env.BRANCH_NAME == DEV_BRANCH ? "stage" : "unknown")
+
             docker.image('node:8.12').inside() {
                 sh "yarn"
-                sh "REACT_APP_STAGE=stage REACT_APP_VERSION=${version} yarn build"
+                sh "REACT_APP_STAGE=${stage} REACT_APP_VERSION=${version} yarn build"
             }
         }
 
