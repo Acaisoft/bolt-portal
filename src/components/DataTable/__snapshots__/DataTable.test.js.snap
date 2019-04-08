@@ -1,284 +1,300 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`component: DataTable rendering checkboxes should render checkbox for selecting all if multiselect flag is set 1`] = `
-<TableMock>
-  <TableHeadMock>
-    <TableRowMock>
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
+<div
+  className="responsiveContainer"
+>
+  <TableMock>
+    <TableHeadMock>
+      <TableRowMock>
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
+        >
+          <CheckboxMock
+            checked={false}
+            indeterminate={false}
+            onChange={[Function]}
+          />
+        </TableCellMock>
+        <TableCellMock
+          key=".$id"
+        >
+          ID
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Name
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          Age
+        </TableCellMock>
+      </TableRowMock>
+    </TableHeadMock>
+    <TableBodyMock>
+      <TableRowMock
+        className=""
+        key="1"
       >
-        <CheckboxMock
-          checked={false}
-          indeterminate={false}
-          onChange={[Function]}
-        />
-      </TableCellMock>
-      <TableCellMock
-        key=".$id"
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
+        >
+          <CheckboxMock
+            checked={false}
+            onChange={[Function]}
+          />
+        </TableCellMock>
+        <TableCellMock
+          key=".$id"
+        >
+          1
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Jane Doe
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          30
+        </TableCellMock>
+      </TableRowMock>
+      <TableRowMock
+        className=""
+        key="2"
       >
-        ID
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Name
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        Age
-      </TableCellMock>
-    </TableRowMock>
-  </TableHeadMock>
-  <TableBodyMock>
-    <TableRowMock
-      className=""
-      key="1"
-    >
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
-      >
-        <CheckboxMock
-          checked={false}
-          onChange={[Function]}
-        />
-      </TableCellMock>
-      <TableCellMock
-        key=".$id"
-      >
-        1
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Jane Doe
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        30
-      </TableCellMock>
-    </TableRowMock>
-    <TableRowMock
-      className=""
-      key="2"
-    >
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
-      >
-        <CheckboxMock
-          checked={false}
-          onChange={[Function]}
-        />
-      </TableCellMock>
-      <TableCellMock
-        key=".$id"
-      >
-        2
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Steven Bush
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        36
-      </TableCellMock>
-    </TableRowMock>
-  </TableBodyMock>
-</TableMock>
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
+        >
+          <CheckboxMock
+            checked={false}
+            onChange={[Function]}
+          />
+        </TableCellMock>
+        <TableCellMock
+          key=".$id"
+        >
+          2
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Steven Bush
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          36
+        </TableCellMock>
+      </TableRowMock>
+    </TableBodyMock>
+  </TableMock>
+</div>
 `;
 
 exports[`component: DataTable rendering checkboxes should render checkboxes in each row 1`] = `
-<TableMock>
-  <TableHeadMock>
-    <TableRowMock>
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
-      />
-      <TableCellMock
-        key=".$id"
-      >
-        ID
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Name
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        Age
-      </TableCellMock>
-    </TableRowMock>
-  </TableHeadMock>
-  <TableBodyMock>
-    <TableRowMock
-      className=""
-      key="1"
-    >
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
-      >
-        <CheckboxMock
-          checked={false}
-          onChange={[Function]}
+<div
+  className="responsiveContainer"
+>
+  <TableMock>
+    <TableHeadMock>
+      <TableRowMock>
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
         />
-      </TableCellMock>
-      <TableCellMock
-        key=".$id"
+        <TableCellMock
+          key=".$id"
+        >
+          ID
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Name
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          Age
+        </TableCellMock>
+      </TableRowMock>
+    </TableHeadMock>
+    <TableBodyMock>
+      <TableRowMock
+        className=""
+        key="1"
       >
-        1
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
+        >
+          <CheckboxMock
+            checked={false}
+            onChange={[Function]}
+          />
+        </TableCellMock>
+        <TableCellMock
+          key=".$id"
+        >
+          1
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Jane Doe
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          30
+        </TableCellMock>
+      </TableRowMock>
+      <TableRowMock
+        className=""
+        key="2"
       >
-        Jane Doe
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        30
-      </TableCellMock>
-    </TableRowMock>
-    <TableRowMock
-      className=""
-      key="2"
-    >
-      <TableCellMock
-        key="_checkbox"
-        padding="checkbox"
-      >
-        <CheckboxMock
-          checked={false}
-          onChange={[Function]}
-        />
-      </TableCellMock>
-      <TableCellMock
-        key=".$id"
-      >
-        2
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Steven Bush
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        36
-      </TableCellMock>
-    </TableRowMock>
-  </TableBodyMock>
-</TableMock>
+        <TableCellMock
+          key="_checkbox"
+          padding="checkbox"
+        >
+          <CheckboxMock
+            checked={false}
+            onChange={[Function]}
+          />
+        </TableCellMock>
+        <TableCellMock
+          key=".$id"
+        >
+          2
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Steven Bush
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          36
+        </TableCellMock>
+      </TableRowMock>
+    </TableBodyMock>
+  </TableMock>
+</div>
 `;
 
 exports[`component: DataTable rendering should render data according to Column settings 1`] = `
-<TableMock>
-  <TableHeadMock>
-    <TableRowMock>
-      <TableCellMock
-        key=".$id"
+<div
+  className="responsiveContainer"
+>
+  <TableMock>
+    <TableHeadMock>
+      <TableRowMock>
+        <TableCellMock
+          key=".$id"
+        >
+          ID
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Name
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          Age
+        </TableCellMock>
+      </TableRowMock>
+    </TableHeadMock>
+    <TableBodyMock>
+      <TableRowMock
+        className=""
+        key="1"
       >
-        ID
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
+        <TableCellMock
+          key=".$id"
+        >
+          1
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Jane Doe
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          30
+        </TableCellMock>
+      </TableRowMock>
+      <TableRowMock
+        className=""
+        key="2"
       >
-        Name
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        Age
-      </TableCellMock>
-    </TableRowMock>
-  </TableHeadMock>
-  <TableBodyMock>
-    <TableRowMock
-      className=""
-      key="1"
-    >
-      <TableCellMock
-        key=".$id"
-      >
-        1
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Jane Doe
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        30
-      </TableCellMock>
-    </TableRowMock>
-    <TableRowMock
-      className=""
-      key="2"
-    >
-      <TableCellMock
-        key=".$id"
-      >
-        2
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Steven Bush
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        36
-      </TableCellMock>
-    </TableRowMock>
-  </TableBodyMock>
-</TableMock>
+        <TableCellMock
+          key=".$id"
+        >
+          2
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Steven Bush
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          36
+        </TableCellMock>
+      </TableRowMock>
+    </TableBodyMock>
+  </TableMock>
+</div>
 `;
 
 exports[`component: DataTable rendering should render loader if isLoading is set 1`] = `
-<TableMock>
-  <TableHeadMock>
-    <TableRowMock>
-      <TableCellMock
-        key=".$id"
+<div
+  className="responsiveContainer"
+>
+  <TableMock>
+    <TableHeadMock>
+      <TableRowMock>
+        <TableCellMock
+          key=".$id"
+        >
+          ID
+        </TableCellMock>
+        <TableCellMock
+          key=".$name"
+        >
+          Name
+        </TableCellMock>
+        <TableCellMock
+          key=".$age"
+        >
+          Age
+        </TableCellMock>
+      </TableRowMock>
+    </TableHeadMock>
+    <TableBodyMock>
+      <TableRowMock
+        className=""
       >
-        ID
-      </TableCellMock>
-      <TableCellMock
-        key=".$name"
-      >
-        Name
-      </TableCellMock>
-      <TableCellMock
-        key=".$age"
-      >
-        Age
-      </TableCellMock>
-    </TableRowMock>
-  </TableHeadMock>
-  <TableBodyMock>
-    <TableRowMock
-      className=""
-    >
-      <TableCellMock
-        colSpan={3}
-      >
-        <Loading />
-      </TableCellMock>
-    </TableRowMock>
-  </TableBodyMock>
-</TableMock>
+        <TableCellMock
+          colSpan={3}
+        >
+          <Loading />
+        </TableCellMock>
+      </TableRowMock>
+    </TableBodyMock>
+  </TableMock>
+</div>
 `;
