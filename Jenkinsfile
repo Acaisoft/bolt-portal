@@ -49,7 +49,7 @@ node('docker') {
                 withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
                     docker.image('node:9.10-alpine').inside("-u root") {
                         sh "npm install -g firebase-tools"
-                        sh "firebase deploy --non-interactive --token ${TOKEN} --only target:acai-bolt"
+                        sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt"
                     }
                 }
                 return;
@@ -60,7 +60,7 @@ node('docker') {
                 withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
                     docker.image('node:9.10-alpine').inside("-u root") {
                         sh "npm install -g firebase-tools"
-                        sh "firebase deploy --non-interactive --token ${TOKEN} --only target:acai-bolt-prod"
+                        sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt-prod"
                     }
                 }
 
