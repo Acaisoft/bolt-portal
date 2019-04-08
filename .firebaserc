@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "acai-bolt"
+  },
+  "targets": {
+    "acai-bolt": {
+      "hosting": {
+        "acai-bolt": [
+          "acai-bolt"
+        ],
+        "acai-bolt-prod": [
+          "acai-bolt-prod"
+        ]
+      }
+    }
   }
 }
