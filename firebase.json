@@ -1,12 +1,26 @@
 {
-  "hosting": {
-    "public": "build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "acai-bolt",
+      "public": "build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "acai-bolt-prod",
+      "public": "build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
 }

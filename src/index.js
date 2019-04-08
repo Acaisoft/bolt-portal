@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import apolloClient from '~services/GraphQL/client'
 import App from './App'
 
+import Config from '~services/Config/Config'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
@@ -18,3 +19,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister()
+
+window.__version = Config.version
