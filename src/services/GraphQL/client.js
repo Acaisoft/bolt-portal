@@ -7,6 +7,7 @@ import { ApolloLink, Observable } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { split } from 'apollo-link'
 import { getMainDefinition } from 'apollo-utilities'
+import Config from '~services/Config/Config'
 
 /*
  * Links
@@ -32,8 +33,8 @@ const request = async operation => {
   // const authToken = localStorage.getItem('token') || initToken
   operation.setContext({
     headers: {
-      'X-Hasura-Access-Key': 'FF662305FF444E1CB81BB1D7DD310BC0',
-      'X-Hasura-User-Id': 'aaaaaaaa-ef65-4556-a1a5-96ff1f0068cb',
+      'X-Hasura-Access-Key': Config.hasuraAccessKey,
+      'X-Hasura-User-Id': Config.hasuraUserID,
       // Authorization: token ? `Bearer ${authToken}` : '',
     },
   })
@@ -61,7 +62,7 @@ const requestLink = new ApolloLink(
 )
 
 const wsLink = new WebSocketLink({
-  uri: `wss://hasura.dev.bolt.acaisoft.io/v1alpha1/graphql`,
+  uri: `wss://${Config.apiBase}/v1alpha1/graphql`,
   options: {
     lazy: true,
     reconnect: true,
@@ -69,7 +70,7 @@ const wsLink = new WebSocketLink({
       // const authToken = localStorage.getItem('token') || initToken
       return {
         headers: {
-          'X-Hasura-Access-Key': 'FF662305FF444E1CB81BB1D7DD310BC0',
+          'X-Hasura-Access-Key': Config.hasuraAccessKey,
           // Authorization: token ? `Bearer ${authToken}` : '',
         },
       }
@@ -77,7 +78,7 @@ const wsLink = new WebSocketLink({
   },
 })
 const httpLink = new HttpLink({
-  uri: 'https://hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
+  uri: `https://${Config.apiBase}/v1alpha1/graphql`,
 })
 
 const link = split(
