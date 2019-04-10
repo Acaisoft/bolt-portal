@@ -27,12 +27,12 @@ export function TestExecutionResponsesList({
       <DataTable.Column key="name" render={response => response.Name} title="Name" />
       <DataTable.Column
         key="total"
-        render={response => +response['# requests'] + +response['# failures']}
+        render={response => response['# requests']}
         title="Total"
       />
       <DataTable.Column
         key="success"
-        render={response => response['# requests']}
+        render={response => +response['# requests'] - +response['# failures']}
         title="Success"
       />
       <DataTable.Column

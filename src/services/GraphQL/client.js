@@ -78,7 +78,7 @@ const wsLink = new WebSocketLink({
   },
 })
 const httpLink = new HttpLink({
-  uri: `https://${Config.apiBase}/v1alpha1/graphql`,
+  uri: `http${Config.secure ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
 })
 
 const link = split(
