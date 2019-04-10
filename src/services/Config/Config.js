@@ -4,8 +4,6 @@ export class Config {
     this.version = process.env.REACT_APP_VERSION
     this.env = process.env.NODE_ENV
 
-    this.stage = 'prod'
-
     switch (this.stage.toLowerCase()) {
       case 'prod':
         this.apiBase = 'hasura.bolt.acaisoft.io'
