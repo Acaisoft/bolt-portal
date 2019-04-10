@@ -7,6 +7,7 @@ export default ({ palette, spacing, typography }) => {
       display: 'flex',
       justifyContent: 'center',
       textAlign: 'center',
+      textDecoration: 'none',
     },
     gridContainer: {
       margin: '50px 0px',

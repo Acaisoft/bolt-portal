@@ -21,7 +21,7 @@ const ProjectCard = ({ classes, project, onDetails, onMenuOpen }) => (
   <React.Fragment>
     <CardHeader
       className={classes.header}
-      avatar={<CircularProgress value={project.progress} variant="static" />}
+      // avatar={<CircularProgress value={project.progress} variant="static" />}
       action={
         <IconButton onClick={e => onMenuOpen(e, project)}>
           <MoreHoriz />

@@ -37,6 +37,11 @@ export function TestSourcesList({
         title="Scenarios"
       />
       <DataTable.Column
+        key="url"
+        render={source => source.repository.url}
+        title="URL"
+      />
+      <DataTable.Column
         key="actions"
         render={source => (
           <div className={classes.iconsContainer}>

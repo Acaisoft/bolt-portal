@@ -26,28 +26,28 @@ export class Details extends Component {
     this.items = [
       {
         id: 1,
-        label: 'TEST SCENARIOS',
-        linkTo: getUrl('/test-configurations'),
-        description: 'Manage Test Scenarios for My Super App.',
+        label: 'TEST SOURCES',
+        linkTo: getUrl('/test-sources'),
+        description: 'Manage Test Sources',
       },
       {
         id: 2,
-        label: 'TEST SOURCES',
-        linkTo: getUrl('/test-sources'),
-        description: 'Manage Test Sources for My Super App.',
+        label: 'TEST SCENARIOS',
+        linkTo: getUrl('/test-configurations'),
+        description: 'Manage Test Scenarios',
       },
       {
         id: 3,
         label: 'TESTS RUNS',
         linkTo: getUrl('/test-runs'),
-        description: 'See all tests run results.',
+        description: 'See all tests run results',
       },
-      {
-        id: 4,
-        label: 'USERS',
-        linkTo: getUrl('/users'),
-        description: 'Manage Users for My Super App.',
-      },
+      // {
+      //   id: 4,
+      //   label: 'USERS',
+      //   linkTo: getUrl('/users'),
+      //   description: 'Manage Users for My Super App.',
+      // },
     ]
   }
 
@@ -67,12 +67,12 @@ export class Details extends Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant="body2">
+        {/* <Typography variant="body2">
           Here you see manage settings for testing project
-        </Typography>
+        </Typography> */}
         <Grid container spacing={24} className={classes.gridContainer}>
           {this.items.map(({ id, label, linkTo, description }) => (
-            <Grid item xs={3} key={id}>
+            <Grid item xs={4} key={id}>
               <Card
                 component={Link}
                 to={linkTo}
