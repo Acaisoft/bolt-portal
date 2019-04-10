@@ -3,7 +3,6 @@ export class Config {
     this.stage = process.env.REACT_APP_STAGE || ''
     this.version = process.env.REACT_APP_VERSION
     this.env = process.env.NODE_ENV
-    this.https = true
 
     switch (this.stage.toLowerCase()) {
       case 'prod':
@@ -18,7 +17,6 @@ export class Config {
         break
       default:
         this.apiBase = 'localhost:8080'
-        this.secure = false
         this.hasuraAccessKey = 'devaccess'
         this.hasuraUserID = 'aaaaaaaa-ef65-4556-a1a5-96ff1f0068cb'
     }
