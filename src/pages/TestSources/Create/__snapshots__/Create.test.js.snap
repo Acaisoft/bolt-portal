@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`page: Create rendering should as expected 1`] = `
+<div>
+  <withApollo(Apollo(TestSourceForm))
+    mode="create"
+    onSubmit={[Function]}
+    projectId="mockedProjectId"
+  >
+    <Component />
+  </withApollo(Apollo(TestSourceForm))>
+</div>
+`;

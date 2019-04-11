@@ -48,6 +48,10 @@ export class Create extends PureComponent {
     )
   }
 
+  handleCancel = () => {
+    this.props.history.goBack()
+  }
+
   render() {
     const { classes, match } = this.props
     const { projectId, testSourceId } = match.params
@@ -88,6 +92,7 @@ export class Create extends PureComponent {
                       form.dirtySinceLastSubmit
                     }
                     icon={Add}
+                    id="submitButton"
                     onClick={form.handleSubmit}
                   >
                     {mode === 'create' ? 'Create' : 'Update'}
