@@ -75,6 +75,7 @@ export class ProjectsListContainer extends Component {
     return (
       <RemoteList query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
         {({ loading, error, data }) => {
+          if (error) console.log(error)
           if (error) return <Typography variant="body1">Error :(</Typography>
 
           const projects = !loading

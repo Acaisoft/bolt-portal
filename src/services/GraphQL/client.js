@@ -77,8 +77,9 @@ const wsLink = new WebSocketLink({
     },
   },
 })
+const stage = process.env.REACT_APP_STAGE
 const httpLink = new HttpLink({
-  uri: `https://${Config.apiBase}/v1alpha1/graphql`,
+  uri: `http${stage !== 'local' ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
 })
 
 const link = split(

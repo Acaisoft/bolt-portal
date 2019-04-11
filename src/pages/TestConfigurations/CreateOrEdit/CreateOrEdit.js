@@ -26,14 +26,16 @@ export class CreateOrEdit extends Component {
   }
 
   handleSubmit = () => {
-    const { history } = this.props
-    history.push('/test-configurations')
+    const { history, match } = this.props
+    let redirectUrl = match.url.split('/')
+    redirectUrl.pop()
+    redirectUrl = redirectUrl.join('/')
+    history.push(redirectUrl)
   }
 
   render() {
     const { classes, match } = this.props
     const { configurationId, projectId } = match.params
-
     const mode = configurationId ? 'edit' : 'create'
 
     return (

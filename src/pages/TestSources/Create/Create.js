@@ -92,7 +92,6 @@ export class Create extends PureComponent {
                       form.dirtySinceLastSubmit
                     }
                     icon={Add}
-                    id="submitButton"
                     onClick={form.handleSubmit}
                   >
                     {mode === 'create' ? 'Create' : 'Update'}
