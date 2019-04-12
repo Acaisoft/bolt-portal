@@ -1,1 +1,1 @@
-export { default as TestConfiguration } from './TestConfiguration.container'
+export { default } from './TestConfiguration.container'
