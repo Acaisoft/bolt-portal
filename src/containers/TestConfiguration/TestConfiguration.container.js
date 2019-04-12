@@ -17,7 +17,7 @@ export class TestConfiguration extends Component {
           children({
             loading,
             error,
-            data: data.configuration && data.configuration[0],
+            data: data && data.configuration && data.configuration[0],
           })
         }
       </Query>
