@@ -6,6 +6,10 @@ export default ({ palette, shape, spacing, typography }) => {
       display: 'flex',
       flexDirection: 'column',
       borderRadius: shape.borderRadius * 2,
+      position: 'relative',
+      '& > *': {
+        zIndex: 1,
+      },
     },
     gridContainer: {
       // Fallback for browsers not supporting CSS grid.

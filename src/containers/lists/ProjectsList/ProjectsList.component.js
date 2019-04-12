@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Anime from 'react-anime'
 
 import { Card, withStyles } from '@material-ui/core'
 
@@ -8,6 +9,29 @@ import { Loading } from '~components'
 
 import { NewProjectCard, ProjectCard, ProjectFormInCard } from './components'
 import styles from './ProjectsList.component.styles'
+
+const withAnime = (component, animationProps) => {
+  return <Anime {...animationProps}>{component}</Anime>
+}
+
+const getStyleForFadedBackground = url =>
+  url && (
+    <div
+      style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0,
+        left: 0,
+        background: `url(${url})`,
+        backgroundSize: '100%',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: 0.2,
+        borderRadius: 16,
+      }}
+    />
+  )
 
 const ProjectsList = ({
   classes,
@@ -22,34 +46,44 @@ const ProjectsList = ({
   projects = [],
 }) => {
   if (loading) return <Loading />
+  const PrimeTile = (
+    <div
+      className={classNames({
+        [classes.gridItem]: true,
+        [classes.gridItemBig]: editedItem && editedItem.id === 'new-project',
+      })}
+      key="new_project"
+    >
+      <Card
+        aria-label="Project Form"
+        className={classNames(classes.card, classes.formCard)}
+      >
+        <div className={classes.newProjectContainer}>
+          {editedItem && editedItem.id === 'new-project' ? (
+            <ProjectFormInCard
+              initialValues={editedItem}
+              mode="create"
+              onCancel={onFormCancel}
+              onSubmit={onFormSubmit}
+            />
+          ) : (
+            <NewProjectCard onCreate={onCreate} />
+          )}
+        </div>
+      </Card>
+    </div>
+  )
 
+  const animeProps = {
+    duration: 400,
+    scale: [0.2, 1],
+    easing: 'easeInOutElastic',
+  }
   return (
     <div className={classes.gridContainer}>
-      <div
-        className={classNames({
-          [classes.gridItem]: true,
-          [classes.gridItemBig]: editedItem && editedItem.id === 'new-project',
-        })}
-        key="new_project"
-      >
-        <Card
-          aria-label="Project Form"
-          className={classNames(classes.card, classes.formCard)}
-        >
-          <div className={classes.newProjectContainer}>
-            {editedItem && editedItem.id === 'new-project' ? (
-              <ProjectFormInCard
-                initialValues={editedItem}
-                mode="create"
-                onCancel={onFormCancel}
-                onSubmit={onFormSubmit}
-              />
-            ) : (
-              <NewProjectCard onCreate={onCreate} />
-            )}
-          </div>
-        </Card>
-      </div>
+      {editedItem && editedItem.id === 'new-project'
+        ? withAnime(PrimeTile, animeProps)
+        : PrimeTile}
       {projects.map(project => (
         <div
           className={classNames({
@@ -59,6 +93,7 @@ const ProjectsList = ({
           key={project.id}
         >
           <Card aria-label="Project Details" className={classes.card}>
+            {getStyleForFadedBackground(project.image_url)}
             {editedItem && editedItem.id === project.id ? (
               <ProjectFormInCard
                 initialValues={editedItem}
