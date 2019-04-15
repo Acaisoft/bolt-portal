@@ -17,6 +17,7 @@ export default gql`
       id
       number_of_fails
       number_of_successes
+      number_of_users
       average_response_time
       timestamp
     }

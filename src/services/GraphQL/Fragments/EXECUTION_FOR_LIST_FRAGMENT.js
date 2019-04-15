@@ -24,6 +24,9 @@ export default gql`
           number_of_successes
           number_of_fails
         }
+        max {
+          number_of_users
+        }
       }
     }
   }
