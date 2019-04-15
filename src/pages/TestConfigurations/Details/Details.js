@@ -9,6 +9,11 @@ import { TestConfiguration } from '~containers'
 
 import styles from './Details.styles'
 
+const testSourceProperties = {
+  repository: ['name', 'url'],
+  test_creator: ['name'],
+}
+
 export class Details extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -38,56 +43,62 @@ export class Details extends Component {
     return (
       <div className={classes.root}>
         <TestConfiguration configurationId={configurationId}>
-          {({ data }) => (
-            <React.Fragment>
-              {data && (
-                <div className={classes.header}>
-                  {console.log(data)}
-                  <div className={classes.information}>
-                    <Typography variant="body2">
-                      Name: {(data || {}).name || ''}
+          {({ data }) => {
+            if (!data) return null
+            const { test_source, configuration_type, name } = data
+            const { source_type } = test_source
+            return (
+              <div className={classes.header}>
+                {console.log(data)}
+                <div className={classes.information}>
+                  <Typography variant="body1">Name: {name}</Typography>
+                  <Typography variant="body1">
+                    Test type: {configuration_type.name}
+                  </Typography>
+                  <br />
+                  <Typography variant="body1">Test source: {source_type}</Typography>
+                  {testSourceProperties[source_type].map(property => (
+                    <Typography key={property} variant="body2">
+                      {property}: {test_source[source_type][property]}
                     </Typography>
-                    <Typography variant="body2">
-                      Test source:{' '}
-                      {((data || {}).test_source || {}).source_type ||
-                        'No test source'}
+                  ))}
+                  <br />
+                  <Typography variant="body1">Configuration parameters:</Typography>
+                  {((data || {}).configuration_parameters || []).map(param => (
+                    <Typography key={param.parameter_slug} variant="body2">
+                      {param.parameter_slug}: {param.value}
                     </Typography>
-                    <Typography variant="body2">
-                      Test type: {((data || {}).configuration_type || {}).name}
-                    </Typography>
-                  </div>
-                  <div className={classes.actions}>
-                    <div className={classes.buttonsHolder}>
-                      <Button
-                        classes={{
-                          root: classes.actionButton,
-                          label: classes.actionButtonLabel,
-                        }}
-                        variant="contained"
-                      >
-                        <PlayArrow />
-                        <Typography variant="body2">Play</Typography>
-                      </Button>
-                      <Button
-                        classes={{
-                          root: classes.actionButton,
-                          label: classes.actionButtonLabel,
-                        }}
-                        variant="contained"
-                      >
-                        <CalendarToday />
-                        <Typography variant="body2">Play</Typography>
-                      </Button>
-                    </div>
+                  ))}
+                </div>
+                <div className={classes.actions}>
+                  <div className={classes.buttonsHolder}>
+                    <Button
+                      classes={{
+                        root: classes.actionButton,
+                        label: classes.actionButtonLabel,
+                      }}
+                      variant="contained"
+                    >
+                      <PlayArrow />
+                      <Typography variant="body2">Play</Typography>
+                    </Button>
+                    <Button
+                      classes={{
+                        root: classes.actionButton,
+                        label: classes.actionButtonLabel,
+                      }}
+                      variant="contained"
+                    >
+                      <CalendarToday />
+                      <Typography variant="body2">Play</Typography>
+                    </Button>
                   </div>
                 </div>
-              )}
-            </React.Fragment>
-          )}
+              </div>
+            )
+          }}
         </TestConfiguration>
-        <Typography variant="body2">Here you see all test scenarios</Typography>
         <div className={classes.tableContainer}>
-          Test Configuration details for {configurationId}
           <TestExecutionsList
             configurationId={configurationId}
             onDetails={this.handleExecutionDetails}

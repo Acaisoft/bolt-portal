@@ -20,6 +20,11 @@ export default gql`
         id
         name
       }
+      configuration_parameters {
+        id
+        value
+        parameter_slug
+      }
       executions {
         id
         start
@@ -30,6 +35,7 @@ export default gql`
         repository {
           id
           name
+          url
         }
         test_creator {
           id

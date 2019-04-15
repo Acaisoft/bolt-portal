@@ -12,7 +12,7 @@ export class TestConfiguration extends Component {
   render() {
     const { children, configurationId } = this.props
     return (
-      <Query query={GET_CONFIGS_QUERY} variables={{ configurationId }}>
+      <Query query={GET_CONFIGS_QUERY} variables={{ configurationId, limit: 1 }}>
         {({ loading, error, data }) =>
           children({
             loading,
