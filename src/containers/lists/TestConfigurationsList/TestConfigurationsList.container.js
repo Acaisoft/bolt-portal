@@ -18,12 +18,12 @@ export class TestConfigurationsListContainer extends Component {
       configuration: PropTypes.array,
       loading: PropTypes.bool,
     }).isRequired,
-    projectId: PropTypes.string,
     onCreate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onDetails: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
+    projectId: PropTypes.string,
   }
 
   state = {

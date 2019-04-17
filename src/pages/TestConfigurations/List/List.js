@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
 import { Mutation } from 'react-apollo'
-
+import { toast } from 'react-toastify'
 import { withStyles } from '@material-ui/core'
-
-import { DeleteModal } from '~components'
+import { SubmitCancelModal } from '~components'
 import { TestConfigurationsList } from '~containers/lists'
+
 import styles from './List.styles'
 
 import { getSubpageUrl } from '~utils/router'
 import { DELETE_CONFIG_MUTATION } from '~services/GraphQL/Mutations'
-import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
 
 export class List extends Component {
   static propTypes = {
@@ -30,8 +30,13 @@ export class List extends Component {
   handleDeleteSubmit = async ({ delMutation }) => {
     const { selectedItem } = this.state
 
-    await delMutation({ variables: { id: selectedItem.id } })
-    this.handleDeleteModalClose()
+    try {
+      await delMutation({ variables: { configurationId: selectedItem.id } })
+    } catch (ex) {
+      toast.error(ex.message)
+    } finally {
+      this.handleDeleteModalClose()
+    }
   }
 
   handleDelete = selectedItem => {
@@ -73,18 +78,19 @@ export class List extends Component {
       <div className={classes.root}>
         <Mutation
           mutation={DELETE_CONFIG_MUTATION}
-          refetchQueries={[{ query: GET_CONFIGS_QUERY, variables: { projectId } }]}
+          refetchQueries={['getTestConfigurations']}
         >
-          {(delMutation, { data }) =>
-            isDeleteModalOpen && (
-              <DeleteModal
-                onClose={this.handleDeleteModalClose}
-                onSubmit={() => this.handleDeleteSubmit({ delMutation })}
-                type="test source"
-                name={selectedItem.name}
-              />
-            )
-          }
+          {delMutation => (
+            <SubmitCancelModal
+              isOpen={isDeleteModalOpen}
+              onClose={this.handleDeleteModalClose}
+              onSubmit={() => this.handleDeleteSubmit({ delMutation })}
+              submitLabel="Delete"
+            >
+              Are you sure you want to delete <q>{(selectedItem || {}).name}</q>{' '}
+              scenario?
+            </SubmitCancelModal>
+          )}
         </Mutation>
         <TestConfigurationsList
           projectId={projectId}
