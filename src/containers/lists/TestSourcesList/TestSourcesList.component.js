@@ -5,6 +5,7 @@ import { Edit, Delete } from '@material-ui/icons'
 
 import { DataTable } from '~components'
 
+import { TestSourceType } from '~config/constants'
 import styles from './TestSourcesList.component.styles'
 
 export function TestSourcesList({
@@ -38,7 +39,11 @@ export function TestSourcesList({
       />
       <DataTable.Column
         key="url"
-        render={source => source.repository.url}
+        render={source =>
+          source.source_type === TestSourceType.REPOSITORY
+            ? source.repository.url
+            : null
+        }
         title="URL"
       />
       <DataTable.Column

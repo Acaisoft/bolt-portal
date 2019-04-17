@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Pagination, RemoteList } from '~containers'
+import { compose, graphql } from 'react-apollo'
+import { Pagination } from '~containers'
 import { SectionHeader } from '~components'
+import { withQueryPagination } from '~hocs'
 
-import { GET_EXECUTIONS_QUERY } from '~services/GraphQL/Queries'
-
+import { GET_TEST_EXECUTIONS } from './graphql'
 import TestExecutionsList from './TestExecutionsList.component'
 
 export class TestExecutionsListContainer extends Component {
@@ -14,7 +15,13 @@ export class TestExecutionsListContainer extends Component {
     onDetails: PropTypes.func.isRequired,
     projectId: PropTypes.string,
     hideCounter: PropTypes.bool,
+    limit: PropTypes.number,
+    pagination: PropTypes.object.isRequired,
     showPagination: PropTypes.bool,
+    executionsQuery: PropTypes.shape({
+      execution: PropTypes.array,
+      loading: PropTypes.bool,
+    }).isRequired,
     title: PropTypes.node,
   }
 
@@ -24,54 +31,47 @@ export class TestExecutionsListContainer extends Component {
 
   render() {
     const {
-      configurationId,
+      executionsQuery: { executions = [], loading },
       hideCounter,
-      limit,
       onDetails,
+      pagination,
       projectId,
       showPagination,
       title,
     } = this.props
 
-    const query = GET_EXECUTIONS_QUERY
-
-    const variables = {
-      configurationId,
-      projectId,
-      limit,
-      order_by: [{ start: 'desc' }],
-    }
     return (
-      <RemoteList
-        paginationDataKey="execution_aggregate"
-        query={query}
-        variables={variables}
-        limit={limit}
-      >
-        {({ data, loading, pagination }) => {
-          const executions = (data && data.execution) || []
-
-          return (
-            <React.Fragment>
-              <SectionHeader
-                title={title}
-                subtitle={!hideCounter && `(${pagination.totalCount})`}
-                marginBottom
-              >
-                {showPagination && <Pagination {...pagination} />}
-              </SectionHeader>
-              <TestExecutionsList
-                executions={executions}
-                loading={loading}
-                projectId={projectId}
-                onDetails={onDetails}
-              />
-            </React.Fragment>
-          )
-        }}
-      </RemoteList>
+      <React.Fragment>
+        <SectionHeader
+          title={title}
+          subtitle={!hideCounter && `(${pagination.totalCount})`}
+          marginBottom
+        >
+          {showPagination && <Pagination {...pagination} />}
+        </SectionHeader>
+        <TestExecutionsList
+          executions={executions}
+          loading={loading}
+          projectId={projectId}
+          onDetails={onDetails}
+        />
+      </React.Fragment>
     )
   }
 }
 
-export default TestExecutionsListContainer
+export default compose(
+  graphql(GET_TEST_EXECUTIONS, {
+    name: 'executionsQuery',
+    options: ({ configurationId, limit, projectId }) => ({
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        projectId,
+        configurationId,
+        limit,
+        order_by: [{ start: 'desc' }],
+      },
+    }),
+  }),
+  withQueryPagination({ queryProp: 'executionsQuery' })
+)(TestExecutionsListContainer)

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { graphql } from 'react-apollo'
 import { Menu, MenuItem, Typography } from '@material-ui/core'
-import { RemoteList } from '~containers'
 import { SectionHeader } from '~components'
 
-import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
-
 import ProjectsList from './ProjectsList.component'
+import { GET_PROJECTS } from './graphql'
 
 export class ProjectsListContainer extends Component {
   static propTypes = {
@@ -69,56 +68,50 @@ export class ProjectsListContainer extends Component {
   }
 
   render() {
-    const { onDetails } = this.props
+    const {
+      onDetails,
+      projectsQuery: { projects = [], error, loading },
+    } = this.props
     const { editedItem, menuAnchorEl } = this.state
 
+    if (error) return <Typography variant="body1">Error :(</Typography>
+
     return (
-      <RemoteList query={GET_PROJECTS_QUERY} fetchPolicy="cache-and-network">
-        {({ loading, error, data }) => {
-          if (error) console.log(error)
-          if (error) return <Typography variant="body1">Error :(</Typography>
-
-          const projects = !loading
-            ? (data.project || []).map(project => ({
-                ...project,
-                progress: 70, // Mock project progress
-              }))
-            : []
-
-          return (
-            <React.Fragment>
-              <SectionHeader
-                title="Your Projects"
-                subtitle={`(${projects.length})`}
-                marginBottom
-              />
-              <ProjectsList
-                loading={loading}
-                projects={projects}
-                editedItem={editedItem}
-                onCreate={this.handleCreate}
-                onDetails={onDetails}
-                onFormCancel={this.handleFormClose}
-                onFormSubmit={this.handleFormClose}
-                onMenuOpen={this.handleMenuOpen}
-                onMenuClose={this.handleMenuClose}
-              />
-              <Menu
-                id="project-menu"
-                anchorEl={menuAnchorEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={!!menuAnchorEl}
-                onClose={this.handleMenuClose}
-              >
-                <MenuItem onClick={this.handleEdit}>Edit project</MenuItem>
-              </Menu>
-            </React.Fragment>
-          )
-        }}
-      </RemoteList>
+      <React.Fragment>
+        <SectionHeader
+          title="Your Projects"
+          subtitle={`(${projects.length})`}
+          marginBottom
+        />
+        <ProjectsList
+          loading={loading}
+          projects={projects}
+          editedItem={editedItem}
+          onCreate={this.handleCreate}
+          onDetails={onDetails}
+          onFormCancel={this.handleFormClose}
+          onFormSubmit={this.handleFormClose}
+          onMenuOpen={this.handleMenuOpen}
+          onMenuClose={this.handleMenuClose}
+        />
+        <Menu
+          id="project-menu"
+          anchorEl={menuAnchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={!!menuAnchorEl}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem onClick={this.handleEdit}>Edit project</MenuItem>
+        </Menu>
+      </React.Fragment>
     )
   }
 }
 
-export default ProjectsListContainer
+export default graphql(GET_PROJECTS, {
+  name: 'projectsQuery',
+  options: {
+    fetchPolicy: 'cache-and-network',
+  },
+})(ProjectsListContainer)

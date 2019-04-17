@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { compose, graphql } from 'react-apollo'
 import { Add } from '@material-ui/icons'
-import { Pagination, RemoteList } from '~containers'
+import { Pagination } from '~containers'
 import { ButtonWithIcon, SectionHeader } from '~components'
-
-import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
+import { withQueryPagination } from '~hocs'
 
 import TestSourcesList from './TestSourcesList.component'
+import { GET_TEST_SOURCES } from './graphql'
 
 export class TestSourcesListContainer extends Component {
   static propTypes = {
@@ -17,55 +18,54 @@ export class TestSourcesListContainer extends Component {
   }
 
   render() {
-    const { projectId, onCreate, onDelete, onEdit } = this.props
-
-    const query = GET_TEST_SOURCES_QUERY
-
-    const variables = {
+    const {
       projectId,
-      order_by: [{ id: 'asc' }],
-    }
+      onCreate,
+      onDelete,
+      onEdit,
+      pagination,
+      sourcesQuery: { testSources = [], loading },
+    } = this.props
 
     return (
-      <RemoteList
-        paginationDataKey="test_source_aggregate"
-        query={query}
-        variables={variables}
-        fetchPolicy="cache-and-network"
-      >
-        {({ data, loading, pagination }) => {
-          const testSources = (data && data.test_source) || []
-
-          return (
-            <React.Fragment>
-              <SectionHeader
-                title="Test Sources"
-                subtitle={`(${testSources.length})`}
-                marginBottom
-              >
-                <Pagination {...pagination} />
-                <ButtonWithIcon
-                  icon={Add}
-                  color="secondary"
-                  variant="contained"
-                  onClick={onCreate}
-                >
-                  New
-                </ButtonWithIcon>
-              </SectionHeader>
-              <TestSourcesList
-                loading={loading}
-                testSources={testSources}
-                projectId={projectId}
-                onDelete={onDelete}
-                onEdit={onEdit}
-              />
-            </React.Fragment>
-          )
-        }}
-      </RemoteList>
+      <React.Fragment>
+        <SectionHeader
+          title="Test Sources"
+          subtitle={`(${testSources.length})`}
+          marginBottom
+        >
+          <Pagination {...pagination} />
+          <ButtonWithIcon
+            icon={Add}
+            color="secondary"
+            variant="contained"
+            onClick={onCreate}
+          >
+            New
+          </ButtonWithIcon>
+        </SectionHeader>
+        <TestSourcesList
+          loading={loading}
+          testSources={testSources}
+          projectId={projectId}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
+      </React.Fragment>
     )
   }
 }
 
-export default TestSourcesListContainer
+export default compose(
+  graphql(GET_TEST_SOURCES, {
+    name: 'sourcesQuery',
+    options: props => ({
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        projectId: props.projectId,
+        order_by: [{ id: 'asc' }],
+      },
+    }),
+  }),
+  withQueryPagination({ queryProp: 'sourcesQuery' })
+)(TestSourcesListContainer)
