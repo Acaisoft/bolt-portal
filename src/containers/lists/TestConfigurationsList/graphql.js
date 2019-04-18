@@ -8,6 +8,40 @@ export const RUN_TEST_SCENARIO = gql`
   }
 `
 
+const TEST_CONFIGURATION_LIST_ITEM = gql`
+  fragment testConfigurationListItem on configuration {
+    id
+    name
+    performed
+    configuration_type {
+      id
+      name
+    }
+    configuration_parameters {
+      id
+      value
+      parameter_slug
+    }
+    executions {
+      id
+      start
+    }
+    test_source {
+      id
+      source_type
+      repository {
+        id
+        name
+        url
+      }
+      test_creator {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const GET_TEST_CONFIGURATIONS = gql`
   query getTestConfigurations(
     $projectId: uuid
@@ -16,44 +50,21 @@ export const GET_TEST_CONFIGURATIONS = gql`
     $order_by: [execution_order_by!]
   ) {
     configurations: configuration(
-      where: { project_id: { _eq: $projectId } }
+      where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }
       limit: $limit
       offset: $offset
       order_by: $order_by
     ) {
-      id
-      name
-      configuration_type {
-        id
-        name
-      }
-      configuration_parameters {
-        id
-        value
-        parameter_slug
-      }
-      executions {
-        id
-        start
-      }
-      test_source {
-        id
-        source_type
-        repository {
-          id
-          name
-          url
-        }
-        test_creator {
-          id
-          name
-        }
-      }
+      ...testConfigurationListItem
     }
-    pagination: configuration_aggregate(where: { project_id: { _eq: $projectId } }) {
+    configuration_aggregate(
+      where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }
+    ) {
       aggregate {
         count
       }
     }
   }
+
+  ${TEST_CONFIGURATION_LIST_ITEM}
 `

@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
-import { IconButton, withStyles } from '@material-ui/core'
+import { IconButton, withStyles, Tooltip } from '@material-ui/core'
 import { Edit, Delete, History, PlayArrow, Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
@@ -98,13 +98,31 @@ export function TestConfigurationsList({
               >
                 <Edit />
               </IconButton>
-              <IconButton
-                aria-label="Delete configuration"
-                className={classes.icon}
-                onClick={() => onDelete(configuration)}
+              <Tooltip
+                title={
+                  Boolean(configuration.performed)
+                    ? "You can't delete a performed scenario."
+                    : ''
+                }
+                PopperProps={{
+                  classes: {
+                    popper: {
+                      opacity: 1,
+                    },
+                  },
+                }}
               >
-                <Delete />
-              </IconButton>
+                <span>
+                  <IconButton
+                    aria-label="Delete configuration"
+                    className={classes.icon}
+                    disabled={Boolean(configuration.performed)}
+                    onClick={() => onDelete(configuration)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </span>
+              </Tooltip>
             </div>
           )
         }}

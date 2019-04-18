@@ -17,7 +17,6 @@ import {
 import {
   GET_CONFIGURATION_TYPES_QUERY,
   GET_PARAMETERS_QUERY,
-  GET_CONFIGS_QUERY,
 } from '~services/GraphQL/Queries'
 
 export class TestConfigurationForm extends Component {
@@ -77,7 +76,6 @@ export class TestConfigurationForm extends Component {
     const {
       children,
       mode,
-      projectId,
       parametersQuery,
       configurationTypesQuery,
       initialValues,
@@ -98,7 +96,7 @@ export class TestConfigurationForm extends Component {
             ? ADD_CONFIGURATION_MUTATION
             : EDIT_CONFIGURATION_MUTATION
         }
-        refetchQueries={[{ query: GET_CONFIGS_QUERY, variables: { projectId } }]}
+        refetchQueries={['getTestConfigurations']}
       >
         {configurationMutation => {
           return (

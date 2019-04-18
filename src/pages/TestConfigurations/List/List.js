@@ -87,8 +87,8 @@ export class List extends Component {
               onSubmit={() => this.handleDeleteSubmit({ delMutation })}
               submitLabel="Delete"
             >
-              Are you sure you want to delete <q>{(selectedItem || {}).name}</q>{' '}
-              scenario?
+              Are you sure you want to delete test scenario{' '}
+              <q>{(selectedItem || {}).name}</q>?
             </SubmitCancelModal>
           )}
         </Mutation>

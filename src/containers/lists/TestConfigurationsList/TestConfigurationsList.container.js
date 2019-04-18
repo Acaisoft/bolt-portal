@@ -6,7 +6,7 @@ import { Add } from '@material-ui/icons'
 import { toast } from 'react-toastify'
 import { ButtonWithIcon, SectionHeader } from '~components'
 import { Pagination } from '~containers'
-import { withQueryPagination } from '~hocs'
+import { withListFilters } from '~hocs'
 
 import { GET_TEST_CONFIGURATIONS, RUN_TEST_SCENARIO } from './graphql'
 
@@ -16,13 +16,20 @@ export class TestConfigurationsListContainer extends Component {
   static propTypes = {
     configsQuery: PropTypes.shape({
       configuration: PropTypes.array,
+      configuration_aggregate: PropTypes.shape({
+        aggregate: PropTypes.shape({
+          count: PropTypes.number,
+        }),
+      }),
       loading: PropTypes.bool,
+    }).isRequired,
+    listFilters: PropTypes.shape({
+      setPagination: PropTypes.func.isRequired,
     }).isRequired,
     onCreate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onDetails: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
-    pagination: PropTypes.object.isRequired,
     projectId: PropTypes.string,
   }
 
@@ -47,24 +54,24 @@ export class TestConfigurationsListContainer extends Component {
 
   render() {
     const {
-      configsQuery: { configurations = [], loading },
+      configsQuery: { configurations = [], configuration_aggregate, loading },
+      listFilters,
       projectId,
       onCreate,
       onDelete,
       onDetails,
       onEdit,
-      pagination,
     } = this.props
     const { runningConfigurationId } = this.state
 
+    const totalCount = configuration_aggregate
+      ? configuration_aggregate.aggregate.count
+      : 0
+
     return (
       <React.Fragment>
-        <SectionHeader
-          title="Scenarios"
-          subtitle={`(${pagination.totalCount})`}
-          marginBottom
-        >
-          <Pagination {...pagination} />
+        <SectionHeader title="Scenarios" subtitle={`(${totalCount})`} marginBottom>
+          <Pagination totalCount={totalCount} onChange={listFilters.setPagination} />
           <ButtonWithIcon
             icon={Add}
             variant="contained"
@@ -90,15 +97,18 @@ export class TestConfigurationsListContainer extends Component {
 }
 
 export default compose(
+  withListFilters({ initialState: props => ({ rowsPerPage: 10 }) }),
   graphql(RUN_TEST_SCENARIO, { name: 'runTestScenarioMutation' }),
   graphql(GET_TEST_CONFIGURATIONS, {
     name: 'configsQuery',
-    options: ({ projectId }) => ({
+    options: ({ projectId, listFilters }) => ({
       variables: {
         projectId,
+        limit: listFilters.rowsPerPage,
+        offset: listFilters.offset,
         order_by: [{ id: 'asc' }],
       },
+      fetchPolicy: 'cache-and-network',
     }),
-  }),
-  withQueryPagination({ queryProp: 'configsQuery' })
+  })
 )(TestConfigurationsListContainer)

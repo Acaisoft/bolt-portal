@@ -62,6 +62,11 @@ export default {
         },
       },
     },
+    MuiTooltip: {
+      popper: {
+        opacity: 1,
+      },
+    },
     MuiTableCell: {
       root: {
         borderBottom: 'none',
