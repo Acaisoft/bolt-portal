@@ -144,29 +144,29 @@ export class TestSourceForm extends PureComponent {
     const { children, initialValues } = this.props
     const { formConfig } = this.state
 
+    if (!formConfig) return <Loader loading fill />
+
     return (
-      <Loader loading={!formConfig} fill>
-        <Form
-          initialValues={initialValues}
-          onSubmit={this.handleSubmit}
-          validate={this.handleValidate}
-          keepDirtyOnReinitialize
-        >
-          {form =>
-            children({
-              form,
-              fields: formConfig.fields,
-              handlers: {
-                testConnection: () => {
-                  this.handleTestRepositoryConnection(form.values)
-                },
+      <Form
+        initialValues={initialValues}
+        onSubmit={this.handleSubmit}
+        validate={this.handleValidate}
+        keepDirtyOnReinitialize
+      >
+        {form =>
+          children({
+            form,
+            fields: formConfig.fields,
+            handlers: {
+              testConnection: () => {
+                this.handleTestRepositoryConnection(form.values)
               },
-              isTestingConnection: this.state.isTestingConnection,
-              isConnectionOk: this.state.isConnectionOk,
-            })
-          }
-        </Form>
-      </Loader>
+            },
+            isTestingConnection: this.state.isTestingConnection,
+            isConnectionOk: this.state.isConnectionOk,
+          })
+        }
+      </Form>
     )
   }
 }

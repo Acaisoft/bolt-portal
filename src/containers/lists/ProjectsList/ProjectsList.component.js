@@ -45,6 +45,8 @@ const ProjectsList = ({
   onFormSubmit,
   projects = [],
 }) => {
+  if (loading) return <Loader loading fill />
+
   const PrimeTile = (
     <div
       className={classNames({
@@ -79,41 +81,39 @@ const ProjectsList = ({
     easing: 'easeInOutElastic',
   }
   return (
-    <Loader loading={loading} fill>
-      <div className={classes.gridContainer}>
-        {editedItem && editedItem.id === 'new-project'
-          ? withAnime(PrimeTile, animeProps)
-          : PrimeTile}
-        {projects.map(project => (
-          <div
-            className={classNames({
-              [classes.gridItem]: true,
-              [classes.gridItemBig]: editedItem && editedItem.id === project.id,
-            })}
-            key={project.id}
-          >
-            <Card aria-label="Project Details" className={classes.card}>
-              {getStyleForFadedBackground(project.image_url)}
-              {editedItem && editedItem.id === project.id ? (
-                <ProjectFormInCard
-                  initialValues={editedItem}
-                  mode="edit"
-                  onCancel={onFormCancel}
-                  onSubmit={onFormSubmit}
-                />
-              ) : (
-                <ProjectCard
-                  onDetails={onDetails}
-                  onMenuOpen={onMenuOpen}
-                  onMenuClose={onMenuClose}
-                  project={project}
-                />
-              )}
-            </Card>
-          </div>
-        ))}
-      </div>
-    </Loader>
+    <div className={classes.gridContainer}>
+      {editedItem && editedItem.id === 'new-project'
+        ? withAnime(PrimeTile, animeProps)
+        : PrimeTile}
+      {projects.map(project => (
+        <div
+          className={classNames({
+            [classes.gridItem]: true,
+            [classes.gridItemBig]: editedItem && editedItem.id === project.id,
+          })}
+          key={project.id}
+        >
+          <Card aria-label="Project Details" className={classes.card}>
+            {getStyleForFadedBackground(project.image_url)}
+            {editedItem && editedItem.id === project.id ? (
+              <ProjectFormInCard
+                initialValues={editedItem}
+                mode="edit"
+                onCancel={onFormCancel}
+                onSubmit={onFormSubmit}
+              />
+            ) : (
+              <ProjectCard
+                onDetails={onDetails}
+                onMenuOpen={onMenuOpen}
+                onMenuClose={onMenuClose}
+                project={project}
+              />
+            )}
+          </Card>
+        </div>
+      ))}
+    </div>
   )
 }
 

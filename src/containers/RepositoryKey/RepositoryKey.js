@@ -23,13 +23,10 @@ export class RepositoryKey extends Component {
     return (
       <Query query={GET_REPOSITORY_KEY} fetchPolicy="cache-first">
         {({ data, loading, error }) => {
+          if (loading) return <Loader loading fill />
           if (error) return <div>{error.message}</div>
 
-          return (
-            <Loader loading={loading} fill>
-              {children({ repositoryKey: data.testrun_repository_key })}
-            </Loader>
-          )
+          return children({ repositoryKey: data.testrun_repository_key })
         }}
       </Query>
     )

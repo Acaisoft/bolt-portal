@@ -63,33 +63,32 @@ export class Details extends Component {
       <div className={classes.root}>
         <Query query={GET_EXECUTION_QUERY} variables={{ executionId }}>
           {({ data, loading, error }) => {
+            if (loading) return <Loader loading fill />
             const execution = data.execution_by_pk
 
             return (
-              <Loader loading={loading} fill>
-                <SectionHeader
-                  title={
-                    <div className={classes.header}>
-                      <div className={classes.headerScenario}>
-                        <Link
-                          component={RouterLink}
-                          color="inherit"
-                          to={this.getScenarioUrl(execution.configuration.id)}
-                        >
-                          {execution.configuration.name}
-                        </Link>
-                      </div>
-                      <div className={classes.headerSeparator}>
-                        <ChevronRight />
-                      </div>
-                      <div className={classes.headerDate}>
-                        {moment(execution.start_locust).format('YYYY-MM-DD')}
-                      </div>
+              <SectionHeader
+                title={
+                  <div className={classes.header}>
+                    <div className={classes.headerScenario}>
+                      <Link
+                        component={RouterLink}
+                        color="inherit"
+                        to={this.getScenarioUrl(execution.configuration.id)}
+                      >
+                        {execution.configuration.name}
+                      </Link>
                     </div>
-                  }
-                  marginBottom
-                />
-              </Loader>
+                    <div className={classes.headerSeparator}>
+                      <ChevronRight />
+                    </div>
+                    <div className={classes.headerDate}>
+                      {moment(execution.start_locust).format('YYYY-MM-DD')}
+                    </div>
+                  </div>
+                }
+                marginBottom
+              />
             )
           }}
         </Query>
@@ -100,6 +99,7 @@ export class Details extends Component {
             variables={{ executionId }}
           >
             {({ data, loading, error }) => {
+              if (loading) return <Loader loading fill />
               if (error) return <p>Error: {error.message}</p>
 
               const resultsWithDates = data.result_aggregate.map(result => ({
@@ -108,44 +108,36 @@ export class Details extends Component {
               }))
 
               return (
-                <Loader loading={loading} fill>
-                  <React.Fragment>
-                    <Grid item xs={12} md={6}>
-                      <Paper square className={classes.tile}>
-                        <Typography
-                          variant="subtitle2"
-                          className={classes.tileTitle}
-                        >
-                          All Requests
-                        </Typography>
-                        <div className={classes.chartContainer}>
-                          <TestExecutionRequestsChart
-                            execution={data.execution_by_pk}
-                            results={resultsWithDates}
-                            syncId="sync-chart"
-                          />
-                        </div>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Paper square className={classes.tile}>
-                        <Typography
-                          variant="subtitle2"
-                          className={classes.tileTitle}
-                        >
-                          Requests Response Time
-                        </Typography>
-                        <div className={classes.chartContainer}>
-                          <TestExecutionResponseTimeChart
-                            execution={data.execution_by_pk}
-                            results={resultsWithDates}
-                            syncId="sync-chart"
-                          />
-                        </div>
-                      </Paper>
-                    </Grid>
-                  </React.Fragment>
-                </Loader>
+                <React.Fragment>
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <Typography variant="subtitle2" className={classes.tileTitle}>
+                        All Requests
+                      </Typography>
+                      <div className={classes.chartContainer}>
+                        <TestExecutionRequestsChart
+                          execution={data.execution_by_pk}
+                          results={resultsWithDates}
+                          syncId="sync-chart"
+                        />
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <Typography variant="subtitle2" className={classes.tileTitle}>
+                        Requests Response Time
+                      </Typography>
+                      <div className={classes.chartContainer}>
+                        <TestExecutionResponseTimeChart
+                          execution={data.execution_by_pk}
+                          results={resultsWithDates}
+                          syncId="sync-chart"
+                        />
+                      </div>
+                    </Paper>
+                  </Grid>
+                </React.Fragment>
               )
             }}
           </Query>
@@ -154,6 +146,7 @@ export class Details extends Component {
             variables={{ executionId }}
           >
             {({ data, loading, error }) => {
+              if (loading) return <Loader loading fill />
               let responses = []
               if (data.result_distribution.length > 0) {
                 const result = data.result_distribution[0].request_result
@@ -163,19 +156,17 @@ export class Details extends Component {
               }
 
               return (
-                <Loader loading={loading} fill>
-                  <Grid item xs={12}>
-                    <Paper square className={classes.tile}>
-                      <Typography variant="subtitle2" className={classes.tileTitle}>
-                        Responses
-                      </Typography>
-                      <TestExecutionResponsesList
-                        responses={responses}
-                        showPagination
-                      />
-                    </Paper>
-                  </Grid>
-                </Loader>
+                <Grid item xs={12}>
+                  <Paper square className={classes.tile}>
+                    <Typography variant="subtitle2" className={classes.tileTitle}>
+                      Responses
+                    </Typography>
+                    <TestExecutionResponsesList
+                      responses={responses}
+                      showPagination
+                    />
+                  </Paper>
+                </Grid>
               )
             }}
           </Query>

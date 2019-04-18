@@ -81,39 +81,37 @@ export class TestConfigurationForm extends Component {
       initialValues,
     } = this.props
 
+    if (parametersQuery.loading || configurationTypesQuery.loading)
+      return <Loader loading fill />
+
     const formConfig = createFormConfig({
       configurationTypes: configurationTypesQuery.configuration_type || [],
       parameters: parametersQuery.parameter || [],
     })
 
     return (
-      <Loader
-        loading={parametersQuery.loading || configurationTypesQuery.loading}
-        fill
+      <Mutation
+        mutation={
+          mode === 'create'
+            ? ADD_CONFIGURATION_MUTATION
+            : EDIT_CONFIGURATION_MUTATION
+        }
+        refetchQueries={['getTestConfigurations']}
       >
-        <Mutation
-          mutation={
-            mode === 'create'
-              ? ADD_CONFIGURATION_MUTATION
-              : EDIT_CONFIGURATION_MUTATION
-          }
-          refetchQueries={['getTestConfigurations']}
-        >
-          {configurationMutation => {
-            return (
-              <Form
-                initialValues={formConfig.mergeInitialValues(initialValues)}
-                onSubmit={values =>
-                  this.handleSubmit(values, { configurationMutation })
-                }
-                validate={validateForm(formConfig.validationSchema)}
-              >
-                {form => children({ form, fields: formConfig.fields })}
-              </Form>
-            )
-          }}
-        </Mutation>
-      </Loader>
+        {configurationMutation => {
+          return (
+            <Form
+              initialValues={formConfig.mergeInitialValues(initialValues)}
+              onSubmit={values =>
+                this.handleSubmit(values, { configurationMutation })
+              }
+              validate={validateForm(formConfig.validationSchema)}
+            >
+              {form => children({ form, fields: formConfig.fields })}
+            </Form>
+          )
+        }}
+      </Mutation>
     )
   }
 }
