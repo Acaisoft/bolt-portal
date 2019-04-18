@@ -6,7 +6,7 @@ import { generatePath } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import { MenuItem, Select, Divider, withStyles } from '@material-ui/core'
 import { Computer } from '@material-ui/icons'
-import { Loading } from '~components'
+import { Loader } from '~components'
 
 import styles from './ProjectSelector.styles'
 
@@ -61,33 +61,34 @@ class ProjectSelector extends React.Component {
     return (
       <Query query={GET_PROJECTS}>
         {({ data, loading, error }) => {
-          if (loading) return <Loading />
           if (error) return null
 
           const projects = data.project || []
 
           return (
-            <Select
-              classes={{ select: classes.select, icon: classes.downIcon }}
-              value={projectId || 'all'}
-              onChange={e => this.handleProjectChange(e, projectId)}
-              variant="filled"
-              disableUnderline
-            >
-              {projects.map(project => (
-                <MenuItem
-                  key={project.id}
-                  value={project.id}
-                  className={classes.item}
-                >
-                  <Computer className={classes.itemIcon} /> {project.name}
+            <Loader loading={loading} fill>
+              <Select
+                classes={{ select: classes.select, icon: classes.downIcon }}
+                value={projectId || 'all'}
+                onChange={e => this.handleProjectChange(e, projectId)}
+                variant="filled"
+                disableUnderline
+              >
+                {projects.map(project => (
+                  <MenuItem
+                    key={project.id}
+                    value={project.id}
+                    className={classes.item}
+                  >
+                    <Computer className={classes.itemIcon} /> {project.name}
+                  </MenuItem>
+                ))}
+                <Divider className={classes.divider} />
+                <MenuItem value="all" className={classes.item}>
+                  <Computer className={classes.itemIcon} /> All Projects
                 </MenuItem>
-              ))}
-              <Divider className={classes.divider} />
-              <MenuItem value="all" className={classes.item}>
-                <Computer className={classes.itemIcon} /> All Projects
-              </MenuItem>
-            </Select>
+              </Select>
+            </Loader>
           )
         }}
       </Query>

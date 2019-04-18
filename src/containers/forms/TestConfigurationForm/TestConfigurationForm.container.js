@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-final-form'
 import { Mutation, compose, graphql } from 'react-apollo'
 import { toast } from 'react-toastify'
-import { Loading } from '~components'
+import { Loader } from '~components'
 
 import { createFormConfig } from './formSchema'
 
@@ -81,37 +81,39 @@ export class TestConfigurationForm extends Component {
       initialValues,
     } = this.props
 
-    if (parametersQuery.loading || configurationTypesQuery.loading)
-      return <Loading />
-
     const formConfig = createFormConfig({
       configurationTypes: configurationTypesQuery.configuration_type || [],
       parameters: parametersQuery.parameter || [],
     })
 
     return (
-      <Mutation
-        mutation={
-          mode === 'create'
-            ? ADD_CONFIGURATION_MUTATION
-            : EDIT_CONFIGURATION_MUTATION
-        }
-        refetchQueries={['getTestConfigurations']}
+      <Loader
+        loading={parametersQuery.loading || configurationTypesQuery.loading}
+        fill
       >
-        {configurationMutation => {
-          return (
-            <Form
-              initialValues={formConfig.mergeInitialValues(initialValues)}
-              onSubmit={values =>
-                this.handleSubmit(values, { configurationMutation })
-              }
-              validate={validateForm(formConfig.validationSchema)}
-            >
-              {form => children({ form, fields: formConfig.fields })}
-            </Form>
-          )
-        }}
-      </Mutation>
+        <Mutation
+          mutation={
+            mode === 'create'
+              ? ADD_CONFIGURATION_MUTATION
+              : EDIT_CONFIGURATION_MUTATION
+          }
+          refetchQueries={['getTestConfigurations']}
+        >
+          {configurationMutation => {
+            return (
+              <Form
+                initialValues={formConfig.mergeInitialValues(initialValues)}
+                onSubmit={values =>
+                  this.handleSubmit(values, { configurationMutation })
+                }
+                validate={validateForm(formConfig.validationSchema)}
+              >
+                {form => children({ form, fields: formConfig.fields })}
+              </Form>
+            )
+          }}
+        </Mutation>
+      </Loader>
     )
   }
 }

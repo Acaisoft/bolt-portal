@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-final-form'
 import { withApollo, graphql, compose } from 'react-apollo'
 import { toast } from 'react-toastify'
-import { Loading } from '~components'
+import { Loader } from '~components'
 
 import { createFormConfig } from './formSchema'
 import {
@@ -144,29 +144,29 @@ export class TestSourceForm extends PureComponent {
     const { children, initialValues } = this.props
     const { formConfig } = this.state
 
-    if (!formConfig) return <Loading />
-
     return (
-      <Form
-        initialValues={initialValues}
-        onSubmit={this.handleSubmit}
-        validate={this.handleValidate}
-        keepDirtyOnReinitialize
-      >
-        {form =>
-          children({
-            form,
-            fields: formConfig.fields,
-            handlers: {
-              testConnection: () => {
-                this.handleTestRepositoryConnection(form.values)
+      <Loader loading={!formConfig} fill>
+        <Form
+          initialValues={initialValues}
+          onSubmit={this.handleSubmit}
+          validate={this.handleValidate}
+          keepDirtyOnReinitialize
+        >
+          {form =>
+            children({
+              form,
+              fields: formConfig.fields,
+              handlers: {
+                testConnection: () => {
+                  this.handleTestRepositoryConnection(form.values)
+                },
               },
-            },
-            isTestingConnection: this.state.isTestingConnection,
-            isConnectionOk: this.state.isConnectionOk,
-          })
-        }
-      </Form>
+              isTestingConnection: this.state.isTestingConnection,
+              isConnectionOk: this.state.isConnectionOk,
+            })
+          }
+        </Form>
+      </Loader>
     )
   }
 }

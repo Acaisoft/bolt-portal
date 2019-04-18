@@ -11,7 +11,7 @@ import {
   TableCell,
   withStyles,
 } from '@material-ui/core'
-import { Loading } from '~components'
+import { Loader } from '~components'
 
 import { areArraysEqual } from '~utils/collections'
 
@@ -150,7 +150,7 @@ export class DataTable extends Component {
         <TableBody>
           <TableRow className={classNames({ [classes.striped]: striped })}>
             <TableCell colSpan={columns.length}>
-              <Loading />
+              <Loader loading fill />
             </TableCell>
           </TableRow>
         </TableBody>

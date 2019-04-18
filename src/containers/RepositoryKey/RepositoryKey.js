@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import { Query } from 'react-apollo'
 
-import { Loading } from '~components'
+import { Loader } from '~components'
 
 const GET_REPOSITORY_KEY = gql`
   query getRepositoryKey {
@@ -23,10 +23,13 @@ export class RepositoryKey extends Component {
     return (
       <Query query={GET_REPOSITORY_KEY} fetchPolicy="cache-first">
         {({ data, loading, error }) => {
-          if (loading) return <Loading />
           if (error) return <div>{error.message}</div>
 
-          return children({ repositoryKey: data.testrun_repository_key })
+          return (
+            <Loader loading={loading} fill>
+              {children({ repositoryKey: data.testrun_repository_key })}
+            </Loader>
+          )
         }}
       </Query>
     )
