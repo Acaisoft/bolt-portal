@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -66,14 +66,11 @@ export class TopBar extends Component {
       <div className={classes.root}>
         <AppBar position="sticky" elevation={0} className={classes.appBar}>
           <Toolbar>
-            <Typography
-              className={classes.title}
-              variant="h6"
-              color="inherit"
-              noWrap
-            >
-              Acai Bolt
-            </Typography>
+            <Link to="/" className={classes.title}>
+              <Typography variant="h6" noWrap color="inherit">
+                Acai Bolt
+              </Typography>
+            </Link>
 
             <div className={classes.projectSelector}>
               <ProjectSelector

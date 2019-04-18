@@ -22,6 +22,8 @@ export default ({ breakpoints, palette, spacing }) => ({
     marginRight: spacing.unit,
   },
   title: {
+    color: palette.text.primary,
+    textDecoration: 'none',
     display: 'none',
     [breakpoints.up('sm')]: {
       display: 'block',
