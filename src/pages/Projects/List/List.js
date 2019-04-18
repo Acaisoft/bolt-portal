@@ -21,7 +21,9 @@ export class List extends Component {
 
   handleDetails = ({ id }) => {
     const { history, match } = this.props
-    history.push(getSubpageUrl(match, '/:projectId', { projectId: id }))
+    history.push(
+      getSubpageUrl(match, '/:projectId/test-configurations', { projectId: id })
+    )
   }
 
   render() {
