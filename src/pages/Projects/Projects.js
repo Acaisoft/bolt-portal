@@ -8,7 +8,7 @@ import TestExecutionsPage from '~pages/TestExecutions'
 import TestSourcesPage from '~pages/TestSources'
 
 import ListPage from './List'
-import DetailsPage from './Details'
+// import DetailsPage from './Details'
 
 export function Projects({ match }) {
   return (
@@ -29,13 +29,14 @@ Projects.propTypes = {
 export function ProjectSubpages({ match, rootUrl }) {
   return (
     <Switch>
-      <Route exact path={`${match.path}`} component={DetailsPage} />
+      {/* <Route exact path={`${match.path}`} component={DetailsPage} /> */}
       <Route path={`${match.path}/test-runs`} component={TestExecutionsPage} />
       <Route path={`${match.path}/test-sources`} component={TestSourcesPage} />
       <Route
         path={`${match.path}/test-configurations`}
         component={TestConfigurationsPage}
       />
+      <Redirect from={match.path} to={`${match.path}/test-configurations`} />
     </Switch>
   )
 }
