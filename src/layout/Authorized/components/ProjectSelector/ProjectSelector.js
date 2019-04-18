@@ -35,15 +35,10 @@ class ProjectSelector extends React.Component {
     return matches && matches[1]
   }
 
-  handleProjectChange = (e, projectId) => {
+  handleProjectChange = e => {
     const { history } = this.props
 
-    const oldId = projectId || 'all'
     const newId = e.target.value
-
-    if (newId === oldId) {
-      return
-    }
 
     history.push(
       generatePath('/projects/:projectId?', {
@@ -56,7 +51,6 @@ class ProjectSelector extends React.Component {
     const { classes } = this.props
 
     const projectId = this.getProjectId()
-    console.log({ projectId })
 
     return (
       <Query query={GET_PROJECTS}>
@@ -70,7 +64,7 @@ class ProjectSelector extends React.Component {
               <Select
                 classes={{ select: classes.select, icon: classes.downIcon }}
                 value={projectId || 'all'}
-                onChange={e => this.handleProjectChange(e, projectId)}
+                onChange={this.handleProjectChange}
                 variant="filled"
                 disableUnderline
               >
