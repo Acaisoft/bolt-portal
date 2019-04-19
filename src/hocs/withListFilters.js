@@ -1,9 +1,10 @@
 import React from 'react'
 import { useListFilters } from '~hooks'
 
-const withListFilters = ({ initialState = () => {} }) => Component => {
+const withListFilters = ({ initialState }) => Component => {
   const HOC = props => {
-    const computedValues = initialState(props) || {}
+    const computedValues =
+      typeof initialState === 'function' ? initialState(props) : initialState || {}
     const listFilters = useListFilters(computedValues)
 
     return <Component listFilters={listFilters} {...props} />
