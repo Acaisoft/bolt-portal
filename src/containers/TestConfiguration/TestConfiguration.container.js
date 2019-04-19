@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Query } from 'react-apollo'
-import { GET_CONFIGS_QUERY } from '~services/GraphQL/Queries'
+import { GET_CONFIG_QUERY } from './graphql'
 
 export class TestConfiguration extends Component {
   static propTypes = {
@@ -12,12 +12,12 @@ export class TestConfiguration extends Component {
   render() {
     const { children, configurationId } = this.props
     return (
-      <Query query={GET_CONFIGS_QUERY} variables={{ configurationId, limit: 1 }}>
+      <Query query={GET_CONFIG_QUERY} variables={{ configurationId }}>
         {({ loading, error, data }) =>
           children({
             loading,
             error,
-            data: data && data.configuration && data.configuration[0],
+            data: data && data.configuration_by_pk,
           })
         }
       </Query>
