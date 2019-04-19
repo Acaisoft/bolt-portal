@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`global: ConfigurationInfo should render as expected 1`] = `
+<div
+  className="root"
+>
+  <TypographyMock
+    variant="body1"
+  >
+    Name: 
+    Mocked configuration name
+  </TypographyMock>
+  <TypographyMock
+    variant="body1"
+  >
+    Test type: 
+    mockedConfigurationTypeName
+  </TypographyMock>
+  <br />
+  <TypographyMock
+    variant="body1"
+  >
+    Test source: 
+    repository
+  </TypographyMock>
+  <TypographyMock
+    key="name"
+    variant="body2"
+  >
+    name
+    : 
+    mockedRepositoryName
+  </TypographyMock>
+  <TypographyMock
+    key="url"
+    variant="body2"
+  >
+    url
+    : 
+    mockedRepostiroyUrl
+  </TypographyMock>
+  <br />
+  <TypographyMock
+    variant="body1"
+  >
+    Configuration parameters:
+  </TypographyMock>
+  <TypographyMock
+    key="mockedParam1"
+    variant="body2"
+  >
+    mockedParam1
+    : 
+    mockedValued1
+  </TypographyMock>
+  <TypographyMock
+    key="mockedParam2"
+    variant="body2"
+  >
+    mockedParam2
+    : 
+    mockedValued2
+  </TypographyMock>
+</div>
+`;

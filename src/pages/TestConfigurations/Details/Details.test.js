@@ -4,6 +4,9 @@ import { shallow } from 'enzyme'
 import { Details } from './Details'
 import { mocks } from '~utils/tests'
 
+jest.mock('./components/ConfigurationInfo', () => 'ConfigurationInfoMock')
+jest.mock('./components/ConfigurationActions', () => 'ConfigurationActionsMock')
+
 const initDetails = overrides => {
   const mockProps = {
     match: {

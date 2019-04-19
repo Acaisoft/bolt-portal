@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`global: ConfigurationActions should render as expected 1`] = `
+<GridMock
+  alignItems="center"
+  container={true}
+  justify="center"
+>
+  <ButtonMock
+    classes={
+      Object {
+        "label": "actionButtonLabel",
+        "root": "actionButton",
+      }
+    }
+    onClick={[MockFunction]}
+    variant="contained"
+  >
+    <PlayArrowMock />
+    <TypographyMock
+      variant="body2"
+    >
+      Play
+    </TypographyMock>
+  </ButtonMock>
+  <ButtonMock
+    classes={
+      Object {
+        "label": "actionButtonLabel",
+        "root": "actionButton",
+      }
+    }
+    onClick={[MockFunction]}
+    variant="contained"
+  >
+    <CalendarTodayMock />
+    <TypographyMock
+      variant="body2"
+    >
+      Change
+    </TypographyMock>
+  </ButtonMock>
+  <ButtonMock
+    classes={
+      Object {
+        "label": "actionButtonLabel",
+        "root": "actionButton",
+      }
+    }
+    onClick={[MockFunction]}
+    variant="contained"
+  >
+    <EditMock />
+    <TypographyMock
+      variant="body2"
+    >
+      Edit
+    </TypographyMock>
+  </ButtonMock>
+</GridMock>
+`;
