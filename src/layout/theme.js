@@ -24,9 +24,13 @@ export default {
     },
     secondary: {
       main: '#1EB1B1',
-      contrastText: '#ffffff',
+      contrastText: '#FFFFFF',
     },
     divider: '#343252',
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#CFCACA',
+    },
   },
   typography: {
     useNextVariants: true,
@@ -41,7 +45,7 @@ export default {
     MuiButton: {
       contained: {
         backgroundColor: '#302F4C',
-        color: '#ffffff',
+        color: '#FFFFFF',
         boxShadow: 'none',
       },
     },

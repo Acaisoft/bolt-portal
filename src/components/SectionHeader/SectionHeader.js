@@ -6,33 +6,42 @@ import { Typography, withStyles, Grid } from '@material-ui/core'
 
 import styles from './SectionHeader.styles'
 
+const sizeVariants = {
+  title: {
+    large: 'h1',
+    medium: 'h2',
+    small: 'subtitle2',
+  },
+  subtitle: {
+    large: 'h2',
+    medium: 'h3',
+    small: '',
+  },
+}
+
 function SectionHeader({
   children,
   classes,
   description,
   marginBottom = false,
+  size = 'medium',
   subtitle,
   title,
 }) {
   return (
     <Grid container justify="space-between" alignItems="center" spacing={32}>
       <Grid item>
-        <div className={classNames({ [classes.marginBottom]: marginBottom })}>
-          <div>
-            <Typography variant="h2" className={classes.title} inline>
-              {title}
-            </Typography>
-            {subtitle && (
-              <Typography variant="h3" className={classes.subtitle} inline>
-                {subtitle}
-              </Typography>
-            )}
+        <div
+          className={classNames({
+            [classes.marginBottom]: Boolean(marginBottom),
+            [classes[size]]: true,
+          })}
+        >
+          <div className={classes.titleContainer}>
+            <div className={classes.title}>{title}</div>
+            {subtitle && <div className={classes.subtitle}>{subtitle}</div>}
           </div>
-          {description && (
-            <Typography variant="subtitle2" className={classes.description}>
-              {description}
-            </Typography>
-          )}
+          {description && <div className={classes.description}>{description}</div>}
         </div>
       </Grid>
       {children && (
@@ -49,6 +58,7 @@ SectionHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   marginBottom: PropTypes.bool,
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
 }
