@@ -5,15 +5,19 @@ import moment from 'moment'
 
 import { generatePath, Link as RouterLink } from 'react-router-dom'
 import { Query } from 'react-apollo'
-import { Typography, withStyles, Paper, Grid, Link } from '@material-ui/core'
+import { withStyles, Paper, Grid, Link } from '@material-ui/core'
 
-import { Loader, SectionHeader } from '~components'
-import {
-  TestExecutionRequestsChart,
-  TestExecutionResponseTimeChart,
-} from '~containers/charts'
-import { TestExecutionResponsesList } from '~containers/lists'
+import { Loader, SectionHeader, ZoomButton } from '~components'
 import { ChevronRight } from '@material-ui/icons'
+
+import {
+  RequestsChart,
+  RequestsPerSecondChart,
+  ResponseTimeChart,
+  ResultsPerEndpointChart,
+  UsersSpawnChart,
+} from './components/charts'
+import { ResponsesTable, TimeDistributionTable } from './components/tables'
 
 import {
   GET_EXECUTION_RESULTS_PER_TICK_QUERY,
@@ -46,6 +50,18 @@ export class Details extends Component {
     }).isRequired,
   }
 
+  state = {
+    isZoomed: false,
+  }
+
+  handleZoomIn = () => {
+    this.setState({ isZoomed: true })
+  }
+
+  handleZoomOut = () => {
+    this.setState({ isZoomed: false })
+  }
+
   getScenarioUrl = configurationId => {
     const { match } = this.props
 
@@ -58,6 +74,8 @@ export class Details extends Component {
   render() {
     const { classes, match } = this.props
     const { executionId } = match.params
+
+    const { isZoomed } = this.state
 
     return (
       <div className={classes.root}>
@@ -106,32 +124,71 @@ export class Details extends Component {
                 ...result,
                 timestamp: +new Date(result.timestamp),
               }))
+              const execution = data.execution_by_pk
 
               return (
                 <React.Fragment>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={isZoomed ? 12 : 4}>
                     <Paper square className={classes.tile}>
-                      <Typography variant="subtitle2" className={classes.tileTitle}>
-                        All Requests
-                      </Typography>
+                      <SectionHeader
+                        size="small"
+                        className={classes.tileTitle}
+                        title="All Requests"
+                      >
+                        <ZoomButton
+                          isZoomed={isZoomed}
+                          onZoomIn={this.handleZoomIn}
+                          onZoomOut={this.handleZoomOut}
+                        />
+                      </SectionHeader>
                       <div className={classes.chartContainer}>
-                        <TestExecutionRequestsChart
-                          execution={data.execution_by_pk}
-                          results={resultsWithDates}
+                        <RequestsChart
+                          execution={execution}
+                          data={resultsWithDates}
                           syncId="sync-chart"
                         />
                       </div>
                     </Paper>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={isZoomed ? 12 : 4}>
                     <Paper square className={classes.tile}>
-                      <Typography variant="subtitle2" className={classes.tileTitle}>
-                        Requests Response Time
-                      </Typography>
+                      <SectionHeader
+                        size="small"
+                        className={classes.tileTitle}
+                        title="Requests Response Time"
+                      >
+                        <ZoomButton
+                          isZoomed={isZoomed}
+                          onZoomIn={this.handleZoomIn}
+                          onZoomOut={this.handleZoomOut}
+                        />
+                      </SectionHeader>
                       <div className={classes.chartContainer}>
-                        <TestExecutionResponseTimeChart
-                          execution={data.execution_by_pk}
-                          results={resultsWithDates}
+                        <ResponseTimeChart
+                          execution={execution}
+                          data={resultsWithDates}
+                          syncId="sync-chart"
+                        />
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={isZoomed ? 12 : 4}>
+                    <Paper square className={classes.tile}>
+                      <SectionHeader
+                        size="small"
+                        className={classes.tileTitle}
+                        title="Users Spawn"
+                      >
+                        <ZoomButton
+                          isZoomed={isZoomed}
+                          onZoomIn={this.handleZoomIn}
+                          onZoomOut={this.handleZoomOut}
+                        />
+                      </SectionHeader>
+                      <div className={classes.chartContainer}>
+                        <UsersSpawnChart
+                          execution={execution}
+                          data={resultsWithDates}
                           syncId="sync-chart"
                         />
                       </div>
@@ -147,26 +204,52 @@ export class Details extends Component {
           >
             {({ data, loading, error }) => {
               if (loading) return <Loader loading fill />
-              let responses = []
-              if (data.result_distribution.length > 0) {
-                const result = data.result_distribution[0].request_result
-                if (Array.isArray(result)) {
-                  responses = result
-                }
-              }
+              const distribution = data.result_distribution[0]
+              const requestResults = distribution.request_result
+                .map(result => ({
+                  ...result,
+                  '# successes': +result['# requests'] - +result['# failures'],
+                }))
+                .filter(result => result.Name !== 'Total') // TODO: Remove when backend handles this.
+              const timeDistribution = distribution.distribution_result
 
               return (
-                <Grid item xs={12}>
-                  <Paper square className={classes.tile}>
-                    <Typography variant="subtitle2" className={classes.tileTitle}>
-                      Responses
-                    </Typography>
-                    <TestExecutionResponsesList
-                      responses={responses}
-                      showPagination
-                    />
-                  </Paper>
-                </Grid>
+                <React.Fragment>
+                  <Grid item xs={12}>
+                    <Paper square className={classes.tile}>
+                      <ResponsesTable data={requestResults} onDetails={() => {}} />
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Paper square className={classes.tile}>
+                      <TimeDistributionTable
+                        data={timeDistribution}
+                        onDetails={() => {}}
+                      />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <SectionHeader
+                        size="small"
+                        className={classes.tileTitle}
+                        title="Request Results"
+                      />
+                      <ResultsPerEndpointChart data={requestResults} />
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Paper square className={classes.tile}>
+                      <SectionHeader
+                        size="small"
+                        className={classes.tileTitle}
+                        title="Requests/Second by request"
+                      />
+                      <RequestsPerSecondChart data={requestResults} />
+                    </Paper>
+                  </Grid>
+                </React.Fragment>
               )
             }}
           </Query>

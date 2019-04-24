@@ -8,15 +8,13 @@ export default ({ palette, mixins, spacing, typography }) => {
       marginTop: 30,
     },
     tile: {
-      padding: mixins.scaledSpaceAround(5, 0),
+      padding: mixins.scaledSpaceAround(5, 5),
     },
     tileTitle: {
       fontWeight: 'bold',
       marginBottom: spacing.unit * 4,
-      padding: mixins.scaledSpaceAround(0, 5),
     },
     chartContainer: {
-      padding: mixins.scaledSpaceAround(0, 5),
       marginBottom: -spacing.unit * 4,
     },
     header: {

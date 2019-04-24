@@ -17,6 +17,28 @@ export default {
         even: 'trasparent',
       },
     },
+    chart: {
+      gridLine: {
+        color: '#535273',
+        dash: '5 5',
+      },
+      font: {
+        color: '#CFCFEA',
+      },
+      color: {
+        area: {
+          success: '#1EB1B1',
+          error: '#FF5EA1',
+          primary: '#735DFC',
+          secondary: '#EB8967',
+        },
+        line: {
+          success: '#1EB1B1',
+          error: '#FF5EA1',
+          primary: '#7297FF',
+        },
+      },
+    },
     primary: {
       light: '#302F4C',
       dark: '#F76F40',

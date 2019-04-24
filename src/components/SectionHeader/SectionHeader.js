@@ -2,26 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Typography, withStyles, Grid } from '@material-ui/core'
+import { Grid, withStyles } from '@material-ui/core'
 
 import styles from './SectionHeader.styles'
-
-const sizeVariants = {
-  title: {
-    large: 'h1',
-    medium: 'h2',
-    small: 'subtitle2',
-  },
-  subtitle: {
-    large: 'h2',
-    medium: 'h3',
-    small: '',
-  },
-}
 
 function SectionHeader({
   children,
   classes,
+  className,
   description,
   marginBottom = false,
   size = 'medium',
@@ -29,7 +17,13 @@ function SectionHeader({
   title,
 }) {
   return (
-    <Grid container justify="space-between" alignItems="center" spacing={32}>
+    <Grid
+      container
+      justify="space-between"
+      alignItems="center"
+      spacing={32}
+      className={className}
+    >
       <Grid item>
         <div
           className={classNames({

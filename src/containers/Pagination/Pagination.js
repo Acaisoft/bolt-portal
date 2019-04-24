@@ -6,6 +6,8 @@ import { TablePagination } from '@material-ui/core'
 export class Pagination extends Component {
   static propTypes = {
     onChange: PropTypes.func,
+    offset: PropTypes.number,
+    rowsPerPage: PropTypes.number,
     totalCount: PropTypes.number,
   }
 

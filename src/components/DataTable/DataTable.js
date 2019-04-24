@@ -20,7 +20,7 @@ import styles from './DataTable.styles'
 export const Column = () => null
 Column.propTypes = {
   render: PropTypes.func.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 }
 Column.displayName = 'Column'
 

@@ -1,4 +1,7 @@
-export default theme => ({
+export default ({ mixins }) => ({
+  tableContainer: {
+    margin: mixins.scaledSpaceAround(0, -5),
+  },
   iconsContainer: {
     display: 'flex',
   },
