@@ -17,7 +17,7 @@ import {
   ResultsPerEndpointChart,
   UsersSpawnChart,
 } from './components/charts'
-import { ResponsesTable, TimeDistributionTable } from './components/tables'
+import { ResponsesTable } from './components/tables'
 
 import {
   GET_EXECUTION_RESULTS_PER_TICK_QUERY,
@@ -211,24 +211,9 @@ export class Details extends Component {
                   '# successes': +result['# requests'] - +result['# failures'],
                 }))
                 .filter(result => result.Name !== 'Total') // TODO: Remove when backend handles this.
-              const timeDistribution = distribution.distribution_result
 
               return (
                 <React.Fragment>
-                  <Grid item xs={12}>
-                    <Paper square className={classes.tile}>
-                      <ResponsesTable data={requestResults} onDetails={() => {}} />
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Paper square className={classes.tile}>
-                      <TimeDistributionTable
-                        data={timeDistribution}
-                        onDetails={() => {}}
-                      />
-                    </Paper>
-                  </Grid>
-
                   <Grid item xs={12} md={6}>
                     <Paper square className={classes.tile}>
                       <SectionHeader
@@ -247,6 +232,12 @@ export class Details extends Component {
                         title="Requests/Second by request"
                       />
                       <RequestsPerSecondChart data={requestResults} />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Paper square className={classes.tile}>
+                      <ResponsesTable data={requestResults} onDetails={() => {}} />
                     </Paper>
                   </Grid>
                 </React.Fragment>

@@ -15,6 +15,8 @@ import {
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
 import { withStyles } from '@material-ui/core'
 
+import { formatThousands } from '~utils/numbers'
+
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function RequestsChart({ data, execution, syncId, theme }) {
@@ -30,7 +32,7 @@ export function RequestsChart({ data, execution, syncId, theme }) {
           top: 10,
           bottom: 30,
           right: 0,
-          left: 0,
+          left: 10,
         }}
         syncId={syncId}
         reverseStackOrder
@@ -48,6 +50,7 @@ export function RequestsChart({ data, execution, syncId, theme }) {
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
           tick={{ fill: font.color }}
+          tickFormatter={formatThousands}
         />
         <Legend
           verticalAlign="bottom"
@@ -55,7 +58,11 @@ export function RequestsChart({ data, execution, syncId, theme }) {
           wrapperStyle={{ color: font.color, paddingTop: 20 }}
         />
 
-        <Tooltip isAnimationActive={false} labelFormatter={formatTimestamp} />
+        <Tooltip
+          isAnimationActive={false}
+          labelFormatter={formatTimestamp}
+          formatter={formatThousands}
+        />
         <Area
           type="linear"
           stroke={color.area.error}

@@ -3,30 +3,20 @@ import PropTypes from 'prop-types'
 
 import { IconButton, withStyles } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
-import { Pagination } from '~containers'
 import { DataTable, SectionHeader } from '~components'
-import { useListFilters, useLocalFilteredList } from '~hooks'
+
+import { formatThousands } from '~utils/numbers'
 
 import styles from './ResponsesTable.styles'
 
 export function ResponsesTable({ classes, data, onDetails }) {
-  const listFilters = useListFilters({ rowsPerPage: 5 })
-  const paginatedData = useLocalFilteredList(data, listFilters)
-  const totalCount = data.length
-
   return (
     <React.Fragment>
-      <SectionHeader title="Responses" className={classes.header}>
-        <Pagination
-          {...listFilters}
-          totalCount={totalCount}
-          onChange={listFilters.setPagination}
-        />
-      </SectionHeader>
+      <SectionHeader title="Responses" className={classes.header} />
 
       <div className={classes.tableContainer}>
         <DataTable
-          data={paginatedData}
+          data={data}
           isLoading={false}
           rowKey={response => `${response.Method} ${response.Name}`}
         >
@@ -42,47 +32,66 @@ export function ResponsesTable({ classes, data, onDetails }) {
           />
           <DataTable.Column
             key="total"
-            render={response => response['# requests']}
+            render={response => formatThousands(response['# requests'])}
             title="Total"
           />
           <DataTable.Column
             key="success"
-            render={response => response['# successes']}
+            render={response => (
+              <div className={classes.noWrap}>
+                <span>
+                  {(response['# successes'] / response['# requests']) * 100.0}%
+                </span>{' '}
+                <span>({formatThousands(response['# successes'])})</span>
+              </div>
+            )}
             title="Success"
           />
           <DataTable.Column
             key="fail"
-            render={response => response['# failures']}
+            render={response => (
+              <div className={classes.noWrap}>
+                <span>
+                  {(response['# failures'] / response['# requests']) * 100.0}%
+                </span>{' '}
+                <span>({formatThousands(response['# failures'])})</span>
+              </div>
+            )}
             title="Fail"
           />
           <DataTable.Column
-            key="avg_response_time"
-            render={response => response['Average response time']}
-            title="Avg. Response Time"
-          />
-          <DataTable.Column
-            key="avg_response_size"
-            render={response => response['Average Content Size']}
-            title="Avg. Response Size"
+            key="response_time"
+            render={response => (
+              <div className={classes.noWrap}>
+                {formatThousands(response['Min response time'])} /{' '}
+                {formatThousands(response['Average response time'])} /{' '}
+                {formatThousands(response['Max response time'])}
+              </div>
+            )}
+            title={
+              <div>
+                Response Time [ms]
+                <br />
+                <span className={classes.noWrap}>Min. / Avg. / Max.</span>
+              </div>
+            }
           />
           <DataTable.Column
             key="requests_per_sec"
-            render={response => response['Requests/s']}
+            render={response => formatThousands(response['Requests/s'])}
             title="Req/s"
           />
           <DataTable.Column
             key="actions"
             render={response => (
               <div className={classes.iconsContainer}>
-                {+response['# failures'] > 0 && (
-                  <IconButton
-                    aria-label="Show fails"
-                    className={classes.icon}
-                    onClick={() => onDetails(response)}
-                  >
-                    <Pageview />
-                  </IconButton>
-                )}
+                <IconButton
+                  aria-label="Show fails"
+                  className={classes.icon}
+                  onClick={() => onDetails(response)}
+                >
+                  <Pageview />
+                </IconButton>
               </div>
             )}
             title="Fails"

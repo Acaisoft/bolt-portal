@@ -12,6 +12,7 @@ import {
 
 import { withStyles } from '@material-ui/core'
 import { trimText } from '~utils/strings'
+import { formatThousands } from '~utils/numbers'
 
 export function RequestsPerSecondChart({ data, execution, theme }) {
   const { color, gridLine, font } = theme.palette.chart
@@ -37,6 +38,7 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
           scale="linear"
           type="number"
           tick={{ fill: font.color }}
+          tickFormatter={formatThousands}
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
@@ -47,7 +49,11 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
           tick={{ width: 130, fill: font.color }}
         />
 
-        <Tooltip isAnimationActive={false} cursor={false} />
+        <Tooltip
+          isAnimationActive={false}
+          cursor={false}
+          formatter={formatThousands}
+        />
 
         <Bar
           stroke={color.area.primary}

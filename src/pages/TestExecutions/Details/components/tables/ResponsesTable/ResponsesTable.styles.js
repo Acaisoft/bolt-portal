@@ -12,4 +12,7 @@ export default ({ mixins }) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  noWrap: {
+    whiteSpace: 'nowrap',
+  },
 })

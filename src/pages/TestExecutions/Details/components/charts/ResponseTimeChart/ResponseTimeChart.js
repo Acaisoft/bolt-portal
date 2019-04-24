@@ -14,6 +14,7 @@ import {
 
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
 import { withStyles } from '@material-ui/core'
+import { formatThousands } from '~utils/numbers'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
@@ -31,7 +32,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
           top: 10,
           bottom: 30,
           right: 0,
-          left: 0,
+          left: 10,
         }}
         syncId={syncId}
       >
@@ -49,6 +50,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
           unit="ms"
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           tick={{ fill: font.color }}
+          tickFormatter={formatThousands}
         />
         <Legend
           verticalAlign="bottom"
@@ -59,7 +61,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
         <Tooltip
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
-          formatter={(value, name, props) => `${value} ms`}
+          formatter={value => `${formatThousands(value)} ms`}
         />
         <Line
           type="linear"
