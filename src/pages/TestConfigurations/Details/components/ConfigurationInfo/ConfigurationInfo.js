@@ -10,17 +10,19 @@ const testSourceProperties = {
 
 export const ConfigurationInfo = ({ configuration, classes }) => {
   const {
-    test_source = {},
-    configuration_type = {},
+    test_source,
+    configuration_type,
     name,
-    configuration_parameters = [],
+    configuration_parameters,
   } = configuration
-  const { source_type } = test_source
+  const { source_type } = test_source || {}
 
   return (
     <div className={classes.root}>
       <Typography variant="body1">Name: {name}</Typography>
-      <Typography variant="body1">Test type: {configuration_type.name}</Typography>
+      <Typography variant="body1">
+        Test type: {(configuration_type || {}).name}
+      </Typography>
       <br />
       <Typography variant="body1">Test source: {source_type}</Typography>
       {source_type &&
@@ -31,7 +33,7 @@ export const ConfigurationInfo = ({ configuration, classes }) => {
         ))}
       <br />
       <Typography variant="body1">Configuration parameters:</Typography>
-      {configuration_parameters.map(param => (
+      {(configuration_parameters || []).map(param => (
         <Typography key={param.parameter_slug} variant="body2">
           {param.parameter_slug}: {param.value}
         </Typography>

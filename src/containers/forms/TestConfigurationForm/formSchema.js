@@ -4,7 +4,7 @@ const paramTypeValidators = {
   int: { numericality: { onlyInteger: true } },
 }
 
-const createFormConfig = ({ configurationTypes, parameters }) => {
+const createFormConfig = ({ configurationTypes, parameters, isPerformed }) => {
   const configurationTypeOptions = configurationTypes.map(ct => ({
     key: ct.id,
     label: ct.name,
@@ -28,6 +28,7 @@ const createFormConfig = ({ configurationTypes, parameters }) => {
       inputProps: {
         select: true,
         label: 'Test Type',
+        disabled: isPerformed,
       },
     },
     parameters: {
@@ -45,6 +46,7 @@ const createFormConfig = ({ configurationTypes, parameters }) => {
             },
             inputProps: {
               label: parameter.name,
+              disabled: isPerformed,
             },
             defaultValue: parameter.default_value,
             group: parameter.type_slug,

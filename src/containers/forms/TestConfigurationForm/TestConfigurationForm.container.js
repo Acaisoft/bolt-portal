@@ -34,10 +34,12 @@ export class TestConfigurationForm extends Component {
 
   static prepareData = data => {
     if (data) {
+      const { name, type_slug, configuration_parameters, performed } = data
       return {
-        name: data.name,
-        configuration_type: data.type_slug,
-        parameters: data.configuration_parameters.reduce((acc, parameter) => ({
+        name,
+        configuration_type: type_slug,
+        performed,
+        parameters: configuration_parameters.reduce((acc, parameter) => ({
           ...acc,
           [parameter.parameter_slug]: parameter.value,
         })),
@@ -46,7 +48,8 @@ export class TestConfigurationForm extends Component {
   }
 
   handleSubmit = (values, { configurationMutation }) => {
-    const { id, name, configuration_type, parameters } = values
+    const { name, configuration_type, parameters } = values
+    const { configurationId, mode } = this.props
     const configurationParameters = Object.entries(parameters).map(
       ([slug, value]) => ({ parameter_slug: slug, value })
     )
@@ -58,10 +61,10 @@ export class TestConfigurationForm extends Component {
         type_slug: configuration_type,
       }
 
-      if (this.props.mode === 'create') {
+      if (mode === 'create') {
         variables.project_id = this.props.projectId
       } else {
-        variables.id = id
+        variables.id = configurationId
       }
 
       configurationMutation({ variables })
@@ -87,6 +90,7 @@ export class TestConfigurationForm extends Component {
     const formConfig = createFormConfig({
       configurationTypes: configurationTypesQuery.configuration_type || [],
       parameters: parametersQuery.parameter || [],
+      isPerformed: initialValues.performed,
     })
 
     return (

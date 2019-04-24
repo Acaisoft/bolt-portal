@@ -5,6 +5,7 @@ export const GET_CONFIG_QUERY = gql`
     configuration_by_pk(id: $configurationId) {
       id
       name
+      performed
       configuration_type {
         id
         name
