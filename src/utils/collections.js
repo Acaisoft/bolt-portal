@@ -24,3 +24,10 @@ export const createObjectFromDotNotation = flatValuesMap => {
     {}
   )
 }
+
+export const sum = (arr, key) => arr.reduce((acc, v) => acc + Number(v[key]), 0)
+export const avg = (arr, key) => sum(arr, key) / arr.length
+export const max = (arr, key) =>
+  arr.reduce((acc, v) => Math.max(acc, v[key]), Number.MIN_VALUE)
+export const min = (arr, key) =>
+  arr.reduce((acc, v) => Math.min(acc, v[key]), Number.MAX_VALUE)

@@ -1,4 +1,4 @@
-export default ({ mixins }) => ({
+export default ({ mixins, palette }) => ({
   tableContainer: {
     margin: mixins.scaledSpaceAround(0, -5),
   },
@@ -14,5 +14,11 @@ export default ({ mixins }) => ({
   },
   noWrap: {
     whiteSpace: 'nowrap',
+  },
+  success: {
+    color: palette.success.main,
+  },
+  failure: {
+    color: palette.error.main,
   },
 })

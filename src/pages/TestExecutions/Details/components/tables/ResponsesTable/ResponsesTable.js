@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import { IconButton, withStyles } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 import { DataTable, SectionHeader } from '~components'
 
-import { formatThousands } from '~utils/numbers'
+import { formatThousands, formatNumber } from '~utils/numbers'
+import { sum, avg, min, max } from '~utils/collections'
 
 import styles from './ResponsesTable.styles'
 
 export function ResponsesTable({ classes, data, onDetails }) {
+  const summary = useMemo(
+    () => ({
+      requests: sum(data, '# requests'),
+      successes: sum(data, '# successes'),
+      failures: sum(data, '# failures'),
+      requestsPerSecond: sum(data, 'Requests/s'),
+      minResponseTime: min(data, 'Min response time'),
+      averageResponseTime: avg(data, 'Average response time'),
+      maxResponseTime: max(data, 'Max response time'),
+    }),
+    [data]
+  )
+
   return (
     <React.Fragment>
       <SectionHeader title="Responses" className={classes.header} />
@@ -19,6 +34,7 @@ export function ResponsesTable({ classes, data, onDetails }) {
           data={data}
           isLoading={false}
           rowKey={response => `${response.Method} ${response.Name}`}
+          hasFooter
         >
           <DataTable.Column
             key="type"
@@ -33,16 +49,26 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="total"
             render={response => formatThousands(response['# requests'])}
+            renderFooter={() => formatThousands(summary.requests)}
             title="Total"
           />
           <DataTable.Column
             key="success"
             render={response => (
-              <div className={classes.noWrap}>
+              <div className={classNames(classes.noWrap, classes.success)}>
                 <span>
-                  {(response['# successes'] / response['# requests']) * 100.0}%
+                  {formatNumber(
+                    (response['# successes'] / response['# requests']) * 100.0,
+                    2
+                  )}
+                  %
                 </span>{' '}
                 <span>({formatThousands(response['# successes'])})</span>
+              </div>
+            )}
+            renderFooter={() => (
+              <div className={classes.success}>
+                {formatThousands(summary.successes)}
               </div>
             )}
             title="Success"
@@ -50,11 +76,20 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="fail"
             render={response => (
-              <div className={classes.noWrap}>
+              <div className={classNames(classes.noWrap, classes.failure)}>
                 <span>
-                  {(response['# failures'] / response['# requests']) * 100.0}%
+                  {formatNumber(
+                    (response['# failures'] / response['# requests']) * 100.0,
+                    2
+                  )}
+                  %
                 </span>{' '}
                 <span>({formatThousands(response['# failures'])})</span>
+              </div>
+            )}
+            renderFooter={() => (
+              <div className={classes.failure}>
+                {formatThousands(summary.failures)}
               </div>
             )}
             title="Fail"
@@ -68,6 +103,13 @@ export function ResponsesTable({ classes, data, onDetails }) {
                 {formatThousands(response['Max response time'])}
               </div>
             )}
+            renderFooter={() => (
+              <div className={classes.noWrap}>
+                {formatThousands(summary.minResponseTime)} /{' '}
+                {formatThousands(summary.averageResponseTime)} /{' '}
+                {formatThousands(summary.maxResponseTime)}
+              </div>
+            )}
             title={
               <div>
                 Response Time [ms]
@@ -79,6 +121,7 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="requests_per_sec"
             render={response => formatThousands(response['Requests/s'])}
+            renderFooter={() => formatThousands(summary.requestsPerSecond)}
             title="Req/s"
           />
           <DataTable.Column
@@ -94,7 +137,6 @@ export function ResponsesTable({ classes, data, onDetails }) {
                 </IconButton>
               </div>
             )}
-            title="Fails"
           />
         </DataTable>
       </div>

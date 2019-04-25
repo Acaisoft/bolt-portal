@@ -43,6 +43,14 @@ const palette = {
     main: '#1EB1B1',
     contrastText: '#FFFFFF',
   },
+  success: {
+    contrastText: '#FFFFFF',
+    main: '#1EB1B1',
+  },
+  error: {
+    contrastText: '#FFFFFF',
+    main: '#FF5EA1',
+  },
   divider: '#343252',
   text: {
     primary: '#FFFFFF',
@@ -99,6 +107,10 @@ export default {
         borderBottom: 'none',
       },
       head: {
+        color: palette.text.primary,
+        fontWeight: 'bold',
+      },
+      footer: {
         color: palette.text.primary,
         fontWeight: 'bold',
       },
