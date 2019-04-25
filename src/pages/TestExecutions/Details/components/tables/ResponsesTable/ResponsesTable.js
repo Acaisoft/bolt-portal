@@ -24,7 +24,6 @@ export function ResponsesTable({ classes, data, onDetails }) {
     }),
     [data]
   )
-  console.log({ data, summary })
 
   return (
     <React.Fragment>

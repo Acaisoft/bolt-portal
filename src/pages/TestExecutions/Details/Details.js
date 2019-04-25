@@ -208,6 +208,8 @@ export class Details extends Component {
             {({ data, loading, error }) => {
               if (loading) return <Loader loading fill />
 
+              const noDataMessage = 'Waiting for test results...'
+
               const distribution = data.result_distribution[0]
               const requestResults = (
                 (distribution && distribution.request_result) ||
@@ -228,10 +230,7 @@ export class Details extends Component {
                         className={classes.tileTitle}
                         title="Request Results"
                       />
-                      <NoDataPlaceholder
-                        label="Waiting for results..."
-                        data={requestResults}
-                      >
+                      <NoDataPlaceholder label={noDataMessage} data={requestResults}>
                         <ResultsPerEndpointChart data={requestResults} />
                       </NoDataPlaceholder>
                     </Paper>
@@ -243,10 +242,7 @@ export class Details extends Component {
                         className={classes.tileTitle}
                         title="Requests/Second by request"
                       />
-                      <NoDataPlaceholder
-                        label="Waiting for results..."
-                        data={requestResults}
-                      >
+                      <NoDataPlaceholder label={noDataMessage} data={requestResults}>
                         <RequestsPerSecondChart data={requestResults} />
                       </NoDataPlaceholder>
                     </Paper>
@@ -254,10 +250,7 @@ export class Details extends Component {
 
                   <Grid item xs={12}>
                     <Paper square className={classes.tile}>
-                      <NoDataPlaceholder
-                        label="Waiting for results..."
-                        data={requestResults}
-                      >
+                      <NoDataPlaceholder label={noDataMessage} data={requestResults}>
                         <ResponsesTable data={requestResults} onDetails={() => {}} />
                       </NoDataPlaceholder>
                     </Paper>
