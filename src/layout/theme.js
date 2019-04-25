@@ -1,59 +1,60 @@
 const spacingUnit = 8
+const palette = {
+  type: 'dark',
+  actions: {
+    hover: '#F76F40',
+  },
+  background: {
+    default: '#24223B',
+    paper: '#302F4C',
+    striped: {
+      odd: 'rgba(106, 104, 140, 0.24)',
+      even: 'trasparent',
+    },
+  },
+  chart: {
+    gridLine: {
+      color: '#535273',
+      dash: '5 5',
+    },
+    font: {
+      color: '#CFCFEA',
+    },
+    color: {
+      area: {
+        success: '#1EB1B1',
+        error: '#FF5EA1',
+        primary: '#735DFC',
+        secondary: '#EB8967',
+      },
+      line: {
+        success: '#1EB1B1',
+        error: '#FF5EA1',
+        primary: '#7297FF',
+      },
+    },
+  },
+  primary: {
+    light: '#302F4C',
+    dark: '#F76F40',
+    main: '#735DFC',
+  },
+  secondary: {
+    main: '#1EB1B1',
+    contrastText: '#FFFFFF',
+  },
+  divider: '#343252',
+  text: {
+    primary: '#FFFFFF',
+    secondary: '#CFCFEA',
+  },
+}
 
 export default {
   spacing: {
     unit: spacingUnit,
   },
-  palette: {
-    type: 'dark',
-    actions: {
-      hover: '#F76F40',
-    },
-    background: {
-      default: '#24223B',
-      paper: '#302F4C',
-      striped: {
-        odd: 'rgba(106, 104, 140, 0.24)',
-        even: 'trasparent',
-      },
-    },
-    chart: {
-      gridLine: {
-        color: '#535273',
-        dash: '5 5',
-      },
-      font: {
-        color: '#CFCFEA',
-      },
-      color: {
-        area: {
-          success: '#1EB1B1',
-          error: '#FF5EA1',
-          primary: '#735DFC',
-          secondary: '#EB8967',
-        },
-        line: {
-          success: '#1EB1B1',
-          error: '#FF5EA1',
-          primary: '#7297FF',
-        },
-      },
-    },
-    primary: {
-      light: '#302F4C',
-      dark: '#F76F40',
-      main: '#735DFC',
-    },
-    secondary: {
-      main: '#1EB1B1',
-      contrastText: '#FFFFFF',
-    },
-    divider: '#343252',
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#CFCACA',
-    },
-  },
+  palette,
   typography: {
     useNextVariants: true,
     fontSize: 15,
@@ -66,8 +67,8 @@ export default {
   overrides: {
     MuiButton: {
       contained: {
-        backgroundColor: '#302F4C',
-        color: '#FFFFFF',
+        backgroundColor: palette.background.paper,
+        color: palette.text.primary,
         boxShadow: 'none',
       },
     },
@@ -98,8 +99,11 @@ export default {
         borderBottom: 'none',
       },
       head: {
-        color: '#fff',
+        color: palette.text.primary,
         fontWeight: 'bold',
+      },
+      body: {
+        color: palette.text.secondary,
       },
     },
   },
