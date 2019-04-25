@@ -1,29 +1,30 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 import { IconButton, withStyles } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 import { DataTable, SectionHeader } from '~components'
 
 import { formatThousands, formatNumber } from '~utils/numbers'
-import { sum, avg, min, max } from '~utils/collections'
 
 import styles from './ResponsesTable.styles'
 
 export function ResponsesTable({ classes, data, onDetails }) {
   const summary = useMemo(
     () => ({
-      requests: sum(data, '# requests'),
-      successes: sum(data, '# successes'),
-      failures: sum(data, '# failures'),
-      requestsPerSecond: sum(data, 'Requests/s'),
-      minResponseTime: min(data, 'Min response time'),
-      averageResponseTime: avg(data, 'Average response time'),
-      maxResponseTime: max(data, 'Max response time'),
+      requests: _.sum(data.map(x => +x['# requests'])),
+      successes: _.sum(data.map(x => +x['# successes'])),
+      failures: _.sum(data.map(x => +x['# failures'])),
+      requestsPerSecond: _.sum(data.map(x => +x['Requests/s'])),
+      minResponseTime: _.min(data.map(x => +x['Min response time'])),
+      averageResponseTime: _.mean(data.map(x => +x['Average response time'])),
+      maxResponseTime: _.max(data.map(x => +x['Max response time'])),
     }),
     [data]
   )
+  console.log({ data, summary })
 
   return (
     <React.Fragment>

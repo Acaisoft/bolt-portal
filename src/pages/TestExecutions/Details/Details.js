@@ -7,7 +7,7 @@ import { generatePath, Link as RouterLink } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import { withStyles, Paper, Grid, Link } from '@material-ui/core'
 
-import { Loader, SectionHeader, ZoomButton } from '~components'
+import { Loader, SectionHeader, ZoomButton, NoDataPlaceholder } from '~components'
 import { ChevronRight } from '@material-ui/icons'
 
 import {
@@ -30,6 +30,7 @@ const GET_EXECUTION_QUERY = gql`
   query getExecution($executionId: uuid!) {
     execution_by_pk(id: $executionId) {
       id
+      start
       start_locust
       configuration {
         id
@@ -101,7 +102,9 @@ export class Details extends Component {
                       <ChevronRight />
                     </div>
                     <div className={classes.headerDate}>
-                      {moment(execution.start_locust).format('YYYY-MM-DD')}
+                      {moment(execution.start_locust || execution.start).format(
+                        'YYYY-MM-DD'
+                      )}
                     </div>
                   </div>
                 }
@@ -204,8 +207,12 @@ export class Details extends Component {
           >
             {({ data, loading, error }) => {
               if (loading) return <Loader loading fill />
+
               const distribution = data.result_distribution[0]
-              const requestResults = distribution.request_result
+              const requestResults = (
+                (distribution && distribution.request_result) ||
+                []
+              )
                 .map(result => ({
                   ...result,
                   '# successes': +result['# requests'] - +result['# failures'],
@@ -221,7 +228,12 @@ export class Details extends Component {
                         className={classes.tileTitle}
                         title="Request Results"
                       />
-                      <ResultsPerEndpointChart data={requestResults} />
+                      <NoDataPlaceholder
+                        label="Waiting for results..."
+                        data={requestResults}
+                      >
+                        <ResultsPerEndpointChart data={requestResults} />
+                      </NoDataPlaceholder>
                     </Paper>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -231,13 +243,23 @@ export class Details extends Component {
                         className={classes.tileTitle}
                         title="Requests/Second by request"
                       />
-                      <RequestsPerSecondChart data={requestResults} />
+                      <NoDataPlaceholder
+                        label="Waiting for results..."
+                        data={requestResults}
+                      >
+                        <RequestsPerSecondChart data={requestResults} />
+                      </NoDataPlaceholder>
                     </Paper>
                   </Grid>
 
                   <Grid item xs={12}>
                     <Paper square className={classes.tile}>
-                      <ResponsesTable data={requestResults} onDetails={() => {}} />
+                      <NoDataPlaceholder
+                        label="Waiting for results..."
+                        data={requestResults}
+                      >
+                        <ResponsesTable data={requestResults} onDetails={() => {}} />
+                      </NoDataPlaceholder>
                     </Paper>
                   </Grid>
                 </React.Fragment>
