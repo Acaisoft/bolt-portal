@@ -2,16 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { Table, withStyles } from '@material-ui/core'
 import {
-  Checkbox,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  withStyles,
-} from '@material-ui/core'
-import { Loader } from '~components'
+  DefaultBodyRenderer,
+  DefaultFooterRenderer,
+  DefaultHeaderRenderer,
+} from './renderers'
 
 import { areArraysEqual } from '~utils/collections'
 
@@ -45,6 +41,7 @@ export class DataTable extends Component {
     checkboxes: PropTypes.bool,
     checkboxKey: PropTypes.func,
     data: PropTypes.arrayOf(PropTypes.object.isRequired),
+    hasFooter: PropTypes.bool,
     initialSelected: PropTypes.instanceOf(Set),
     isLoading: PropTypes.bool,
     multiselect: PropTypes.bool,
@@ -56,16 +53,23 @@ export class DataTable extends Component {
     onSelect: PropTypes.func,
     rowKey: PropTypes.func,
     striped: PropTypes.bool,
+    BodyRenderer: PropTypes.func,
+    FooterRenderer: PropTypes.func,
+    HeaderRenderer: PropTypes.func,
   }
 
   static defaultProps = {
     checkboxKey: row => row.id,
+    hasFooter: false,
     initialSelected: new Set(),
     onSelect: () => {},
     pure: false,
     responsive: true,
     rowKey: row => row.id,
     striped: false,
+    HeaderRenderer: DefaultHeaderRenderer,
+    BodyRenderer: DefaultBodyRenderer,
+    FooterRenderer: DefaultFooterRenderer,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -100,36 +104,24 @@ export class DataTable extends Component {
         <Table>
           {this.renderHeader()}
           {this.renderBody()}
+          {this.renderFooter()}
         </Table>
       </div>
     )
   }
 
   renderHeader = () => {
-    const { checkboxes, data, multiselect } = this.props
+    const { checkboxes, data, multiselect, HeaderRenderer } = this.props
     const { columns, selected } = this.state
 
     return (
-      <TableHead>
-        <TableRow>
-          {checkboxes && (
-            <TableCell key="_checkbox" padding="checkbox">
-              {multiselect && (
-                <Checkbox
-                  indeterminate={!!selected.size && selected.size < data.length}
-                  checked={selected.size === data.length}
-                  onChange={this.handleSelectAll}
-                />
-              )}
-            </TableCell>
-          )}
-          {columns.map(({ key, title, width }) => (
-            <TableCell key={key} width={width}>
-              {title}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
+      <HeaderRenderer
+        checkboxes={checkboxes}
+        columns={columns}
+        data={data}
+        multiselect={multiselect}
+        selected={selected}
+      />
     )
   }
 
@@ -142,46 +134,40 @@ export class DataTable extends Component {
       isLoading,
       rowKey,
       striped,
+      BodyRenderer,
     } = this.props
     const { columns, selected } = this.state
 
-    if (isLoading) {
-      return (
-        <TableBody>
-          <TableRow className={classNames({ [classes.striped]: striped })}>
-            <TableCell colSpan={columns.length}>
-              <Loader loading fill />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      )
+    return (
+      <BodyRenderer
+        columns={columns}
+        classes={classes}
+        checkboxes={checkboxes}
+        checkboxKey={checkboxKey}
+        data={data}
+        isLoading={isLoading}
+        rowKey={rowKey}
+        selected={selected}
+        striped={striped}
+      />
+    )
+  }
+
+  renderFooter = () => {
+    const { classes, data, hasFooter, isLoading, FooterRenderer } = this.props
+    const { columns } = this.state
+
+    if (!hasFooter) {
+      return null
     }
 
     return (
-      <TableBody>
-        {data.map((row, index) => (
-          <TableRow
-            key={rowKey(row)}
-            className={classNames({
-              // Indices are zero-based, so we need to shift by one.
-              [classes.stripedOdd]: striped && index % 2 === 0,
-              [classes.stripedEven]: striped && index % 2 === 1,
-            })}
-          >
-            {checkboxes && (
-              <TableCell key="_checkbox" padding="checkbox">
-                <Checkbox
-                  checked={selected.has(checkboxKey(row))}
-                  onChange={this.handleSelect(checkboxKey(row))}
-                />
-              </TableCell>
-            )}
-            {columns.map(({ render, title, ...cellProps }) => (
-              <TableCell {...cellProps}>{render(row)}</TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
+      <FooterRenderer
+        classes={classes}
+        columns={columns}
+        data={data}
+        isLoading={isLoading}
+      />
     )
   }
 

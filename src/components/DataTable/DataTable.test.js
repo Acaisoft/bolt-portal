@@ -24,48 +24,6 @@ describe('component: DataTable', () => {
       const { wrapper } = initDataTable()
       expect(wrapper).toBeTruthy()
     })
-
-    it('should render data according to Column settings', () => {
-      const { wrapper } = initDataTable({ children })
-      expect(wrapper).toMatchSnapshot()
-    })
-
-    it('should render loader if isLoading is set', () => {
-      const { wrapper } = initDataTable({ children, isLoading: true })
-      expect(wrapper).toMatchSnapshot()
-    })
-
-    describe('checkboxes', () => {
-      it('should render checkboxes in each row', () => {
-        const { wrapper } = initDataTable({ children, checkboxes: true })
-        expect(wrapper).toMatchSnapshot()
-      })
-
-      it('should render checkbox for selecting all if multiselect flag is set', () => {
-        const { wrapper } = initDataTable({
-          children,
-          checkboxes: true,
-          multiselect: true,
-        })
-        expect(wrapper).toMatchSnapshot()
-      })
-
-      it('should make select all checkbox indeterminate if only some of the checkboxes are selected', () => {
-        const { wrapper } = initDataTable({
-          children,
-          checkboxes: true,
-          multiselect: true,
-        })
-        wrapper.setState({ selected: new Set([1]) })
-        expect(
-          wrapper
-            .find('TableHeadMock TableCellMock')
-            .first()
-            .find('CheckboxMock')
-            .prop('indeterminate')
-        ).toBe(true)
-      })
-    })
   })
 
   describe('lifecycle', () => {

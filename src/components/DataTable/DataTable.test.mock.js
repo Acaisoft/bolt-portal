@@ -13,4 +13,20 @@ export const data = [
   { id: 2, name: 'Steven Bush', age: 36 },
 ]
 
+export const columnSettings = [
+  {
+    key: 'name',
+    title: 'Name',
+    render: item => item.name,
+  },
+  {
+    key: 'age',
+    title: 'Age',
+    render: item => item.age,
+    renderFooter: () => (
+      <div>Total age: {data.reduce((acc, v) => acc + v.age, 0)}</div>
+    ),
+  },
+]
+
 export const onSelect = jest.fn()
