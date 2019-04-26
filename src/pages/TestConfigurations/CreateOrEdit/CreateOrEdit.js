@@ -32,10 +32,12 @@ export class CreateOrEdit extends Component {
       `Scenario ${mode === 'create' ? 'created' : 'updated'} successfully`
     )
 
-    let redirectUrl = match.url.split('/')
-    redirectUrl.pop()
-    redirectUrl = redirectUrl.join('/')
-    history.push(redirectUrl)
+    history.push(
+      match.url
+        .split('/')
+        .slice(0, -1)
+        .join('/')
+    )
   }
 
   render() {

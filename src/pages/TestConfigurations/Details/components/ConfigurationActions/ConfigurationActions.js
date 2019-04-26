@@ -1,11 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles, Button, Typography, Grid } from '@material-ui/core'
-import { PlayArrow, CalendarToday, Edit } from '@material-ui/icons'
+import { withStyles, Button, Typography, Grid, Tooltip } from '@material-ui/core'
+import { PlayArrow, CalendarToday, Edit, Delete } from '@material-ui/icons'
 
 import styles from './ConfigurationActions.styles'
 
-export const ConfigurationActions = ({ classes, onPlay, onChange, onEdit }) => (
+export const ConfigurationActions = ({
+  classes,
+  onRun,
+  onChange,
+  onEdit,
+  onDelete,
+  isPerformed,
+  isRunning,
+}) => (
   <Grid container justify="center" alignItems="center">
     <Button
       classes={{
@@ -13,7 +21,8 @@ export const ConfigurationActions = ({ classes, onPlay, onChange, onEdit }) => (
         label: classes.actionButtonLabel,
       }}
       variant="contained"
-      onClick={onPlay}
+      disabled={isRunning}
+      onClick={onRun}
     >
       <PlayArrow />
       <Typography variant="body2">Play</Typography>
@@ -40,20 +49,48 @@ export const ConfigurationActions = ({ classes, onPlay, onChange, onEdit }) => (
       <Edit />
       <Typography variant="body2">Edit</Typography>
     </Button>
+    <Tooltip
+      title={isPerformed ? "You can't delete a performed scenario." : ''}
+      PopperProps={{
+        classes: {
+          popper: {
+            opacity: 1,
+          },
+        },
+      }}
+    >
+      <span>
+        <Button
+          aria-label="Delete scenario"
+          classes={{
+            root: classes.actionButton,
+            label: classes.actionButtonLabel,
+          }}
+          variant="contained"
+          disabled={isPerformed}
+          onClick={onDelete}
+        >
+          <Delete />
+          <Typography variant="body2">Delete</Typography>
+        </Button>
+      </span>
+    </Tooltip>
   </Grid>
 )
 
 ConfigurationActions.propTypes = {
   classes: PropTypes.object,
-  onPlay: PropTypes.func,
   onChange: PropTypes.func,
+  onDelete: PropTypes.func,
   onEdit: PropTypes.func,
+  onRun: PropTypes.func,
 }
 
 ConfigurationActions.defaultProps = {
-  onPlay: () => {},
   onChange: () => {},
+  onDelete: () => {},
   onEdit: () => {},
+  onRun: () => {},
 }
 
 export default withStyles(styles)(ConfigurationActions)

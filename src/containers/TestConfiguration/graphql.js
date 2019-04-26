@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_CONFIG_QUERY = gql`
-  query getTestConfiguration($configurationId: uuid) {
+  query getTestConfiguration($configurationId: uuid!) {
     configuration_by_pk(id: $configurationId) {
       id
       name
@@ -35,4 +35,19 @@ export const GET_CONFIG_QUERY = gql`
     }
   }
 `
-export default GET_CONFIG_QUERY
+
+export const RUN_TEST_SCENARIO = gql`
+  mutation runTestScenario($configurationId: UUID!) {
+    testrun_start(conf_id: $configurationId) {
+      execution_id
+    }
+  }
+`
+
+export const DELETE_TEST_SCENARIO = gql`
+  mutation deleteTestScenario($configurationId: UUID) {
+    testrun_configuration_delete(pk: $configurationId) {
+      affected_rows
+    }
+  }
+`

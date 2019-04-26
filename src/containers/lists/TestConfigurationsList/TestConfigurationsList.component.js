@@ -1,11 +1,10 @@
 import React from 'react'
 import moment from 'moment'
 
-import { IconButton, withStyles, Tooltip } from '@material-ui/core'
-import { Edit, Delete, History, PlayArrow, Pageview } from '@material-ui/icons'
+import { IconButton, withStyles } from '@material-ui/core'
+import { History, Pageview } from '@material-ui/icons'
 
 import { DataTable } from '~components'
-import { TestConfiguration } from '~assets/icons'
 
 import styles from './TestConfigurationsList.component.styles'
 
@@ -13,12 +12,8 @@ export function TestConfigurationsList({
   classes,
   configurations,
   loading,
-  onDelete,
   onDetails,
-  onEdit,
-  onRun,
   projectId,
-  runningConfigurationId,
 }) {
   return (
     <DataTable
@@ -26,12 +21,6 @@ export function TestConfigurationsList({
       isLoading={loading}
       rowKey={configuration => configuration.id}
     >
-      <DataTable.Column
-        key="icon"
-        render={() => <TestConfiguration />}
-        title=""
-        width={20}
-      />
       <DataTable.Column
         key="name"
         render={configuration => configuration.name}
@@ -71,19 +60,8 @@ export function TestConfigurationsList({
       <DataTable.Column
         key="actions"
         render={configuration => {
-          if (runningConfigurationId === configuration.id) {
-            return 'Starting...'
-          }
           return (
             <div className={classes.iconsContainer}>
-              <IconButton
-                aria-label="Start execution"
-                className={classes.icon}
-                onClick={() => onRun(configuration)}
-                disabled={!configuration.test_source}
-              >
-                <PlayArrow />
-              </IconButton>
               <IconButton
                 aria-label="Show configuration details"
                 className={classes.icon}
@@ -91,38 +69,6 @@ export function TestConfigurationsList({
               >
                 <Pageview />
               </IconButton>
-              <IconButton
-                aria-label="Edit configuration"
-                className={classes.icon}
-                onClick={() => onEdit(configuration)}
-              >
-                <Edit />
-              </IconButton>
-              <Tooltip
-                title={
-                  Boolean(configuration.performed)
-                    ? "You can't delete a performed scenario."
-                    : ''
-                }
-                PopperProps={{
-                  classes: {
-                    popper: {
-                      opacity: 1,
-                    },
-                  },
-                }}
-              >
-                <span>
-                  <IconButton
-                    aria-label="Delete configuration"
-                    className={classes.icon}
-                    disabled={Boolean(configuration.performed)}
-                    onClick={() => onDelete(configuration)}
-                  >
-                    <Delete />
-                  </IconButton>
-                </span>
-              </Tooltip>
             </div>
           )
         }}
