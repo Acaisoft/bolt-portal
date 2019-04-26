@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 
-import { generatePath } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import { MenuItem, Select, Divider, withStyles } from '@material-ui/core'
 import { Computer } from '@material-ui/icons'
@@ -21,36 +20,19 @@ const GET_PROJECTS = gql`
 
 class ProjectSelector extends React.Component {
   static propTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
-  }
-
-  getProjectId = () => {
-    const { location } = this.props
-    const matches = location.pathname.match(/^\/projects\/([^/]+)/i)
-    return matches && matches[1]
+    onChange: PropTypes.func.isRequired,
+    projectId: PropTypes.string,
   }
 
   handleProjectChange = e => {
-    const { history } = this.props
+    const { onChange } = this.props
 
     const newId = e.target.value
-
-    history.push(
-      generatePath('/projects/:projectId?', {
-        projectId: newId === 'all' ? undefined : newId,
-      })
-    )
+    onChange(newId === 'all' ? undefined : newId)
   }
 
   render() {
-    const { classes } = this.props
-
-    const projectId = this.getProjectId()
+    const { classes, projectId } = this.props
 
     return (
       <Query query={GET_PROJECTS}>

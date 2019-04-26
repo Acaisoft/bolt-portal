@@ -4,6 +4,9 @@ const palette = {
   actions: {
     hover: '#F76F40',
   },
+  action: {
+    selected: '#816DFE',
+  },
   background: {
     default: '#24223B',
     paper: '#302F4C',
