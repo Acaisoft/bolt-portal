@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { Field } from 'react-final-form'
 import { Button, Grid, MenuItem, withStyles } from '@material-ui/core'
 import { FormField } from '~containers'
 import { TestConfigurationForm } from '~containers/forms'
@@ -51,7 +52,7 @@ export class ConfigurationForm extends Component {
                 color="secondary"
                 variant="contained"
                 type="submit"
-                disabled={!form.dirty || form.isSubmitting}
+                disabled={!form.dirty || form.isSubmitting || form.invalid}
                 className={classes.button}
               >
                 {mode === 'create' ? 'Create' : 'Update'}
@@ -101,6 +102,51 @@ export class ConfigurationForm extends Component {
                       />
                     </Grid>
                   ))}
+              </Grid>
+            </ExpandablePanel>
+
+            <ExpandablePanel defaultExpanded title="3. Test Source">
+              <Grid container spacing={32}>
+                <Grid item xs={6}>
+                  <FormField
+                    name="test_source_type"
+                    field={fields.test_source_type}
+                    fullWidth
+                    variant="filled"
+                  >
+                    {fields.test_source_type.options.map(option => (
+                      <MenuItem key={option.key} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </FormField>
+                </Grid>
+                <Grid item xs={6}>
+                  <Field name="test_source_type" subscription={{ value: true }}>
+                    {({ input: { value: selectedSourceType } }) => {
+                      if (!selectedSourceType) {
+                        return null
+                      }
+
+                      return (
+                        <FormField
+                          name={`test_source.${selectedSourceType}`}
+                          field={fields.test_source.fields[selectedSourceType]}
+                          fullWidth
+                          variant="filled"
+                        >
+                          {fields.test_source.fields[selectedSourceType].options.map(
+                            option => (
+                              <MenuItem key={option.key} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            )
+                          )}
+                        </FormField>
+                      )
+                    }}
+                  </Field>
+                </Grid>
               </Grid>
             </ExpandablePanel>
           </form>

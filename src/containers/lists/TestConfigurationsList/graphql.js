@@ -47,7 +47,7 @@ export const GET_TEST_CONFIGURATIONS = gql`
     $projectId: uuid
     $limit: Int
     $offset: Int
-    $order_by: [execution_order_by!]
+    $order_by: [configuration_order_by!]
   ) {
     configurations: configuration(
       where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }

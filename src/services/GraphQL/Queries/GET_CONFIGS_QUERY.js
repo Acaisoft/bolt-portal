@@ -6,7 +6,7 @@ export default gql`
     $configurationId: uuid
     $limit: Int
     $offset: Int
-    $order_by: [execution_order_by!]
+    $order_by: [configuration_order_by!]
   ) {
     configuration(
       where: { project_id: { _eq: $projectId }, id: { _eq: $configurationId } }

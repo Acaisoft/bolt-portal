@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { toast } from 'react-toastify'
 import { withStyles } from '@material-ui/core'
 
 import ConfigurationForm from '../components/ConfigurationForm'
@@ -24,8 +25,13 @@ export class CreateOrEdit extends Component {
     this.props.history.goBack()
   }
 
-  handleSubmit = () => {
+  handleSubmit = ({ mode }) => {
     const { history, match } = this.props
+
+    toast.success(
+      `Scenario ${mode === 'create' ? 'created' : 'updated'} successfully`
+    )
+
     let redirectUrl = match.url.split('/')
     redirectUrl.pop()
     redirectUrl = redirectUrl.join('/')

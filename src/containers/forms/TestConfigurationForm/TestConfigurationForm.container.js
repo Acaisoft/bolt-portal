@@ -13,11 +13,13 @@ import {
   GET_CONFIGURATION_QUERY,
   ADD_CONFIGURATION_MUTATION,
   EDIT_CONFIGURATION_MUTATION,
+  GET_TEST_SOURCES_FOR_PROJECT,
 } from './graphql'
 import {
   GET_CONFIGURATION_TYPES_QUERY,
   GET_PARAMETERS_QUERY,
 } from '~services/GraphQL/Queries'
+import { TestSourceType } from '~config/constants'
 
 export class TestConfigurationForm extends Component {
   static propTypes = {
@@ -34,22 +36,40 @@ export class TestConfigurationForm extends Component {
 
   static prepareData = data => {
     if (data) {
-      const { name, type_slug, configuration_parameters, performed } = data
+      const {
+        name,
+        type_slug,
+        configuration_parameters,
+        performed,
+        test_source,
+      } = data
+
       return {
         name,
         configuration_type: type_slug,
         performed,
-        parameters: configuration_parameters.reduce((acc, parameter) => ({
-          ...acc,
-          [parameter.parameter_slug]: parameter.value,
-        })),
+        parameters: configuration_parameters.reduce(
+          (acc, parameter) => ({
+            ...acc,
+            [parameter.parameter_slug]: parameter.value,
+          }),
+          {}
+        ),
+        test_source_type: test_source && test_source.source_type,
+        test_source: test_source
+          ? {
+              [test_source.source_type]: test_source.id,
+            }
+          : null,
       }
     }
+
+    return {}
   }
 
-  handleSubmit = (values, { configurationMutation }) => {
+  handleSubmit = async (values, { configurationMutation }) => {
     const { name, configuration_type, parameters } = values
-    const { configurationId, mode } = this.props
+    const { configurationId, mode, projectId, onSubmit } = this.props
     const configurationParameters = Object.entries(parameters).map(
       ([slug, value]) => ({ parameter_slug: slug, value })
     )
@@ -59,20 +79,20 @@ export class TestConfigurationForm extends Component {
         name,
         configuration_parameters: configurationParameters,
         type_slug: configuration_type,
+        test_source_id: values.test_source[values.test_source_type],
       }
 
       if (mode === 'create') {
-        variables.project_id = this.props.projectId
+        variables.project_id = projectId
       } else {
         variables.id = configurationId
       }
 
-      configurationMutation({ variables })
+      await configurationMutation({ variables })
+      onSubmit({ values, mode })
     } catch (err) {
       toast.error('An error has occured. Scenario was not created.')
     }
-
-    this.props.onSubmit(values)
   }
 
   render() {
@@ -81,16 +101,26 @@ export class TestConfigurationForm extends Component {
       mode,
       parametersQuery,
       configurationTypesQuery,
+      testSourcesQuery,
       initialValues,
     } = this.props
 
-    if (parametersQuery.loading || configurationTypesQuery.loading)
+    if (
+      parametersQuery.loading ||
+      configurationTypesQuery.loading ||
+      testSourcesQuery.loading
+    )
       return <Loader loading fill />
 
     const formConfig = createFormConfig({
       configurationTypes: configurationTypesQuery.configuration_type || [],
       parameters: parametersQuery.parameter || [],
-      isPerformed: initialValues.performed,
+      testSources: testSourcesQuery.test_source || [],
+      testSourceTypes: [
+        { slug_name: TestSourceType.REPOSITORY, label: 'Repository' },
+        { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' },
+      ],
+      isPerformed: initialValues ? initialValues.performed : false,
     })
 
     return (
@@ -100,7 +130,10 @@ export class TestConfigurationForm extends Component {
             ? ADD_CONFIGURATION_MUTATION
             : EDIT_CONFIGURATION_MUTATION
         }
-        refetchQueries={['getTestConfigurations']}
+        refetchQueries={[
+          'getTestConfigurations',
+          mode === 'edit' ? 'getConfiguration' : '',
+        ]}
       >
         {configurationMutation => {
           return (
@@ -109,7 +142,7 @@ export class TestConfigurationForm extends Component {
               onSubmit={values =>
                 this.handleSubmit(values, { configurationMutation })
               }
-              validate={validateForm(formConfig.validationSchema)}
+              validate={values => validateForm(values, formConfig.validationSchema)}
             >
               {form => children({ form, fields: formConfig.fields })}
             </Form>
@@ -123,11 +156,15 @@ export class TestConfigurationForm extends Component {
 export default compose(
   graphql(GET_PARAMETERS_QUERY, { name: 'parametersQuery' }),
   graphql(GET_CONFIGURATION_TYPES_QUERY, { name: 'configurationTypesQuery' }),
+  graphql(GET_TEST_SOURCES_FOR_PROJECT, {
+    name: 'testSourcesQuery',
+    options: ({ projectId }) => ({ variables: { projectId } }),
+  }),
   graphql(GET_CONFIGURATION_QUERY, {
     props: props => ({
-      initialValues:
-        props.data &&
-        TestConfigurationForm.prepareData(props.data.configuration_by_pk),
+      initialValues: TestConfigurationForm.prepareData(
+        props.data && props.data.configuration_by_pk
+      ),
     }),
     skip: props => props.mode !== 'edit',
     options: props => ({

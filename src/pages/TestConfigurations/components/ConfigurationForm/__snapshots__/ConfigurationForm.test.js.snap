@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`global: ConfigurationForm should render as expected 1`] = `
-<Apollo(Apollo(Apollo(TestConfigurationForm)))
+<Apollo(Apollo(Apollo(Apollo(TestConfigurationForm))))
   configurationId="testConfigurationId"
   mode="edit"
   onSubmit={[Function]}
   projectId="testProjectId"
 >
   <Component />
-</Apollo(Apollo(Apollo(TestConfigurationForm)))>
+</Apollo(Apollo(Apollo(Apollo(TestConfigurationForm))))>
 `;
