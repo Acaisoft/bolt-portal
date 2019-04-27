@@ -99,7 +99,7 @@ export class Details extends Component {
             onDetails={this.handleExecutionDetails}
             projectId={projectId}
             hideCounter
-            limit={5}
+            rowsPerPage={5}
           />
         </div>
       </div>

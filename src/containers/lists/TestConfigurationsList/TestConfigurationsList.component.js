@@ -13,7 +13,6 @@ export function TestConfigurationsList({
   configurations,
   loading,
   onDetails,
-  projectId,
 }) {
   return (
     <DataTable

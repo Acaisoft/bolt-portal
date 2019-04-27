@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, graphql } from 'react-apollo'
 import { Pagination } from '~containers'
 import { SectionHeader } from '~components'
-import { withQueryPagination } from '~hocs'
+import { withListFilters } from '~hocs'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
 import TestExecutionsList from './TestExecutionsList.component'
@@ -16,10 +16,11 @@ export class TestExecutionsListContainer extends Component {
     projectId: PropTypes.string,
     hideCounter: PropTypes.bool,
     limit: PropTypes.number,
-    pagination: PropTypes.object.isRequired,
+    listFilters: PropTypes.object.isRequired,
     showPagination: PropTypes.bool,
     executionsQuery: PropTypes.shape({
       execution: PropTypes.array,
+      pagination: PropTypes.object,
       loading: PropTypes.bool,
     }).isRequired,
     title: PropTypes.node,
@@ -31,23 +32,31 @@ export class TestExecutionsListContainer extends Component {
 
   render() {
     const {
-      executionsQuery: { executions = [], loading },
+      executionsQuery: { executions = [], pagination, loading },
       hideCounter,
       onDetails,
-      pagination,
+      listFilters,
       projectId,
       showPagination,
       title,
     } = this.props
 
+    const totalCount = (pagination && pagination.aggregate.count) || 0
+
     return (
       <React.Fragment>
         <SectionHeader
           title={title}
-          subtitle={!hideCounter && `(${pagination.totalCount})`}
+          subtitle={!hideCounter && `(${totalCount})`}
           marginBottom
         >
-          {showPagination && <Pagination {...pagination} />}
+          {showPagination && (
+            <Pagination
+              {...listFilters.pagination}
+              onChange={listFilters.setPagination}
+              totalCount={totalCount}
+            />
+          )}
         </SectionHeader>
         <TestExecutionsList
           executions={executions}
@@ -61,17 +70,27 @@ export class TestExecutionsListContainer extends Component {
 }
 
 export default compose(
+  withListFilters({
+    initialState: ({ rowsPerPage }) => ({
+      pagination: { rowsPerPage },
+      orderBy: [{ start: 'desc' }],
+    }),
+  }),
   graphql(GET_TEST_EXECUTIONS, {
     name: 'executionsQuery',
-    options: ({ configurationId, limit, projectId }) => ({
+    options: ({
+      configurationId,
+      projectId,
+      listFilters: { pagination, orderBy },
+    }) => ({
       fetchPolicy: 'cache-and-network',
       variables: {
         projectId,
         configurationId,
-        limit,
-        order_by: [{ start: 'desc' }],
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
       },
     }),
-  }),
-  withQueryPagination({ queryProp: 'executionsQuery' })
+  })
 )(TestExecutionsListContainer)

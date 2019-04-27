@@ -15,16 +15,10 @@ export class TestConfigurationsListContainer extends Component {
   static propTypes = {
     configsQuery: PropTypes.shape({
       configuration: PropTypes.array,
-      configuration_aggregate: PropTypes.shape({
-        aggregate: PropTypes.shape({
-          count: PropTypes.number,
-        }),
-      }),
-      loading: PropTypes.bool,
+      pagination: PropTypes.object,
+      loading: PropTypes.bool.isRequired,
     }).isRequired,
-    listFilters: PropTypes.shape({
-      setPagination: PropTypes.func.isRequired,
-    }).isRequired,
+    listFilters: PropTypes.object.isRequired,
     onCreate: PropTypes.func.isRequired,
     onDetails: PropTypes.func.isRequired,
     projectId: PropTypes.string,
@@ -32,21 +26,23 @@ export class TestConfigurationsListContainer extends Component {
 
   render() {
     const {
-      configsQuery: { configurations = [], configuration_aggregate, loading },
+      configsQuery: { configurations = [], pagination, loading },
       listFilters,
-      projectId,
       onCreate,
       onDetails,
+      projectId,
     } = this.props
 
-    const totalCount = configuration_aggregate
-      ? configuration_aggregate.aggregate.count
-      : 0
+    const totalCount = pagination ? pagination.aggregate.count : 0
 
     return (
       <React.Fragment>
         <SectionHeader title="Scenarios" subtitle={`(${totalCount})`} marginBottom>
-          <Pagination totalCount={totalCount} onChange={listFilters.setPagination} />
+          <Pagination
+            {...listFilters.pagination}
+            onChange={listFilters.setPagination}
+            totalCount={totalCount}
+          />
           <ButtonWithIcon
             icon={Add}
             variant="contained"
@@ -68,15 +64,17 @@ export class TestConfigurationsListContainer extends Component {
 }
 
 export default compose(
-  withListFilters({ initialState: props => ({ rowsPerPage: 10 }) }),
+  withListFilters({
+    initialState: { pagination: { rowsPerPage: 10 }, orderBy: [{ id: 'asc' }] },
+  }),
   graphql(GET_TEST_CONFIGURATIONS, {
     name: 'configsQuery',
-    options: ({ projectId, listFilters }) => ({
+    options: ({ projectId, listFilters: { pagination, orderBy } }) => ({
       variables: {
         projectId,
-        limit: listFilters.rowsPerPage,
-        offset: listFilters.offset,
-        order_by: [{ id: 'asc' }],
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
       },
       fetchPolicy: 'cache-and-network',
     }),

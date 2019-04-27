@@ -5,36 +5,49 @@ import { compose, graphql } from 'react-apollo'
 import { Add } from '@material-ui/icons'
 import { Pagination } from '~containers'
 import { ButtonWithIcon, SectionHeader } from '~components'
-import { withQueryPagination } from '~hocs'
+import { withListFilters } from '~hocs'
 
 import TestSourcesList from './TestSourcesList.component'
 import { GET_TEST_SOURCES } from './graphql'
 
 export class TestSourcesListContainer extends Component {
   static propTypes = {
-    projectId: PropTypes.string,
+    listFilters: PropTypes.object.isRequired,
+    onCreate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
+    projectId: PropTypes.string,
+    sourcesQuery: PropTypes.shape({
+      testSources: PropTypes.array,
+      pagination: PropTypes.object,
+      loading: PropTypes.bool.isRequired,
+    }).isRequired,
   }
 
   render() {
     const {
-      projectId,
+      listFilters,
       onCreate,
       onDelete,
       onEdit,
-      pagination,
-      sourcesQuery: { testSources = [], loading },
+      projectId,
+      sourcesQuery: { testSources = [], pagination, loading },
     } = this.props
+
+    const totalCount = (pagination && pagination.aggregate.count) || 0
 
     return (
       <React.Fragment>
         <SectionHeader
           title="Test Sources"
-          subtitle={`(${testSources.length})`}
+          subtitle={`(${totalCount})`}
           marginBottom
         >
-          <Pagination {...pagination} />
+          <Pagination
+            {...listFilters.pagination}
+            onChange={listFilters.setPagination}
+            totalCount={totalCount}
+          />
           <ButtonWithIcon
             icon={Add}
             color="secondary"
@@ -57,15 +70,19 @@ export class TestSourcesListContainer extends Component {
 }
 
 export default compose(
+  withListFilters({
+    initialState: { pagination: { rowsPerPage: 10 }, orderBy: [{ id: 'asc' }] },
+  }),
   graphql(GET_TEST_SOURCES, {
     name: 'sourcesQuery',
-    options: props => ({
+    options: ({ projectId, listFilters: { pagination, orderBy } }) => ({
       fetchPolicy: 'cache-and-network',
       variables: {
-        projectId: props.projectId,
-        order_by: [{ id: 'asc' }],
+        projectId,
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
       },
     }),
-  }),
-  withQueryPagination({ queryProp: 'sourcesQuery' })
+  })
 )(TestSourcesListContainer)
