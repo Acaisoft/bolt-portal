@@ -5,18 +5,19 @@ import { useQuery } from 'react-apollo-hooks'
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 import { DataTable, SectionHeader } from '~components'
+import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
 
 function TestExecutionsList({ configurationId, onDetails }) {
-  const { pagination, orderBy } = useListFilters({
+  const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 5 },
     orderBy: [{ start: 'desc' }],
   })
 
   const {
-    data: { executions },
+    data: { executions = [], executionsAggregate },
     loading,
   } = useQuery(GET_TEST_EXECUTIONS, {
     fetchPolicy: 'cache-and-network',
@@ -28,9 +29,20 @@ function TestExecutionsList({ configurationId, onDetails }) {
     },
   })
 
+  const totalCount =
+    (executionsAggregate && executionsAggregate.aggregate.count) || 0
+
   return (
     <div>
-      <SectionHeader title="Last Test Runs" marginBottom />
+      <SectionHeader title="Last Test Runs" marginBottom>
+        {!loading && (
+          <Pagination
+            {...pagination}
+            totalCount={totalCount}
+            onChange={setPagination}
+          />
+        )}
+      </SectionHeader>
 
       <DataTable
         data={executions}

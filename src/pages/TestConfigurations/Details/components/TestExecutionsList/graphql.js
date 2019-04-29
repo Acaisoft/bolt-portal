@@ -47,6 +47,14 @@ export const GET_TEST_EXECUTIONS = gql`
     ) {
       ...testExecutionItem
     }
+
+    executionsAggregate: execution_aggregate(
+      where: { configuration_id: { _eq: $configurationId } }
+    ) {
+      aggregate {
+        count
+      }
+    }
   }
 
   ${TEST_EXECUTION_ITEM_FRAGMENT}
