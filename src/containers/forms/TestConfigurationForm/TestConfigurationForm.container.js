@@ -151,7 +151,13 @@ export class TestConfigurationForm extends Component {
               validate={values => validateForm(values, formConfig.validationSchema)}
               keepDirtyOnReinitialize
             >
-              {form => children({ form, fields: formConfig.fields })}
+              {form =>
+                children({
+                  form,
+                  fields: formConfig.fields,
+                  initialValues: initialValues || {},
+                })
+              }
             </Form>
           )
         }}

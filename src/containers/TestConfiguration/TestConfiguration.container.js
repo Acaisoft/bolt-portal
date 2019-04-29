@@ -24,7 +24,7 @@ export class TestConfiguration extends Component {
           children({
             loading,
             error,
-            data: data && data.configuration_by_pk,
+            data: (data && data.configuration_by_pk) || {},
             runScenario: () =>
               runTestScenarioMutation({ variables: { configurationId } }),
             deleteScenario: () =>

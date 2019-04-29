@@ -15,15 +15,17 @@ function SectionHeader({
   size = 'medium',
   subtitle,
   title,
+  ...containerProps
 }) {
+  const gridProps = {
+    alignItems: 'center',
+    justify: 'space-between',
+    spacing: 32,
+    ...containerProps,
+  }
+
   return (
-    <Grid
-      container
-      justify="space-between"
-      alignItems="center"
-      spacing={32}
-      className={className}
-    >
+    <Grid container className={className} {...gridProps}>
       <Grid item>
         <div
           className={classNames({
