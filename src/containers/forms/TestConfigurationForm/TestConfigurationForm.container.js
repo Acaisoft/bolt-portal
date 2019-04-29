@@ -13,6 +13,7 @@ import {
   GET_CONFIGURATION_QUERY,
   ADD_CONFIGURATION_MUTATION,
   EDIT_CONFIGURATION_MUTATION,
+  EDIT_PERFORMED_CONFIGURATION_MUTATION,
   GET_TEST_SOURCES_FOR_PROJECT,
 } from './graphql'
 import {
@@ -67,7 +68,7 @@ export class TestConfigurationForm extends Component {
     return {}
   }
 
-  handleSubmit = async (values, { configurationMutation }) => {
+  handleSubmit = async (values, { isPerformed, configurationMutation }) => {
     const { scenario_name, configuration_type, parameters } = values
     const { configurationId, mode, projectId, onSubmit } = this.props
     const configurationParameters = Object.entries(parameters).map(
@@ -75,17 +76,23 @@ export class TestConfigurationForm extends Component {
     )
 
     try {
-      const variables = {
-        name: scenario_name,
-        configuration_parameters: configurationParameters,
-        type_slug: configuration_type,
-        test_source_id: values.test_source[values.test_source_type],
-      }
+      let variables
 
-      if (mode === 'create') {
-        variables.project_id = projectId
+      if (isPerformed) {
+        variables = { id: configurationId, name: scenario_name }
       } else {
-        variables.id = configurationId
+        variables = {
+          name: scenario_name,
+          configuration_parameters: configurationParameters,
+          type_slug: configuration_type,
+          test_source_id: values.test_source[values.test_source_type],
+        }
+
+        if (mode === 'create') {
+          variables.project_id = projectId
+        } else {
+          variables.id = configurationId
+        }
       }
 
       await configurationMutation({ variables })
@@ -118,6 +125,8 @@ export class TestConfigurationForm extends Component {
     )
       return <Loader loading fill />
 
+    const isPerformed = initialValues ? initialValues.performed : false
+
     const formConfig = createFormConfig({
       configurationTypes: configurationTypesQuery.configuration_type || [],
       parameters: parametersQuery.parameter || [],
@@ -126,7 +135,7 @@ export class TestConfigurationForm extends Component {
         { slug_name: TestSourceType.REPOSITORY, label: 'Repository' },
         // { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' }, // Disabled for now
       ],
-      isPerformed: initialValues ? initialValues.performed : false,
+      isPerformed,
     })
 
     return (
@@ -134,6 +143,8 @@ export class TestConfigurationForm extends Component {
         mutation={
           mode === 'create'
             ? ADD_CONFIGURATION_MUTATION
+            : isPerformed
+            ? EDIT_PERFORMED_CONFIGURATION_MUTATION
             : EDIT_CONFIGURATION_MUTATION
         }
         refetchQueries={[
@@ -146,7 +157,7 @@ export class TestConfigurationForm extends Component {
             <Form
               initialValues={formConfig.mergeInitialValues(initialValues)}
               onSubmit={values =>
-                this.handleSubmit(values, { configurationMutation })
+                this.handleSubmit(values, { isPerformed, configurationMutation })
               }
               validate={values => validateForm(values, formConfig.validationSchema)}
               keepDirtyOnReinitialize

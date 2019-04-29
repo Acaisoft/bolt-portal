@@ -39,7 +39,7 @@ export class ConfigurationForm extends Component {
               title={mode === 'create' ? 'New Scenario' : 'Update Scenario'}
               description={
                 initialValues.performed
-                  ? "We want to keep your data consistent and be able to prepare really precise reports. This is why you can't change the parameters of already performed scenarios."
+                  ? 'We want to keep your data consistent and be able to prepare really precisely reports. This is why you can’t change the parameters of already performed scenarios.'
                   : null
               }
               alignItems="flex-start"

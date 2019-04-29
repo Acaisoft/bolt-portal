@@ -62,6 +62,16 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
   }
 `
 
+export const EDIT_PERFORMED_CONFIGURATION_MUTATION = gql`
+  mutation editPerformedConfiguration($id: UUID!, $name: String!) {
+    testrun_configuration_update(id: $id, name: $name) {
+      returning {
+        id
+      }
+    }
+  }
+`
+
 export const GET_TEST_SOURCES_FOR_PROJECT = gql`
   query getTestSourcesForProject($projectId: uuid) {
     test_source(where: { project_id: { _eq: $projectId } }) {
