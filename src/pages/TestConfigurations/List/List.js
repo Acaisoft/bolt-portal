@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core'
-import { TestConfigurationsList } from '~containers/lists'
 
 import { getSubpageUrl } from '~utils/router'
 
+import { TestConfigurationsList } from './components'
 import styles from './List.styles'
 
 export class List extends Component {

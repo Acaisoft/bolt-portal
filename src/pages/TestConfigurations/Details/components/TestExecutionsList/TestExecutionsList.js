@@ -8,41 +8,29 @@ import { DataTable, SectionHeader } from '~components'
 import { useListFilters } from '~hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
-import { Pagination } from '~containers'
 
-function TestExecutionsList({ projectId, onDetails }) {
-  const { pagination, orderBy, setPagination } = useListFilters({
-    pagination: { rowsPerPage: 10 },
+function TestExecutionsList({ configurationId, onDetails }) {
+  const { pagination, orderBy } = useListFilters({
+    pagination: { rowsPerPage: 5 },
     orderBy: [{ start: 'desc' }],
   })
 
   const {
-    data: { executions, executionsAggregate },
+    data: { executions },
     loading,
   } = useQuery(GET_TEST_EXECUTIONS, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      projectId,
+      configurationId,
       limit: pagination.rowsPerPage,
       offset: pagination.offset,
       order_by: orderBy,
     },
   })
 
-  const totalCount =
-    (executionsAggregate && executionsAggregate.aggregate.count) || 0
-
   return (
     <div>
-      <SectionHeader title="Test Runs" subtitle={`(${totalCount})`} marginBottom>
-        {!loading && (
-          <Pagination
-            {...pagination}
-            onChange={setPagination}
-            totalCount={totalCount}
-          />
-        )}
-      </SectionHeader>
+      <SectionHeader title="Last Test Runs" marginBottom />
 
       <DataTable
         data={executions}
@@ -54,13 +42,6 @@ function TestExecutionsList({ projectId, onDetails }) {
           render={execution => moment(execution.start).format('YYYY-MM-DD HH:mm')}
           title="Run Date"
         />
-        {!projectId && (
-          <DataTable.Column
-            key="project"
-            render={execution => execution.configuration.project.name}
-            title="Project"
-          />
-        )}
         <DataTable.Column
           key="scenario"
           render={execution => execution.configuration.name}

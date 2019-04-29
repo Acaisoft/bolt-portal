@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { IconButton } from '@material-ui/core'
+import { IconButton, Link } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
 import { DataTable, SectionHeader } from '~components'
 import { useListFilters } from '~hooks'
@@ -10,9 +10,9 @@ import { useListFilters } from '~hooks'
 import { GET_TEST_EXECUTIONS } from './graphql'
 import { Pagination } from '~containers'
 
-function TestExecutionsList({ projectId, onDetails }) {
+function TestExecutionsList({ projectId, onListMore, onDetails }) {
   const { pagination, orderBy, setPagination } = useListFilters({
-    pagination: { rowsPerPage: 10 },
+    pagination: { rowsPerPage: 5 },
     orderBy: [{ start: 'desc' }],
   })
 
@@ -34,7 +34,10 @@ function TestExecutionsList({ projectId, onDetails }) {
 
   return (
     <div>
-      <SectionHeader title="Test Runs" subtitle={`(${totalCount})`} marginBottom>
+      <SectionHeader
+        title={<Link onClick={onListMore}>Latest Test Runs</Link>}
+        marginBottom
+      >
         {!loading && (
           <Pagination
             {...pagination}

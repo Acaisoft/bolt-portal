@@ -4,12 +4,14 @@ import PropTypes from 'prop-types'
 import { generatePath } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { withStyles, Grid } from '@material-ui/core'
-import { TestExecutionsList } from '~containers/lists'
 import { TestConfiguration } from '~containers'
 import { Loader, SubmitCancelModal } from '~components'
 
-import ConfigurationActions from './components/ConfigurationActions'
-import ConfigurationInfo from './components/ConfigurationInfo'
+import {
+  ConfigurationActions,
+  ConfigurationInfo,
+  TestExecutionsList,
+} from './components'
 
 import { getSubpageUrl } from '~utils/router'
 

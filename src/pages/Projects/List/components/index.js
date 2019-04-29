@@ -1,3 +1,5 @@
+export { default as BackgroundImage } from './BackgroundImage'
 export { default as NewProjectCard } from './NewProjectCard'
 export { default as ProjectCard } from './ProjectCard'
 export { default as ProjectFormInCard } from './ProjectFormInCard'
+export { default as ProjectsList } from './ProjectsList'

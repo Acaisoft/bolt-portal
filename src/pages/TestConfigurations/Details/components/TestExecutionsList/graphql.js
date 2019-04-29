@@ -34,25 +34,18 @@ export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
 
 export const GET_TEST_EXECUTIONS = gql`
   query getExecutions(
-    $projectId: uuid
+    $configurationId: uuid
     $limit: Int
     $offset: Int
     $order_by: [execution_order_by!]
   ) {
     executions: execution(
-      where: { configuration: { project_id: { _eq: $projectId } } }
+      where: { configuration_id: { _eq: $configurationId } }
       limit: $limit
       offset: $offset
       order_by: $order_by
     ) {
       ...testExecutionItem
-    }
-    executionsAggregate: execution_aggregate(
-      where: { configuration: { project_id: { _eq: $projectId } } }
-    ) {
-      aggregate {
-        count
-      }
     }
   }
 

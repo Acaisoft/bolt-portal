@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
-import { TestExecutionsList } from '~containers/lists'
 
 import { getSubpageUrl } from '~utils/router'
+
+import { TestExecutionsList } from './components'
 
 import styles from './List.styles'
 
@@ -36,11 +37,7 @@ export class List extends Component {
           Here you see results of all tests performed in all of your projects
         </Typography>
         <div className={classes.tableContainer}>
-          <TestExecutionsList
-            projectId={projectId}
-            onDetails={this.handleDetails}
-            showPagination
-          />
+          <TestExecutionsList projectId={projectId} onDetails={this.handleDetails} />
         </div>
       </div>
     )

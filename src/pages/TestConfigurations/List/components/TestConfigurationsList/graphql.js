@@ -49,7 +49,7 @@ export const GET_TEST_CONFIGURATIONS = gql`
     ) {
       ...testConfigurationListItem
     }
-    pagination: configuration_aggregate(
+    configurationsAggregate: configuration_aggregate(
       where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }
     ) {
       aggregate {

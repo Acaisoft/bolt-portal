@@ -4,10 +4,9 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 
-import { TestExecutionsList } from '~containers/lists'
-
 import { getSubpageUrl } from '~utils/router'
 
+import { TestExecutionsList } from './components'
 import styles from './Details.styles'
 
 export class Details extends Component {
@@ -42,23 +41,23 @@ export class Details extends Component {
         linkTo: getUrl('/test-runs'),
         description: 'See all tests run results',
       },
-      // {
-      //   id: 4,
-      //   label: 'USERS',
-      //   linkTo: getUrl('/users'),
-      //   description: 'Manage Users for My Super App.',
-      // },
     ]
   }
 
-  handleExecutionDetails = execution => {
+  redirectToSubpage = (path, params = {}) => {
     const { history, match } = this.props
 
-    history.push(
-      getSubpageUrl(match, '/test-runs/:executionId', {
-        executionId: execution.id,
-      })
-    )
+    history.push(getSubpageUrl(match, path, params))
+  }
+
+  handleExecutionDetails = execution => {
+    this.redirectToSubpage('/test-runs/:executionId', {
+      executionId: execution.id,
+    })
+  }
+
+  handleExecutionsListMore = () => {
+    this.redirectToSubpage('/test-runs')
   }
 
   render() {
@@ -91,15 +90,9 @@ export class Details extends Component {
         </Grid>
         <div className={classes.tableContainer}>
           <TestExecutionsList
-            title={
-              <Link to={`${match.url}/test-runs`} className={classes.link}>
-                Latest Test Runs
-              </Link>
-            }
             onDetails={this.handleExecutionDetails}
+            onListMore={this.handleExecutionsListMore}
             projectId={projectId}
-            hideCounter
-            rowsPerPage={5}
           />
         </div>
       </div>

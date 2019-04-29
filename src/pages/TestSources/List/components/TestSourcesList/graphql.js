@@ -35,7 +35,9 @@ export const GET_TEST_SOURCES = gql`
         url
       }
     }
-    pagination: test_source_aggregate(where: { project_id: { _eq: $projectId } }) {
+    testSourcesAggregate: test_source_aggregate(
+      where: { project_id: { _eq: $projectId } }
+    ) {
       aggregate {
         count
       }

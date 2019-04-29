@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 import { withStyles } from '@material-ui/core'
 import { DeleteModal } from '~components'
-import { TestSourcesList } from '~containers/lists'
+import { TestSourcesList } from './components'
 
 import { getSubpageUrl } from '~utils/router'
 import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
