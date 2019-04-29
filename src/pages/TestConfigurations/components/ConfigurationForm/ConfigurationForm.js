@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Field } from 'react-final-form'
-import { Button, Grid, MenuItem, withStyles } from '@material-ui/core'
+import { Button, Grid, MenuItem, withStyles, Typography } from '@material-ui/core'
 import { FormField } from '~containers'
 import { TestConfigurationForm } from '~containers/forms'
 import { ExpandablePanel, SectionHeader } from '~components'
@@ -62,8 +62,8 @@ export class ConfigurationForm extends Component {
               <Grid container spacing={32}>
                 <Grid item xs={6}>
                   <FormField
-                    name="name"
-                    field={fields.name}
+                    name="scenario_name"
+                    field={fields.scenario_name}
                     fullWidth
                     variant="filled"
                   />
@@ -85,70 +85,109 @@ export class ConfigurationForm extends Component {
               </Grid>
             </ExpandablePanel>
 
-            <ExpandablePanel defaultExpanded title="2. Test Parameters">
-              <Grid container spacing={32}>
-                {Object.entries(fields.parameters.fields || [])
-                  .filter(
-                    ([name, options]) =>
-                      options.group === form.values.configuration_type
-                  )
-                  .map(([id, options]) => (
-                    <Grid key={id} item xs={6}>
-                      <FormField
-                        name={`parameters.${id}`}
-                        field={options}
-                        fullWidth
-                        variant="filled"
-                      />
-                    </Grid>
-                  ))}
-              </Grid>
-            </ExpandablePanel>
-
-            <ExpandablePanel defaultExpanded title="3. Test Source">
-              <Grid container spacing={32}>
-                <Grid item xs={6}>
-                  <FormField
-                    name="test_source_type"
-                    field={fields.test_source_type}
-                    fullWidth
-                    variant="filled"
+            <Field name="configuration_type" subscription={{ value: true }}>
+              {({ input: { value: configurationType } }) => (
+                <React.Fragment>
+                  <ExpandablePanel
+                    key={`${configurationType}-step2`} // Re-render to reinitialize defaultExpanded
+                    defaultExpanded={Boolean(configurationType)}
+                    title="2. Test Parameters"
                   >
-                    {fields.test_source_type.options.map(option => (
-                      <MenuItem key={option.key} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </FormField>
-                </Grid>
-                <Grid item xs={6}>
-                  <Field name="test_source_type" subscription={{ value: true }}>
-                    {({ input: { value: selectedSourceType } }) => {
-                      if (!selectedSourceType) {
-                        return null
-                      }
+                    <Grid container spacing={32}>
+                      {!configurationType ? (
+                        <Grid item xs={12}>
+                          <Typography variant="body1">
+                            Select test type first to see available parameters list
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        Object.entries(fields.parameters.fields || [])
+                          .filter(
+                            ([name, options]) => options.group === configurationType
+                          )
+                          .map(([id, options]) => (
+                            <Grid key={id} item xs={6}>
+                              <FormField
+                                name={`parameters.${id}`}
+                                field={options}
+                                fullWidth
+                                variant="filled"
+                              />
+                            </Grid>
+                          ))
+                      )}
+                    </Grid>
+                  </ExpandablePanel>
 
-                      return (
-                        <FormField
-                          name={`test_source.${selectedSourceType}`}
-                          field={fields.test_source.fields[selectedSourceType]}
-                          fullWidth
-                          variant="filled"
-                        >
-                          {fields.test_source.fields[selectedSourceType].options.map(
-                            option => (
-                              <MenuItem key={option.key} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            )
-                          )}
-                        </FormField>
-                      )
-                    }}
-                  </Field>
-                </Grid>
-              </Grid>
-            </ExpandablePanel>
+                  <ExpandablePanel
+                    key={`${configurationType}-step3`} // Re-render to reinitialize defaultExpanded
+                    defaultExpanded={Boolean(configurationType)}
+                    title="3. Test Source"
+                  >
+                    <Grid container spacing={32}>
+                      {!configurationType ? (
+                        <Grid item xs={12}>
+                          <Typography variant="body1">
+                            Select test type first to see test source options
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <React.Fragment>
+                          <Grid item xs={6}>
+                            <FormField
+                              name="test_source_type"
+                              field={fields.test_source_type}
+                              fullWidth
+                              variant="filled"
+                            >
+                              {fields.test_source_type.options.map(option => (
+                                <MenuItem key={option.key} value={option.value}>
+                                  {option.label}
+                                </MenuItem>
+                              ))}
+                            </FormField>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Field
+                              name="test_source_type"
+                              subscription={{ value: true }}
+                            >
+                              {({ input: { value: selectedSourceType } }) => {
+                                if (!selectedSourceType) {
+                                  return null
+                                }
+
+                                return (
+                                  <FormField
+                                    name={`test_source.${selectedSourceType}`}
+                                    field={
+                                      fields.test_source.fields[selectedSourceType]
+                                    }
+                                    fullWidth
+                                    variant="filled"
+                                  >
+                                    {fields.test_source.fields[
+                                      selectedSourceType
+                                    ].options.map(option => (
+                                      <MenuItem
+                                        key={option.key}
+                                        value={option.value}
+                                      >
+                                        {option.label}
+                                      </MenuItem>
+                                    ))}
+                                  </FormField>
+                                )
+                              }}
+                            </Field>
+                          </Grid>
+                        </React.Fragment>
+                      )}
+                    </Grid>
+                  </ExpandablePanel>
+                </React.Fragment>
+              )}
+            </Field>
           </form>
         )}
       </TestConfigurationForm>

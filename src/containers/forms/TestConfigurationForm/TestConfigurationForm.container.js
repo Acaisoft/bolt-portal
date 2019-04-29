@@ -45,7 +45,7 @@ export class TestConfigurationForm extends Component {
       } = data
 
       return {
-        name,
+        scenario_name: name,
         configuration_type: type_slug,
         performed,
         parameters: configuration_parameters.reduce(
@@ -68,7 +68,7 @@ export class TestConfigurationForm extends Component {
   }
 
   handleSubmit = async (values, { configurationMutation }) => {
-    const { name, configuration_type, parameters } = values
+    const { scenario_name, configuration_type, parameters } = values
     const { configurationId, mode, projectId, onSubmit } = this.props
     const configurationParameters = Object.entries(parameters).map(
       ([slug, value]) => ({ parameter_slug: slug, value })
@@ -76,7 +76,7 @@ export class TestConfigurationForm extends Component {
 
     try {
       const variables = {
-        name,
+        name: scenario_name,
         configuration_parameters: configurationParameters,
         type_slug: configuration_type,
         test_source_id: values.test_source[values.test_source_type],
@@ -91,7 +91,13 @@ export class TestConfigurationForm extends Component {
       await configurationMutation({ variables })
       onSubmit({ values, mode })
     } catch (err) {
-      toast.error('An error has occured. Scenario was not created.')
+      // TODO: Handle GraphQL errors (or other) in a helper
+      const message =
+        Array.isArray(err.graphQLErrors) && err.graphQLErrors.length > 0
+          ? err.graphQLErrors[0].message
+          : err.message
+
+      toast.error(`Error: ${message}`)
     }
   }
 
@@ -118,7 +124,7 @@ export class TestConfigurationForm extends Component {
       testSources: testSourcesQuery.test_source || [],
       testSourceTypes: [
         { slug_name: TestSourceType.REPOSITORY, label: 'Repository' },
-        { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' },
+        // { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' }, // Disabled for now
       ],
       isPerformed: initialValues ? initialValues.performed : false,
     })
@@ -143,6 +149,7 @@ export class TestConfigurationForm extends Component {
                 this.handleSubmit(values, { configurationMutation })
               }
               validate={values => validateForm(values, formConfig.validationSchema)}
+              keepDirtyOnReinitialize
             >
               {form => children({ form, fields: formConfig.fields })}
             </Form>

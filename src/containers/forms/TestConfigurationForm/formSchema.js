@@ -36,7 +36,7 @@ const createFormConfig = ({
   }))
 
   const fields = {
-    name: {
+    scenario_name: {
       validator: {
         presence: { allowEmpty: false },
       },
@@ -106,7 +106,7 @@ const createFormConfig = ({
             ),
             inputProps: {
               select: true,
-              label: type.label,
+              label: `Select ${type.label}`,
               disabled: isPerformed,
             },
           },
