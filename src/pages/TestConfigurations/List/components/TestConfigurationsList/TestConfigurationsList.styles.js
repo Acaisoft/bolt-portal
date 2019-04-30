@@ -1,4 +1,4 @@
-export default theme => ({
+export default ({ palette }) => ({
   iconsContainer: {
     display: 'flex',
   },
@@ -8,5 +8,14 @@ export default theme => ({
   dateContainer: {
     display: 'flex',
     alignItems: 'center',
+  },
+  good: {
+    color: palette.success.main,
+  },
+  average: {
+    color: palette.warning.light,
+  },
+  bad: {
+    color: palette.error.main,
   },
 })

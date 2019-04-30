@@ -50,6 +50,11 @@ const palette = {
     contrastText: '#FFFFFF',
     main: '#1EB1B1',
   },
+  warning: {
+    contrastText: '#FFFFFF',
+    light: '#EB8967',
+    main: '#F76F40',
+  },
   error: {
     contrastText: '#FFFFFF',
     main: '#FF5EA1',

@@ -14,9 +14,26 @@ const TEST_CONFIGURATION_LIST_ITEM = gql`
       value
       parameter_slug
     }
-    executions {
+    executions(order_by: { start: desc }, limit: 1) {
       id
       start
+      execution_request_totals_aggregate {
+        aggregate {
+          sum {
+            num_failures
+            num_requests
+          }
+          min {
+            min_response_time
+          }
+          avg {
+            average_response_time
+          }
+          max {
+            max_response_time
+          }
+        }
+      }
     }
     test_source {
       id

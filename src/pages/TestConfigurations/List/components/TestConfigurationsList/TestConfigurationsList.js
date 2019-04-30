@@ -9,6 +9,8 @@ import { ButtonWithIcon, SectionHeader, DataTable } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
+import { formatPercent, formatThousands } from '~utils/numbers'
+
 import { GET_TEST_CONFIGURATIONS } from './graphql'
 import styles from './TestConfigurationsList.styles'
 
@@ -71,30 +73,74 @@ export function TestConfigurationsList({ classes, onCreate, onDetails, projectId
         />
         <DataTable.Column
           key="source"
-          render={configuration =>
-            configuration.test_source &&
-            configuration.test_source[configuration.test_source.source_type].name
+          render={({ test_source }) =>
+            test_source && test_source[test_source.source_type].name
           }
           title="Source"
         />
         <DataTable.Column
           key="lastRun"
-          render={configuration => (
+          render={({ executions }) => (
             <div className={classes.dateContainer}>
-              {(configuration.executions[0] || {}).start && (
+              {(executions[0] || {}).start && (
                 <React.Fragment>
                   <IconButton className={classes.icon} disabled>
                     <History />
                   </IconButton>
-                  <span>
-                    {moment(configuration.executions[0].start).format('YYYY-MM-DD')}
-                  </span>
+                  <span>{moment(executions[0].start).format('YYYY-MM-DD')}</span>
                 </React.Fragment>
               )}
             </div>
           )}
           title="Last Run"
         />
+        <DataTable.Column
+          key="success_rate"
+          render={({ executions }) => {
+            if (executions.length === 0) {
+              return null
+            }
+
+            const totals = executions[0].execution_request_totals_aggregate.aggregate
+            const successRate =
+              (totals.sum.num_requests - totals.sum.num_failures) /
+              totals.sum.num_requests
+            const successRateClass = getSuccessRateLevel(successRate)
+
+            return (
+              <span className={classes[successRateClass]}>
+                {formatPercent(successRate)}
+              </span>
+            )
+          }}
+          title="Success Rate"
+        />
+
+        <DataTable.Column
+          key="last_execution_response_time"
+          render={({ executions }) => {
+            if (executions.length === 0) {
+              return null
+            }
+
+            const totals = executions[0].execution_request_totals_aggregate.aggregate
+            return (
+              <span className={classes.noWrap}>
+                {formatThousands(totals.min.min_response_time)} /{' '}
+                {formatThousands(totals.avg.average_response_time)} /{' '}
+                {formatThousands(totals.max.max_response_time)}
+              </span>
+            )
+          }}
+          title={
+            <div className={classes.noWrap}>
+              Response Times [ms]
+              <br />
+              Min / Avg / Max
+            </div>
+          }
+        />
+
         <DataTable.Column
           key="actions"
           render={configuration => {
@@ -121,6 +167,10 @@ TestConfigurationsList.propTypes = {
   onCreate: PropTypes.func.isRequired,
   onDetails: PropTypes.func.isRequired,
   projectId: PropTypes.string,
+}
+
+function getSuccessRateLevel(successRate) {
+  return successRate >= 0.95 ? 'good' : successRate >= 0.8 ? 'average' : 'bad'
 }
 
 export default withStyles(styles)(TestConfigurationsList)
