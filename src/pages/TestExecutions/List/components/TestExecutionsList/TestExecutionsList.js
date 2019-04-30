@@ -17,7 +17,7 @@ function TestExecutionsList({ projectId, onDetails }) {
   })
 
   const {
-    data: { executions, executionsAggregate },
+    data: { executions = [], executionsAggregate },
     loading,
   } = useQuery(GET_TEST_EXECUTIONS, {
     fetchPolicy: 'cache-and-network',

@@ -19,7 +19,7 @@ export function TestConfigurationsList({ classes, onCreate, onDetails, projectId
   })
 
   const {
-    data: { configurations, configurationsAggregate },
+    data: { configurations = [], configurationsAggregate },
     loading,
   } = useQuery(GET_TEST_CONFIGURATIONS, {
     variables: {

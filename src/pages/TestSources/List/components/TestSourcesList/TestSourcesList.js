@@ -20,7 +20,7 @@ function TestSourcesList({ classes, onCreate, onDelete, onEdit, projectId }) {
   })
 
   const {
-    data: { testSources, testSourcesAggregate },
+    data: { testSources = [], testSourcesAggregate },
     loading,
   } = useQuery(GET_TEST_SOURCES, {
     fetchPolicy: 'cache-and-network',
