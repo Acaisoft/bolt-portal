@@ -42,7 +42,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
-          dataKey="Name"
+          dataKey="name"
           name="Name"
           type="category"
           tickFormatter={label => trimText(label, 15)}
@@ -58,14 +58,14 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
         <Bar
           stroke={color.area.secondary}
           fill={color.area.secondary}
-          dataKey="# failures"
+          dataKey="num_failures"
           name="Fail"
           stackId={1}
         />
         <Bar
           stroke={color.area.primary}
           fill={color.area.primary}
-          dataKey="# successes"
+          dataKey="num_successes"
           name="Success"
           stackId={1}
         />

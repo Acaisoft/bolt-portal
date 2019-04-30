@@ -42,7 +42,7 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
-          dataKey="Name"
+          dataKey="name"
           name="Name"
           type="category"
           tickFormatter={label => trimText(label, 15)}
@@ -58,7 +58,7 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
         <Bar
           stroke={color.area.primary}
           fill={color.area.primary}
-          dataKey="Requests/s"
+          dataKey="requests_per_second"
           name="Requests/s"
           stackId={1}
         />
