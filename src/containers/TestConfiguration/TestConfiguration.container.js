@@ -19,7 +19,11 @@ export class TestConfiguration extends Component {
       runTestScenarioMutation,
     } = this.props
     return (
-      <Query query={GET_CONFIG_QUERY} variables={{ configurationId }}>
+      <Query
+        query={GET_CONFIG_QUERY}
+        variables={{ configurationId }}
+        fetchPolicy="cache-and-network"
+      >
         {({ loading, error, data }) =>
           children({
             loading,

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_CONFIGURATION_QUERY = gql`
-  query getConfiguration($configurationId: uuid!) {
+  query getTestConfiguration($configurationId: uuid!) {
     configuration_by_pk(id: $configurationId) {
       id
       name
@@ -20,7 +20,7 @@ export const GET_CONFIGURATION_QUERY = gql`
 `
 
 export const ADD_CONFIGURATION_MUTATION = gql`
-  mutation addConfiguration(
+  mutation addTestConfiguration(
     $name: String!
     $type_slug: String!
     $configuration_parameters: [ConfigurationParameterInput]!
@@ -41,7 +41,7 @@ export const ADD_CONFIGURATION_MUTATION = gql`
   }
 `
 export const EDIT_CONFIGURATION_MUTATION = gql`
-  mutation editConfiguration(
+  mutation editTestConfiguration(
     $id: UUID!
     $name: String!
     $type_slug: String!
@@ -63,7 +63,7 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
 `
 
 export const EDIT_PERFORMED_CONFIGURATION_MUTATION = gql`
-  mutation editPerformedConfiguration($id: UUID!, $name: String!) {
+  mutation editPerformedTestConfiguration($id: UUID!, $name: String!) {
     testrun_configuration_update(id: $id, name: $name) {
       returning {
         id
