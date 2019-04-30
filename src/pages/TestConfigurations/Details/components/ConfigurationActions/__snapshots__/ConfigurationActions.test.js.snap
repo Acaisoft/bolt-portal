@@ -33,23 +33,6 @@ exports[`global: ConfigurationActions should render as expected 1`] = `
     onClick={[MockFunction]}
     variant="contained"
   >
-    <CalendarTodayMock />
-    <TypographyMock
-      variant="body2"
-    >
-      Change
-    </TypographyMock>
-  </ButtonMock>
-  <ButtonMock
-    classes={
-      Object {
-        "label": "actionButtonLabel",
-        "root": "actionButton",
-      }
-    }
-    onClick={[MockFunction]}
-    variant="contained"
-  >
     <EditMock />
     <TypographyMock
       variant="body2"

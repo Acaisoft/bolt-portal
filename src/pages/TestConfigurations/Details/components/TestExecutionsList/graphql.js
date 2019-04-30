@@ -4,28 +4,24 @@ export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
   fragment testExecutionItem on execution {
     id
     start
+    start_locust
     status
-    configuration {
-      id
-      name
-      configuration_type {
-        id
-        name
-      }
-      project {
-        id
-        name
-      }
-    }
-    result_aggregate_aggregate {
+
+    executionTotals: execution_request_totals_aggregate {
       aggregate {
-        count
         sum {
-          number_of_successes
-          number_of_fails
+          num_failures
+          num_requests
+        }
+
+        min {
+          min_response_time
+        }
+        avg {
+          average_response_time
         }
         max {
-          number_of_users
+          max_response_time
         }
       }
     }

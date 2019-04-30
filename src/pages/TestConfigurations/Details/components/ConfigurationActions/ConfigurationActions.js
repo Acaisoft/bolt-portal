@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles, Button, Typography, Grid, Tooltip } from '@material-ui/core'
-import { PlayArrow, CalendarToday, Edit, Delete } from '@material-ui/icons'
+import { PlayArrow, Edit, Delete } from '@material-ui/icons'
 
 import styles from './ConfigurationActions.styles'
 
 export const ConfigurationActions = ({
   classes,
   onRun,
-  onChange,
   onEdit,
   onDelete,
   isPerformed,
@@ -26,17 +25,6 @@ export const ConfigurationActions = ({
     >
       <PlayArrow />
       <Typography variant="body2">Play</Typography>
-    </Button>
-    <Button
-      classes={{
-        root: classes.actionButton,
-        label: classes.actionButtonLabel,
-      }}
-      variant="contained"
-      onClick={onChange}
-    >
-      <CalendarToday />
-      <Typography variant="body2">Change</Typography>
     </Button>
     <Button
       classes={{
