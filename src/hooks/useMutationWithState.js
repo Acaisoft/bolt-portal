@@ -18,7 +18,7 @@ function useMutationWithState(mutationDoc, options) {
         errorMessage = res.errors[0].message
       }
     } catch (ex) {
-      errorMessage = ex.message
+      errorMessage = ex.graphQLErrors ? ex.graphQLErrors[0].message : ex.message
     }
     setError(errorMessage)
     setLoading(false)
