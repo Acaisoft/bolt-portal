@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
-  fragment testExecutionItem on execution {
+  fragment testExecutionItemInConfigurationDetails on execution {
     id
     start
     start_locust
@@ -41,7 +41,7 @@ export const GET_TEST_EXECUTIONS = gql`
       offset: $offset
       order_by: $order_by
     ) {
-      ...testExecutionItem
+      ...testExecutionItemInConfigurationDetails
     }
 
     executionsAggregate: execution_aggregate(

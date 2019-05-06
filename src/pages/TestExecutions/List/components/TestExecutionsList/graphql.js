@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
-  fragment testExecutionItem on execution {
+  fragment testExecutionListItem on execution {
     id
     start
     status
@@ -45,7 +45,7 @@ export const GET_TEST_EXECUTIONS = gql`
       offset: $offset
       order_by: $order_by
     ) {
-      ...testExecutionItem
+      ...testExecutionListItem
     }
     executionsAggregate: execution_aggregate(
       where: { configuration: { project_id: { _eq: $projectId } } }
