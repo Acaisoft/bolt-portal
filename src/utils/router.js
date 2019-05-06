@@ -6,3 +6,9 @@ export const getSubpageUrl = (match, relativePath, params = {}) => {
     ...params,
   })
 }
+
+export const getParentUrl = (url, steps = 1) =>
+  url
+    .split('/')
+    .slice(0, -steps)
+    .join('/')
