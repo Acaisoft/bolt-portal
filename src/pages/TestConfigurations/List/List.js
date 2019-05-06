@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { toast } from 'react-toastify'
 import { withStyles } from '@material-ui/core'
 
 import { getSubpageUrl } from '~utils/router'
@@ -34,6 +35,14 @@ export class List extends Component {
     })
   }
 
+  handleRun = ({ configuration, error }) => {
+    if (error) {
+      toast.error(error)
+    } else {
+      toast.success(`Scenario '${configuration.name}' was successfully started.`)
+    }
+  }
+
   render() {
     const { classes, match } = this.props
     const { projectId } = match.params
@@ -42,9 +51,9 @@ export class List extends Component {
       <div className={classes.root}>
         <TestConfigurationsList
           projectId={projectId}
-          showPagination
           onCreate={this.handleCreate}
           onDetails={this.handleDetails}
+          onRun={this.handleRun}
         />
       </div>
     )

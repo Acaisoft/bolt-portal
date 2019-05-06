@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
 import { withStyles, IconButton } from '@material-ui/core'
-import { Add, Pageview, History } from '@material-ui/icons'
+import { Add, Pageview, History, PlayArrow } from '@material-ui/icons'
 import { ButtonWithIcon, SectionHeader, DataTable } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
@@ -12,9 +12,16 @@ import { useListFilters } from '~hooks'
 import { formatPercent, formatThousands } from '~utils/numbers'
 
 import { GET_TEST_CONFIGURATIONS } from './graphql'
+import { useConfigurationRun } from '../../../hooks'
 import styles from './TestConfigurationsList.styles'
 
-export function TestConfigurationsList({ classes, onCreate, onDetails, projectId }) {
+export function TestConfigurationsList({
+  classes,
+  onCreate = () => {},
+  onDetails = () => {},
+  onRun = () => {},
+  projectId,
+}) {
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 10 },
     orderBy: [{ id: 'asc' }],
@@ -32,6 +39,18 @@ export function TestConfigurationsList({ classes, onCreate, onDetails, projectId
     },
     fetchPolicy: 'cache-and-network',
   })
+
+  const {
+    loading: isStartingRun,
+    mutation: runConfiguration,
+  } = useConfigurationRun()
+
+  const handleRun = useCallback(async configuration => {
+    const error = await runConfiguration({
+      variables: { configurationId: configuration.id },
+    })
+    onRun({ configuration, error })
+  }, runConfiguration)
 
   const totalCount = configurationsAggregate
     ? configurationsAggregate.aggregate.count
@@ -147,7 +166,15 @@ export function TestConfigurationsList({ classes, onCreate, onDetails, projectId
             return (
               <div className={classes.iconsContainer}>
                 <IconButton
-                  aria-label="Show configuration details"
+                  aria-label="Run scenario"
+                  className={classes.icon}
+                  onClick={() => handleRun(configuration)}
+                  disabled={isStartingRun || !configuration.test_source}
+                >
+                  <PlayArrow />
+                </IconButton>
+                <IconButton
+                  aria-label="Show scenario details"
                   className={classes.icon}
                   onClick={() => onDetails(configuration)}
                 >
