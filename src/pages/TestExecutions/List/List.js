@@ -26,6 +26,7 @@ export class List extends Component {
     history.push(
       getUrl(routes.projects.configurations.executions.details, {
         ...match.params,
+        configurationId: execution.configuration.id,
         executionId: execution.id,
       })
     )
