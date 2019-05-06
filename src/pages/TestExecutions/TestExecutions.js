@@ -5,12 +5,18 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 
 import ListPage from './List'
 import DetailsPage from './Details'
+import EndpointDetailsPage from './EndpointDetails'
 
 export function TestExecutions({ match }) {
   return (
     <Switch>
       <Route path={`${match.path}`} exact component={ListPage} />
       <Route path={`${match.path}/:executionId`} exact component={DetailsPage} />
+      <Route
+        path={`${match.path}/:executionId/endpoint/:endpointId`}
+        exact
+        component={EndpointDetailsPage}
+      />
       <Redirect from="*" to={match.url} />
     </Switch>
   )
