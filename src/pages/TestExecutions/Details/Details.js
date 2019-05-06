@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { generatePath, Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import { withStyles, Paper, Grid, Link } from '@material-ui/core'
 
 import { Loader, SectionHeader, ZoomButton, NoDataPlaceholder } from '~components'
@@ -30,15 +30,8 @@ import routes from '~config/routes'
 import styles from './Details.styles'
 
 export function Details({ classes, history, match }) {
-  const { executionId } = match.params
+  const { executionId, configurationId } = match.params
   const [isZoomed, setIsZoomed] = useState(false)
-
-  const getScenarioUrl = useCallback(configurationId => {
-    return generatePath(
-      '/projects/:projectId/test-configurations/:configurationId',
-      { ...match.params, configurationId }
-    )
-  }, [])
 
   const { data: execution, loading: executionLoading } = useExecution(executionId)
   const { data: resultsPerTick, loading: resultsPerTickLoading } = useResultsPerTick(
@@ -58,7 +51,7 @@ export function Details({ classes, history, match }) {
         })
       )
     },
-    [execution]
+    [match.params]
   )
 
   if (executionLoading || resultsPerTickLoading || resultsPerEndpointLoading) {
@@ -76,7 +69,10 @@ export function Details({ classes, history, match }) {
               <Link
                 component={RouterLink}
                 color="inherit"
-                to={getScenarioUrl(execution.configuration.id)}
+                to={getUrl(routes.projects.configurations.details, {
+                  ...match.params,
+                  configurationId,
+                })}
               >
                 {execution.configuration.name}
               </Link>
