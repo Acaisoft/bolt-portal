@@ -1,5 +1,6 @@
 export { default as AddButton } from './AddButton'
 export { default as ButtonWithIcon } from './ButtonWithIcon'
+export { default as Breadcrumbs } from './Breadcrumbs'
 export { default as Container } from './Container'
 export { default as DataTable } from './DataTable'
 export { default as DeleteModal } from './DeleteModal'
