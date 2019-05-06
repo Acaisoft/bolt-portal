@@ -1,146 +1,130 @@
-import React, { Component } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-
+import gql from 'graphql-tag'
+import { useQuery } from 'react-apollo-hooks'
 import { generatePath } from 'react-router-dom'
+
 import { toast } from 'react-toastify'
-import { withStyles, Grid } from '@material-ui/core'
-import { TestConfiguration } from '~containers'
-import { Loader, SubmitCancelModal } from '~components'
+import { withStyles } from '@material-ui/core'
+import { Loader } from '~components'
 
-import {
-  ConfigurationActions,
-  ConfigurationInfo,
-  TestExecutionsList,
-} from './components'
+import { getSubpageUrl, getParentUrl } from '~utils/router'
 
-import { getSubpageUrl } from '~utils/router'
-
+import { ConfigurationInfo, TestExecutionsList } from './components'
 import styles from './Details.styles'
 
-export class Details extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        configurationId: PropTypes.string.isRequired,
-      }).isRequired,
-      url: PropTypes.string.isRequired,
-    }).isRequired,
+const GET_CONFIGURATION = gql`
+  query getTestConfiguration($configurationId: uuid!) {
+    configuration: configuration_by_pk(id: $configurationId) {
+      id
+      name
+      performed
+      configuration_type {
+        id
+        name
+      }
+      configuration_parameters {
+        id
+        value
+        parameter_slug
+      }
+      executions {
+        id
+        start
+      }
+      test_source {
+        id
+        source_type
+        repository {
+          id
+          name
+          url
+        }
+        test_creator {
+          id
+          name
+        }
+      }
+    }
   }
+`
 
-  state = {
-    isStartingRun: false,
-    isDeleteModalOpen: false,
-  }
+function Details({ classes, history, match }) {
+  const { configurationId } = match.params
 
-  handleDeleteModalOpen = () => {
-    this.setState({ isDeleteModalOpen: true })
-  }
+  const {
+    loading,
+    data: { configuration },
+  } = useQuery(GET_CONFIGURATION, {
+    variables: { configurationId },
+    fetchPolicy: 'cache-and-network',
+  })
 
-  handleDeleteModalClose = () => {
-    this.setState({ isDeleteModalOpen: false })
-  }
+  const handleEdit = useCallback(() => {
+    history.push(getSubpageUrl(match, '/edit'))
+  }, [match])
 
-  handleRun = async (configuration, runScenario) => {
-    this.setState({ isStartingRun: true })
-    const res = await runScenario()
+  const handleExecutionDetails = useCallback(
+    execution => {
+      history.push(
+        generatePath('/projects/:projectId/test-runs/:executionId', {
+          ...match.params,
+          executionId: execution.id,
+        })
+      )
+    },
+    [match.params]
+  )
 
-    if (res.errors) {
-      toast.error(`Could not start: ${res.errors[0].message}`)
+  const handleDelete = useCallback(error => {
+    if (error) {
+      toast.error(error)
     } else {
-      toast.success(`Scenario '${configuration.name}' has been started.`)
+      toast.success('Configuration has been deleted.')
+      history.push(getParentUrl(match.url))
     }
-    this.setState({ isStartingRun: false })
-  }
+  })
 
-  handleExecutionDetails = execution => {
-    const { history, match } = this.props
-
-    history.push(
-      generatePath('/projects/:projectId/test-runs/:executionId', {
-        ...match.params,
-        executionId: execution.id,
-      })
-    )
-  }
-
-  handleDeleteSubmit = async (configuration, deleteScenario) => {
-    try {
-      await deleteScenario()
-    } catch (ex) {
-      toast.error(ex.message)
-    } finally {
-      this.handleDeleteModalClose()
-      this.goToList()
+  const handleRun = useCallback(error => {
+    if (error) {
+      toast.error(`Could not start: ${error}`)
+    } else {
+      toast.success('Configuration has been started.')
     }
+  })
+
+  if (loading) {
+    return <Loader loading />
   }
 
-  goToEdit = () => {
-    const { history, match } = this.props
-    history.push(getSubpageUrl(match, '/edit'), { ...match.params })
-  }
-
-  goToList = () => {
-    const { history, match } = this.props
-
-    history.push(
-      match.url
-        .split('/')
-        .slice(0, -1)
-        .join('/')
-    )
-  }
-
-  render() {
-    const { classes, match } = this.props
-    const { configurationId } = match.params
-    const { isDeleteModalOpen, isStartingRun } = this.state
-
-    return (
-      <div className={classes.root}>
-        <TestConfiguration configurationId={configurationId}>
-          {({ data, loading, runScenario, deleteScenario }) => {
-            if (loading) {
-              return <Loader loading />
-            }
-
-            return (
-              <React.Fragment>
-                <Grid container spacing={16}>
-                  <Grid item xs={12} sm={6}>
-                    {!data ? null : <ConfigurationInfo configuration={data} />}}
-                  </Grid>
-                  <Grid item container xs={12} sm={6} alignItems="stretch">
-                    <ConfigurationActions
-                      isPerformed={Boolean(data.performed)}
-                      isRunning={isStartingRun}
-                      onDelete={this.handleDeleteModalOpen}
-                      onEdit={this.goToEdit}
-                      onRun={() => this.handleRun(data, runScenario)}
-                    />
-                  </Grid>
-                </Grid>
-                <SubmitCancelModal
-                  isOpen={isDeleteModalOpen}
-                  onClose={this.handleDeleteModalClose}
-                  onSubmit={() => this.handleDeleteSubmit(data, deleteScenario)}
-                  submitLabel="Delete"
-                >
-                  Are you sure you want to delete test scenario <q>{data.name}</q>?
-                </SubmitCancelModal>
-              </React.Fragment>
-            )
-          }}
-        </TestConfiguration>
-        <div className={classes.tableContainer}>
-          <TestExecutionsList
-            configurationId={configurationId}
-            onDetails={this.handleExecutionDetails}
-          />
-        </div>
+  return (
+    <div className={classes.root}>
+      <ConfigurationInfo
+        configuration={configuration}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        onRun={handleRun}
+        onExecutionDetails={handleExecutionDetails}
+      />
+      <div className={classes.tableContainer}>
+        <TestExecutionsList
+          configurationId={configurationId}
+          onDetails={handleExecutionDetails}
+        />
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+Details.propTypes = {
+  classes: PropTypes.object.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      configurationId: PropTypes.string.isRequired,
+    }).isRequired,
+    path: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default withStyles(styles)(Details)
