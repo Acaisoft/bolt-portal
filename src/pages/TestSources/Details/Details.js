@@ -10,7 +10,7 @@ export class Details extends Component {
     classes: PropTypes.object.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
-        testSourceId: PropTypes.string,
+        sourceId: PropTypes.string,
       }).isRequired,
       url: PropTypes.string.isRequired,
     }).isRequired,
@@ -18,13 +18,13 @@ export class Details extends Component {
 
   render() {
     const { classes, match } = this.props
-    const { testSourceId } = match.params
+    const { sourceId } = match.params
 
     return (
       <div className={classes.root}>
         <Typography variant="body2">Here you see test source details</Typography>
         <div className={classes.tableContainer}>
-          Test source details for {testSourceId}
+          Test source details for {sourceId}
         </div>
       </div>
     )

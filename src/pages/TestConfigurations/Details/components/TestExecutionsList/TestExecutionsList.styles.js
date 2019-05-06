@@ -1,6 +1,7 @@
 export default ({ palette }) => ({
   link: {
     textDecoration: 'underline',
+    fontWeight: 'normal',
   },
   success: {
     color: palette.success.main,

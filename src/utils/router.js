@@ -1,5 +1,7 @@
 import { generatePath } from 'react-router-dom'
 
+export const getUrl = (path, params) => generatePath(path, params)
+
 export const getSubpageUrl = (match, relativePath, params = {}) => {
   return generatePath(`${match.path}${relativePath}`, {
     ...match.params,

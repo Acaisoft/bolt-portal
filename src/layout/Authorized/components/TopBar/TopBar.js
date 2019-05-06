@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { withRouter, NavLink, Link, generatePath, matchPath } from 'react-router-dom'
+import { withRouter, NavLink, Link, matchPath } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -14,6 +14,9 @@ import {
 } from '@material-ui/core'
 import { Menu as Hamburger, Close } from '@material-ui/icons'
 import { Dashboard, TestConfiguration, TestRun, TestSource } from '~assets/icons'
+
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
 
 import styles from './TopBar.styles'
 import ProjectSelector from '../ProjectSelector'
@@ -42,34 +45,36 @@ export class TopBar extends Component {
   }
 
   getMenuItems = projectId => {
-    const projectPath = generatePath('/projects/:projectId?', { projectId })
-
-    return [
+    const items = [
       {
         label: 'Dashboard',
-        linkTo: `${projectPath}`,
+        linkTo: getUrl(routes.projects.list),
         icon: Dashboard,
         exact: true,
       },
       {
         label: 'Test Runs',
-        linkTo: `${projectPath}/test-runs`,
+        linkTo: getUrl(routes.projects.executions.list, { projectId }),
         icon: TestRun,
         exact: false,
       },
       {
         label: 'Test Scenarios',
-        linkTo: `${projectPath}/test-configurations`,
+        linkTo: getUrl(routes.projects.configurations.list, { projectId }),
         icon: TestConfiguration,
         exact: false,
       },
       {
         label: 'Test Sources',
-        linkTo: `${projectPath}/test-sources`,
+        linkTo: getUrl(routes.projects.sources.list, { projectId }),
         icon: TestSource,
         exact: false,
       },
     ]
+
+    console.log({ items })
+
+    return items
   }
 
   handleMenuOpen = event => {
@@ -90,11 +95,11 @@ export class TopBar extends Component {
   handleProjectChange = newId => {
     const { history } = this.props
 
-    history.push(
-      generatePath('/projects/:projectId?', {
-        projectId: newId,
-      })
-    )
+    const url = newId
+      ? getUrl(routes.projects.details, { projectId: newId })
+      : getUrl(routes.projects.list)
+
+    history.push(url)
   }
 
   render() {

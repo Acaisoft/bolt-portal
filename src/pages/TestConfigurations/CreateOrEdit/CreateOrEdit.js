@@ -6,6 +6,9 @@ import { withStyles } from '@material-ui/core'
 
 import ConfigurationForm from '../components/ConfigurationForm'
 
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
+
 import styles from './CreateOrEdit.styles'
 
 export class CreateOrEdit extends Component {
@@ -32,17 +35,13 @@ export class CreateOrEdit extends Component {
       `Scenario ${mode === 'create' ? 'created' : 'updated'} successfully`
     )
 
-    history.push(
-      match.url
-        .split('/')
-        .slice(0, -1)
-        .join('/')
-    )
+    history.push(getUrl(routes.projects.configurations.list, match.params))
   }
 
   render() {
     const { match } = this.props
     const { projectId, configurationId } = match.params
+
     return (
       <div>
         <ConfigurationForm

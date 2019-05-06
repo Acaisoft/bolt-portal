@@ -24,9 +24,12 @@ import {
   GET_EXECUTION_RESULTS_DISTRIBUTION,
 } from './graphql'
 
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
+
 import styles from './Details.styles'
 
-export function Details({ classes, match }) {
+export function Details({ classes, history, match }) {
   const { executionId } = match.params
   const [isZoomed, setIsZoomed] = useState(false)
 
@@ -45,6 +48,18 @@ export function Details({ classes, match }) {
     data: resultsPerEndpoint,
     loading: resultsPerEndpointLoading,
   } = useResultsPerEndpoint(executionId)
+
+  const handleEndpointDetails = useCallback(
+    endpoint => {
+      history.push(
+        getUrl(routes.projects.configurations.executions.endpoints.details, {
+          ...match.params,
+          endpointId: endpoint.identifier,
+        })
+      )
+    },
+    [execution]
+  )
 
   if (executionLoading || resultsPerTickLoading || resultsPerEndpointLoading) {
     return <Loader loading fill />
@@ -175,7 +190,10 @@ export function Details({ classes, match }) {
         <Grid item xs={12}>
           <Paper square className={classes.tile}>
             <NoDataPlaceholder label={noDataMessage} data={resultsPerEndpoint}>
-              <ResponsesTable data={resultsPerEndpoint} onDetails={() => {}} />
+              <ResponsesTable
+                data={resultsPerEndpoint}
+                onDetails={handleEndpointDetails}
+              />
             </NoDataPlaceholder>
           </Paper>
         </Grid>

@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 import { withStyles } from '@material-ui/core'
 
-import { getSubpageUrl } from '~utils/router'
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
 
 import { TestConfigurationsList } from './components'
 import styles from './List.styles'
@@ -19,18 +20,17 @@ export class List extends Component {
     }).isRequired,
   }
 
-  redirectToSubpage = (relativePath, params = {}) => {
+  redirectToPage = (path, params = {}) => {
     const { history, match } = this.props
-
-    history.push(getSubpageUrl(match, relativePath, params))
+    history.push(getUrl(path, { ...match.params, ...params }))
   }
 
   handleCreate = () => {
-    this.redirectToSubpage('/create')
+    this.redirectToPage(routes.projects.configurations.create)
   }
 
   handleDetails = configuration => {
-    this.redirectToSubpage('/:configurationId', {
+    this.redirectToPage(routes.projects.configurations.details, {
       configurationId: configuration.id,
     })
   }

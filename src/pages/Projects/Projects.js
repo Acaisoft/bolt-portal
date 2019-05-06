@@ -30,13 +30,10 @@ export function ProjectSubpages({ match, rootUrl }) {
   return (
     <Switch>
       {/* <Route exact path={`${match.path}`} component={DetailsPage} /> */}
-      <Route path={`${match.path}/test-runs`} component={TestExecutionsPage} />
-      <Route path={`${match.path}/test-sources`} component={TestSourcesPage} />
-      <Route
-        path={`${match.path}/test-configurations`}
-        component={TestConfigurationsPage}
-      />
-      <Redirect from={match.path} to={`${match.path}/test-configurations`} />
+      <Route path={`${match.path}/runs`} component={TestExecutionsPage} />
+      <Route path={`${match.path}/sources`} component={TestSourcesPage} />
+      <Route path={`${match.path}/configs`} component={TestConfigurationsPage} />
+      <Redirect from={match.path} to={`${match.path}/configs`} />
     </Switch>
   )
 }

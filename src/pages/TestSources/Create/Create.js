@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-import { generatePath } from 'react-router-dom'
 import {
   Button,
   MenuItem,
@@ -17,6 +16,8 @@ import { FormCondition, FormField, RepositoryKey } from '~containers'
 import { ButtonWithIcon, SectionHeader } from '~components'
 
 import { TestSourceType } from '~config/constants'
+import routes from '~config/routes'
+import { getUrl } from '~utils/router'
 import { copyValueToClipboard } from '~utils/browser'
 
 import styles from './Create.styles'
@@ -43,9 +44,7 @@ export class Create extends PureComponent {
 
   handleSubmit = values => {
     const { history, match } = this.props
-    history.push(
-      generatePath('/projects/:projectId/test-sources', { ...match.params })
-    )
+    history.push(getUrl(routes.projects.sources.list, { ...match.params }))
   }
 
   handleCancel = () => {

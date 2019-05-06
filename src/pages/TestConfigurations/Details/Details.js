@@ -2,13 +2,13 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo-hooks'
-import { generatePath } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 import { withStyles } from '@material-ui/core'
 import { Loader } from '~components'
 
-import { getSubpageUrl, getParentUrl } from '~utils/router'
+import routes from '~config/routes'
+import { getUrl } from '~utils/router'
 
 import { ConfigurationInfo, TestExecutionsList } from './components'
 import styles from './Details.styles'
@@ -61,13 +61,13 @@ function Details({ classes, history, match }) {
   })
 
   const handleEdit = useCallback(() => {
-    history.push(getSubpageUrl(match, '/edit'))
+    history.push(getUrl(routes.projects.configurations.edit, match.params))
   }, [match])
 
   const handleExecutionDetails = useCallback(
     execution => {
       history.push(
-        generatePath('/projects/:projectId/test-runs/:executionId', {
+        getUrl(routes.projects.configurations.executions.details, {
           ...match.params,
           executionId: execution.id,
         })
@@ -76,14 +76,17 @@ function Details({ classes, history, match }) {
     [match.params]
   )
 
-  const handleDelete = useCallback(error => {
-    if (error) {
-      toast.error(error)
-    } else {
-      toast.success('Configuration has been deleted.')
-      history.push(getParentUrl(match.url))
-    }
-  })
+  const handleDelete = useCallback(
+    error => {
+      if (error) {
+        toast.error(error)
+      } else {
+        toast.success('Configuration has been deleted.')
+        history.push(getUrl(routes.projects.configurations.list, match.params))
+      }
+    },
+    [match.params]
+  )
 
   const handleRun = useCallback(error => {
     if (error) {

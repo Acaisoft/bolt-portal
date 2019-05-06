@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
 
-import { getSubpageUrl } from '~utils/router'
+import routes from '~config/routes'
+import { getUrl } from '~utils/router'
 
 import { TestExecutionsList } from './components'
 
@@ -23,7 +24,10 @@ export class List extends Component {
   handleDetails = execution => {
     const { history, match } = this.props
     history.push(
-      getSubpageUrl(match, '/:executionId', { executionId: execution.id })
+      getUrl(routes.projects.configurations.executions.details, {
+        ...match.params,
+        executionId: execution.id,
+      })
     )
   }
 

@@ -33,7 +33,7 @@ function ConfigurationSubpages({ match }) {
     <Switch>
       <Route path={`${match.path}`} exact component={DetailsPage} />
       <Route path={`${match.path}/edit`} exact component={CreateOrEditPage} />
-      <Route path={`${match.path}/test-runs`} component={TestExecutionsPage} />
+      <Route path={`${match.path}/runs`} component={TestExecutionsPage} />
     </Switch>
   )
 }

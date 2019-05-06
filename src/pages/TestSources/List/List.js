@@ -6,7 +6,8 @@ import { withStyles } from '@material-ui/core'
 import { DeleteModal } from '~components'
 import { TestSourcesList } from './components'
 
-import { getSubpageUrl } from '~utils/router'
+import routes from '~config/routes'
+import { getUrl } from '~utils/router'
 import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
 import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
 
@@ -36,17 +37,17 @@ export class List extends Component {
     selectedTestSource: '',
   }
 
-  redirectToSubpage = (relativePath, params = {}) => {
+  redirectToPage = (path, params = {}) => {
     const { history, match } = this.props
-    history.push(getSubpageUrl(match, relativePath, params))
+    history.push(getUrl(path, { ...match.params, ...params }))
   }
 
   handleCreate = () => {
-    this.redirectToSubpage('/create')
+    this.redirectToPage(routes.projects.sources.create)
   }
 
   handleEdit = ({ id }) => {
-    this.redirectToSubpage('/:testSourceId/edit', { testSourceId: id })
+    this.redirectToPage(routes.projects.sources.edit, { sourceId: id })
   }
 
   handleDelete = testSource => {

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 import { ProjectsList } from './components'
 
-import { getSubpageUrl } from '~utils/router'
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
 
 export class List extends Component {
   static propTypes = {
@@ -16,8 +17,8 @@ export class List extends Component {
   }
 
   handleDetails = ({ id }) => {
-    const { history, match } = this.props
-    history.push(getSubpageUrl(match, '/:projectId', { projectId: id }))
+    const { history } = this.props
+    history.push(getUrl(routes.projects.details, { projectId: id }))
   }
 
   render() {

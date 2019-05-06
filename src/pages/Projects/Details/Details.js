@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, Grid, Typography, withStyles } from '@material-ui/core'
 
-import { getSubpageUrl } from '~utils/router'
+import { getUrl } from '~utils/router'
+import routes from '~config/routes'
 
 import { TestExecutionsList } from './components'
 import styles from './Details.styles'
@@ -20,25 +21,23 @@ export class Details extends Component {
   constructor(props) {
     super(props)
 
-    const getUrl = relativePath => getSubpageUrl(props.match, relativePath, {})
-
     this.items = [
       {
         id: 1,
         label: 'TEST SOURCES',
-        linkTo: getUrl('/test-sources'),
+        linkTo: getUrl(routes.projects.sources.list, props.match.params),
         description: 'Manage Test Sources',
       },
       {
         id: 2,
         label: 'TEST SCENARIOS',
-        linkTo: getUrl('/test-configurations'),
+        linkTo: getUrl(routes.projects.configurations.list, props.match.params),
         description: 'Manage Test Scenarios',
       },
       {
         id: 3,
         label: 'TESTS RUNS',
-        linkTo: getUrl('/test-runs'),
+        linkTo: getUrl(routes.projects.executions.list, props.match.params),
         description: 'See all tests run results',
       },
     ]
@@ -47,17 +46,17 @@ export class Details extends Component {
   redirectToSubpage = (path, params = {}) => {
     const { history, match } = this.props
 
-    history.push(getSubpageUrl(match, path, params))
+    history.push(getUrl(path, { ...match.params, params }))
   }
 
   handleExecutionDetails = execution => {
-    this.redirectToSubpage('/test-runs/:executionId', {
+    this.redirectToSubpage(routes.projects.configurations.executions.details, {
       executionId: execution.id,
     })
   }
 
   handleExecutionsListMore = () => {
-    this.redirectToSubpage('/test-runs')
+    this.redirectToSubpage(routes.projects.configurations.executions.list)
   }
 
   render() {
