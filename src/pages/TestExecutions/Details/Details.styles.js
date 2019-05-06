@@ -17,14 +17,5 @@ export default ({ palette, mixins, spacing, typography }) => {
     chartContainer: {
       marginBottom: -spacing.unit * 4,
     },
-    header: {
-      display: 'flex',
-    },
-    headerScenario: {
-      fontWeight: 'normal',
-    },
-    headerSeparator: {
-      color: '#F76F40',
-    },
   }
 }

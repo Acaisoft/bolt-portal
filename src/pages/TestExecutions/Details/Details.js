@@ -3,11 +3,15 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Link as RouterLink } from 'react-router-dom'
-import { withStyles, Paper, Grid, Link } from '@material-ui/core'
+import { withStyles, Paper, Grid } from '@material-ui/core'
 
-import { Loader, SectionHeader, ZoomButton, NoDataPlaceholder } from '~components'
-import { ChevronRight } from '@material-ui/icons'
+import {
+  Loader,
+  SectionHeader,
+  ZoomButton,
+  NoDataPlaceholder,
+  Breadcrumbs,
+} from '~components'
 
 import {
   RequestsChart,
@@ -30,17 +34,19 @@ import routes from '~config/routes'
 import styles from './Details.styles'
 
 export function Details({ classes, history, match }) {
-  const { executionId, configurationId } = match.params
+  const { executionId } = match.params
   const [isZoomed, setIsZoomed] = useState(false)
 
-  const { data: execution, loading: executionLoading } = useExecution(executionId)
-  const { data: resultsPerTick, loading: resultsPerTickLoading } = useResultsPerTick(
+  const { execution, executionLoading } = useExecutionQuery(executionId)
+  const { resultsPerTick, resultsPerTickLoading } = useResultsPerTickQuery(
     executionId
   )
   const {
-    data: resultsPerEndpoint,
-    loading: resultsPerEndpointLoading,
-  } = useResultsPerEndpoint(executionId)
+    resultsPerEndpoint,
+    resultsPerEndpointLoading,
+  } = useResultsPerEndpointQuery(executionId)
+
+  const breadcrumbs = useBreadcrumbs({ params: match.params, execution })
 
   const handleEndpointDetails = useCallback(
     endpoint => {
@@ -62,33 +68,7 @@ export function Details({ classes, history, match }) {
 
   return (
     <div className={classes.root}>
-      <SectionHeader
-        title={
-          <div className={classes.header}>
-            <div className={classes.headerScenario}>
-              <Link
-                component={RouterLink}
-                color="inherit"
-                to={getUrl(routes.projects.configurations.details, {
-                  ...match.params,
-                  configurationId,
-                })}
-              >
-                {execution.configuration.name}
-              </Link>
-            </div>
-            <div className={classes.headerSeparator}>
-              <ChevronRight />
-            </div>
-            <div className={classes.headerDate}>
-              {moment(execution.start_locust || execution.start).format(
-                'YYYY-MM-DD'
-              )}
-            </div>
-          </div>
-        }
-        marginBottom
-      />
+      <SectionHeader title={<Breadcrumbs items={breadcrumbs} />} marginBottom />
 
       <Grid container spacing={16}>
         <Grid item xs={12} md={isZoomed ? 12 : 4}>
@@ -207,7 +187,9 @@ Details.propTypes = {
   }).isRequired,
 }
 
-function useExecution(executionId) {
+export default withStyles(styles)(Details)
+
+function useExecutionQuery(executionId) {
   const {
     data: { execution },
     loading,
@@ -215,10 +197,10 @@ function useExecution(executionId) {
     variables: { executionId },
   })
 
-  return { data: execution, loading }
+  return { execution, executionLoading: loading }
 }
 
-function useResultsPerTick(executionId) {
+function useResultsPerTickQuery(executionId) {
   const {
     data: { resultsPerTick },
     loading,
@@ -236,12 +218,12 @@ function useResultsPerTick(executionId) {
   )
 
   return {
-    data: preparedData,
-    loading,
+    resultsPerTick: preparedData,
+    resultsPerTickLoading: loading,
   }
 }
 
-function useResultsPerEndpoint(executionId) {
+function useResultsPerEndpointQuery(executionId) {
   const {
     data: { resultsPerEndpoint },
     loading,
@@ -259,9 +241,28 @@ function useResultsPerEndpoint(executionId) {
   )
 
   return {
-    data: preparedData,
-    loading,
+    resultsPerEndpoint: preparedData,
+    resultsPerEndpointLoading: loading,
   }
 }
 
-export default withStyles(styles)(Details)
+function useBreadcrumbs({ params, execution }) {
+  const breadcrumbs = useMemo(() => {
+    const executionStart = execution && (execution.start_locust || execution.start)
+
+    return [
+      {
+        url: getUrl(routes.projects.configurations.details, { ...params }),
+        label: (execution && execution.configuration.name) || 'Scenario details',
+      },
+      {
+        url: null,
+        label: executionStart
+          ? moment(executionStart).format('YYYY-MM-DD')
+          : 'Execution details',
+      },
+    ]
+  }, [params, execution])
+
+  return breadcrumbs
+}
