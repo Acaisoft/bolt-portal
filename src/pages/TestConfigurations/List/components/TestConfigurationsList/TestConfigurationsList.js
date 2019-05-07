@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { withStyles, IconButton } from '@material-ui/core'
+import { withStyles, IconButton, Tooltip } from '@material-ui/core'
 import { Add, Pageview, History, PlayArrow } from '@material-ui/icons'
 import { ButtonWithIcon, SectionHeader, DataTable } from '~components'
 import { Pagination } from '~containers'
@@ -165,14 +165,24 @@ export function TestConfigurationsList({
           render={configuration => {
             return (
               <div className={classes.iconsContainer}>
-                <IconButton
-                  aria-label="Run scenario"
-                  className={classes.icon}
-                  onClick={() => handleRun(configuration)}
-                  disabled={isStartingRun || !configuration.test_source}
+                <Tooltip
+                  title={
+                    !configuration.test_source
+                      ? 'You need to assign a test source before you will be able to start a test.'
+                      : ''
+                  }
                 >
-                  <PlayArrow />
-                </IconButton>
+                  <span>
+                    <IconButton
+                      aria-label="Run scenario"
+                      className={classes.icon}
+                      onClick={() => handleRun(configuration)}
+                      disabled={isStartingRun || !configuration.test_source}
+                    >
+                      <PlayArrow />
+                    </IconButton>
+                  </span>
+                </Tooltip>
                 <IconButton
                   aria-label="Show scenario details"
                   className={classes.icon}

@@ -76,6 +76,7 @@ export const ConfigurationInfo = ({
         </Grid>
         <Grid item container xs={12} sm={6} alignItems="stretch">
           <ConfigurationActions
+            canRun={Boolean(test_source)}
             isPerformed={Boolean(performed)}
             isRunning={isStartingRun}
             isDeleting={isDeleting}

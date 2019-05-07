@@ -6,23 +6,30 @@ exports[`global: ConfigurationActions should render as expected 1`] = `
   container={true}
   justify="center"
 >
-  <ButtonMock
-    classes={
-      Object {
-        "label": "actionButtonLabel",
-        "root": "actionButton",
-      }
-    }
-    onClick={[Function]}
-    variant="contained"
+  <TooltipMock
+    title="You need to assign a test source before you will be able to start a test."
   >
-    <PlayArrowMock />
-    <TypographyMock
-      variant="body2"
-    >
-      Play
-    </TypographyMock>
-  </ButtonMock>
+    <span>
+      <ButtonMock
+        classes={
+          Object {
+            "label": "actionButtonLabel",
+            "root": "actionButton",
+          }
+        }
+        disabled={true}
+        onClick={[Function]}
+        variant="contained"
+      >
+        <PlayArrowMock />
+        <TypographyMock
+          variant="body2"
+        >
+          Play
+        </TypographyMock>
+      </ButtonMock>
+    </span>
+  </TooltipMock>
   <ButtonMock
     classes={
       Object {
@@ -41,15 +48,6 @@ exports[`global: ConfigurationActions should render as expected 1`] = `
     </TypographyMock>
   </ButtonMock>
   <TooltipMock
-    PopperProps={
-      Object {
-        "classes": Object {
-          "popper": Object {
-            "opacity": 1,
-          },
-        },
-      }
-    }
     title=""
   >
     <span>

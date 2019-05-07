@@ -6,6 +6,7 @@ import { PlayArrow, Edit, Delete } from '@material-ui/icons'
 import styles from './ConfigurationActions.styles'
 
 export const ConfigurationActions = ({
+  canRun,
   classes,
   onRun,
   onEdit,
@@ -14,18 +15,28 @@ export const ConfigurationActions = ({
   isRunning,
 }) => (
   <Grid container justify="center" alignItems="center">
-    <Button
-      classes={{
-        root: classes.actionButton,
-        label: classes.actionButtonLabel,
-      }}
-      variant="contained"
-      disabled={isRunning}
-      onClick={onRun}
+    <Tooltip
+      title={
+        !canRun
+          ? 'You need to assign a test source before you will be able to start a test.'
+          : ''
+      }
     >
-      <PlayArrow />
-      <Typography variant="body2">Play</Typography>
-    </Button>
+      <span>
+        <Button
+          classes={{
+            root: classes.actionButton,
+            label: classes.actionButtonLabel,
+          }}
+          variant="contained"
+          disabled={isRunning || !canRun}
+          onClick={onRun}
+        >
+          <PlayArrow />
+          <Typography variant="body2">Play</Typography>
+        </Button>
+      </span>
+    </Tooltip>
     <Button
       classes={{
         root: classes.actionButton,
@@ -37,16 +48,7 @@ export const ConfigurationActions = ({
       <Edit />
       <Typography variant="body2">Edit</Typography>
     </Button>
-    <Tooltip
-      title={isPerformed ? "You can't delete a performed scenario." : ''}
-      PopperProps={{
-        classes: {
-          popper: {
-            opacity: 1,
-          },
-        },
-      }}
-    >
+    <Tooltip title={isPerformed ? "You can't delete a performed scenario." : ''}>
       <span>
         <Button
           aria-label="Delete scenario"
@@ -67,6 +69,7 @@ export const ConfigurationActions = ({
 )
 
 ConfigurationActions.propTypes = {
+  canRun: PropTypes.bool,
   classes: PropTypes.object,
   onChange: PropTypes.func,
   onDelete: PropTypes.func,
