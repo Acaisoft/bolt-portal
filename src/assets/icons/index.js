@@ -1,5 +1,6 @@
 export { default as CreateProject } from './CreateProject'
 export { default as Dashboard } from './Dashboard'
+export { default as Details } from './Details'
 export { default as TestConfiguration } from './TestConfiguration'
 export { default as TestRun } from './TestRun'
 export { default as TestSource } from './TestSource'
