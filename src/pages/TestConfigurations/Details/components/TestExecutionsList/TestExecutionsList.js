@@ -54,7 +54,7 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
         <DataTable.Column
           key="runDate"
           render={execution => (
-            <NoWrap>{moment(execution.start).format('YYYY-MM-DD HH:mm')}}</NoWrap>
+            <NoWrap>{moment(execution.start).format('YYYY-MM-DD HH:mm')}</NoWrap>
           )}
           title="Run Date"
         />
