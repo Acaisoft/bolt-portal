@@ -1,20 +1,27 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { Grid, Typography } from '@material-ui/core'
-import { SubmitCancelModal } from '~components'
+import { Grid, Typography, Paper, withStyles, Tooltip } from '@material-ui/core'
+import { PlayArrow, Edit, Delete } from '@material-ui/icons'
+import {
+  SectionHeader,
+  SubmitCancelModal,
+  ButtonWithIcon,
+  LabeledValue,
+  Breadcrumbs,
+} from '~components'
+import { Details } from '~assets/icons'
 
 import { useToggle } from '~hooks'
+import { TestSourceType } from '~config/constants'
 
-import { ConfigurationActions } from '..'
 import { useConfigurationRun, useConfigurationDelete } from '../../../hooks'
 
-const testSourceProperties = {
-  repository: ['name', 'url'],
-  test_creator: ['name'],
-}
+import styles from './ConfigurationInfo.styles'
 
 export const ConfigurationInfo = ({
+  breadcrumbs,
+  classes,
   configuration,
   onEdit = () => {},
   onDelete = () => {},
@@ -50,42 +57,115 @@ export const ConfigurationInfo = ({
   } = configuration
   const { source_type } = test_source || {}
 
+  const isPerformed = Boolean(performed)
+  const canRun = Boolean(test_source)
+  const isRepository = source_type === TestSourceType.REPOSITORY
+
   return (
     <React.Fragment>
-      <Grid container spacing={16}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1">Name: {name}</Typography>
-          <Typography variant="body1">
-            Test type: {(configuration_type || {}).name}
-          </Typography>
-          <br />
-          <Typography variant="body1">Test source: {source_type}</Typography>
-          {source_type &&
-            (testSourceProperties[source_type] || []).map(property => (
-              <Typography key={property} variant="body2">
-                {property}: {test_source[source_type][property]}
-              </Typography>
-            ))}
-          <br />
-          <Typography variant="body1">Configuration parameters:</Typography>
-          {(configuration_parameters || []).map(param => (
-            <Typography key={param.parameter_slug} variant="body2">
-              {param.parameter_slug}: {param.value}
-            </Typography>
-          ))}
+      <SectionHeader
+        title={<Breadcrumbs items={breadcrumbs} />}
+        description={(configuration_type || {}).name}
+        className={classes.header}
+      >
+        <Tooltip
+          title={
+            !canRun
+              ? 'You need to assign a test source before you will be able to start a test.'
+              : ''
+          }
+        >
+          <span>
+            <ButtonWithIcon
+              variant="contained"
+              color="secondary"
+              icon={PlayArrow}
+              disabled={isStartingRun || !canRun}
+              onClick={handleRun}
+            >
+              Run Test
+            </ButtonWithIcon>
+          </span>
+        </Tooltip>
+      </SectionHeader>
+
+      <Paper square className={classes.paper}>
+        <Grid container spacing={40} alignItems="center">
+          <Grid item hidden="sm" md={1} container justify="center">
+            <Grid item>
+              <Details height={80} width={70} />
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container spacing={32} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <LabeledValue label="Test Source Type" value={source_type || '--'} />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <LabeledValue
+                  label="Test Source Name"
+                  value={test_source ? test_source[source_type].name : '--'}
+                />
+              </Grid>
+              {isRepository && (
+                <Grid item xs={12} md={3}>
+                  <LabeledValue
+                    label="Test Source URL"
+                    value={test_source[source_type].url}
+                  />
+                </Grid>
+              )}
+              <Grid item xs={isRepository ? 3 : 6} />
+
+              {(configuration_parameters || []).map(parameter => (
+                <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                  <LabeledValue
+                    label={parameter.parameter.name}
+                    value={parameter.value}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            container
+            justify="flex-end"
+            alignItems="center"
+            spacing={8}
+          >
+            <Grid item>
+              <ButtonWithIcon
+                icon={Edit}
+                variant="outlined"
+                color="default"
+                onClick={onEdit}
+              >
+                <Typography variant="body2">Edit</Typography>
+              </ButtonWithIcon>
+            </Grid>
+            <Grid item>
+              <Tooltip
+                title={isPerformed ? "You can't delete a performed scenario." : ''}
+              >
+                <span>
+                  <ButtonWithIcon
+                    icon={Delete}
+                    aria-label="Delete scenario"
+                    variant="outlined"
+                    color="default"
+                    disabled={isPerformed || isDeleting}
+                    onClick={() => toggleDeleteModal(true)}
+                  >
+                    <Typography variant="body2">Delete</Typography>
+                  </ButtonWithIcon>
+                </span>
+              </Tooltip>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item container xs={12} sm={6} alignItems="stretch">
-          <ConfigurationActions
-            canRun={Boolean(test_source)}
-            isPerformed={Boolean(performed)}
-            isRunning={isStartingRun}
-            isDeleting={isDeleting}
-            onDelete={() => toggleDeleteModal(true)}
-            onEdit={onEdit}
-            onRun={handleRun}
-          />
-        </Grid>
-      </Grid>
+      </Paper>
 
       <SubmitCancelModal
         isOpen={isDeleteModalOpen}
@@ -99,10 +179,11 @@ export const ConfigurationInfo = ({
   )
 }
 ConfigurationInfo.propTypes = {
+  breadcrumbs: PropTypes.array,
   configuration: PropTypes.object.isRequired,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
   onRun: PropTypes.func,
 }
 
-export default ConfigurationInfo
+export default withStyles(styles)(ConfigurationInfo)

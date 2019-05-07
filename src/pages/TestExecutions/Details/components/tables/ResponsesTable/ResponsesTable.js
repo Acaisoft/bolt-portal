@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import _ from 'lodash'
 
 import { withStyles } from '@material-ui/core'
