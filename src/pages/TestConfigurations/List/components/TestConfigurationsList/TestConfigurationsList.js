@@ -5,7 +5,7 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { withStyles, IconButton, Tooltip } from '@material-ui/core'
 import { Add, Pageview, History, PlayArrow } from '@material-ui/icons'
-import { ButtonWithIcon, SectionHeader, DataTable } from '~components'
+import { ButtonWithIcon, SectionHeader, DataTable, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -100,7 +100,7 @@ export function TestConfigurationsList({
         <DataTable.Column
           key="lastRun"
           render={({ executions }) => (
-            <div className={classes.dateContainer}>
+            <NoWrap className={classes.dateContainer}>
               {(executions[0] || {}).start && (
                 <React.Fragment>
                   <IconButton className={classes.icon} disabled>
@@ -109,7 +109,7 @@ export function TestConfigurationsList({
                   <span>{moment(executions[0].start).format('YYYY-MM-DD')}</span>
                 </React.Fragment>
               )}
-            </div>
+            </NoWrap>
           )}
           title="Last Run"
         />
@@ -144,19 +144,19 @@ export function TestConfigurationsList({
 
             const totals = executions[0].execution_request_totals_aggregate.aggregate
             return (
-              <span className={classes.noWrap}>
+              <NoWrap>
                 {formatThousands(totals.min.min_response_time)} /{' '}
                 {formatThousands(totals.avg.average_response_time)} /{' '}
                 {formatThousands(totals.max.max_response_time)}
-              </span>
+              </NoWrap>
             )
           }}
           title={
-            <div className={classes.noWrap}>
+            <NoWrap>
               Response Times [ms]
               <br />
               Min / Avg / Max
-            </div>
+            </NoWrap>
           }
         />
 

@@ -4,11 +4,12 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
-import { DataTable, SectionHeader } from '~components'
+import { DataTable, SectionHeader, NoWrap } from '~components'
 import { useListFilters } from '~hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
 import { Pagination } from '~containers'
+import { formatThousands } from '~utils/numbers'
 
 function TestExecutionsList({ projectId, onDetails }) {
   const { pagination, orderBy, setPagination } = useListFilters({
@@ -51,7 +52,9 @@ function TestExecutionsList({ projectId, onDetails }) {
       >
         <DataTable.Column
           key="runDate"
-          render={execution => moment(execution.start).format('YYYY-MM-DD HH:mm')}
+          render={execution => (
+            <NoWrap>{moment(execution.start).format('YYYY-MM-DD HH:mm')}</NoWrap>
+          )}
           title="Run Date"
         />
         {!projectId && (
@@ -79,25 +82,31 @@ function TestExecutionsList({ projectId, onDetails }) {
         <DataTable.Column
           key="total"
           render={execution =>
-            (execution.result_aggregate_aggregate.aggregate.sum.number_of_fails ||
-              0) +
-            (execution.result_aggregate_aggregate.aggregate.sum
-              .number_of_successes || 0)
+            formatThousands(
+              (execution.result_aggregate_aggregate.aggregate.sum.number_of_fails ||
+                0) +
+                (execution.result_aggregate_aggregate.aggregate.sum
+                  .number_of_successes || 0)
+            )
           }
           title="Total"
         />
         <DataTable.Column
           key="passed"
           render={execution =>
-            execution.result_aggregate_aggregate.aggregate.sum.number_of_successes ||
-            0
+            formatThousands(
+              execution.result_aggregate_aggregate.aggregate.sum
+                .number_of_successes || 0
+            )
           }
           title="Passed"
         />
         <DataTable.Column
           key="fails"
           render={execution =>
-            execution.result_aggregate_aggregate.aggregate.sum.number_of_fails || 0
+            formatThousands(
+              execution.result_aggregate_aggregate.aggregate.sum.number_of_fails || 0
+            )
           }
           title="Fails"
         />

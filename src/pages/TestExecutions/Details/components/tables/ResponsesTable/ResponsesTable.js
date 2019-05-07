@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 
 import { withStyles } from '@material-ui/core'
-import { DataTable, SectionHeader, LinkButton } from '~components'
+import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
 
@@ -54,56 +54,56 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="success"
             render={({ num_requests = 0, num_successes = 0 }) => (
-              <div className={classNames(classes.noWrap, classes.success)}>
+              <NoWrap className={classes.success}>
                 <span>{formatPercent(num_successes / num_requests)}</span>{' '}
                 <span>({formatThousands(num_successes)})</span>
-              </div>
+              </NoWrap>
             )}
             renderFooter={() => (
-              <div className={classes.success}>
+              <NoWrap className={classes.success}>
                 {formatPercent(summary.successes / summary.requests)} (
                 {formatThousands(summary.successes)})
-              </div>
+              </NoWrap>
             )}
             title="Success"
           />
           <DataTable.Column
             key="fail"
             render={({ num_failures, num_requests }) => (
-              <div className={classNames(classes.noWrap, classes.failure)}>
+              <NoWrap className={classes.failure}>
                 <span>{formatPercent(num_failures / num_requests)}</span>{' '}
                 <span>({formatThousands(num_failures)})</span>
-              </div>
+              </NoWrap>
             )}
             renderFooter={() => (
-              <div className={classes.failure}>
+              <NoWrap className={classes.failure}>
                 {formatPercent(summary.failures / summary.requests)} (
                 {formatThousands(summary.failures)})
-              </div>
+              </NoWrap>
             )}
             title="Fail"
           />
           <DataTable.Column
             key="response_time"
             render={response => (
-              <div className={classes.noWrap}>
+              <NoWrap>
                 {formatThousands(response.min_response_time)} /{' '}
                 {formatThousands(response.average_response_time)} /{' '}
                 {formatThousands(response.max_response_time)}
-              </div>
+              </NoWrap>
             )}
             renderFooter={() => (
-              <div className={classes.noWrap}>
+              <NoWrap>
                 {formatThousands(summary.minResponseTime)} /{' '}
                 {formatThousands(summary.averageResponseTime)} /{' '}
                 {formatThousands(summary.maxResponseTime)}
-              </div>
+              </NoWrap>
             )}
             title={
               <div>
                 Response Time [ms]
                 <br />
-                <span className={classes.noWrap}>Min. / Avg. / Max.</span>
+                <NoWrap>Min. / Avg. / Max.</NoWrap>
               </div>
             }
           />

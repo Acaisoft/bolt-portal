@@ -6,9 +6,6 @@ export default ({ mixins, palette }) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  noWrap: {
-    whiteSpace: 'nowrap',
-  },
   success: {
     color: palette.success.main,
   },

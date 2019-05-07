@@ -5,7 +5,4 @@ export default ({ palette }) => ({
   failure: {
     color: palette.error.main,
   },
-  noWrap: {
-    whiteSpace: 'nowrap',
-  },
 })

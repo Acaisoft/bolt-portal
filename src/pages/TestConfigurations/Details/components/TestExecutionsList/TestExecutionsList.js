@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
 import { withStyles } from '@material-ui/core'
-import { DataTable, SectionHeader, LinkButton } from '~components'
+import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -53,7 +53,9 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
       >
         <DataTable.Column
           key="runDate"
-          render={execution => moment(execution.start).format('YYYY-MM-DD HH:mm')}
+          render={execution => (
+            <NoWrap>{moment(execution.start).format('YYYY-MM-DD HH:mm')}}</NoWrap>
+          )}
           title="Run Date"
         />
         <DataTable.Column
@@ -69,18 +71,18 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
             const max = executionTotals.aggregate.max.max_response_time || 0
 
             return (
-              <span className={classes.noWrap}>
+              <NoWrap>
                 {formatThousands(min)} / {formatThousands(avg)} /{' '}
                 {formatThousands(max)}
-              </span>
+              </NoWrap>
             )
           }}
           title={
-            <div className={classes.noWrap}>
+            <NoWrap>
               Response Times [ms]
               <br />
               Min / Avg / Max
-            </div>
+            </NoWrap>
           }
         />
         <DataTable.Column
@@ -93,9 +95,9 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
             const percent = total > 0 ? successes / total : 0
 
             return (
-              <span className={classes.success}>
+              <NoWrap className={classes.success}>
                 {formatPercent(percent)} ({formatThousands(successes)})
-              </span>
+              </NoWrap>
             )
           }}
           title="Passed"
@@ -108,18 +110,20 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
             const percent = total > 0 ? failures / total : 0
 
             return (
-              <span className={classes.failure}>
+              <NoWrap className={classes.failure}>
                 {formatPercent(percent)} ({formatThousands(failures)})
-              </span>
+              </NoWrap>
             )
           }}
           title="Fails"
         />
         <DataTable.Column
           key="total"
-          render={({ executionTotals }) =>
-            formatThousands(executionTotals.aggregate.sum.num_requests || 0)
-          }
+          render={({ executionTotals }) => (
+            <NoWrap>
+              {formatThousands(executionTotals.aggregate.sum.num_requests || 0)}
+            </NoWrap>
+          )}
           title="Total"
         />
         <DataTable.Column
