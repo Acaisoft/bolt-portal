@@ -1,12 +1,23 @@
 import React, { useMemo } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
+import filesize from 'filesize'
 
-import { SectionHeader, Loader, Breadcrumbs } from '~components'
+import { Grid, Paper, withStyles } from '@material-ui/core'
+import { SectionHeader, Loader, Breadcrumbs, LabeledValue } from '~components'
 
-import { GET_CONFIGURATION, GET_EXECUTION, GET_ENDPOINT } from './graphql'
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
+import { formatThousands } from '~utils/numbers'
+
+import {
+  GET_CONFIGURATION,
+  GET_EXECUTION,
+  GET_ENDPOINT,
+  GET_ENDPOINT_DISTRIBUTION,
+} from './graphql'
+import styles from './EndpointDetails.styles'
+import { FailuresChart, TimeDistributionChart } from './components'
 
 function EndpointDetails({ classes, history, match }) {
   const { configurationId, executionId, endpointId } = match.params
@@ -16,6 +27,10 @@ function EndpointDetails({ classes, history, match }) {
   const { configuration, configurationLoading } = useConfigurationQuery(
     configurationId
   )
+  const {
+    endpointDistribution,
+    endpointDistributionLoading,
+  } = useEndpointDistributionQuery(endpointId)
 
   const breadcrumbs = useBreadcrumbs({
     params: match.params,
@@ -24,13 +39,106 @@ function EndpointDetails({ classes, history, match }) {
     configuration,
   })
 
-  if (endpointTotalsLoading || executionLoading || configurationLoading) {
+  if (
+    endpointTotalsLoading ||
+    executionLoading ||
+    configurationLoading ||
+    endpointDistributionLoading
+  ) {
     return <Loader loading />
   }
 
   return (
     <div>
       <SectionHeader title={<Breadcrumbs items={breadcrumbs} />} marginBottom />
+
+      <Grid container spacing={16}>
+        <Grid item xs={12} md={3} container spacing={16}>
+          <Grid item xs={12} className={classes.verticalGrid}>
+            <Paper square className={classes.tile}>
+              <SectionHeader title="Response Times" size="small" />
+              <div className={classes.tileContent}>
+                <Grid container spacing={8}>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Minimal"
+                      value={`${formatThousands(
+                        endpointTotals.min_response_time
+                      )} ms`}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Average"
+                      value={`${formatThousands(
+                        endpointTotals.average_response_time
+                      )} ms`}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Maximal"
+                      value={`${formatThousands(
+                        endpointTotals.max_response_time
+                      )} ms`}
+                    />
+                  </Grid>
+                </Grid>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper square className={classes.tile}>
+              <SectionHeader title="Response Size" size="small" />
+
+              <div className={classes.tileContent}>
+                <Grid container spacing={32}>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Minimal"
+                      value={filesize(endpointTotals.min_response_size || 0, {
+                        round: 0,
+                      })}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Average"
+                      value={filesize(endpointTotals.average_response_size || 0, {
+                        round: 0,
+                      })}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LabeledValue
+                      label="Maximal"
+                      value={filesize(endpointTotals.max_response_size || 0, {
+                        round: 0,
+                      })}
+                    />
+                  </Grid>
+                </Grid>
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Paper square className={classes.tile}>
+            <SectionHeader title="Failures" size="small" />
+            <div className={classes.tileContent}>
+              <FailuresChart data={endpointTotals} />
+            </div>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper square className={classes.tile}>
+            <SectionHeader title="Time Distribution" size="small" />
+            <div className={classes.tileContent}>
+              <TimeDistributionChart data={endpointDistribution} />
+            </div>
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   )
 }
@@ -41,8 +149,16 @@ function useBreadcrumbs({ params, configuration, execution, endpointTotals }) {
 
     return [
       {
+        url: getUrl(routes.projects.configurations.list, { ...params }),
+        label: 'Scenarios',
+      },
+      {
         url: getUrl(routes.projects.configurations.details, { ...params }),
         label: configuration.name || 'Scenario details',
+      },
+      {
+        url: getUrl(routes.projects.configurations.executions.list, { ...params }),
+        label: 'Test Runs',
       },
       {
         url: getUrl(routes.projects.configurations.executions.details, {
@@ -76,6 +192,21 @@ function useEndpointQuery(endpointId) {
   return { endpointTotalsLoading: loading, endpointTotals: endpointTotals[0] || {} }
 }
 
+function useEndpointDistributionQuery(endpointId) {
+  const {
+    loading,
+    data: { endpointDistribution = [] },
+  } = useQuery(GET_ENDPOINT_DISTRIBUTION, {
+    variables: { endpointId },
+    fetchPolicy: 'cache-and-network',
+  })
+
+  return {
+    endpointDistributionLoading: loading,
+    endpointDistribution: endpointDistribution ? endpointDistribution[0] : null,
+  }
+}
+
 function useExecutionQuery(executionId) {
   const {
     loading,
@@ -100,4 +231,4 @@ function useConfigurationQuery(configurationId) {
   return { configurationLoading: loading, configuration }
 }
 
-export default EndpointDetails
+export default withStyles(styles)(EndpointDetails)
