@@ -20,7 +20,6 @@ export function TimeDistributionChart({ data, theme }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
-        height="100%"
         data={dataAsArray}
         margin={{
           top: 10,

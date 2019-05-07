@@ -96,7 +96,7 @@ function EndpointDetails({ classes, history, match }) {
                   <Grid item xs={4}>
                     <LabeledValue
                       label="Minimal"
-                      value={filesize(endpointTotals.min_response_size || 0, {
+                      value={filesize(endpointTotals.min_content_size || 0, {
                         round: 0,
                       })}
                     />
@@ -104,7 +104,7 @@ function EndpointDetails({ classes, history, match }) {
                   <Grid item xs={4}>
                     <LabeledValue
                       label="Average"
-                      value={filesize(endpointTotals.average_response_size || 0, {
+                      value={filesize(endpointTotals.average_content_size || 0, {
                         round: 0,
                       })}
                     />
@@ -112,7 +112,7 @@ function EndpointDetails({ classes, history, match }) {
                   <Grid item xs={4}>
                     <LabeledValue
                       label="Maximal"
-                      value={filesize(endpointTotals.max_response_size || 0, {
+                      value={filesize(endpointTotals.max_content_size || 0, {
                         round: 0,
                       })}
                     />

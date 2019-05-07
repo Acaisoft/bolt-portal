@@ -36,7 +36,9 @@ export const GET_ENDPOINT = gql`
       min_response_time
       average_response_time
       max_response_time
+      min_content_size
       average_content_size
+      max_content_size
     }
   }
 `
