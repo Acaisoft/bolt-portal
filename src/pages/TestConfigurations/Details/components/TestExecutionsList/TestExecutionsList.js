@@ -2,8 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Button, withStyles } from '@material-ui/core'
-import { DataTable, SectionHeader } from '~components'
+import { withStyles } from '@material-ui/core'
+import { DataTable, SectionHeader, LinkButton } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -125,15 +125,12 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
         <DataTable.Column
           key="actions"
           render={execution => (
-            <Button
-              className={classes.link}
-              variant="text"
-              color="inherit"
+            <LinkButton
               aria-label="Show details"
               onClick={() => onDetails(execution)}
             >
               Details
-            </Button>
+            </LinkButton>
           )}
         />
       </DataTable>

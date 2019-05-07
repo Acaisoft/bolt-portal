@@ -25,7 +25,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           top: 10,
           bottom: 30,
           right: 0,
-          left: 60,
+          left: 70,
         }}
         layout="vertical"
         barCategoryGap="20%"
@@ -46,7 +46,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           name="Name"
           type="category"
           tickFormatter={label => trimText(label, 15)}
-          tick={{ width: 130, ...font }}
+          tick={{ width: 140, ...font }}
         />
 
         <Tooltip
@@ -58,16 +58,16 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
 
         <Bar
           {...font}
-          stroke={color.area.secondary}
-          fill={color.area.secondary}
+          stroke={color.area.error}
+          fill={color.area.error}
           dataKey="num_failures"
           name="Fail"
           stackId={1}
         />
         <Bar
           {...font}
-          stroke={color.area.primary}
-          fill={color.area.primary}
+          stroke={color.area.success}
+          fill={color.area.success}
           dataKey="num_successes"
           name="Success"
           stackId={1}

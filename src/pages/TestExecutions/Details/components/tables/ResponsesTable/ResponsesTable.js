@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import { IconButton, withStyles } from '@material-ui/core'
-import { Pageview } from '@material-ui/icons'
-import { DataTable, SectionHeader } from '~components'
+import { withStyles } from '@material-ui/core'
+import { DataTable, SectionHeader, LinkButton } from '~components'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
 
@@ -27,7 +26,7 @@ export function ResponsesTable({ classes, data, onDetails }) {
 
   return (
     <React.Fragment>
-      <SectionHeader title="Responses" className={classes.header} />
+      <SectionHeader title="Responses" size="small" className={classes.header} />
 
       <div className={classes.tableContainer}>
         <DataTable
@@ -62,7 +61,8 @@ export function ResponsesTable({ classes, data, onDetails }) {
             )}
             renderFooter={() => (
               <div className={classes.success}>
-                {formatThousands(summary.successes)}
+                {formatPercent(summary.successes / summary.requests)} (
+                {formatThousands(summary.successes)})
               </div>
             )}
             title="Success"
@@ -77,7 +77,8 @@ export function ResponsesTable({ classes, data, onDetails }) {
             )}
             renderFooter={() => (
               <div className={classes.failure}>
-                {formatThousands(summary.failures)}
+                {formatPercent(summary.failures / summary.requests)} (
+                {formatThousands(summary.failures)})
               </div>
             )}
             title="Fail"
@@ -115,15 +116,12 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="actions"
             render={response => (
-              <div className={classes.iconsContainer}>
-                <IconButton
-                  aria-label="Show fails"
-                  className={classes.icon}
-                  onClick={() => onDetails(response)}
-                >
-                  <Pageview />
-                </IconButton>
-              </div>
+              <LinkButton
+                aria-label="Show fails"
+                onClick={() => onDetails(response)}
+              >
+                Details
+              </LinkButton>
             )}
           />
         </DataTable>

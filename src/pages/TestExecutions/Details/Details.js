@@ -195,6 +195,7 @@ function useExecutionQuery(executionId) {
     loading,
   } = useQuery(GET_EXECUTION, {
     variables: { executionId },
+    fetchPolicy: 'cache-and-network',
   })
 
   return { execution, executionLoading: loading }
@@ -206,6 +207,7 @@ function useResultsPerTickQuery(executionId) {
     loading,
   } = useQuery(GET_EXECUTION_RESULTS_PER_TICK, {
     variables: { executionId },
+    fetchPolicy: 'cache-and-network',
   })
 
   const preparedData = useMemo(
@@ -229,6 +231,7 @@ function useResultsPerEndpointQuery(executionId) {
     loading,
   } = useQuery(GET_EXECUTION_RESULTS_DISTRIBUTION, {
     variables: { executionId },
+    fetchPolicy: 'cache-and-network',
   })
 
   const preparedData = useMemo(
