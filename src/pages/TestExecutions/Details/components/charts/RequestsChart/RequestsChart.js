@@ -20,13 +20,14 @@ import { formatThousands } from '~utils/numbers'
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function RequestsChart({ data, execution, syncId, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
+  const { color, gridLine, font, tooltip } = theme.palette.chart
 
   const domainX = getExecutionTimestampDomain(execution)
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <AreaChart
+        style={{ ...font }}
         data={data}
         margin={{
           top: 10,
@@ -45,23 +46,24 @@ export function RequestsChart({ data, execution, syncId, theme }) {
           tickFormatter={formatTimestamp}
           domain={domainX}
           type="number"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
           tickFormatter={formatThousands}
         />
         <Legend
           verticalAlign="bottom"
           iconType="square"
-          wrapperStyle={{ color: font.color, paddingTop: 20 }}
+          wrapperStyle={{ paddingTop: 20 }}
         />
 
         <Tooltip
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={formatThousands}
+          wrapperStyle={{ ...tooltip }}
         />
         <Area
           type="linear"

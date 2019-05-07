@@ -44,7 +44,7 @@ const renderActiveShape = ({
 
   return (
     <g>
-      <Text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+      <Text x={cx} y={cy} dy={8} textAnchor="middle" {...font}>
         {`${formatThousands(payload.value)}\n/ ${formatThousands(total)}`}
       </Text>
       <Sector
@@ -76,7 +76,7 @@ const renderActiveShape = ({
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill={font.color}
+        {...font}
       >
         {formatPercent(percent)}
       </text>
@@ -133,7 +133,7 @@ export function FailuresChart({ data, theme }) {
           <Legend
             formatter={(value, entry) => entry.payload.label}
             iconType="circle"
-            wrapperStyle={{ color: font.color, paddingTop: 20 }}
+            wrapperStyle={{ ...font, color: font.fill, paddingTop: 20 }}
           />
         </PieChart>
       </ResponsiveContainer>

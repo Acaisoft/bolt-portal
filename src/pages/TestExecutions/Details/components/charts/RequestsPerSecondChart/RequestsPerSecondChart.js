@@ -15,11 +15,12 @@ import { trimText } from '~utils/strings'
 import { formatThousands } from '~utils/numbers'
 
 export function RequestsPerSecondChart({ data, execution, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
+  const { color, gridLine, font, tooltip } = theme.palette.chart
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart
+        style={{ ...font }}
         data={data}
         margin={{
           top: 10,
@@ -37,7 +38,7 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           scale="linear"
           type="number"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
           tickFormatter={formatThousands}
         />
         <YAxis
@@ -46,13 +47,14 @@ export function RequestsPerSecondChart({ data, execution, theme }) {
           name="Name"
           type="category"
           tickFormatter={label => trimText(label, 15)}
-          tick={{ width: 130, fill: font.color }}
+          tick={{ width: 130, ...font }}
         />
 
         <Tooltip
           isAnimationActive={false}
           cursor={false}
           formatter={formatThousands}
+          wrapperStyle={{ ...tooltip }}
         />
 
         <Bar

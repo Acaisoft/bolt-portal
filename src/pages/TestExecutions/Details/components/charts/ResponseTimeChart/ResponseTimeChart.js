@@ -20,13 +20,14 @@ const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function ResponseTimeChart({ data, execution, syncId, theme }) {
   const backgroundColor = theme.palette.background.paper
-  const { color, gridLine, font } = theme.palette.chart
+  const { color, gridLine, font, tooltip } = theme.palette.chart
 
   const domainX = getExecutionTimestampDomain(execution)
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
+        style={{ ...font }}
         data={data}
         margin={{
           top: 10,
@@ -44,24 +45,25 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
           tickFormatter={formatTimestamp}
           domain={domainX}
           type="number"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
         />
         <YAxis
           unit="ms"
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          tick={{ fill: font.color }}
           tickFormatter={formatThousands}
+          tick={{ ...font }}
         />
         <Legend
           verticalAlign="bottom"
           iconType="line"
-          wrapperStyle={{ color: font.color, paddingTop: 20 }}
+          wrapperStyle={{ paddingTop: 20 }}
         />
 
         <Tooltip
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={value => `${formatThousands(value)} ms`}
+          wrapperStyle={{ ...tooltip }}
         />
         <Line
           type="linear"

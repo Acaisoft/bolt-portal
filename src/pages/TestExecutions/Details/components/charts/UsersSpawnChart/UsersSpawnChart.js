@@ -20,13 +20,14 @@ const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function UsersSpawnChart({ data, execution, syncId, theme }) {
   const backgroundColor = theme.palette.background.paper
-  const { color, font, gridLine } = theme.palette.chart
+  const { color, font, gridLine, tooltip } = theme.palette.chart
 
   const domainX = getExecutionTimestampDomain(execution)
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
+        style={{ ...font }}
         data={data}
         margin={{
           top: 10,
@@ -44,23 +45,24 @@ export function UsersSpawnChart({ data, execution, syncId, theme }) {
           tickFormatter={formatTimestamp}
           domain={domainX}
           type="number"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          tick={{ fill: font.color }}
           tickFormatter={formatThousands}
+          tick={{ ...font }}
         />
         <Legend
           verticalAlign="bottom"
           iconType="line"
-          wrapperStyle={{ color: font.color, paddingTop: 20 }}
+          wrapperStyle={{ paddingTop: 20 }}
         />
 
         <Tooltip
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={formatThousands}
+          wrapperStyle={{ ...tooltip }}
         />
         <Line
           type="linear"

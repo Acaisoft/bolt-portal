@@ -35,7 +35,7 @@ export function TimeDistributionChart({ data, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           dataKey="percentile"
           type="category"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
           tickFormatter={value => `${value}%`}
           name="Time Distribution"
         />
@@ -44,17 +44,19 @@ export function TimeDistributionChart({ data, theme }) {
           dataKey="value"
           name="Value"
           unit=" ms"
-          tick={{ width: 130, fill: font.color }}
+          tick={{ width: 130, ...font }}
         />
 
         <Tooltip
           isAnimationActive={false}
           cursor={false}
+          wrapperStyle={{ ...font }}
           labelFormatter={label => `${label}th percentile`}
           formatter={value => `${formatThousands(value)} ms`}
         />
 
         <Bar
+          {...font}
           stroke={color.area.primary}
           fill={color.area.primary}
           dataKey="value"

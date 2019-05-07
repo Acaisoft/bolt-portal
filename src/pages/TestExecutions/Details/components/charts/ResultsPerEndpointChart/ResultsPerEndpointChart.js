@@ -15,7 +15,7 @@ import { trimText } from '~utils/strings'
 import { formatThousands } from '~utils/numbers'
 
 export function ResultsPerEndpointChart({ data, execution, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
+  const { color, gridLine, font, tooltip } = theme.palette.chart
 
   return (
     <ResponsiveContainer width="100%" height={400}>
@@ -37,7 +37,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           scale="linear"
           type="number"
-          tick={{ fill: font.color }}
+          tick={{ ...font }}
           tickFormatter={formatThousands}
         />
         <YAxis
@@ -46,16 +46,18 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           name="Name"
           type="category"
           tickFormatter={label => trimText(label, 15)}
-          tick={{ width: 130, fill: font.color }}
+          tick={{ width: 130, ...font }}
         />
 
         <Tooltip
           isAnimationActive={false}
           cursor={false}
           formatter={formatThousands}
+          wrapperStyle={{ ...tooltip }}
         />
 
         <Bar
+          {...font}
           stroke={color.area.secondary}
           fill={color.area.secondary}
           dataKey="num_failures"
@@ -63,6 +65,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           stackId={1}
         />
         <Bar
+          {...font}
           stroke={color.area.primary}
           fill={color.area.primary}
           dataKey="num_successes"

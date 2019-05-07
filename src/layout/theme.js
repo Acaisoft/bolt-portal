@@ -22,6 +22,14 @@ const palette = {
     },
     font: {
       color: '#CFCFEA',
+      fill: '#CFCFEA', // Some components use 'fill', some use 'color'...
+      fontFamily: 'Montserrat',
+      fontSize: 15,
+    },
+    tooltip: {
+      color: '#333',
+      fontFamily: 'Montserrat',
+      fontSize: 15,
     },
     color: {
       area: {
