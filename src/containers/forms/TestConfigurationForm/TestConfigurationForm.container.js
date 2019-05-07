@@ -132,6 +132,7 @@ export class TestConfigurationForm extends Component {
       parameters: parametersQuery.parameter || [],
       testSources: testSourcesQuery.test_source || [],
       testSourceTypes: [
+        { slug_name: '', label: 'No test source' },
         { slug_name: TestSourceType.REPOSITORY, label: 'Repository' },
         // { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' }, // Disabled for now
       ],

@@ -81,7 +81,6 @@ const createFormConfig = ({
     },
     test_source_type: {
       validator: {
-        presence: { allowEmpty: true },
         inclusion: testSourceTypes.map(tst => tst.slug_name),
       },
       options: testSourceTypeOptions,

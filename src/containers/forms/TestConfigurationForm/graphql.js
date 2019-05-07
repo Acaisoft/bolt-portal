@@ -24,7 +24,7 @@ export const ADD_CONFIGURATION_MUTATION = gql`
     $name: String!
     $type_slug: String!
     $configuration_parameters: [ConfigurationParameterInput]!
-    $test_source_id: UUID!
+    $test_source_id: UUID
     $project_id: UUID!
   ) {
     testrun_configuration_create(
@@ -46,7 +46,7 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
     $name: String!
     $type_slug: String!
     $configuration_parameters: [ConfigurationParameterInput]!
-    $test_source_id: UUID!
+    $test_source_id: UUID
   ) {
     testrun_configuration_update(
       id: $id
