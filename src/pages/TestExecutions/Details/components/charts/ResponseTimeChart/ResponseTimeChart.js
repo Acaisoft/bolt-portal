@@ -14,9 +14,13 @@ import {
 
 import { getExecutionTimestampDomain } from '~utils/testExecutions'
 import { withStyles } from '@material-ui/core'
-import { formatThousands } from '~utils/numbers'
+import { formatThousands, formatNumber } from '~utils/numbers'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
+const formatDuration = duration =>
+  duration > 1000
+    ? `${formatNumber(duration / 1000, 1)} s`
+    : `${formatThousands(duration)} ms`
 
 export function ResponseTimeChart({ data, execution, syncId, theme }) {
   const backgroundColor = theme.palette.background.paper
@@ -48,9 +52,8 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
           tick={{ ...font }}
         />
         <YAxis
-          unit="ms"
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          tickFormatter={formatThousands}
+          tickFormatter={formatDuration}
           tick={{ ...font }}
         />
         <Legend
