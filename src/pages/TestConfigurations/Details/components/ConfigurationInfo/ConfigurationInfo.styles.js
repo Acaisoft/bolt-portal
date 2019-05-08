@@ -5,4 +5,7 @@ export default ({ mixins, spacing }) => ({
   paper: {
     padding: mixins.scaledSpaceAround(6, 4, 4),
   },
+  buttonMargin: {
+    marginLeft: spacing.unit,
+  },
 })

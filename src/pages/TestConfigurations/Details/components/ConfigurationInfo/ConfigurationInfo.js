@@ -37,10 +37,15 @@ export const ConfigurationInfo = ({
     mutation: deleteConfiguration,
   } = useConfigurationDelete(configuration.id)
 
-  const handleRun = useCallback(async () => {
-    const error = await runConfiguration()
-    onRun(error)
-  }, [runConfiguration])
+  const handleRun = useCallback(
+    async ({ coldStart = false }) => {
+      const error = await runConfiguration({
+        variables: { coldStart, configurationId: configuration.id },
+      })
+      onRun(error)
+    },
+    [runConfiguration, configuration]
+  )
 
   const handleDeleteSubmit = useCallback(async () => {
     const error = await deleteConfiguration()
@@ -78,12 +83,24 @@ export const ConfigurationInfo = ({
           <span>
             <ButtonWithIcon
               variant="contained"
+              color="primary"
+              icon={PlayArrow}
+              disabled={isStartingRun || !canRun}
+              onClick={() => handleRun({ coldStart: false })}
+              aria-label="Run Test"
+            >
+              Run Test
+            </ButtonWithIcon>
+            <ButtonWithIcon
+              variant="contained"
               color="secondary"
               icon={PlayArrow}
               disabled={isStartingRun || !canRun}
-              onClick={handleRun}
+              onClick={() => handleRun({ coldStart: true })}
+              className={classes.buttonMargin}
+              aria-label="Run Test without cache"
             >
-              Run Test
+              Run Test without cache
             </ButtonWithIcon>
           </span>
         </Tooltip>

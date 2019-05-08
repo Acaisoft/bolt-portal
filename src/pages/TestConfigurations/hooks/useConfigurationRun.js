@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 import { useMutationWithState } from '~hooks'
 
 export const RUN_TEST_CONFIGURATION = gql`
-  mutation runTestConfiguration($configurationId: UUID!) {
-    testrun_start(conf_id: $configurationId) {
+  mutation runTestConfiguration($configurationId: UUID!, $coldStart: Boolean) {
+    testrun_start(conf_id: $configurationId, no_cache: $coldStart) {
       execution_id
     }
   }
