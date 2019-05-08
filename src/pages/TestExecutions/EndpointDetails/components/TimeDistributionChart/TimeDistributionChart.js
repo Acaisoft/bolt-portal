@@ -4,7 +4,12 @@ import PropTypes from 'prop-types'
 import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { withStyles } from '@material-ui/core'
 
-import { formatThousands } from '~utils/numbers'
+import { formatThousands, formatNumber } from '~utils/numbers'
+
+const formatDuration = duration =>
+  duration > 1000
+    ? `${formatNumber(duration / 1000, 1)} s`
+    : `${formatThousands(duration)} ms`
 
 export function TimeDistributionChart({ data, theme }) {
   const { color, gridLine, font } = theme.palette.chart
@@ -43,8 +48,8 @@ export function TimeDistributionChart({ data, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash }}
           dataKey="value"
           name="Value"
-          unit=" ms"
           tick={{ width: 130, ...font }}
+          tickFormatter={formatDuration}
         />
 
         <Tooltip
