@@ -15,7 +15,7 @@ export const GET_TEST_SOURCES = gql`
     ) {
       id
       source_type
-      configurations {
+      configurations(where: { is_deleted: { _eq: false } }) {
         id
         name
       }
