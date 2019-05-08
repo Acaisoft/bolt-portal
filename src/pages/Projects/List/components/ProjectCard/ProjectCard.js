@@ -35,8 +35,8 @@ const ProjectCard = ({ classes, project, onDetails, onMenuOpen }) => (
       }}
       subheader={
         <div className={classes.chips}>
-          <Chip label="13 Test Scenarios" className={classes.chip} />
-          <Chip label="13 Test Sources" className={classes.chip} />
+          {/* <Chip label="13 Test Scenarios" className={classes.chip} />
+          <Chip label="13 Test Sources" className={classes.chip} /> */}
         </div>
       }
     />
