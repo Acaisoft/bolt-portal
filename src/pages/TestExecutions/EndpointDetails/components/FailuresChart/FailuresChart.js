@@ -1,14 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import {
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Sector,
-  Cell,
-  Text,
-} from 'recharts'
+import _ from 'lodash'
+import { ResponsiveContainer, PieChart, Pie, Sector, Cell, Text } from 'recharts'
 
 import { withStyles } from '@material-ui/core'
 
@@ -28,6 +21,7 @@ const renderActiveShape = ({
   value,
   theme,
   total,
+  activeColor,
 }) => {
   const RADIAN = Math.PI / 180
   const sin = Math.sin(-RADIAN * midAngle)
@@ -44,8 +38,17 @@ const renderActiveShape = ({
 
   return (
     <g>
-      <Text x={cx} y={cy} dy={8} textAnchor="middle" {...font}>
-        {`${formatThousands(payload.value)}\n/ ${formatThousands(total)}`}
+      <Text
+        x={cx}
+        y={cy}
+        textAnchor="middle"
+        verticalAnchor="middle"
+        width={100}
+        {...font}
+      >
+        {`${formatThousands(payload.number_of_occurrences)}\n/ ${formatThousands(
+          total
+        )}\n${formatPercent(percent)}`}
       </Text>
       <Sector
         cx={cx}
@@ -54,7 +57,7 @@ const renderActiveShape = ({
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={payload.color}
+        fill={activeColor}
       />
       <Sector
         cx={cx}
@@ -71,78 +74,80 @@ const renderActiveShape = ({
         stroke={gridLine.color}
         fill="none"
       />
-      <circle cx={sx} cy={sy} r={4} fill={payload.color} stroke="none" />
-      <text
+      <circle cx={sx} cy={sy} r={4} fill={activeColor} stroke="none" />
+      <Text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
+        width={35}
         {...font}
       >
-        {formatPercent(percent)}
-      </text>
+        {payload.exception_data}
+      </Text>
     </g>
   )
 }
 
-export function FailuresChart({ data, theme }) {
+export function FailuresChart({ data = [], theme }) {
   const { color, font } = theme.palette.chart
 
   const [activeIndex, setActiveIndex] = useState(0)
   const onPieEnter = useCallback((data, index) => setActiveIndex(index))
-  const dataAsArray = useMemo(() => {
-    return [
-      {
-        value: data.num_requests - data.num_failures,
-        label: 'Successes',
-        color: color.area.success,
-      },
-      {
-        value: data.num_failures,
-        label: 'Failures',
-        color: color.area.error,
-      },
-    ]
-  }, [data])
+
+  const totalErrors = useMemo(() => _.sumBy(data, 'number_of_occurrences'), [data])
+
+  const getColor = useCallback(index => {
+    const colors = [color.area.secondary]
+    return colors[index % colors.length]
+  }, [])
 
   const activeShapeRenderer = useCallback(
-    props => renderActiveShape({ ...props, theme, total: data.num_requests }),
+    props =>
+      renderActiveShape({
+        ...props,
+        theme,
+        total: totalErrors,
+        activeColor: getColor(activeIndex),
+      }),
     []
   )
 
   return (
     <div style={{ width: '100%', height: 300 }}>
       <ResponsiveContainer>
-        <PieChart>
+        <PieChart margin={{ top: 20 }}>
           <Pie
             activeIndex={activeIndex}
             activeShape={activeShapeRenderer}
-            data={dataAsArray}
+            data={data}
             cx="50%"
             cy="50%"
-            innerRadius={72}
-            outerRadius={80}
+            innerRadius="60%"
+            outerRadius="70%"
             stroke="transparent"
-            dataKey="value"
+            dataKey="number_of_occurrences"
+            nameKey="exception_data"
             onMouseEnter={onPieEnter}
+            paddingAngle={2}
           >
-            {dataAsArray.map((entry, index) => (
-              <Cell key={entry.label} fill={entry.color} />
+            {data.map((entry, index) => (
+              <Cell key={entry.id} fill={getColor(index)} />
             ))}
           </Pie>
 
-          <Legend
-            formatter={(value, entry) => entry.payload.label}
+          {/* <Legend
+            formatter={(value, entry) => entry.payload.exception_data}
             iconType="circle"
             wrapperStyle={{ ...font, color: font.fill, paddingTop: 20 }}
-          />
+          /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>
   )
 }
 FailuresChart.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
   theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(FailuresChart)
+export default withStyles({}, { withTheme: true })(React.memo(FailuresChart))

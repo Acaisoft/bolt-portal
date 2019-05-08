@@ -15,6 +15,7 @@ import {
   GET_EXECUTION,
   GET_ENDPOINT,
   GET_ENDPOINT_DISTRIBUTION,
+  GET_ENDPOINT_ERRORS,
 } from './graphql'
 import styles from './EndpointDetails.styles'
 import { FailuresChart, TimeDistributionChart } from './components'
@@ -31,6 +32,9 @@ function EndpointDetails({ classes, history, match }) {
     endpointDistribution,
     endpointDistributionLoading,
   } = useEndpointDistributionQuery(endpointId)
+  const { endpointErrors, endpointErrorsLoading } = useEndpointErrorsQuery(
+    endpointId
+  )
 
   const breadcrumbs = useBreadcrumbs({
     params: match.params,
@@ -43,7 +47,8 @@ function EndpointDetails({ classes, history, match }) {
     endpointTotalsLoading ||
     executionLoading ||
     configurationLoading ||
-    endpointDistributionLoading
+    endpointDistributionLoading ||
+    endpointErrorsLoading
   ) {
     return <Loader loading />
   }
@@ -122,15 +127,15 @@ function EndpointDetails({ classes, history, match }) {
             </Paper>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <Paper square className={classes.tile}>
             <SectionHeader title="Failures" size="small" />
             <div className={classes.tileContent}>
-              <FailuresChart data={endpointTotals} />
+              <FailuresChart data={endpointErrors} />
             </div>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={5}>
           <Paper square className={classes.tile}>
             <SectionHeader title="Time Distribution" size="small" />
             <div className={classes.tileContent}>
@@ -204,6 +209,21 @@ function useEndpointDistributionQuery(endpointId) {
   return {
     endpointDistributionLoading: loading,
     endpointDistribution: endpointDistribution ? endpointDistribution[0] : null,
+  }
+}
+
+function useEndpointErrorsQuery(endpointId) {
+  const {
+    loading,
+    data: { endpointErrors = [] },
+  } = useQuery(GET_ENDPOINT_ERRORS, {
+    variables: { endpointId },
+    fetchPolicy: 'cache-and-network',
+  })
+
+  return {
+    endpointErrorsLoading: loading,
+    endpointErrors,
   }
 }
 

@@ -63,3 +63,22 @@ export const GET_ENDPOINT_DISTRIBUTION = gql`
     }
   }
 `
+
+export const GET_ENDPOINT_ERRORS = gql`
+  query getEndpointErrors($endpointId: String!) {
+    endpointErrors: execution_errors(
+      where: {
+        # execution_id: { _eq: $executionId }
+        # _and: {
+        identifier: { _eq: $endpointId }
+        # }
+      }
+      distinct_on: exception_data
+      order_by: { exception_data: asc, timestamp: desc }
+    ) {
+      id
+      number_of_occurrences
+      exception_data
+    }
+  }
+`
