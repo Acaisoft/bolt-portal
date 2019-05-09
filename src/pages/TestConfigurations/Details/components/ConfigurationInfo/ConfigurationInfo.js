@@ -39,18 +39,18 @@ export const ConfigurationInfo = ({
 
   const handleRun = useCallback(
     async ({ coldStart = false }) => {
-      const error = await runConfiguration({
+      const { errorMessage } = await runConfiguration({
         variables: { coldStart, configurationId: configuration.id },
       })
-      onRun(error)
+      onRun(errorMessage)
     },
     [runConfiguration, configuration]
   )
 
   const handleDeleteSubmit = useCallback(async () => {
-    const error = await deleteConfiguration()
+    const { errorMessage } = await deleteConfiguration()
     toggleDeleteModal(false)
-    onDelete(error)
+    onDelete(errorMessage)
   }, [onDelete])
 
   const {

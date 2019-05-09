@@ -12,18 +12,22 @@ function useMutationWithState(mutationDoc, options) {
     setError(null)
 
     let errorMessage = null
+    let response
     try {
-      const res = await rawMutation(mutationCallOptions)
-      if (res.errors) {
-        errorMessage = res.errors[0].message
+      response = await rawMutation(mutationCallOptions)
+      if (Array.isArray(response.errors) && response.errors.length > 0) {
+        errorMessage = response.errors[0].message
       }
     } catch (ex) {
-      errorMessage = ex.graphQLErrors ? ex.graphQLErrors[0].message : ex.message
+      errorMessage =
+        Array.isArray(ex.graphQLErrors) && ex.graphQLErrors.length > 0
+          ? ex.graphQLErrors[0].message
+          : ex.message
     }
     setError(errorMessage)
     setLoading(false)
 
-    return errorMessage
+    return { errorMessage, response }
   }, [])
 
   return { loading, mutation, error }
