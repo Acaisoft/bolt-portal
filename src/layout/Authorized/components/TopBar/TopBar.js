@@ -22,6 +22,7 @@ import routes from '~config/routes'
 
 import styles from './TopBar.styles'
 import ProjectSelector from '../ProjectSelector'
+import NavBreadcrumbs from '../NavBreadcrumbs'
 
 export class TopBar extends Component {
   static propTypes = {
@@ -131,10 +132,11 @@ export class TopBar extends Component {
             </Link>
 
             <div className={classes.projectSelector}>
-              <ProjectSelector
+              {/* <ProjectSelector
                 projectId={projectId}
                 onChange={this.handleProjectChange}
-              />
+              /> */}
+              <NavBreadcrumbs />
             </div>
 
             <div className={classes.grow} />
