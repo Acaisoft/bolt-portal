@@ -23,7 +23,7 @@ export const GET_EXECUTIONS = gql`
   query getScenariosForSelector($configurationId: uuid!) {
     execution(
       where: { configuration_id: { _eq: $configurationId } }
-      order_by: { start: asc, start_locust: asc }
+      order_by: { start: desc, start_locust: desc }
     ) {
       id
       start
