@@ -21,6 +21,9 @@ export default ({ breakpoints, mixins, palette, spacing, typography, zIndex }) =
     width: 350,
     zIndex: zIndex.appBar + 1,
   },
+  menuPaper: {
+    height: '100%',
+  },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,

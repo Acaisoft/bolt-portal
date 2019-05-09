@@ -11,6 +11,8 @@ import {
   withStyles,
   Paper,
   MenuList,
+  ClickAwayListener,
+  Backdrop,
 } from '@material-ui/core'
 import { Menu as Hamburger, Close } from '@material-ui/icons'
 import { Dashboard, TestConfiguration, TestRun, TestSource } from '~assets/icons'
@@ -71,8 +73,6 @@ export class TopBar extends Component {
         exact: false,
       },
     ]
-
-    console.log({ items })
 
     return items
   }
@@ -142,35 +142,40 @@ export class TopBar extends Component {
           </Toolbar>
         </AppBar>
         {isMenuOpen && (
-          <Paper className={classes.menu} id="project-menu">
-            <div className={classes.menuHeader}>
-              <IconButton
-                className={classes.menuButton}
-                onClick={this.handleMenuClose}
-              >
-                <Close />
-              </IconButton>
-              <Typography variant="h1" className={classes.menuTitle}>
-                Acai Bolt
-              </Typography>
-            </div>
-            <MenuList component="div">
-              {this.getMenuItems(projectId).map(item => (
-                <MenuItem
-                  component={NavLink}
-                  to={item.linkTo}
-                  exact={item.exact}
-                  activeClassName={classes.menuItemSelected}
-                  className={classes.menuItem}
-                  key={item.linkTo}
-                  onClick={() => this.handleMenuItemClick(item)}
-                >
-                  <item.icon className={classes.menuIcon} fontSize="inherit" />
-                  {item.label}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Paper>
+          <div className={classes.menu} id="project-menu">
+            <Backdrop open={isMenuOpen} />
+            <ClickAwayListener onClickAway={this.handleMenuClose}>
+              <Paper className={classes.menuPaper}>
+                <div className={classes.menuHeader}>
+                  <IconButton
+                    className={classes.menuButton}
+                    onClick={this.handleMenuClose}
+                  >
+                    <Close />
+                  </IconButton>
+                  <Typography variant="h1" className={classes.menuTitle}>
+                    Acai Bolt
+                  </Typography>
+                </div>
+                <MenuList component="div">
+                  {this.getMenuItems(projectId).map(item => (
+                    <MenuItem
+                      component={NavLink}
+                      to={item.linkTo}
+                      exact={item.exact}
+                      activeClassName={classes.menuItemSelected}
+                      className={classes.menuItem}
+                      key={item.linkTo}
+                      onClick={() => this.handleMenuItemClick(item)}
+                    >
+                      <item.icon className={classes.menuIcon} fontSize="inherit" />
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Paper>
+            </ClickAwayListener>
+          </div>
         )}
       </div>
     )
