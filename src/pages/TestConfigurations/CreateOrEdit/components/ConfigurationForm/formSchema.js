@@ -1,20 +1,63 @@
-import {
-  makeFlatValidationSchema,
-  makeEmptyInitialValues,
-  validateOnFieldValue,
-} from '~utils/forms'
+import { useMemo } from 'react'
+import { useQuery } from 'react-apollo-hooks'
 
-const paramTypeValidators = {
-  int: { numericality: { onlyInteger: true } },
+import { TestSourceType } from '~config/constants'
+import { validateOnFieldValue } from '~utils/forms'
+
+import {
+  GET_PARAMETERS,
+  GET_TEST_SOURCES_FOR_PROJECT,
+  GET_CONFIGURATION_TYPES,
+} from './graphql'
+
+function useFormSchema({ projectId, mode }) {
+  const {
+    data: { parameters },
+    loading: parametersLoading,
+  } = useQuery(GET_PARAMETERS, {
+    fetchPolicy: 'cache-and-network',
+  })
+  const {
+    data: { configurationTypes },
+    loading: configurationTypesLoading,
+  } = useQuery(GET_CONFIGURATION_TYPES, {
+    fetchPolicy: 'cache-and-network',
+  })
+  const {
+    data: { testSources },
+    loading: testSourcesLoading,
+  } = useQuery(GET_TEST_SOURCES_FOR_PROJECT, {
+    fetchPolicy: 'cache-and-network',
+    variables: { projectId },
+  })
+
+  const fields = useMemo(
+    () =>
+      generateFields({
+        parameters: parameters || [],
+        configurationTypes: configurationTypes || [],
+        testSources: testSources || [],
+        testSourceTypes: [
+          { slug_name: '', label: 'No test source' },
+          { slug_name: TestSourceType.REPOSITORY, label: 'Repository' },
+          // { slug_name: TestSourceType.TEST_CREATOR, label: 'Test Creator' }, // Disabled for now
+        ],
+      }),
+    [parameters, configurationTypes, testSources]
+  )
+
+  return {
+    loading: parametersLoading || configurationTypesLoading || testSourcesLoading,
+    fields,
+  }
 }
 
-const createFormConfig = ({
+function generateFields({
   configurationTypes,
   parameters,
-  isPerformed,
   testSources,
   testSourceTypes,
-}) => {
+}) {
   const configurationTypeOptions = configurationTypes.map(ct => ({
     key: ct.id,
     label: ct.name,
@@ -35,6 +78,10 @@ const createFormConfig = ({
     source_type: ts.source_type,
   }))
 
+  const paramTypeValidators = {
+    int: { numericality: { onlyInteger: true } },
+  }
+
   const fields = {
     scenario_name: {
       validator: {
@@ -52,7 +99,6 @@ const createFormConfig = ({
       inputProps: {
         select: true,
         label: 'Test Type',
-        disabled: isPerformed,
       },
     },
     parameters: {
@@ -70,7 +116,6 @@ const createFormConfig = ({
             },
             inputProps: {
               label: parameter.name,
-              disabled: isPerformed,
             },
             defaultValue: parameter.default_value,
             group: parameter.type_slug,
@@ -87,7 +132,6 @@ const createFormConfig = ({
       inputProps: {
         select: true,
         label: 'Source Type',
-        disabled: isPerformed,
       },
     },
     test_source: {
@@ -106,7 +150,6 @@ const createFormConfig = ({
             inputProps: {
               select: true,
               label: `Select ${type.label}`,
-              disabled: isPerformed,
             },
           },
         }),
@@ -115,10 +158,36 @@ const createFormConfig = ({
     },
   }
 
-  const validationSchema = makeFlatValidationSchema(fields)
-  const mergeInitialValues = values => makeEmptyInitialValues(fields, values)
-
-  return { fields, validationSchema, mergeInitialValues }
+  return fields
 }
 
-export { createFormConfig }
+function prepareInitialValues(configurationData) {
+  if (!configurationData) {
+    return {}
+  }
+
+  const {
+    name,
+    type_slug,
+    configuration_parameters,
+    performed,
+    test_source,
+  } = configurationData
+
+  return {
+    scenario_name: name,
+    configuration_type: type_slug,
+    performed,
+    parameters: configuration_parameters.reduce(
+      (acc, parameter) => ({
+        ...acc,
+        [parameter.parameter_slug]: parameter.value,
+      }),
+      {}
+    ),
+    test_source_type: test_source && test_source.source_type,
+    test_source: test_source ? { [test_source.source_type]: test_source.id } : null,
+  }
+}
+
+export { useFormSchema, prepareInitialValues }

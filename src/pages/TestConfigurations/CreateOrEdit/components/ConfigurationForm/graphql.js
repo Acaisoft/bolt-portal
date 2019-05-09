@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-export const GET_CONFIGURATION_QUERY = gql`
+export const GET_CONFIGURATION = gql`
   query getTestConfiguration($configurationId: uuid!) {
-    configuration_by_pk(id: $configurationId) {
+    configuration: configuration_by_pk(id: $configurationId) {
       id
       name
       performed
@@ -74,7 +74,7 @@ export const EDIT_PERFORMED_CONFIGURATION_MUTATION = gql`
 
 export const GET_TEST_SOURCES_FOR_PROJECT = gql`
   query getTestSourcesForProject($projectId: uuid) {
-    test_source(where: { project_id: { _eq: $projectId } }) {
+    testSources: test_source(where: { project_id: { _eq: $projectId } }) {
       id
       source_type
       repository {
@@ -88,16 +88,28 @@ export const GET_TEST_SOURCES_FOR_PROJECT = gql`
         type_slug
       }
     }
+  }
+`
 
-    repository(where: { project_id: { _eq: $projectId } }) {
+export const GET_CONFIGURATION_TYPES = gql`
+  query getConfigurationTypesForSelector {
+    configurationTypes: configuration_type {
       id
       name
-      type_slug
+      slug_name
     }
+  }
+`
 
-    test_creator(where: { project_id: { _eq: $projectId } }) {
+export const GET_PARAMETERS = gql`
+  query getParameters {
+    parameters: parameter {
       id
       name
+      param_name
+      param_type
+      default_value
+      slug_name
       type_slug
     }
   }
