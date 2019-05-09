@@ -13,9 +13,11 @@ function Breadcrumbs({ classes, items = [] }) {
 
   return (
     <div className={classes.root}>
-      {items.map(({ url, label }, index) => (
-        <React.Fragment key={url}>
-          {url ? (
+      {items.map(({ url, label, render, key = url }, index) => (
+        <React.Fragment key={key}>
+          {render ? (
+            render({ index })
+          ) : url ? (
             <Link
               component={RouterLink}
               color="inherit"
@@ -27,6 +29,7 @@ function Breadcrumbs({ classes, items = [] }) {
           ) : (
             <div className={classes.textItem}>{label}</div>
           )}
+
           {index < items.length - 1 && (
             <div className={classes.separator}>
               <ChevronRight />
