@@ -4,7 +4,6 @@ import { shallow } from 'enzyme'
 import { Authorized } from './Authorized'
 import { mocks } from '~utils/tests'
 
-jest.mock('./components/Header', () => 'HeaderMock')
 jest.mock('~pages/Authorized', () => 'AuthorizedMock')
 
 const initAuthorizedRoutes = overrides => {
