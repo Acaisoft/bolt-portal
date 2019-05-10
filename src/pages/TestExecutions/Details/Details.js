@@ -267,7 +267,7 @@ function useBreadcrumbs({ params, execution }) {
       {
         url: null,
         label: executionStart
-          ? moment(executionStart).format('YYYY-MM-DD')
+          ? moment(executionStart).format('YYYY-MM-DD HH:mm:ss')
           : 'Execution details',
       },
     ]
