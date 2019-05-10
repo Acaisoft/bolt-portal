@@ -28,8 +28,20 @@ export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
   }
 `
 
-export const GET_TEST_EXECUTIONS = gql`
-  query getExecutions(
+export const GET_TEST_EXECUTIONS_AGGREGATE = gql`
+  query getExecutionsAggregate($configurationId: uuid) {
+    executionsAggregate: execution_aggregate(
+      where: { configuration_id: { _eq: $configurationId } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS = gql`
+  subscription subscribeToConfigurationExecutions(
     $configurationId: uuid
     $limit: Int
     $offset: Int
@@ -42,14 +54,6 @@ export const GET_TEST_EXECUTIONS = gql`
       order_by: $order_by
     ) {
       ...testExecutionItemInConfigurationDetails
-    }
-
-    executionsAggregate: execution_aggregate(
-      where: { configuration_id: { _eq: $configurationId } }
-    ) {
-      aggregate {
-        count
-      }
     }
   }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery, useSubscription } from 'react-apollo-hooks'
 
 import { withStyles } from '@material-ui/core'
 import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
@@ -9,7 +9,10 @@ import { useListFilters } from '~hooks'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
 
-import { GET_TEST_EXECUTIONS } from './graphql'
+import {
+  GET_TEST_EXECUTIONS_AGGREGATE,
+  SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
+} from './graphql'
 import styles from './TestExecutionsList.styles'
 
 function TestExecutionsList({ classes, configurationId, onDetails }) {
@@ -18,18 +21,31 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
     orderBy: [{ start: 'desc' }],
   })
 
-  const {
-    data: { executions = [], executionsAggregate },
-    loading,
-  } = useQuery(GET_TEST_EXECUTIONS, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      configurationId,
-      limit: pagination.rowsPerPage,
-      offset: pagination.offset,
-      order_by: orderBy,
-    },
-  })
+  const { data: { executionsAggregate } = {} } = useQuery(
+    GET_TEST_EXECUTIONS_AGGREGATE,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        configurationId,
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
+      },
+    }
+  )
+
+  const { data: { executions = [] } = {}, loading } = useSubscription(
+    SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        configurationId,
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
+      },
+    }
+  )
 
   const totalCount =
     (executionsAggregate && executionsAggregate.aggregate.count) || 0
