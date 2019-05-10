@@ -68,7 +68,13 @@ export function Details({ classes, history, match }) {
 
   return (
     <div className={classes.root}>
-      <SectionHeader title={<Breadcrumbs items={breadcrumbs} />} marginBottom />
+      <SectionHeader
+        title={
+          // <Breadcrumbs items={breadcrumbs} />
+          breadcrumbs[breadcrumbs.length - 1].label
+        }
+        marginBottom
+      />
 
       <Grid container spacing={16}>
         <Grid item xs={12} md={isZoomed ? 12 : 4}>

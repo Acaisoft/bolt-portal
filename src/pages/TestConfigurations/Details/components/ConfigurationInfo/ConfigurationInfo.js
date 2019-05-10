@@ -69,7 +69,10 @@ export const ConfigurationInfo = ({
   return (
     <React.Fragment>
       <SectionHeader
-        title={<Breadcrumbs items={breadcrumbs} />}
+        title={
+          // <Breadcrumbs items={breadcrumbs} />
+          breadcrumbs[breadcrumbs.length - 1].label
+        }
         description={(configuration_type || {}).name}
         className={classes.header}
       >

@@ -55,7 +55,13 @@ function EndpointDetails({ classes, history, match }) {
 
   return (
     <div>
-      <SectionHeader title={<Breadcrumbs items={breadcrumbs} />} marginBottom />
+      <SectionHeader
+        title={
+          // <Breadcrumbs items={breadcrumbs} />
+          breadcrumbs[breadcrumbs.length - 1].label
+        }
+        marginBottom
+      />
 
       <Grid container spacing={16}>
         <Grid item xs={12} md={3} container spacing={16}>
