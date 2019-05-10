@@ -12,8 +12,8 @@ const EXECUTION_TIME_PARAMETER_FRAGMENT = gql`
   }
 `
 
-export const GET_EXECUTION = gql`
-  query getExecution($executionId: uuid!) {
+export const SUBSCRIBE_TO_EXECUTION = gql`
+  subscription subscribeToExecution($executionId: uuid!) {
     execution: execution_by_pk(id: $executionId) {
       id
       start
@@ -30,8 +30,8 @@ export const GET_EXECUTION = gql`
   ${EXECUTION_TIME_PARAMETER_FRAGMENT}
 `
 
-export const GET_EXECUTION_RESULTS_PER_TICK = gql`
-  query getExecutionResultsPerTick($executionId: uuid!) {
+export const SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK = gql`
+  subscription subscribeToExecutionResultsPerTick($executionId: uuid!) {
     resultsPerTick: result_aggregate(
       where: { execution_id: { _eq: $executionId } }
       order_by: { timestamp: asc }
@@ -44,12 +44,10 @@ export const GET_EXECUTION_RESULTS_PER_TICK = gql`
       timestamp
     }
   }
-
-  ${EXECUTION_TIME_PARAMETER_FRAGMENT}
 `
 
-export const GET_EXECUTION_RESULTS_DISTRIBUTION = gql`
-  query getExecutionResultsDistribution($executionId: uuid!) {
+export const SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION = gql`
+  subscription subscribeToExecutionResultsDistribution($executionId: uuid!) {
     resultsPerEndpoint: execution_request_totals(
       where: { execution_id: { _eq: $executionId } }
     ) {

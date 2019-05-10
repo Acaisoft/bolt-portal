@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { useQuery } from 'react-apollo-hooks'
+import { useSubscription } from 'react-apollo-hooks'
 
 import { withStyles, Paper, Grid } from '@material-ui/core'
 
@@ -23,9 +23,9 @@ import {
 import { ResponsesTable } from './components/tables'
 
 import {
-  GET_EXECUTION,
-  GET_EXECUTION_RESULTS_PER_TICK,
-  GET_EXECUTION_RESULTS_DISTRIBUTION,
+  SUBSCRIBE_TO_EXECUTION,
+  SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION,
+  SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK,
 } from './graphql'
 
 import { getUrl } from '~utils/router'
@@ -196,25 +196,25 @@ Details.propTypes = {
 export default withStyles(styles)(Details)
 
 function useExecutionQuery(executionId) {
-  const {
-    data: { execution },
-    loading,
-  } = useQuery(GET_EXECUTION, {
-    variables: { executionId },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data: { execution } = {}, loading } = useSubscription(
+    SUBSCRIBE_TO_EXECUTION,
+    {
+      variables: { executionId },
+      fetchPolicy: 'cache-and-network',
+    }
+  )
 
   return { execution, executionLoading: loading }
 }
 
 function useResultsPerTickQuery(executionId) {
-  const {
-    data: { resultsPerTick },
-    loading,
-  } = useQuery(GET_EXECUTION_RESULTS_PER_TICK, {
-    variables: { executionId },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data: { resultsPerTick } = {}, loading } = useSubscription(
+    SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK,
+    {
+      variables: { executionId },
+      fetchPolicy: 'cache-and-network',
+    }
+  )
 
   const preparedData = useMemo(
     () =>
@@ -232,13 +232,13 @@ function useResultsPerTickQuery(executionId) {
 }
 
 function useResultsPerEndpointQuery(executionId) {
-  const {
-    data: { resultsPerEndpoint },
-    loading,
-  } = useQuery(GET_EXECUTION_RESULTS_DISTRIBUTION, {
-    variables: { executionId },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data: { resultsPerEndpoint } = {}, loading } = useSubscription(
+    SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION,
+    {
+      variables: { executionId },
+      fetchPolicy: 'cache-and-network',
+    }
+  )
 
   const preparedData = useMemo(
     () =>
