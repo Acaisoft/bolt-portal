@@ -1,14 +1,18 @@
 import React, { useCallback } from 'react'
 import moment from 'moment'
 
-import { useQuery } from 'react-apollo-hooks'
+import { useSubscription } from 'react-apollo-hooks'
 import { withRouter, matchPath } from 'react-router-dom'
 
 import { Loader, Breadcrumbs } from '~components'
 
 import routes from '~config/routes'
 
-import { GET_PROJECTS, GET_SCENARIOS, GET_EXECUTIONS } from './graphql'
+import {
+  SUBSCRIBE_TO_PROJECTS,
+  SUBSCRIBE_TO_SCENARIOS,
+  SUBSCRIBE_TO_EXECUTIONS,
+} from './graphql'
 import { TextField, MenuItem } from '@material-ui/core'
 import { getUrl } from '~utils/router'
 
@@ -17,19 +21,28 @@ function NavBreadcrumbs({ history, location }) {
     location.pathname
   )
 
-  const projectsQuery = useQuery(GET_PROJECTS, {
-    fetchPolicy: 'cache-first',
-  })
-  const configurationsQuery = useQuery(GET_SCENARIOS, {
+  const { data: { projects = [] } = {}, projectsLoading } = useSubscription(
+    SUBSCRIBE_TO_PROJECTS,
+    {
+      fetchPolicy: 'cache-first',
+    }
+  )
+  const {
+    data: { configurations = [] } = {},
+    configurationsLoading,
+  } = useSubscription(SUBSCRIBE_TO_SCENARIOS, {
     fetchPolicy: 'cache-first',
     variables: { projectId },
     skip: !configurationId,
   })
-  const executionsQuery = useQuery(GET_EXECUTIONS, {
-    fetchPolicy: 'cache-first',
-    variables: { configurationId },
-    skip: !executionId,
-  })
+  const { data: { executions = [] } = {}, executionsLoading } = useSubscription(
+    SUBSCRIBE_TO_EXECUTIONS,
+    {
+      fetchPolicy: 'cache-first',
+      variables: { configurationId },
+      skip: !executionId,
+    }
+  )
 
   const handleChangeProject = useCallback(e => {
     history.push(getUrl(routes.projects.details, { projectId: e.target.value }))
@@ -59,14 +72,7 @@ function NavBreadcrumbs({ history, location }) {
     [projectId, configurationId]
   )
 
-  console.log({ projectsQuery, configurationsQuery, executionsQuery })
-  console.log({ projectId, configurationId, executionId })
-
-  if (
-    projectsQuery.loading ||
-    configurationsQuery.loading ||
-    executionsQuery.loading
-  ) {
+  if (projectsLoading || configurationsLoading || executionsLoading) {
     return <Loader loading />
   }
 
@@ -76,7 +82,7 @@ function NavBreadcrumbs({ history, location }) {
       render: () => (
         <Selector
           label="Project"
-          options={projectsQuery.data.project.map(item => ({
+          options={projects.map(item => ({
             value: item.id,
             label: item.name,
           }))}
@@ -93,7 +99,7 @@ function NavBreadcrumbs({ history, location }) {
       render: () => (
         <Selector
           label="Scenario"
-          options={configurationsQuery.data.configuration.map(item => ({
+          options={configurations.map(item => ({
             value: item.id,
             label: item.name,
           }))}
@@ -110,7 +116,7 @@ function NavBreadcrumbs({ history, location }) {
         <Selector
           label="Test Run"
           placeholder="Select a test run"
-          options={executionsQuery.data.execution.map(item => ({
+          options={executions.map(item => ({
             value: item.id,
             label: moment(item.start || item.start_locust).format(
               'YYYY-MM-DD HH:mm:ss'
