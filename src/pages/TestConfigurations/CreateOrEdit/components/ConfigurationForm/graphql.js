@@ -15,6 +15,14 @@ export const GET_CONFIGURATION = gql`
         id
         source_type
       }
+      has_pre_test
+      has_post_test
+      has_load_tests
+      has_monitoring
+      configuration_envvars {
+        name
+        value
+      }
     }
   }
 `
@@ -23,9 +31,13 @@ export const ADD_CONFIGURATION_MUTATION = gql`
   mutation addTestConfiguration(
     $name: String!
     $type_slug: String!
-    $configuration_parameters: [ConfigurationParameterInput]!
+    $configuration_parameters: [ConfigurationParameterInput]
     $test_source_id: UUID
     $project_id: UUID!
+    $has_pre_test: Boolean
+    $has_post_test: Boolean
+    $has_load_tests: Boolean
+    $has_monitoring: Boolean
   ) {
     testrun_configuration_create(
       configuration_parameters: $configuration_parameters
@@ -33,6 +45,10 @@ export const ADD_CONFIGURATION_MUTATION = gql`
       project_id: $project_id
       type_slug: $type_slug
       test_source_id: $test_source_id
+      has_pre_test: $has_pre_test
+      has_post_test: $has_post_test
+      has_load_tests: $has_load_tests
+      has_monitoring: $has_monitoring
     ) {
       returning {
         id
@@ -45,8 +61,12 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
     $id: UUID!
     $name: String!
     $type_slug: String!
-    $configuration_parameters: [ConfigurationParameterInput]!
+    $configuration_parameters: [ConfigurationParameterInput]
     $test_source_id: UUID
+    $has_pre_test: Boolean
+    $has_post_test: Boolean
+    $has_load_tests: Boolean
+    $has_monitoring: Boolean
   ) {
     testrun_configuration_update(
       id: $id
@@ -54,6 +74,10 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
       name: $name
       type_slug: $type_slug
       test_source_id: $test_source_id
+      has_pre_test: $has_pre_test
+      has_post_test: $has_post_test
+      has_load_tests: $has_load_tests
+      has_monitoring: $has_monitoring
     ) {
       returning {
         id

@@ -4,7 +4,7 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { Field, Form } from 'react-final-form'
 import { Button, Grid, MenuItem, withStyles, Typography } from '@material-ui/core'
-import { FormField } from '~containers'
+import { FormField, CheckboxField } from '~containers'
 import { ExpandablePanel, SectionHeader, Loader } from '~components'
 
 import {
@@ -20,7 +20,7 @@ import {
   EDIT_PERFORMED_CONFIGURATION_MUTATION,
   EDIT_CONFIGURATION_MUTATION,
 } from './graphql'
-import { useFormSchema, prepareInitialValues } from './formSchema'
+import { useFormSchema, prepareInitialValues, preparePayload } from './formSchema'
 import styles from './ConfigurationForm.styles'
 
 export function ConfigurationForm({
@@ -69,6 +69,7 @@ export function ConfigurationForm({
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validate={handleValidate}
+      subscription={{ submitting: true, dirty: true, invalid: true }}
       keepDirtyOnReinitialize
     >
       {form => (
@@ -116,6 +117,7 @@ export function ConfigurationForm({
                 <FormField
                   name="configuration_type"
                   field={fields.configuration_type}
+                  disabled={isPerformed}
                   variant="filled"
                   fullWidth
                 >
@@ -129,39 +131,65 @@ export function ConfigurationForm({
             </Grid>
           </ExpandablePanel>
 
+          <ExpandablePanel defaultExpanded title="Scenario Parts">
+            <Grid container spacing={16}>
+              {Object.entries(fields.scenario_parts.fields).map(([name, field]) => (
+                <Grid item xs={12} md={6} key={name}>
+                  <FormField
+                    name={`scenario_parts.${name}`}
+                    field={field}
+                    disabled={isPerformed}
+                    type="checkbox"
+                    component={CheckboxField}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </ExpandablePanel>
+
           <Field name="configuration_type" subscription={{ value: true }}>
             {({ input: { value: configurationType } }) => (
               <React.Fragment>
-                <ExpandablePanel
-                  key={`${configurationType}-step2`} // Re-render to reinitialize defaultExpanded
-                  defaultExpanded={Boolean(configurationType)}
-                  title="Test Parameters"
+                <Field
+                  type="checkbox"
+                  name="scenario_parts.has_load_tests"
+                  subscription={{ value: true }}
                 >
-                  <Grid container spacing={32}>
-                    {!configurationType ? (
-                      <Grid item xs={12}>
-                        <Typography variant="body1">
-                          Select test type first to see available parameters list
-                        </Typography>
-                      </Grid>
-                    ) : (
-                      Object.entries(fields.parameters.fields || [])
-                        .filter(
-                          ([name, options]) => options.group === configurationType
-                        )
-                        .map(([id, options]) => (
-                          <Grid key={id} item xs={6}>
-                            <FormField
-                              name={`parameters.${id}`}
-                              field={options}
-                              fullWidth
-                              variant="filled"
-                            />
+                  {({ input: { value: hasLoadTests } }) => (
+                    <ExpandablePanel
+                      key={`${configurationType}-step2`} // Re-render to reinitialize defaultExpanded
+                      defaultExpanded={Boolean(configurationType)}
+                      title="Test Parameters"
+                    >
+                      <Grid container spacing={32}>
+                        {!configurationType || !hasLoadTests ? (
+                          <Grid item xs={12}>
+                            <Typography variant="body1">
+                              Select test type first to see available parameters list
+                            </Typography>
                           </Grid>
-                        ))
-                    )}
-                  </Grid>
-                </ExpandablePanel>
+                        ) : (
+                          Object.entries(fields.parameters.fields || [])
+                            .filter(
+                              ([name, options]) =>
+                                options.group === configurationType
+                            )
+                            .map(([id, options]) => (
+                              <Grid key={id} item xs={6}>
+                                <FormField
+                                  name={`parameters.${id}`}
+                                  field={options}
+                                  disabled={isPerformed}
+                                  fullWidth
+                                  variant="filled"
+                                />
+                              </Grid>
+                            ))
+                        )}
+                      </Grid>
+                    </ExpandablePanel>
+                  )}
+                </Field>
 
                 <ExpandablePanel
                   key={`${configurationType}-step3`} // Re-render to reinitialize defaultExpanded
@@ -181,6 +209,7 @@ export function ConfigurationForm({
                           <FormField
                             name="test_source_type"
                             field={fields.test_source_type}
+                            disabled={isPerformed}
                             fullWidth
                             variant="filled"
                           >
@@ -207,6 +236,7 @@ export function ConfigurationForm({
                                   field={
                                     fields.test_source.fields[selectedSourceType]
                                   }
+                                  disabled={isPerformed}
                                   fullWidth
                                   variant="filled"
                                 >
@@ -265,27 +295,13 @@ function useConfigurationSubmit({
 
   const handleSubmit = useCallback(
     async values => {
-      const {
-        scenario_name,
-        configuration_type,
-        parameters,
-        test_source,
-        test_source_type,
-      } = values
+      const dbValues = preparePayload(values)
 
       let variables
-
       if (isPerformed) {
-        variables = { id: configurationId, name: scenario_name }
+        variables = { id: configurationId, name: dbValues.name }
       } else {
-        variables = {
-          name: scenario_name,
-          configuration_parameters: Object.entries(parameters).map(
-            ([slug, value]) => ({ parameter_slug: slug, value })
-          ),
-          type_slug: configuration_type,
-          test_source_id: test_source[test_source_type],
-        }
+        variables = dbValues
 
         if (mode === 'create') {
           variables.project_id = projectId

@@ -10,6 +10,29 @@ import {
   GET_CONFIGURATION_TYPES,
 } from './graphql'
 
+const scenarioParts = [
+  {
+    id: 'has_pre_test',
+    label: 'Before Scenario',
+    description: 'before description',
+  },
+  {
+    id: 'has_post_test',
+    label: 'After Scenario',
+    description: 'after description',
+  },
+  {
+    id: 'has_load_tests',
+    label: 'Load Tests',
+    description: 'load tests description',
+  },
+  {
+    id: 'has_monitoring',
+    label: 'Monitoring',
+    description: 'monitoring description',
+  },
+]
+
 function useFormSchema({ projectId, mode }) {
   const {
     data: { parameters },
@@ -101,6 +124,21 @@ function generateFields({
         label: 'Test Type',
       },
     },
+    scenario_parts: {
+      fields: scenarioParts.reduce(
+        (acc, sp) => ({
+          ...acc,
+          [sp.id]: {
+            inputProps: {
+              label: sp.label,
+              helperText: sp.description,
+            },
+            defaultValue: false,
+          },
+        }),
+        {}
+      ),
+    },
     parameters: {
       fields: parameters.reduce(
         (acc, parameter) => ({
@@ -161,8 +199,8 @@ function generateFields({
   return fields
 }
 
-function prepareInitialValues(configurationData) {
-  if (!configurationData) {
+function prepareInitialValues(data) {
+  if (!data) {
     return {}
   }
 
@@ -172,12 +210,22 @@ function prepareInitialValues(configurationData) {
     configuration_parameters,
     performed,
     test_source,
-  } = configurationData
+    has_pre_test,
+    has_post_test,
+    has_load_tests,
+    has_monitoring,
+  } = data
 
   return {
     scenario_name: name,
     configuration_type: type_slug,
     performed,
+    scenario_parts: {
+      has_pre_test,
+      has_post_test,
+      has_load_tests,
+      has_monitoring,
+    },
     parameters: configuration_parameters.reduce(
       (acc, parameter) => ({
         ...acc,
@@ -190,4 +238,35 @@ function prepareInitialValues(configurationData) {
   }
 }
 
-export { useFormSchema, prepareInitialValues }
+function preparePayload(formValues) {
+  if (!formValues) {
+    return {}
+  }
+
+  const {
+    scenario_name,
+    configuration_type,
+    scenario_parts: { has_pre_test, has_post_test, has_load_tests, has_monitoring },
+    parameters,
+    test_source_type,
+    test_source,
+  } = formValues
+
+  return {
+    name: scenario_name,
+    type_slug: configuration_type,
+    has_pre_test,
+    has_post_test,
+    has_load_tests,
+    has_monitoring,
+    configuration_parameters: has_load_tests
+      ? Object.entries(parameters).map(([slug, value]) => ({
+          parameter_slug: slug,
+          value,
+        }))
+      : [],
+    test_source_id: test_source[test_source_type],
+  }
+}
+
+export { useFormSchema, prepareInitialValues, preparePayload }
