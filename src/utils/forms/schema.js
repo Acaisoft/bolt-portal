@@ -51,6 +51,10 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
     childKey: 'fields',
     nodeCallback: ({ newSubtree }) => newSubtree,
     leafCallback: ({ path, value = {} }) =>
-      getIn(values, path, value.defaultValue || ''),
+      getIn(
+        values,
+        path,
+        typeof value.defaultValue !== 'undefined' ? value.defaultValue : ''
+      ),
   })
 }
