@@ -25,12 +25,7 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
     GET_TEST_EXECUTIONS_AGGREGATE,
     {
       fetchPolicy: 'cache-and-network',
-      variables: {
-        configurationId,
-        limit: pagination.rowsPerPage,
-        offset: pagination.offset,
-        order_by: orderBy,
-      },
+      variables: { configurationId },
     }
   )
 
