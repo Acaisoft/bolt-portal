@@ -10,8 +10,9 @@ import {
 function CheckboxField({
   label,
   input,
-  meta: { disabled, error, ...otherMeta },
+  meta: { error, ...otherMeta },
   helperText,
+  disabled,
   ...other
 }) {
   const description = error || helperText
