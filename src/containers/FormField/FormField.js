@@ -25,7 +25,7 @@ function FormField({
   )
 }
 FormField.propTypes = {
-  component: PropTypes.node,
+  component: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   field: PropTypes.shape({
     inputProps: PropTypes.object,
   }).isRequired,

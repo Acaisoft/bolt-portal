@@ -1,3 +1,4 @@
+export { default as CheckboxField } from './CheckboxField'
 export { default as FileUploader } from './FileUploader'
 export { default as FormField } from './FormField'
 export { default as FormCondition } from './FormCondition'
