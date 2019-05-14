@@ -39,3 +39,44 @@ export const validateOnFieldValue = (fieldPath, value, validation) => {
     return getIn(attributes, fieldPath) === value
   }, validation)
 }
+
+/*
+ * Custom Validators
+ */
+export const requireWhenOtherIsSet = otherFieldPath => (value, allValues) => {
+  if (value) {
+    return
+  }
+
+  if (
+    ['', undefined].includes(value) &&
+    !['', undefined].includes(getIn(allValues, otherFieldPath))
+  ) {
+    return 'Required'
+  }
+}
+
+export const uniqueInArray = (arrayPath, fieldPath) => (value, allValues) => {
+  if (!value) {
+    return
+  }
+
+  const array = getIn(allValues, arrayPath)
+  const arrayValues = array.map(row => getIn(row, fieldPath))
+  const isDuplicated = arrayValues.filter(v => v === value).length > 1
+
+  if (isDuplicated) {
+    return 'Must be unique'
+  }
+}
+
+export const composeValidators = (...validators) => (value, allValues) => {
+  if (validators.length === 0) {
+    return
+  }
+
+  return validators.reduce(
+    (err, validator) => err || validator(value, allValues),
+    undefined
+  )
+}

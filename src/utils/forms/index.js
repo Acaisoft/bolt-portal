@@ -3,7 +3,14 @@ export const mutators = {
   setFieldData,
 }
 
-export { validateForm, validateWhen, validateOnFieldValue } from './validation'
+export {
+  validateForm,
+  validateWhen,
+  validateOnFieldValue,
+  composeValidators,
+  requireWhenOtherIsSet,
+  uniqueInArray,
+} from './validation'
 
 export {
   makeEmptyInitialValues,
