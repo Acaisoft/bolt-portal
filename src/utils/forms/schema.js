@@ -47,14 +47,17 @@ export const makeFlatValidationSchema = fieldsSchema => {
 export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
   validateFieldsSchema(fieldsSchema)
 
-  return traverseRecursively(fieldsSchema, {
-    childKey: 'fields',
-    nodeCallback: ({ newSubtree }) => newSubtree,
-    leafCallback: ({ path, value = {} }) =>
-      getIn(
-        values,
-        path,
-        typeof value.defaultValue !== 'undefined' ? value.defaultValue : ''
-      ),
-  })
+  return {
+    ...values,
+    ...traverseRecursively(fieldsSchema, {
+      childKey: 'fields',
+      nodeCallback: ({ newSubtree }) => newSubtree,
+      leafCallback: ({ path, value = {} }) =>
+        getIn(
+          values,
+          path,
+          typeof value.defaultValue !== 'undefined' ? value.defaultValue : ''
+        ),
+    }),
+  }
 }
