@@ -12,10 +12,10 @@ import {
   YAxis,
 } from 'recharts'
 
-import { getExecutionTimestampDomain } from '~utils/testExecutions'
 import { withStyles } from '@material-ui/core'
 
 import { formatThousands } from '~utils/numbers'
+import { getExecutionTimestampDomain } from '../helpers'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 

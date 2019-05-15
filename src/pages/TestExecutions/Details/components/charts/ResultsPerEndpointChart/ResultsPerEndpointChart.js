@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+
 import {
   BarChart,
   Bar,
@@ -11,8 +13,9 @@ import {
 } from 'recharts'
 
 import { withStyles } from '@material-ui/core'
-import { trimText } from '~utils/strings'
 import { formatThousands } from '~utils/numbers'
+
+const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 
 export function ResultsPerEndpointChart({ data, execution, theme }) {
   const { color, gridLine, font, tooltip } = theme.palette.chart
@@ -45,7 +48,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           dataKey="name"
           name="Name"
           type="category"
-          tickFormatter={label => trimText(label, 15)}
+          tickFormatter={formatLabel}
           tick={{ width: 140, ...font }}
         />
 
