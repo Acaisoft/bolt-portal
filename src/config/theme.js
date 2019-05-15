@@ -147,7 +147,9 @@ export default {
     },
   },
   mixins: {
-    // Usage: scaledSpaceAround(2, 3, 4, 5) produces string: '16px 24px 32px 40px'.
+    // Usage:
+    // scaledSpaceAround(2, 3, 4, 5) -> '16px 24px 32px 40px'.
+    // scaledSpaceAround(0, 4) -> '0 32px'
     // You can provide any number of sides
     scaledSpaceAround: (...sideScales) =>
       sideScales.map(scale => `${scale * spacingUnit}px`).join(' '),

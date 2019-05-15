@@ -1,7 +1,7 @@
 import React from 'react'
 import { CssBaseline, MuiThemeProvider, createMuiTheme } from '@material-ui/core'
 
-import theme from './theme'
+import theme from '~config/theme'
 
 const muiTheme = createMuiTheme(theme)
 
