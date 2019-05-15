@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import ListPage from './List'
 import DetailsPage from './Details'
 import EndpointDetailsPage from './EndpointDetails'
+import MonitoringPage from './Monitoring'
 
 export function TestExecutions({ match }) {
   return (
@@ -16,6 +17,11 @@ export function TestExecutions({ match }) {
         path={`${match.path}/:executionId/endpoint/:endpointId`}
         exact
         component={EndpointDetailsPage}
+      />
+      <Route
+        path={`${match.path}/:executionId/monitoring`}
+        exact
+        component={MonitoringPage}
       />
       <Redirect from="*" to={match.url} />
     </Switch>

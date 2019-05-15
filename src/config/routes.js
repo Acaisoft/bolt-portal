@@ -16,6 +16,8 @@ const routes = {
       executions: {
         list: '/projects/:projectId/configs/:configurationId/runs',
         details: '/projects/:projectId/configs/:configurationId/runs/:executionId',
+        monitoring:
+          '/projects/:projectId/configs/:configurationId/runs/:executionId/monitoring',
         endpoints: {
           details:
             '/projects/:projectId/configs/:configurationId/runs/:executionId/endpoint/:endpointId',

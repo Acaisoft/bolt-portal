@@ -9,7 +9,7 @@ import { formatThousands, formatPercent } from '~utils/numbers'
 
 import styles from './ResponsesTable.styles'
 
-export function ResponsesTable({ classes, data, onDetails }) {
+export function ResponsesTable({ classes, data, getEndpointDetailsUrl }) {
   const summary = useMemo(
     () => ({
       requests: _.sum(data.map(x => +x.num_requests)),
@@ -115,10 +115,7 @@ export function ResponsesTable({ classes, data, onDetails }) {
           <DataTable.Column
             key="actions"
             render={response => (
-              <LinkButton
-                aria-label="Show fails"
-                onClick={() => onDetails(response)}
-              >
+              <LinkButton title="Show fails" href={getEndpointDetailsUrl(response)}>
                 Details
               </LinkButton>
             )}
@@ -131,7 +128,7 @@ export function ResponsesTable({ classes, data, onDetails }) {
 
 ResponsesTable.propTypes = {
   data: PropTypes.array.isRequired,
-  onDetails: PropTypes.func.isRequired,
+  getEndpointDetailsUrl: PropTypes.func.isRequired,
 }
 
 export default withStyles(styles)(ResponsesTable)

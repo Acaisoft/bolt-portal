@@ -48,14 +48,12 @@ export function Details({ classes, history, match }) {
 
   const breadcrumbs = useBreadcrumbs({ params: match.params, execution })
 
-  const handleEndpointDetails = useCallback(
+  const getEndpointDetailsUrl = useCallback(
     endpoint => {
-      history.push(
-        getUrl(routes.projects.configurations.executions.endpoints.details, {
-          ...match.params,
-          endpointId: endpoint.identifier,
-        })
-      )
+      return getUrl(routes.projects.configurations.executions.endpoints.details, {
+        ...match.params,
+        endpointId: endpoint.identifier,
+      })
     },
     [match.params]
   )
@@ -174,7 +172,7 @@ export function Details({ classes, history, match }) {
             <NoDataPlaceholder label={noDataMessage} data={resultsPerEndpoint}>
               <ResponsesTable
                 data={resultsPerEndpoint}
-                onDetails={handleEndpointDetails}
+                getEndpointDetailsUrl={getEndpointDetailsUrl}
               />
             </NoDataPlaceholder>
           </Paper>

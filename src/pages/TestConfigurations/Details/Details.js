@@ -28,14 +28,21 @@ function Details({ classes, history, match }) {
     history.push(getUrl(routes.projects.configurations.edit, match.params))
   }, [match])
 
-  const handleExecutionDetails = useCallback(
+  const getTestDetailsUrl = useCallback(
     execution => {
-      history.push(
-        getUrl(routes.projects.configurations.executions.details, {
-          ...match.params,
-          executionId: execution.id,
-        })
-      )
+      return getUrl(routes.projects.configurations.executions.details, {
+        ...match.params,
+        executionId: execution.id,
+      })
+    },
+    [match.params]
+  )
+  const getMonitoringDetailsUrl = useCallback(
+    execution => {
+      return getUrl(routes.projects.configurations.executions.monitoring, {
+        ...match.params,
+        executionId: execution.id,
+      })
     },
     [match.params]
   )
@@ -85,12 +92,12 @@ function Details({ classes, history, match }) {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onRun={handleRun}
-        onExecutionDetails={handleExecutionDetails}
       />
       <div className={classes.tableContainer}>
         <TestExecutionsList
           configurationId={configurationId}
-          onDetails={handleExecutionDetails}
+          getTestDetailsUrl={getTestDetailsUrl}
+          getMonitoringDetailsUrl={getMonitoringDetailsUrl}
         />
       </div>
     </div>

@@ -15,7 +15,12 @@ import {
 } from './graphql'
 import styles from './TestExecutionsList.styles'
 
-function TestExecutionsList({ classes, configurationId, onDetails }) {
+function TestExecutionsList({
+  classes,
+  configurationId,
+  getMonitoringDetailsUrl,
+  getTestDetailsUrl,
+}) {
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 5 },
     orderBy: [{ start: 'desc' }],
@@ -140,12 +145,20 @@ function TestExecutionsList({ classes, configurationId, onDetails }) {
         <DataTable.Column
           key="actions"
           render={execution => (
-            <LinkButton
-              aria-label="Show details"
-              onClick={() => onDetails(execution)}
-            >
-              Details
-            </LinkButton>
+            <React.Fragment>
+              <LinkButton
+                href={getTestDetailsUrl(execution)}
+                title="Show test run details"
+              >
+                Tests
+              </LinkButton>
+              <LinkButton
+                href={getMonitoringDetailsUrl(execution)}
+                title="Show monitoring details"
+              >
+                Monitoring
+              </LinkButton>
+            </React.Fragment>
           )}
         />
       </DataTable>
