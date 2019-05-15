@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core'
 import Authorized from './Authorized'
 import Guest from './Guest'
 
-import { AUTH_STATE_QUERY } from '~services/GraphQL/Store'
+import { AUTH_STATE_QUERY } from '~services/GraphQL/localState'
 
 import styles from './Layout.styles'
 

@@ -104,7 +104,6 @@ persistCache({
 cache.writeData({
   data: {
     isAuthorized: true,
-    currentProject: null,
   },
 })
 

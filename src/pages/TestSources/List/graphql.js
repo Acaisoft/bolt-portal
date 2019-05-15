@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default gql`
+export const GET_TEST_SOURCES = gql`
   query getTestSources(
     $projectId: uuid
     $limit: Int
@@ -38,6 +38,17 @@ export default gql`
     test_source_aggregate(where: { project_id: { _eq: $projectId } }) {
       aggregate {
         count
+      }
+    }
+  }
+`
+
+export const DELETE_REPOSITORY = gql`
+  mutation deleteRepository($id: uuid) {
+    repository: delete_repository(where: { id: { _eq: $id } }) {
+      returning {
+        id
+        name
       }
     }
   }

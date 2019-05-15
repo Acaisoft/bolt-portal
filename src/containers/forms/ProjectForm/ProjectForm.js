@@ -8,11 +8,8 @@ import { toast } from 'react-toastify'
 import { createFormConfig } from './formSchema'
 
 import { validateForm, mutators } from '~utils/forms'
-import {
-  ADD_PROJECT_MUTATION,
-  EDIT_PROJECT_MUTATION,
-} from '~services/GraphQL/Mutations'
-import { GET_PROJECTS_QUERY } from '~services/GraphQL/Queries'
+
+import { ADD_PROJECT, EDIT_PROJECT } from './graphql'
 
 export class ProjectForm extends Component {
   static propTypes = {
@@ -53,8 +50,8 @@ export class ProjectForm extends Component {
 
     return (
       <Mutation
-        mutation={mode === 'create' ? ADD_PROJECT_MUTATION : EDIT_PROJECT_MUTATION}
-        refetchQueries={[{ query: GET_PROJECTS_QUERY }]}
+        mutation={mode === 'create' ? ADD_PROJECT : EDIT_PROJECT}
+        refetchQueries={['getProjects']}
       >
         {(projectMutation, { data }) => (
           <Form

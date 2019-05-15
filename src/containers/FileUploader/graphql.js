@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default gql`
+export const REQUEST_UPLOAD_URL = gql`
   mutation requestUploadUrl(
     $contentLength: Int!
     $contentType: String!

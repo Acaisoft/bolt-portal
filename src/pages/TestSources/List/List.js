@@ -8,8 +8,8 @@ import { TestSourcesList } from './components'
 
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
-import { GET_TEST_SOURCES_QUERY } from '~services/GraphQL/Queries'
-import { DELETE_REPOSITORY_MUTATION } from '~services/GraphQL/Mutations'
+
+import { GET_TEST_SOURCES, DELETE_REPOSITORY } from './graphql'
 
 import styles from './List.styles'
 
@@ -72,10 +72,8 @@ export class List extends Component {
     return (
       <div className={classes.root}>
         <Mutation
-          mutation={DELETE_REPOSITORY_MUTATION}
-          refetchQueries={[
-            { query: GET_TEST_SOURCES_QUERY, variables: { projectId } },
-          ]}
+          mutation={DELETE_REPOSITORY}
+          refetchQueries={[{ query: GET_TEST_SOURCES, variables: { projectId } }]}
         >
           {(delMutation, { data }) =>
             isDeleteModalOpen && (

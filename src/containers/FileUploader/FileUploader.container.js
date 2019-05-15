@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 import FileUploader from './FileUploader.component'
 
-import { REQUEST_UPLOAD_URL_MUTATION } from '~services/GraphQL/Mutations'
+import { REQUEST_UPLOAD_URL } from './graphql'
 import { getFileHash, readFile, uploadFileToGCS } from './FileUploader.module'
 
 export class FileUploadContainer extends Component {
@@ -77,7 +77,7 @@ export class FileUploadContainer extends Component {
     const { accept, id, label } = this.props
 
     return (
-      <Mutation mutation={REQUEST_UPLOAD_URL_MUTATION}>
+      <Mutation mutation={REQUEST_UPLOAD_URL}>
         {(requestUploadUrl, { data, loading, error }) => {
           const errorMessage = (error || this.state.customError || {}).message
 
