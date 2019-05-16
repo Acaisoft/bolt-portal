@@ -6,7 +6,6 @@ import { mocks } from '~utils/tests'
 
 jest.mock('~containers/forms', () => ({ RepositoryForm: 'RepositoryFormMock' }))
 jest.mock('~components', () => ({
-  AddButton: 'AddButtonMock',
   DataTable: 'DataTableMock',
   DeleteModal: 'DeleteModalMock',
 }))

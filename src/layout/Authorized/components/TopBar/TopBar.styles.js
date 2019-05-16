@@ -7,7 +7,7 @@ export default ({ breakpoints, mixins, palette, spacing, typography, zIndex }) =
     backgroundColor: palette.background.default,
     height: 85,
   },
-  projectSelector: {
+  navBreadcrumbs: {
     marginLeft: spacing.unit * 4,
   },
   grow: {

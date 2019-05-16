@@ -21,7 +21,6 @@ import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
 import styles from './TopBar.styles'
-import ProjectSelector from '../ProjectSelector'
 import NavBreadcrumbs from '../NavBreadcrumbs'
 
 export class TopBar extends Component {
@@ -131,11 +130,7 @@ export class TopBar extends Component {
               </Typography>
             </Link>
 
-            <div className={classes.projectSelector}>
-              {/* <ProjectSelector
-                projectId={projectId}
-                onChange={this.handleProjectChange}
-              /> */}
+            <div className={classes.navBreadcrumbs}>
               <NavBreadcrumbs />
             </div>
 
