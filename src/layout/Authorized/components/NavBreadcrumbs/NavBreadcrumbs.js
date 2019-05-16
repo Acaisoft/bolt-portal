@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
-import { withRouter, matchPath } from 'react-router-dom'
+import { Link, withRouter, matchPath } from 'react-router-dom'
 
 import { Loader, Breadcrumbs } from '~components'
 
@@ -21,58 +21,22 @@ function NavBreadcrumbs({ history, location }) {
     location.pathname
   )
 
-  const { data: { projects = [] } = {}, projectsLoading } = useSubscription(
-    SUBSCRIBE_TO_PROJECTS,
-    {
-      fetchPolicy: 'cache-first',
-    }
-  )
-  const {
-    data: { configurations = [] } = {},
-    configurationsLoading,
-  } = useSubscription(SUBSCRIBE_TO_SCENARIOS, {
-    fetchPolicy: 'cache-first',
-    variables: { projectId },
-    skip: !configurationId,
+  const { getConfigurationUrl, getExecutionUrl, getProjectUrl } = useUrlGetters({
+    projectId,
+    configurationId,
+    executionId,
   })
-  const { data: { executions = [] } = {}, executionsLoading } = useSubscription(
-    SUBSCRIBE_TO_EXECUTIONS,
-    {
-      fetchPolicy: 'cache-first',
-      variables: { configurationId },
-      skip: !executionId,
-    }
-  )
 
-  const handleChangeProject = useCallback(e => {
-    history.push(getUrl(routes.projects.details, { projectId: e.target.value }))
-  }, [])
+  const {
+    data: { projects, configurations, executions },
+    loading,
+  } = useSelectorsData({
+    projectId,
+    configurationId,
+    executionId,
+  })
 
-  const handleChangeConfiguration = useCallback(
-    e => {
-      history.push(
-        getUrl(routes.projects.configurations.details, {
-          projectId,
-          configurationId: e.target.value,
-        })
-      )
-    },
-    [projectId]
-  )
-  const handleChangeExecution = useCallback(
-    e => {
-      history.push(
-        getUrl(routes.projects.configurations.executions.details, {
-          projectId,
-          configurationId,
-          executionId: e.target.value,
-        })
-      )
-    },
-    [projectId, configurationId]
-  )
-
-  if (projectsLoading || configurationsLoading || executionsLoading) {
+  if (loading) {
     return <Loader loading />
   }
 
@@ -86,8 +50,8 @@ function NavBreadcrumbs({ history, location }) {
             value: item.id,
             label: item.name,
           }))}
+          generateUrl={getProjectUrl}
           value={projectId || ''}
-          onChange={handleChangeProject}
         />
       ),
     },
@@ -103,8 +67,8 @@ function NavBreadcrumbs({ history, location }) {
             value: item.id,
             label: item.name,
           }))}
+          generateUrl={getConfigurationUrl}
           value={configurationId || ''}
-          onChange={handleChangeConfiguration}
         />
       ),
     })
@@ -122,8 +86,8 @@ function NavBreadcrumbs({ history, location }) {
               'YYYY-MM-DD HH:mm:ss'
             ),
           }))}
+          generateUrl={getExecutionUrl}
           value={executionId || ''}
-          onChange={handleChangeExecution}
         />
       ),
     })
@@ -132,14 +96,13 @@ function NavBreadcrumbs({ history, location }) {
   return <Breadcrumbs items={breadcrumbs} />
 }
 
-function Selector({ options, value, ...fieldProps }) {
+function Selector({ options, value, generateUrl, ...fieldProps }) {
   return (
     <TextField
       select
       value={value}
       {...fieldProps}
       SelectProps={{
-        // displayEmpty: true,
         autoWidth: true,
         disableUnderline: true,
         SelectDisplayProps: {
@@ -148,7 +111,12 @@ function Selector({ options, value, ...fieldProps }) {
       }}
     >
       {options.map(option => (
-        <MenuItem key={option.value} value={option.value}>
+        <MenuItem
+          key={option.value}
+          to={generateUrl(option.value)}
+          value={option.value}
+          component={Link}
+        >
           {option.label}
         </MenuItem>
       ))}
@@ -175,6 +143,66 @@ function getRouteParams(url) {
   }
 
   return {}
+}
+
+function useSelectorsData({ projectId, configurationId, executionId }) {
+  const { data: { projects = [] } = {}, projectsLoading } = useSubscription(
+    SUBSCRIBE_TO_PROJECTS,
+    {
+      fetchPolicy: 'cache-first',
+    }
+  )
+  const {
+    data: { configurations = [] } = {},
+    configurationsLoading,
+  } = useSubscription(SUBSCRIBE_TO_SCENARIOS, {
+    fetchPolicy: 'cache-first',
+    variables: { projectId },
+    skip: !configurationId,
+  })
+  const { data: { executions = [] } = {}, executionsLoading } = useSubscription(
+    SUBSCRIBE_TO_EXECUTIONS,
+    {
+      fetchPolicy: 'cache-first',
+      variables: { configurationId },
+      skip: !executionId,
+    }
+  )
+
+  return {
+    data: {
+      projects,
+      configurations,
+      executions,
+    },
+    loading: projectsLoading || configurationsLoading || executionsLoading,
+  }
+}
+
+function useUrlGetters({ projectId, configurationId, executionId }) {
+  const getProjectUrl = useCallback(
+    id => getUrl(routes.projects.details, { projectId: id }),
+    []
+  )
+  const getConfigurationUrl = useCallback(
+    id =>
+      getUrl(routes.projects.configurations.details, {
+        projectId,
+        configurationId: id,
+      }),
+    [projectId]
+  )
+  const getExecutionUrl = useCallback(
+    id =>
+      getUrl(routes.projects.configurations.executions.details, {
+        projectId,
+        configurationId,
+        executionId: id,
+      }),
+    [projectId, configurationId]
+  )
+
+  return { getProjectUrl, getConfigurationUrl, getExecutionUrl }
 }
 
 export default withRouter(NavBreadcrumbs)
