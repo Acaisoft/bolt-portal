@@ -118,7 +118,7 @@ function NavBreadcrumbs({ history, location }) {
           placeholder="Select a test run"
           options={executions.map(item => ({
             value: item.id,
-            label: moment(item.start || item.start_locust).format(
+            label: moment(item.start_locust || item.start).format(
               'YYYY-MM-DD HH:mm:ss'
             ),
           }))}
