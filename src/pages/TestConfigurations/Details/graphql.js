@@ -6,6 +6,7 @@ export const GET_CONFIGURATION = gql`
       id
       name
       performed
+      has_monitoring
       configuration_type {
         id
         name

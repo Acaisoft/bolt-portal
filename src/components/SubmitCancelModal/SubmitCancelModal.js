@@ -49,7 +49,7 @@ SubmitCancelModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   submitLabel: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 }
 
 export default SubmitCancelModal

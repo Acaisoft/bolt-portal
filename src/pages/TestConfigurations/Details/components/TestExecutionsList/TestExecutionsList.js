@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
@@ -20,6 +21,7 @@ function TestExecutionsList({
   configurationId,
   getMonitoringDetailsUrl,
   getTestDetailsUrl,
+  hasMonitoring,
 }) {
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 5 },
@@ -152,18 +154,27 @@ function TestExecutionsList({
               >
                 Tests
               </LinkButton>
-              <LinkButton
-                href={getMonitoringDetailsUrl(execution)}
-                title="Show monitoring details"
-              >
-                Monitoring
-              </LinkButton>
+              {hasMonitoring && (
+                <LinkButton
+                  href={getMonitoringDetailsUrl(execution)}
+                  title="Show monitoring details"
+                >
+                  Monitoring
+                </LinkButton>
+              )}
             </React.Fragment>
           )}
         />
       </DataTable>
     </div>
   )
+}
+TestExecutionsList.propTypes = {
+  classes: PropTypes.object.isRequired,
+  configurationId: PropTypes.string.isRequired,
+  getMonitoringDetailsUrl: PropTypes.func.isRequired,
+  getTestDetailsUrl: PropTypes.func.isRequired,
+  hasMonitoring: PropTypes.bool,
 }
 
 export default withStyles(styles)(TestExecutionsList)

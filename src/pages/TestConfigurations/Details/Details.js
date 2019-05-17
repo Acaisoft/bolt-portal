@@ -58,6 +58,7 @@ function Details({ classes, history, match }) {
           configurationId={configurationId}
           getTestDetailsUrl={getTestDetailsUrl}
           getMonitoringDetailsUrl={getMonitoringDetailsUrl}
+          hasMonitoring={configuration.has_monitoring}
         />
       </div>
     </div>
