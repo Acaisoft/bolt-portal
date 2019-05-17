@@ -201,7 +201,9 @@ function generateFields({
 
 function prepareInitialValues(data) {
   if (!data) {
-    return {}
+    return {
+      configuration_envvars: [{ name: '', value: '' }],
+    }
   }
 
   const {
@@ -214,6 +216,7 @@ function prepareInitialValues(data) {
     has_post_test,
     has_load_tests,
     has_monitoring,
+    configuration_envvars,
   } = data
 
   return {
@@ -235,6 +238,10 @@ function prepareInitialValues(data) {
     ),
     test_source_type: test_source && test_source.source_type,
     test_source: test_source ? { [test_source.source_type]: test_source.id } : null,
+    configuration_envvars: configuration_envvars.map(({ name, value }) => ({
+      name,
+      value,
+    })) || [{ name: '', value: '' }],
   }
 }
 
@@ -250,6 +257,7 @@ function preparePayload(formValues) {
     parameters,
     test_source_type,
     test_source,
+    configuration_envvars,
   } = formValues
 
   return {
@@ -266,6 +274,9 @@ function preparePayload(formValues) {
         }))
       : [],
     test_source_id: test_source[test_source_type],
+    configuration_envvars: configuration_envvars.filter(
+      ce => ce.name !== '' && typeof ce.name !== 'undefined'
+    ),
   }
 }
 

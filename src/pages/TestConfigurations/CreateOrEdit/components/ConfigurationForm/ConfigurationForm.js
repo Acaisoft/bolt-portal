@@ -3,14 +3,27 @@ import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
 import { Field, Form } from 'react-final-form'
-import { Button, Grid, MenuItem, withStyles, Typography } from '@material-ui/core'
+import { FieldArray } from 'react-final-form-arrays'
+import arrayMutators from 'final-form-arrays'
+import {
+  Button,
+  Grid,
+  MenuItem,
+  withStyles,
+  Typography,
+  IconButton,
+} from '@material-ui/core'
 import { FormField, CheckboxField } from '~containers'
-import { ExpandablePanel, SectionHeader, Loader } from '~components'
+import { ExpandablePanel, SectionHeader, Loader, ButtonWithIcon } from '~components'
+import { Delete, Add } from '@material-ui/icons'
 
 import {
   makeEmptyInitialValues,
   validateForm,
   makeFlatValidationSchema,
+  requireWhenOtherIsSet,
+  composeValidators,
+  uniqueInArray,
 } from '~utils/forms'
 import { useMutationWithState } from '~hooks'
 
@@ -69,6 +82,7 @@ export function ConfigurationForm({
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validate={handleValidate}
+      mutators={{ ...arrayMutators }}
       subscription={{ submitting: true, dirty: true, invalid: true }}
       keepDirtyOnReinitialize
     >
@@ -259,6 +273,63 @@ export function ConfigurationForm({
               </React.Fragment>
             )}
           </Field>
+
+          <ExpandablePanel defaultExpanded title="Environment Variables">
+            <FieldArray name="configuration_envvars">
+              {({ fields: arrayFields }) => (
+                <Grid container spacing={32}>
+                  {arrayFields.map((name, index) => (
+                    <React.Fragment key={name}>
+                      <Grid item xs={12} md={5}>
+                        <FormField
+                          name={`${name}.name`}
+                          field={{ inputProps: { label: 'Key' } }}
+                          fullWidth
+                          variant="filled"
+                          validate={composeValidators(
+                            requireWhenOtherIsSet(`${name}.value`),
+                            uniqueInArray('configuration_envvars', 'name')
+                          )}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={5}>
+                        <FormField
+                          name={`${name}.value`}
+                          field={{ inputProps: { label: 'Value' } }}
+                          fullWidth
+                          variant="filled"
+                          validate={requireWhenOtherIsSet(`${name}.name`)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={2}>
+                        <IconButton
+                          variant="outlined"
+                          color="default"
+                          onClick={() =>
+                            form.form.mutators.remove('configuration_envvars', index)
+                          }
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Grid>
+                    </React.Fragment>
+                  ))}
+                  <Grid item xs={12}>
+                    <ButtonWithIcon
+                      onClick={() =>
+                        form.form.mutators.push('configuration_envvars', undefined)
+                      }
+                      variant="contained"
+                      color="default"
+                      icon={Add}
+                    >
+                      Add a variable
+                    </ButtonWithIcon>
+                  </Grid>
+                </Grid>
+              )}
+            </FieldArray>
+          </ExpandablePanel>
         </form>
       )}
     </Form>
