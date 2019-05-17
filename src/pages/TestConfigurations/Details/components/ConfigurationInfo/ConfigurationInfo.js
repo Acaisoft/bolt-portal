@@ -19,14 +19,14 @@ import { useConfigurationRun, useConfigurationDelete } from '../../../hooks'
 
 import styles from './ConfigurationInfo.styles'
 
-export const ConfigurationInfo = ({
+export function ConfigurationInfo({
   breadcrumbs,
   classes,
   configuration,
   onEdit = () => {},
   onDelete = () => {},
   onRun = () => {},
-}) => {
+}) {
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle(false)
 
   const { loading: isStartingRun, mutation: runConfiguration } = useConfigurationRun(

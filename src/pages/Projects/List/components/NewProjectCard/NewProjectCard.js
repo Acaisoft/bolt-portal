@@ -9,23 +9,25 @@ import { CreateProject } from '~assets/icons'
 
 import styles from './NewProjectCard.styles'
 
-const NewProjectCard = ({ classes, onCreate }) => (
-  <React.Fragment>
-    <CardContent className={classes.content}>
-      <CreateProject height={97} />
-    </CardContent>
-    <CardActions className={classes.actions}>
-      <ButtonWithIcon
-        color="secondary"
-        variant="contained"
-        onClick={onCreate}
-        icon={Add}
-      >
-        New
-      </ButtonWithIcon>
-    </CardActions>
-  </React.Fragment>
-)
+function NewProjectCard({ classes, onCreate }) {
+  return (
+    <React.Fragment>
+      <CardContent className={classes.content}>
+        <CreateProject height={97} />
+      </CardContent>
+      <CardActions className={classes.actions}>
+        <ButtonWithIcon
+          color="secondary"
+          variant="contained"
+          onClick={onCreate}
+          icon={Add}
+        >
+          New
+        </ButtonWithIcon>
+      </CardActions>
+    </React.Fragment>
+  )
+}
 NewProjectCard.propTypes = {
   classes: PropTypes.object.isRequired,
   onCreate: PropTypes.func.isRequired,

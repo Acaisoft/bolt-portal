@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-// import Anime from 'react-anime'
 
 import { Menu, MenuItem, Typography, withStyles, Card } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
@@ -11,12 +10,6 @@ import { useQuery } from 'react-apollo-hooks'
 
 import styles from './ProjectsList.styles'
 import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from '..'
-
-// const animeProps = {
-//   duration: 400,
-//   scale: [0.2, 1],
-//   easing: 'easeInOutElastic',
-// }
 
 function ProjectsList({ classes, onDetails }) {
   const {

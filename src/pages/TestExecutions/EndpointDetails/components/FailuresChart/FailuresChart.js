@@ -89,7 +89,7 @@ const renderActiveShape = ({
 }
 
 export function FailuresChart({ data = [], theme }) {
-  const { color, font } = theme.palette.chart
+  const { color } = theme.palette.chart
 
   const [activeIndex, setActiveIndex] = useState(0)
   const onPieEnter = useCallback((data, index) => setActiveIndex(index))
@@ -134,12 +134,6 @@ export function FailuresChart({ data = [], theme }) {
               <Cell key={entry.id} fill={getColor(index)} />
             ))}
           </Pie>
-
-          {/* <Legend
-            formatter={(value, entry) => entry.payload.exception_data}
-            iconType="circle"
-            wrapperStyle={{ ...font, color: font.fill, paddingTop: 20 }}
-          /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>

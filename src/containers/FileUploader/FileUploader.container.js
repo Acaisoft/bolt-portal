@@ -1,100 +1,98 @@
-import React, { Component } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { Mutation } from 'react-apollo'
 import FileUploader from './FileUploader.component'
 
 import { REQUEST_UPLOAD_URL } from './graphql'
 import { getFileHash, readFile, uploadFileToGCS } from './FileUploader.module'
+import { useMutationWithState } from '~hooks'
 
-export class FileUploadContainer extends Component {
-  static propTypes = {
-    accept: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    onError: PropTypes.func,
-    onStart: PropTypes.func,
-    onSuccess: PropTypes.func,
-    onLoad: PropTypes.func,
-  }
+export function FileUploadContainer({
+  accept,
+  id,
+  label,
+  onLoad,
+  onError = () => {},
+  onStart = () => {},
+  onSuccess = () => {},
+}) {
+  const [customError, setCustomError] = useState(null)
 
-  static defaultProps = {
-    onError: () => {},
-    onStart: () => {},
-    onSuccess: () => {},
-  }
+  const {
+    loading,
+    error,
+    mutation: requestUploadUrlMutation,
+  } = useMutationWithState(REQUEST_UPLOAD_URL)
 
-  state = {
-    customError: null,
-  }
-
-  handleChange = async (e, requestUploadUrl) => {
-    const files = e.currentTarget.files
-    if (files.length === 0) {
-      return
-    }
-
-    this.props.onStart()
-    const file = files[0]
-
-    try {
-      if (typeof this.props.onLoad === 'function') {
-        this.props.onLoad(await readFile(file, 'data-url'))
+  const handleChange = useCallback(
+    async e => {
+      const files = e.currentTarget.files
+      if (files.length === 0) {
+        return
       }
 
-      const fileHash = await getFileHash(await readFile(file, 'binary-string'))
+      onStart()
+      const file = files[0]
 
-      const res = await requestUploadUrl({
-        variables: {
-          contentType: file.type,
-          contentLength: file.size,
-          contentMD5: fileHash,
-        },
-      })
+      try {
+        if (typeof onLoad === 'function') {
+          onLoad(await readFile(file, 'data-url'))
+        }
 
-      const result = res.data.request_upload_url.returning
-      if (!result || result.length === 0) {
-        console.log('Failed to request upload url.', res)
-        throw new Error('Failed to request upload url.')
+        const fileHash = await getFileHash(await readFile(file, 'binary-string'))
+
+        const { errorMessage, response } = await requestUploadUrlMutation({
+          variables: {
+            contentType: file.type,
+            contentLength: file.size,
+            contentMD5: fileHash,
+          },
+        })
+
+        const result = response.data.request_upload_url.returning
+        if (errorMessage || !result || result.length === 0) {
+          console.log('Failed to request upload url.', errorMessage, response)
+          throw new Error('Failed to request upload url.', errorMessage)
+        }
+
+        const uploadRequestData = result[0]
+        await uploadFileToGCS({
+          url: uploadRequestData.upload_url,
+          file,
+          fileHash,
+        })
+
+        onSuccess(uploadRequestData)
+        setCustomError(null)
+      } catch (ex) {
+        setCustomError(ex.message)
+        onError(ex)
       }
+    },
+    [onLoad, onError, onStart, onSuccess]
+  )
 
-      const uploadRequestData = result[0]
-      await uploadFileToGCS({
-        url: uploadRequestData.upload_url,
-        file,
-        fileHash,
-      })
+  const errorMessage = (error || customError || {}).message
 
-      this.props.onSuccess(uploadRequestData)
-      this.setState({ customError: null })
-    } catch (ex) {
-      this.setState({ customError: ex.message })
-      this.props.onError(ex)
-    }
-  }
-
-  render() {
-    const { accept, id, label } = this.props
-
-    return (
-      <Mutation mutation={REQUEST_UPLOAD_URL}>
-        {(requestUploadUrl, { data, loading, error }) => {
-          const errorMessage = (error || this.state.customError || {}).message
-
-          return (
-            <FileUploader
-              accept={accept}
-              id={id}
-              label={label}
-              loading={loading}
-              error={errorMessage}
-              onChange={e => this.handleChange(e, requestUploadUrl)}
-            />
-          )
-        }}
-      </Mutation>
-    )
-  }
+  return (
+    <FileUploader
+      accept={accept}
+      id={id}
+      label={label}
+      loading={loading}
+      error={errorMessage}
+      onChange={handleChange}
+    />
+  )
+}
+FileUploader.propTypes = {
+  accept: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  onError: PropTypes.func,
+  onStart: PropTypes.func,
+  onSuccess: PropTypes.func,
+  onLoad: PropTypes.func,
 }
 
 export default FileUploadContainer

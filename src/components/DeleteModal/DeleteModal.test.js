@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 
 import { DeleteModal } from './DeleteModal'
 
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 const initComponent = overrides => {
   const mockProps = {
@@ -13,7 +13,7 @@ const initComponent = overrides => {
     type: 'mockType',
   }
   const wrapper = shallow(
-    <DeleteModal {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
+    <DeleteModal {...mockProps} {...overrides} classes={ClassesProxy} />
   )
   const instance = wrapper.instance()
   return { instance, mockProps, wrapper }

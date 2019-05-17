@@ -2,10 +2,10 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import { Container } from './Container'
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 const initContainer = overrides => {
-  const wrapper = shallow(<Container classes={mocks.ClassesProxy} {...overrides} />)
+  const wrapper = shallow(<Container classes={ClassesProxy} {...overrides} />)
   return { wrapper }
 }
 

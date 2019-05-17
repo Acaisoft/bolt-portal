@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { Typography, withStyles } from '@material-ui/core'
@@ -10,43 +10,44 @@ import { TestExecutionsList } from './components'
 
 import styles from './List.styles'
 
-export class List extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    match: PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      params: PropTypes.shape({
-        projectId: PropTypes.string,
-      }).isRequired,
-    }).isRequired,
-  }
+export function List({ classes, history, match }) {
+  const { projectId } = match.params
 
-  handleDetails = execution => {
-    const { history, match } = this.props
-    history.push(
-      getUrl(routes.projects.configurations.executions.details, {
-        ...match.params,
-        configurationId: execution.configuration.id,
-        executionId: execution.id,
-      })
-    )
-  }
+  const handleDetails = useCallback(
+    execution => {
+      history.push(
+        getUrl(routes.projects.configurations.executions.details, {
+          ...match.params,
+          configurationId: execution.configuration.id,
+          executionId: execution.id,
+        })
+      )
+    },
+    [history, match]
+  )
 
-  render() {
-    const { classes, match } = this.props
-    const { projectId } = match.params
-
-    return (
-      <div className={classes.root}>
-        <Typography variant="body2">
-          Here you see results of all tests performed in all of your projects
-        </Typography>
-        <div className={classes.tableContainer}>
-          <TestExecutionsList projectId={projectId} onDetails={this.handleDetails} />
-        </div>
+  return (
+    <div className={classes.root}>
+      <Typography variant="body2">
+        Here you see results of all tests performed in all of your projects
+      </Typography>
+      <div className={classes.tableContainer}>
+        <TestExecutionsList projectId={projectId} onDetails={handleDetails} />
       </div>
-    )
-  }
+    </div>
+  )
+}
+List.propTypes = {
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      projectId: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 }
 
 export default withStyles(styles)(List)

@@ -1,43 +1,42 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ToastContainer } from 'react-toastify'
-
+import { useQuery } from 'react-apollo-hooks'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core'
+import { Loader } from '~components'
+
+import { AUTH_STATE_QUERY } from '~services/GraphQL/localState'
 
 import Authorized from './Authorized'
 import Guest from './Guest'
 
-import { AUTH_STATE_QUERY } from '~services/GraphQL/localState'
-
 import styles from './Layout.styles'
 
-export class Layout extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
+export function Layout({ classes }) {
+  const {
+    data: { isAuthorized },
+    loading,
+  } = useQuery(AUTH_STATE_QUERY, {
+    fetchPolicy: 'cache-first',
+  })
+
+  if (loading) {
+    return <Loader loading />
   }
 
-  render() {
-    const { classes } = this.props
+  return (
+    <React.Fragment>
+      <ToastContainer autoClose={8000} />
+      <div className={classes.root}>{isAuthorized ? <Authorized /> : <Guest />}</div>
+    </React.Fragment>
+  )
+}
 
-    return (
-      <React.Fragment>
-        <ToastContainer autoClose={8000} />
-        <Query query={AUTH_STATE_QUERY} fetchPolicy="cache-first">
-          {({ data: { isAuthorized } }) => {
-            return (
-              <div className={classes.root}>
-                {isAuthorized ? <Authorized /> : <Guest />}
-              </div>
-            )
-          }}
-        </Query>
-      </React.Fragment>
-    )
-  }
+Layout.propTypes = {
+  classes: PropTypes.object,
 }
 
 export default withRouter(withStyles(styles)(Layout))

@@ -2,14 +2,14 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import { Authorized } from './Authorized'
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 jest.mock('~pages/Authorized', () => 'AuthorizedMock')
 
 const initAuthorizedRoutes = overrides => {
   const mockProps = {}
   const wrapper = shallow(
-    <Authorized classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
+    <Authorized classes={ClassesProxy} {...mockProps} {...overrides} />
   )
   return { mockProps, wrapper }
 }

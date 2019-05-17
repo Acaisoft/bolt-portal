@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class Login extends Component {
-  render() {
-    return <div>Login Form</div>
-  }
+export function Login() {
+  return <div>Login Form</div>
 }
 
 export default Login

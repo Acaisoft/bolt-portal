@@ -2,9 +2,9 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import withMuiTheme from './withMuiTheme'
-import { mocks } from '~utils/tests'
+import { makeNamedComponent, makeUnnamedComponent } from '~utils/tests/mocks'
 
-const FakeComponent = mocks.makeNamedComponent('FakeComponent')
+const FakeComponent = makeNamedComponent('FakeComponent')
 
 const initWithMuiTheme = (overrides, injectedTheme) => {
   const HOC = withMuiTheme(FakeComponent, injectedTheme)
@@ -27,7 +27,7 @@ describe('layout: withMuiTheme', () => {
 
   describe('HOC', () => {
     it("should read wrapped component's name", () => {
-      const WrappedComponent = mocks.makeUnnamedComponent()
+      const WrappedComponent = makeUnnamedComponent()
       expect(withMuiTheme(WrappedComponent).displayName).toBe('withMuiTheme()')
 
       WrappedComponent.name = 'SomeName'

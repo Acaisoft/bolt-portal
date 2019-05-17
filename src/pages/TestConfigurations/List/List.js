@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { toast } from 'react-toastify'
@@ -10,54 +10,61 @@ import routes from '~config/routes'
 import { TestConfigurationsList } from './components'
 import styles from './List.styles'
 
-export class List extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        projectId: PropTypes.string,
-      }).isRequired,
+export function List({ classes, history, match }) {
+  const { projectId } = match.params
+
+  const { handleCreate, handleDetails, handleRun } = useHandlers(history, match)
+
+  return (
+    <div className={classes.root}>
+      <TestConfigurationsList
+        projectId={projectId}
+        onCreate={handleCreate}
+        onDetails={handleDetails}
+        onRun={handleRun}
+      />
+    </div>
+  )
+}
+List.propTypes = {
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      projectId: PropTypes.string,
     }).isRequired,
-  }
+  }).isRequired,
+}
 
-  redirectToPage = (path, params = {}) => {
-    const { history, match } = this.props
-    history.push(getUrl(path, { ...match.params, ...params }))
-  }
+function useHandlers(history, match) {
+  const redirectToPage = useCallback(
+    (path, params = {}) => {
+      history.push(getUrl(path, { ...match.params, ...params }))
+    },
+    [history, match]
+  )
 
-  handleCreate = () => {
-    this.redirectToPage(routes.projects.configurations.create)
-  }
+  const handleCreate = useCallback(() => {
+    redirectToPage(routes.projects.configurations.create)
+  }, [])
 
-  handleDetails = configuration => {
-    this.redirectToPage(routes.projects.configurations.details, {
+  const handleDetails = useCallback(configuration => {
+    redirectToPage(routes.projects.configurations.details, {
       configurationId: configuration.id,
     })
-  }
+  }, [])
 
-  handleRun = ({ configuration, error }) => {
+  const handleRun = useCallback(({ configuration, error }) => {
     if (error) {
       toast.error(error)
     } else {
       toast.success(`Scenario '${configuration.name}' was successfully started.`)
     }
-  }
+  }, [])
 
-  render() {
-    const { classes, match } = this.props
-    const { projectId } = match.params
-
-    return (
-      <div className={classes.root}>
-        <TestConfigurationsList
-          projectId={projectId}
-          onCreate={this.handleCreate}
-          onDetails={this.handleDetails}
-          onRun={this.handleRun}
-        />
-      </div>
-    )
-  }
+  return { handleCreate, handleDetails, handleRun }
 }
 
 export default withStyles(styles)(List)

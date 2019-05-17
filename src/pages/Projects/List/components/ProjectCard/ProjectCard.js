@@ -17,51 +17,53 @@ import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import styles from './ProjectCard.styles'
 
-const ProjectCard = ({ classes, project, onDetails, onMenuOpen }) => (
-  <React.Fragment>
-    <CardHeader
-      className={classes.header}
-      // avatar={<CircularProgress value={project.progress} variant="static" />}
-      action={
-        <IconButton onClick={e => onMenuOpen(e, project)}>
-          <MoreHoriz />
-        </IconButton>
-      }
-      title={project.name}
-      titleTypographyProps={{
-        component: 'p',
-        paragraph: true,
-        style: { fontWeight: 'bold' },
-      }}
-      subheader={
-        <div className={classes.chips}>
-          {/* <Chip label="13 Test Scenarios" className={classes.chip} />
+function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
+  return (
+    <React.Fragment>
+      <CardHeader
+        className={classes.header}
+        // avatar={<CircularProgress value={project.progress} variant="static" />}
+        action={
+          <IconButton onClick={e => onMenuOpen(e, project)}>
+            <MoreHoriz />
+          </IconButton>
+        }
+        title={project.name}
+        titleTypographyProps={{
+          component: 'p',
+          paragraph: true,
+          style: { fontWeight: 'bold' },
+        }}
+        subheader={
+          <div className={classes.chips}>
+            {/* <Chip label="13 Test Scenarios" className={classes.chip} />
           <Chip label="13 Test Sources" className={classes.chip} /> */}
-        </div>
-      }
-    />
-    <CardContent className={classes.grow}>
-      {project.description && (
-        <Typography component="p" variant="body1" gutterBottom>
-          {project.description.length > 200
-            ? `${project.description.slice(0, 200)}...`
-            : project.description}
-        </Typography>
-      )}
-    </CardContent>
-    <CardActions className={classes.actions}>
-      <ButtonWithIcon
-        variant="contained"
-        color="primary"
-        onClick={() => onDetails(project)}
-        className={classes.actionButton}
-        icon={ChevronRight}
-      >
-        More
-      </ButtonWithIcon>
-    </CardActions>
-  </React.Fragment>
-)
+          </div>
+        }
+      />
+      <CardContent className={classes.grow}>
+        {project.description && (
+          <Typography component="p" variant="body1" gutterBottom>
+            {project.description.length > 200
+              ? `${project.description.slice(0, 200)}...`
+              : project.description}
+          </Typography>
+        )}
+      </CardContent>
+      <CardActions className={classes.actions}>
+        <ButtonWithIcon
+          variant="contained"
+          color="primary"
+          onClick={() => onDetails(project)}
+          className={classes.actionButton}
+          icon={ChevronRight}
+        >
+          More
+        </ButtonWithIcon>
+      </CardActions>
+    </React.Fragment>
+  )
+}
 ProjectCard.propTypes = {
   classes: PropTypes.object.isRequired,
   onDetails: PropTypes.func.isRequired,

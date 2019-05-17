@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 
 import { ProjectForm } from './ProjectForm'
 
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 const initProjectForm = overrides => {
   const mockProps = {
@@ -11,7 +11,7 @@ const initProjectForm = overrides => {
     onSubmit: jest.fn(),
   }
   const wrapper = shallow(
-    <ProjectForm {...mockProps} {...overrides} classes={mocks.ClassesProxy} />
+    <ProjectForm {...mockProps} {...overrides} classes={ClassesProxy} />
   )
   const instance = wrapper.instance()
   return { instance, mockProps, wrapper }

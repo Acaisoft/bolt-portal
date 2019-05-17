@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import { TestSources } from './TestSources'
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 const initTestSources = overrides => {
   const mockProps = {
@@ -13,7 +13,7 @@ const initTestSources = overrides => {
     },
   }
   const wrapper = shallow(
-    <TestSources classes={mocks.ClassesProxy} {...mockProps} {...overrides} />
+    <TestSources classes={ClassesProxy} {...mockProps} {...overrides} />
   )
   return { wrapper }
 }

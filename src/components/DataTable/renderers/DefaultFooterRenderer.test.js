@@ -1,14 +1,14 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { mocks } from '~utils/tests'
+import { ClassesProxy } from '~utils/tests/mocks'
 
 import DefaultFooterRenderer from './DefaultFooterRenderer'
 import { children, columnSettings, data } from '../DataTable.test.mock'
 
 const initBodyRenderer = overrides => {
   const mockProps = {
-    classes: mocks.ClassesProxy,
+    classes: ClassesProxy,
     columns: columnSettings,
     data,
     ...overrides,

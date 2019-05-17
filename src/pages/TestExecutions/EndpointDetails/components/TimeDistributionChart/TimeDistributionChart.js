@@ -76,4 +76,4 @@ TimeDistributionChart.propTypes = {
   theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(TimeDistributionChart)
+export default withStyles({}, { withTheme: true })(React.memo(TimeDistributionChart))

@@ -1,8 +1,3 @@
-import ClassesProxy from './ClassesProxy'
-import { makeNamedComponent, makeUnnamedComponent } from './makeComponent'
-
-export default {
-  ClassesProxy,
-  makeNamedComponent,
-  makeUnnamedComponent,
-}
+export { default as ClassesProxy } from './ClassesProxy'
+export { default as MockedHookProvider } from './MockedHookProvider'
+export { makeNamedComponent, makeUnnamedComponent } from './makeComponent'

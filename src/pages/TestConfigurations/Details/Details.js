@@ -16,55 +16,15 @@ import styles from './Details.styles'
 function Details({ classes, history, match }) {
   const { configurationId } = match.params
 
+  const { getMonitoringDetailsUrl, getTestDetailsUrl } = useUrlGetters(match.params)
+  const { handleEdit, handleDelete, handleRun } = useHandlers(history, match.params)
+
   const {
     loading,
     data: { configuration },
   } = useQuery(GET_CONFIGURATION, {
     variables: { configurationId },
     fetchPolicy: 'cache-and-network',
-  })
-
-  const handleEdit = useCallback(() => {
-    history.push(getUrl(routes.projects.configurations.edit, match.params))
-  }, [match])
-
-  const getTestDetailsUrl = useCallback(
-    execution => {
-      return getUrl(routes.projects.configurations.executions.details, {
-        ...match.params,
-        executionId: execution.id,
-      })
-    },
-    [match.params]
-  )
-  const getMonitoringDetailsUrl = useCallback(
-    execution => {
-      return getUrl(routes.projects.configurations.executions.monitoring, {
-        ...match.params,
-        executionId: execution.id,
-      })
-    },
-    [match.params]
-  )
-
-  const handleDelete = useCallback(
-    error => {
-      if (error) {
-        toast.error(error)
-      } else {
-        toast.success('Configuration has been deleted.')
-        history.push(getUrl(routes.projects.configurations.list, match.params))
-      }
-    },
-    [match.params]
-  )
-
-  const handleRun = useCallback(error => {
-    if (error) {
-      toast.error(`Could not start: ${error}`)
-    } else {
-      toast.success('Configuration has been started.')
-    }
   })
 
   const breadcrumbs = useMemo(() => {
@@ -113,6 +73,60 @@ Details.propTypes = {
     path: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
+}
+
+function useUrlGetters(params) {
+  const getTestDetailsUrl = useCallback(
+    execution => {
+      return getUrl(routes.projects.configurations.executions.details, {
+        ...params,
+        executionId: execution.id,
+      })
+    },
+    [params]
+  )
+  const getMonitoringDetailsUrl = useCallback(
+    execution => {
+      return getUrl(routes.projects.configurations.executions.monitoring, {
+        ...params,
+        executionId: execution.id,
+      })
+    },
+    [params]
+  )
+
+  return {
+    getTestDetailsUrl,
+    getMonitoringDetailsUrl,
+  }
+}
+
+function useHandlers(history, params) {
+  const handleEdit = useCallback(() => {
+    history.push(getUrl(routes.projects.configurations.edit, params))
+  }, [history, params])
+
+  const handleDelete = useCallback(
+    error => {
+      if (error) {
+        toast.error(error)
+      } else {
+        toast.success('Configuration has been deleted.')
+        history.push(getUrl(routes.projects.configurations.list, params))
+      }
+    },
+    [params]
+  )
+
+  const handleRun = useCallback(error => {
+    if (error) {
+      toast.error(`Could not start: ${error}`)
+    } else {
+      toast.success('Configuration has been started.')
+    }
+  })
+
+  return { handleEdit, handleDelete, handleRun }
 }
 
 export default withStyles(styles)(Details)

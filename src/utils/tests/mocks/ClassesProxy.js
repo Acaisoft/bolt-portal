@@ -27,10 +27,10 @@
  *  )
  *
  * -- ./Component.test.js --
- * import { mocks } from '~utils/tests
+ * import { ClassesProxy } from '~utils/tests/mocks'
  *
  * const initComponent = overrides => {
- *  const wrapper = <Component classes={mocks.ClassesProxy} {...overrides} />
+ *  const wrapper = <Component classes={ClassesProxy} {...overrides} />
  *  return { wrapper }
  * }
  * */
