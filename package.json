@@ -55,7 +55,8 @@
     "jest-enzyme": "^7.0.1",
     "lint-staged": "^8.0.4",
     "prettier": "^1.15.1",
-    "react-app-rewired": "^2.0.3"
+    "react-app-rewired": "^2.0.3",
+    "react-testing-library": "^7.0.1"
   },
   "browserslist": [
     ">0.2%",
