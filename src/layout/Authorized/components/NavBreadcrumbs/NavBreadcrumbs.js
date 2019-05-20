@@ -126,6 +126,10 @@ function Selector({ options, value, generateUrl, ...fieldProps }) {
 
 function getRouteParams(url) {
   const routesMatchingBreadcrumbs = [
+    // Match more detailed routes first to prevent reading route parts as IDs
+    // E.g. /configurations/create, where 'create' is treated as ID
+    routes.projects.configurations.create,
+
     routes.projects.configurations.executions.details,
     routes.projects.configurations.details,
     routes.projects.details,
