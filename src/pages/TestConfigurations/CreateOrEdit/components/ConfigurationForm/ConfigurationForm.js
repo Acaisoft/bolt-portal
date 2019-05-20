@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Field, Form } from 'react-final-form'
+import { Form } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import arrayMutators from 'final-form-arrays'
 import {
@@ -13,7 +13,7 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core'
-import { FormField, CheckboxField } from '~containers'
+import { FormField, CheckboxField, FormValue } from '~containers'
 import { ExpandablePanel, SectionHeader, Loader, ButtonWithIcon } from '~components'
 import { Delete, Add } from '@material-ui/icons'
 
@@ -161,32 +161,32 @@ export function ConfigurationForm({
             </Grid>
           </ExpandablePanel>
 
-          <Field name="configuration_type" subscription={{ value: true }}>
-            {({ input: { value: configurationType } }) => (
+          <FormValue name="configuration_type">
+            {configurationType => (
               <React.Fragment>
-                <Field
-                  type="checkbox"
-                  name="scenario_parts.has_load_tests"
-                  subscription={{ value: true }}
-                >
-                  {({ input: { value: hasLoadTests } }) => (
+                <FormValue type="checkbox" name="scenario_parts">
+                  {scenarioParts => (
                     <ExpandablePanel
                       key={`${configurationType}-step2`} // Re-render to reinitialize defaultExpanded
                       defaultExpanded={Boolean(configurationType)}
                       title="Test Parameters"
                     >
                       <Grid container spacing={32}>
-                        {!configurationType || !hasLoadTests ? (
+                        {!configurationType ||
+                        (!scenarioParts.has_load_tests &&
+                          !scenarioParts.has_monitoring) ? (
                           <Grid item xs={12}>
                             <Typography variant="body1">
-                              Select test type first to see available parameters list
+                              Select test type and scenario parts to see available
+                              parameters list
                             </Typography>
                           </Grid>
                         ) : (
                           Object.entries(fields.parameters.fields || [])
                             .filter(
                               ([name, options]) =>
-                                options.group === configurationType
+                                options.group === configurationType &&
+                                scenarioParts[`has_${options.scenarioPart}`]
                             )
                             .map(([id, options]) => (
                               <Grid key={id} item xs={6}>
@@ -203,7 +203,7 @@ export function ConfigurationForm({
                       </Grid>
                     </ExpandablePanel>
                   )}
-                </Field>
+                </FormValue>
 
                 <ExpandablePanel
                   key={`${configurationType}-step3`} // Re-render to reinitialize defaultExpanded
@@ -235,11 +235,8 @@ export function ConfigurationForm({
                           </FormField>
                         </Grid>
                         <Grid item xs={6}>
-                          <Field
-                            name="test_source_type"
-                            subscription={{ value: true }}
-                          >
-                            {({ input: { value: selectedSourceType } }) => {
+                          <FormValue name="test_source_type">
+                            {selectedSourceType => {
                               if (!selectedSourceType) {
                                 return null
                               }
@@ -264,7 +261,7 @@ export function ConfigurationForm({
                                 </FormField>
                               )
                             }}
-                          </Field>
+                          </FormValue>
                         </Grid>
                       </React.Fragment>
                     )}
@@ -272,7 +269,7 @@ export function ConfigurationForm({
                 </ExpandablePanel>
               </React.Fragment>
             )}
-          </Field>
+          </FormValue>
 
           <ExpandablePanel defaultExpanded title="Environment Variables">
             <FieldArray name="configuration_envvars">

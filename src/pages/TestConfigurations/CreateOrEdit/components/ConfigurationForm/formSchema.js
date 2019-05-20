@@ -157,6 +157,11 @@ function generateFields({
             },
             defaultValue: parameter.default_value,
             group: parameter.type_slug,
+            // TODO: Probably will need to be rewritten
+            // when we decide how to store monitoring parameters
+            scenarioPart: parameter.slug_name.includes('monitoring')
+              ? 'monitoring'
+              : 'load_tests',
           },
         }),
         {}
@@ -202,6 +207,7 @@ function generateFields({
 function prepareInitialValues(data) {
   if (!data) {
     return {
+      configuration_type: 'load_tests',
       configuration_envvars: [{ name: '', value: '' }],
     }
   }
