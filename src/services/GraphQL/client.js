@@ -61,8 +61,9 @@ const requestLink = new ApolloLink(
     })
 )
 
+const stage = process.env.REACT_APP_STAGE
 const wsLink = new WebSocketLink({
-  uri: `wss://${Config.apiBase}/v1alpha1/graphql`,
+  uri: `ws${stage !== 'local' ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
   options: {
     lazy: true,
     reconnect: true,
@@ -77,7 +78,6 @@ const wsLink = new WebSocketLink({
     },
   },
 })
-const stage = process.env.REACT_APP_STAGE
 const httpLink = new HttpLink({
   uri: `http${stage !== 'local' ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
 })
