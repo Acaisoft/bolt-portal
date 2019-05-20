@@ -23,12 +23,9 @@ export const SUBSCRIBE_TO_SCENARIOS = gql`
   }
 `
 export const SUBSCRIBE_TO_EXECUTIONS = gql`
-  subscription subscribeToScenariosForSelector($configurationId: uuid!) {
+  subscription subscribeToExecutionsForSelector($configurationId: uuid!) {
     executions: execution(
-      where: {
-        configuration_id: { _eq: $configurationId }
-        is_deleted: { _eq: false }
-      }
+      where: { configuration_id: { _eq: $configurationId } }
       order_by: { start_locust: desc, start: desc }
     ) {
       id
