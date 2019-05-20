@@ -273,12 +273,17 @@ function preparePayload(formValues) {
     has_post_test,
     has_load_tests,
     has_monitoring,
-    configuration_parameters: has_load_tests
-      ? Object.entries(parameters).map(([slug, value]) => ({
-          parameter_slug: slug,
-          value,
-        }))
-      : [],
+    configuration_parameters: Object.entries(parameters)
+      .map(([slug, value]) => ({
+        parameter_slug: slug,
+        value,
+      }))
+      // Skip parameters for not checked scenario parts
+      .filter(
+        ({ parameter_slug }) =>
+          (has_load_tests && parameter_slug.includes('load_tests')) ||
+          (has_monitoring && parameter_slug.includes('monitoring'))
+      ),
     test_source_id: test_source[test_source_type],
     configuration_envvars: configuration_envvars.filter(
       ce => ce.name !== '' && typeof ce.name !== 'undefined'
