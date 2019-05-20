@@ -1,5 +1,4 @@
-import { getIn } from 'formik'
-import * as Yup from 'yup'
+import _ from 'lodash'
 
 import { traverseRecursively } from '../iterators'
 
@@ -9,24 +8,6 @@ const validateFieldsSchema = fieldsSchema => {
       'Invalid form schema. Provide an object with { [fieldName]: { ... } } structure'
     )
   }
-}
-
-const defaultNodeValidator = fieldValidators => Yup.object().shape(fieldValidators)
-
-export const makeValidationSchema = (
-  fieldsSchema,
-  nodeValidator = defaultNodeValidator
-) => {
-  validateFieldsSchema(fieldsSchema)
-
-  const fieldValidators = traverseRecursively(fieldsSchema, {
-    childKey: 'fields',
-    nodeCallback: ({ newSubtree }) => nodeValidator(newSubtree),
-    leafCallback: ({ value }) =>
-      value.label ? value.validator.label(value.label) : value.validator,
-  })
-
-  return nodeValidator(fieldValidators)
 }
 
 export const makeFlatValidationSchema = fieldsSchema => {
@@ -53,7 +34,7 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
       childKey: 'fields',
       nodeCallback: ({ newSubtree }) => newSubtree,
       leafCallback: ({ path, value = {} }) =>
-        getIn(
+        _.get(
           values,
           path,
           typeof value.defaultValue !== 'undefined' ? value.defaultValue : ''

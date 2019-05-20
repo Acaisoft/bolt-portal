@@ -1,4 +1,4 @@
-import { makeEmptyInitialValues, makeValidationSchema } from './schema'
+import { makeEmptyInitialValues } from './schema'
 
 describe('utils: forms/schema', () => {
   describe('makeEmptyInitialValues', () => {
@@ -64,82 +64,6 @@ describe('utils: forms/schema', () => {
         email: '',
         city: 'Seattle',
       })
-    })
-  })
-
-  describe('makeValidationSchema', () => {
-    const makeFakeValidator = () => ({ fake: 'validator' })
-    const makeFakeValidatorWithLabel = () => ({
-      fake: 'validator',
-      label: jest.fn(l => 'used label validator'),
-    })
-    const nodeValidator = node => ({ ...node, node: 'injected' })
-
-    it('should throw an exception on invalid schema', () => {
-      expect(() => makeValidationSchema(null)).toThrow()
-      expect(() => makeValidationSchema(undefined)).toThrow()
-      expect(() => makeValidationSchema({})).toThrow()
-    })
-
-    it('should generate validators for each field', () => {
-      const userValidator = makeFakeValidator()
-      const emailValidator = makeFakeValidator()
-
-      const schema = {
-        user: { validator: userValidator },
-        email: { validator: emailValidator },
-      }
-
-      expect(makeValidationSchema(schema, nodeValidator)).toEqual({
-        user: { fake: 'validator' },
-        email: { fake: 'validator' },
-        node: 'injected',
-      })
-    })
-
-    it('should work with nested structures using "fields" property', () => {
-      const userValidator = makeFakeValidator()
-      const emailValidator = makeFakeValidator()
-      const firstNestedValidator = makeFakeValidator()
-
-      const schema = {
-        user: { validator: userValidator },
-        email: { validator: emailValidator },
-        nested: {
-          fields: {
-            first: { validator: firstNestedValidator },
-          },
-        },
-      }
-
-      expect(makeValidationSchema(schema, nodeValidator)).toEqual({
-        user: { fake: 'validator' },
-        email: { fake: 'validator' },
-        nested: {
-          first: { fake: 'validator' },
-          node: 'injected',
-        },
-        node: 'injected',
-      })
-    })
-
-    it('should add label validator for better error message, if label is present', () => {
-      const userValidator = makeFakeValidatorWithLabel()
-      const emailValidator = makeFakeValidatorWithLabel()
-
-      const schema = {
-        user: { label: 'User name', validator: userValidator },
-        email: { label: 'E-mail', validator: emailValidator },
-      }
-
-      expect(makeValidationSchema(schema, nodeValidator)).toEqual({
-        user: 'used label validator',
-        email: 'used label validator',
-        node: 'injected',
-      })
-
-      expect(userValidator.label).toHaveBeenCalledWith('User name')
-      expect(emailValidator.label).toHaveBeenCalledWith('E-mail')
     })
   })
 })

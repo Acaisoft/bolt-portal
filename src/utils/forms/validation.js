@@ -1,5 +1,5 @@
 import validate from 'validate.js'
-import { getIn } from 'final-form'
+import _ from 'lodash'
 
 import { createObjectFromDotNotation } from '../collections'
 
@@ -35,8 +35,8 @@ export const validateWhen = (predicate, validation) => (
 
 // e.g. validateOnFieldValue('some.field', 'expected value', { ... })
 export const validateOnFieldValue = (fieldPath, value, validation) => {
-  return validateWhen((_, attributes) => {
-    return getIn(attributes, fieldPath) === value
+  return validateWhen((predicate, attributes) => {
+    return _.get(attributes, fieldPath) === value
   }, validation)
 }
 
@@ -50,7 +50,7 @@ export const requireWhenOtherIsSet = otherFieldPath => (value, allValues) => {
 
   if (
     ['', undefined].includes(value) &&
-    !['', undefined].includes(getIn(allValues, otherFieldPath))
+    !['', undefined].includes(_.get(allValues, otherFieldPath))
   ) {
     return 'Required'
   }
@@ -61,8 +61,7 @@ export const uniqueInArray = (arrayPath, fieldPath) => (value, allValues) => {
     return
   }
 
-  const array = getIn(allValues, arrayPath)
-  const arrayValues = array.map(row => getIn(row, fieldPath))
+  const arrayValues = _.map(_.get(allValues, arrayPath), fieldPath)
   const isDuplicated = arrayValues.filter(v => v === value).length > 1
 
   if (isDuplicated) {

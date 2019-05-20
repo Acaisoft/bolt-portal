@@ -1,4 +1,4 @@
-import { setIn } from 'final-form'
+import _ from 'lodash'
 
 export const areArraysEqual = (a, b) => {
   if (!Array.isArray(a) || !Array.isArray(b)) {
@@ -20,7 +20,7 @@ export const areArraysEqual = (a, b) => {
 
 export const createObjectFromDotNotation = flatValuesMap => {
   return Object.entries(flatValuesMap).reduce(
-    (obj, [path, value]) => setIn(obj, path, value),
+    (obj, [path, value]) => _.set(obj, path, value),
     {}
   )
 }

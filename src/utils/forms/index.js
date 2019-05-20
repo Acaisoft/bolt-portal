@@ -12,8 +12,4 @@ export {
   uniqueInArray,
 } from './validation'
 
-export {
-  makeEmptyInitialValues,
-  makeFlatValidationSchema,
-  makeValidationSchema,
-} from './schema'
+export { makeEmptyInitialValues, makeFlatValidationSchema } from './schema'
