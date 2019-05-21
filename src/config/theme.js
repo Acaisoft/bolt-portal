@@ -145,6 +145,9 @@ export default {
     MuiPaper: {
       elevation: 0,
     },
+    MuiInputBase: {
+      autoComplete: 'off',
+    },
   },
   mixins: {
     // Usage:
