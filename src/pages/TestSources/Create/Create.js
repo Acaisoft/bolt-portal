@@ -11,35 +11,27 @@ import {
 } from '@material-ui/core'
 import { Add, VpnKey } from '@material-ui/icons'
 import { Field } from 'react-final-form'
-import { toast } from 'react-toastify'
 import { TestSourceForm } from '~containers/forms'
 import { FormCondition, FormField } from '~containers'
-import { ButtonWithIcon, Loader, SectionHeader } from '~components'
+import { ButtonWithIcon, Loader, SectionHeader, CopyToClipboard } from '~components'
 
 import { TestSourceType } from '~config/constants'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
-import { copyValueToClipboard } from '~utils/browser'
+import { useToggle } from '~hooks'
 
 import { GET_REPOSITORY_KEY } from './graphql'
 import styles from './Create.styles'
 
 export function Create({ classes, history, match }) {
+  const [isKeyVisible, toggleKeyInput] = useToggle(false)
+
   const {
     data: { repositoryKey },
     loading,
   } = useQuery(GET_REPOSITORY_KEY, {
     fetchPolicy: 'cache-first',
   })
-
-  const handleCopyToClipboard = useCallback(
-    e => {
-      copyValueToClipboard(repositoryKey)
-      toast.success('Repository key was copied to clipboard!')
-      e.currentTarget.focus()
-    },
-    [repositoryKey]
-  )
 
   const handleSubmit = useCallback(
     values => {
@@ -153,23 +145,33 @@ export function Create({ classes, history, match }) {
                         fullWidth
                       />
                       <div>
+                        {isKeyVisible && (
+                          <CopyToClipboard
+                            text={repositoryKey}
+                            label="Repository Key"
+                            margin="normal"
+                            variant="filled"
+                            multiline
+                            fullWidth
+                          />
+                        )}
+                        <ButtonWithIcon
+                          color="primary"
+                          variant="contained"
+                          onClick={() => toggleKeyInput()}
+                          icon={VpnKey}
+                        >
+                          {isKeyVisible ? 'Hide' : 'Show'} Key
+                        </ButtonWithIcon>
                         <Button
                           color="primary"
                           variant="contained"
                           disabled={!form.valid || isTestingConnection}
                           onClick={handlers.testConnection}
+                          className={classes.marginLeft}
                         >
                           Test Connection
                         </Button>
-                        <ButtonWithIcon
-                          color="primary"
-                          variant="contained"
-                          onClick={handleCopyToClipboard}
-                          icon={VpnKey}
-                          className={classes.marginLeft}
-                        >
-                          Get Key
-                        </ButtonWithIcon>
                         <Field
                           name="repository.connection_status"
                           subscription={{ value: true, error: true }}
