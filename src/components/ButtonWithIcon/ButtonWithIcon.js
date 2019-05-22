@@ -13,7 +13,7 @@ function ButtonWithIcon({
 }) {
   return (
     <ButtonComponent {...buttonProps}>
-      <IconComponent className={classes.icon} />
+      {IconComponent && <IconComponent className={classes.icon} />}
       {children}
     </ButtonComponent>
   )
