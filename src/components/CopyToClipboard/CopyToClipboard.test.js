@@ -51,19 +51,17 @@ describe('CopyToClipboard', () => {
     )
 
     // Before clicking
-    const copyButton = getByTestId('copy-button')
-
-    expect(copyButton).toBeVisible()
-    expect(queryByTestId('copied-button')).toBeNull()
+    expect(getByTestId('copy-button')).toBeVisible()
+    expect(queryByTestId('copied-button')).not.toBeInTheDocument()
 
     // Clicking to copy
     act(() => {
-      fireEvent.click(copyButton)
+      fireEvent.click(getByTestId('copy-button'))
     })
 
     // After clicking
     expect(copyValueFromInput).toHaveBeenCalled()
-    expect(queryByTestId('copy-button')).toBeNull()
+    expect(queryByTestId('copy-button')).not.toBeInTheDocument()
     expect(getByTestId('copied-button')).toBeVisible()
 
     // After timeout
@@ -72,6 +70,6 @@ describe('CopyToClipboard', () => {
     })
 
     expect(queryByTestId('copy-button')).toBeVisible()
-    expect(queryByTestId('copied-button')).toBeNull()
+    expect(queryByTestId('copied-button')).not.toBeInTheDocument()
   })
 })
