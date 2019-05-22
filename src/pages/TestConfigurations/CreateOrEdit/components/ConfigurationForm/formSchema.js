@@ -103,6 +103,7 @@ function generateFields({
 
   const paramTypeValidators = {
     int: { numericality: { onlyInteger: true } },
+    str: { length: { minimum: 1 } },
   }
 
   const fields = {
