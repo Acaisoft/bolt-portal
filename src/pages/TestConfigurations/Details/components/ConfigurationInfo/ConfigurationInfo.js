@@ -90,9 +90,9 @@ export function ConfigurationInfo({
               icon={PlayArrow}
               disabled={isStartingRun || !canRun}
               onClick={() => handleRun({ coldStart: false })}
-              aria-label="Run Test"
+              aria-label="Run"
             >
-              Run Test
+              Run
             </ButtonWithIcon>
             <ButtonWithIcon
               variant="contained"
@@ -101,9 +101,9 @@ export function ConfigurationInfo({
               disabled={isStartingRun || !canRun}
               onClick={() => handleRun({ coldStart: true })}
               className={classes.buttonMargin}
-              aria-label="Run Test without cache"
+              aria-label="Cold Run"
             >
-              Run Test without cache
+              Cold Run
             </ButtonWithIcon>
           </span>
         </Tooltip>
