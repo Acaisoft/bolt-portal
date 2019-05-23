@@ -5,15 +5,14 @@ export function getDataForChart(
   monitoringData
 ) {
   const ticksForNode = monitoringData.map(md => ({
-    timestamp: md.timestamp,
-    data: md.data[node_name] || [],
+    timestamp: +new Date(md.timestamp),
+    data: md.data.data[node_name] || [],
   }))
 
   const groupNames = getUniqueGroupNames(ticksForNode, y_label)
   const emptyGroups = createEmptyGroups(groupNames)
   const data = ticksForNode.map(({ data, timestamp }) => ({
-    // TODO: Backend will send this correctly, but need to fix now (convert s to ms)
-    timestamp: timestamp * 1000,
+    timestamp,
     groups: {
       ...emptyGroups,
       ..._.mapValues(_.keyBy(data, y_label), y_data_key),

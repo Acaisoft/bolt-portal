@@ -16,16 +16,18 @@ describe('module:', () => {
         {
           timestamp: 1234,
           data: {
-            testNodeName: [
-              {
-                testValue: 1,
-                testLabel: 'label1',
-              },
-              {
-                testValue: 2,
-                testLabel: 'label2',
-              },
-            ],
+            data: {
+              testNodeName: [
+                {
+                  testValue: 1,
+                  testLabel: 'label1',
+                },
+                {
+                  testValue: 2,
+                  testLabel: 'label2',
+                },
+              ],
+            },
           },
         },
       ]
@@ -33,7 +35,7 @@ describe('module:', () => {
         data: [
           {
             groups: { label1: 1, label2: 2 },
-            timestamp: 1234000,
+            timestamp: 1234,
           },
         ],
         groupNames: ['label1', 'label2'],

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
   LineChart,
   Line,
+  Legend,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
@@ -49,6 +50,33 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
     'pink',
   ]
 
+  const [hoveredItemIndex, setHoveredItemIndex] = useState(-1)
+  const [clickedItemIndex, setClickedItemIndex] = useState(-1)
+
+  const handleLegendMouseEnter = useCallback(
+    o => {
+      setHoveredItemIndex(groupNames.indexOf(o.value))
+    },
+    [clickedItemIndex]
+  )
+  const handleLegendMouseLeave = useCallback(
+    o => {
+      setHoveredItemIndex(-1)
+    },
+    [clickedItemIndex]
+  )
+  const handleLegendClick = useCallback(
+    o => {
+      const selectedIndex = groupNames.indexOf(o.value)
+      if (clickedItemIndex === selectedIndex) {
+        setClickedItemIndex(-1)
+      } else {
+        setClickedItemIndex(selectedIndex)
+      }
+    },
+    [clickedItemIndex]
+  )
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart
@@ -81,20 +109,47 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={formatters[config.y_format].tooltip}
-          wrapperStyle={{ ...tooltip }}
+          wrapperStyle={{ ...tooltip, zIndex: 1 }}
+        />
+
+        <Legend
+          layout="vertical"
+          verticalAlign="top"
+          align="right"
+          iconType="plainline"
+          wrapperStyle={{
+            marginLeft: 70,
+            marginBottom: 30,
+            paddingLeft: 20,
+            paddingRight: 30,
+            width: 300,
+            height: 230,
+            overflow: 'auto',
+            whiteSpace: 'nowrap',
+          }}
+          onMouseEnter={handleLegendMouseEnter}
+          onMouseLeave={handleLegendMouseLeave}
+          onClick={handleLegendClick}
         />
 
         {groupNames.map((groupName, index) => {
           const lineColor = lineColors[index % lineColors.length]
+          const isVisible =
+            clickedItemIndex === index ||
+            hoveredItemIndex === -1 ||
+            hoveredItemIndex === index
 
           return (
             <Line
               key={groupName}
               type="linear"
+              strokeWidth={2}
               stroke={lineColor}
+              strokeOpacity={isVisible ? 1 : 0.1}
               fill={lineColor}
               dataKey={tick => tick.groups[groupName]}
               name={groupName}
+              dot={false}
             />
           )
         })}
