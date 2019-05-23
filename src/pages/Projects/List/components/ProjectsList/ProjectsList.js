@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Menu, MenuItem, Typography, withStyles, Card } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
 
-import { GET_PROJECTS } from './graphql'
+import { GET_PROJECTS, GET_PROJECT_SUMMARIES } from './graphql'
 import { useQuery } from 'react-apollo-hooks'
 
 import styles from './ProjectsList.styles'
@@ -14,9 +14,16 @@ import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from 
 function ProjectsList({ classes, onDetails }) {
   const {
     data: { projects = [] },
-    loading,
-    error,
+    loading: projectsLoading,
+    error: projectsError,
   } = useQuery(GET_PROJECTS, {
+    fetchPolicy: 'cache-and-network',
+  })
+  const {
+    data: summariesData,
+    loading: summariesLoading,
+    error: summariesError,
+  } = useQuery(GET_PROJECT_SUMMARIES, {
     fetchPolicy: 'cache-and-network',
   })
 
@@ -30,10 +37,26 @@ function ProjectsList({ classes, onDetails }) {
     handleMenuClose,
   } = useProjectsListState()
 
-  if (error) return <Typography variant="body1">Error :(</Typography>
-  if (loading) return <Loader loading fill />
+  if (projectsError || summariesError)
+    return <Typography variant="body1">Error :(</Typography>
+  if (projectsLoading || summariesLoading) return <Loader loading fill />
 
-  const projectsItems = [{ id: 'new-project' }, ...projects]
+  const summaries = summariesData.summaries.projects.reduce((acc, currVal) => {
+    const summaryWithoutId = { ...currVal }
+    delete summaryWithoutId.project_id
+    return {
+      ...acc,
+      [currVal.project_id]: summaryWithoutId,
+    }
+  }, {})
+
+  const projectsItems = [
+    { id: 'new-project' },
+    ...projects.map(project => ({
+      ...summaries[project.id],
+      ...project,
+    })),
+  ]
 
   return (
     <React.Fragment>

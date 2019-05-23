@@ -18,3 +18,17 @@ export const GET_PROJECTS = gql`
 
   ${PROJECT_LIST_ITEM_FRAGMENT}
 `
+export const GET_PROJECT_SUMMARIES = gql`
+  query getProjectSummaries {
+    summaries: testrun_project_summary {
+      projects {
+        num_scenarios
+        name
+        num_sources
+        num_tests_failed
+        num_tests_passed
+        project_id
+      }
+    }
+  }
+`

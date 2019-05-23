@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import {
   CardHeader,
-  CircularProgress,
   IconButton,
   Chip,
   CardContent,
@@ -11,18 +10,22 @@ import {
   CardActions,
   withStyles,
 } from '@material-ui/core'
-import { ButtonWithIcon } from '~components'
+import { ButtonWithIcon, SuccessRatePieChart } from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import styles from './ProjectCard.styles'
 
 function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
+  const { num_tests_passed, num_tests_failed } = project
+  const tests_overall = num_tests_failed + num_tests_passed
+  const progress =
+    tests_overall === 0 ? tests_overall : (num_tests_passed / tests_overall) * 100
   return (
     <React.Fragment>
       <CardHeader
         className={classes.header}
-        // avatar={<CircularProgress value={project.progress} variant="static" />}
+        avatar={<SuccessRatePieChart value={progress} size={65} />}
         action={
           <IconButton onClick={e => onMenuOpen(e, project)}>
             <MoreHoriz />
@@ -36,8 +39,14 @@ function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
         }}
         subheader={
           <div className={classes.chips}>
-            {/* <Chip label="13 Test Scenarios" className={classes.chip} />
-          <Chip label="13 Test Sources" className={classes.chip} /> */}
+            <Chip
+              label={`${project.num_scenarios} Test Scenarios`}
+              className={classes.chip}
+            />
+            <Chip
+              label={`${project.num_sources} Test Sources`}
+              className={classes.chip}
+            />
           </div>
         }
       />
