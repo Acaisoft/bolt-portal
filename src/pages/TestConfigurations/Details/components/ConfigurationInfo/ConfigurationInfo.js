@@ -57,15 +57,19 @@ export function ConfigurationInfo({
     test_source,
     configuration_type,
     name,
-    configuration_parameters,
+    configuration_parameters = [],
+    configuration_envvars = [],
     performed,
+    has_pre_test,
+    has_post_test,
+    has_monitoring,
+    has_load_tests,
   } = configuration
   const { source_type } = test_source || {}
 
   const isPerformed = Boolean(performed)
   const canRun = Boolean(test_source)
   const isRepository = source_type === TestSourceType.REPOSITORY
-
   return (
     <React.Fragment>
       <SectionHeader
@@ -118,6 +122,9 @@ export function ConfigurationInfo({
           </Grid>
           <Grid item xs>
             <Grid container spacing={32} alignItems="center">
+              <Grid item xs={12}>
+                <SectionHeader size="medium" title="General" />
+              </Grid>
               <Grid item xs={12} md={3}>
                 <LabeledValue label="Test Source Type" value={source_type || '--'} />
               </Grid>
@@ -135,16 +142,75 @@ export function ConfigurationInfo({
                   />
                 </Grid>
               )}
-              <Grid item xs={isRepository ? 3 : 6} />
 
-              {(configuration_parameters || []).map(parameter => (
-                <Grid key={parameter.parameter_slug} item xs={12} md={3}>
-                  <LabeledValue
-                    label={parameter.parameter.name}
-                    value={parameter.value}
-                  />
+              <Grid item xs={12}>
+                <SectionHeader size="medium" title="Scenario Parts" />
+              </Grid>
+              {Boolean(has_pre_test) && (
+                <Grid item xs={12}>
+                  <LabeledValue label="Pre-test Script" value="Yes" />
                 </Grid>
-              ))}
+              )}
+              {Boolean(has_post_test) && (
+                <Grid item xs={12}>
+                  <LabeledValue label="Post-test Script" value="Yes" />
+                </Grid>
+              )}
+              {Boolean(has_monitoring) && (
+                <React.Fragment>
+                  <Grid item xs={12}>
+                    <LabeledValue label="Monitoring Script" value="Yes" />
+                  </Grid>
+                  {configuration_parameters
+                    .filter(parameter =>
+                      parameter.parameter_slug.includes('monitoring')
+                    )
+                    .map(parameter => (
+                      <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                        <LabeledValue
+                          label={parameter.parameter.name}
+                          value={parameter.value}
+                        />
+                      </Grid>
+                    ))}
+                </React.Fragment>
+              )}
+
+              {Boolean(has_load_tests) && (
+                <React.Fragment>
+                  <Grid item xs={12}>
+                    <LabeledValue label="Load Tests Script" value="Yes" />
+                  </Grid>
+                  {configuration_parameters
+                    .filter(parameter =>
+                      parameter.parameter_slug.includes('load_tests')
+                    )
+                    .map(parameter => (
+                      <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                        <LabeledValue
+                          label={parameter.parameter.name}
+                          value={parameter.value}
+                        />
+                      </Grid>
+                    ))}
+                </React.Fragment>
+              )}
+
+              {configuration_envvars.length > 0 && (
+                <React.Fragment>
+                  <Grid item xs={12}>
+                    <SectionHeader
+                      size="medium"
+                      title="Custom Environment Variables"
+                    />
+                  </Grid>
+                  {configuration_envvars.map(envvar => (
+                    <Grid key={envvar.name} item xs={12} md={3}>
+                      <LabeledValue label={envvar.name} value={envvar.value} />
+                    </Grid>
+                  ))}
+                </React.Fragment>
+              )}
             </Grid>
           </Grid>
           <Grid

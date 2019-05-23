@@ -7,6 +7,13 @@ export const GET_CONFIGURATION = gql`
       name
       performed
       has_monitoring
+      has_post_test
+      has_pre_test
+      has_load_tests
+      configuration_envvars {
+        name
+        value
+      }
       configuration_type {
         id
         name
