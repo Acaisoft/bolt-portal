@@ -40,11 +40,15 @@ function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
         subheader={
           <div className={classes.chips}>
             <Chip
-              label={`${project.num_scenarios} Test Scenarios`}
+              label={`${project.num_scenarios} Test Scenario${
+                project.num_scenarios !== 1 ? 's' : ''
+              }`}
               className={classes.chip}
             />
             <Chip
-              label={`${project.num_sources} Test Sources`}
+              label={`${project.num_sources} Test Source${
+                project.num_sources !== 1 ? 's' : ''
+              }`}
               className={classes.chip}
             />
           </div>
