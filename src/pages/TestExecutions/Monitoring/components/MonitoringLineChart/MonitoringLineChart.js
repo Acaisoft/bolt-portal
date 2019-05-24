@@ -50,32 +50,13 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
     'pink',
   ]
 
-  const [hoveredItemIndex, setHoveredItemIndex] = useState(-1)
-  const [clickedItemIndex, setClickedItemIndex] = useState(-1)
-
-  const handleLegendMouseEnter = useCallback(
-    o => {
-      setHoveredItemIndex(groupNames.indexOf(o.value))
-    },
-    [clickedItemIndex]
-  )
-  const handleLegendMouseLeave = useCallback(
-    o => {
-      setHoveredItemIndex(-1)
-    },
-    [clickedItemIndex]
-  )
-  const handleLegendClick = useCallback(
-    o => {
-      const selectedIndex = groupNames.indexOf(o.value)
-      if (clickedItemIndex === selectedIndex) {
-        setClickedItemIndex(-1)
-      } else {
-        setClickedItemIndex(selectedIndex)
-      }
-    },
-    [clickedItemIndex]
-  )
+  const {
+    hoveredItemIndex,
+    clickedItemIndex,
+    handleLegendMouseEnter,
+    handleLegendMouseLeave,
+    handleLegendClick,
+  } = useLegendHandlers(groupNames)
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -134,10 +115,11 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
 
         {groupNames.map((groupName, index) => {
           const lineColor = lineColors[index % lineColors.length]
+
           const isVisible =
             clickedItemIndex === index ||
-            hoveredItemIndex === -1 ||
-            hoveredItemIndex === index
+            hoveredItemIndex === index ||
+            (clickedItemIndex === -1 && hoveredItemIndex === -1)
 
           return (
             <Line
@@ -162,6 +144,45 @@ MonitoringLineChart.propTypes = {
   execution: PropTypes.object,
   syncId: PropTypes.string,
   theme: PropTypes.object.isRequired,
+}
+
+function useLegendHandlers(groupNames) {
+  const [hoveredItemIndex, setHoveredItemIndex] = useState(-1)
+  const [clickedItemIndex, setClickedItemIndex] = useState(-1)
+
+  const getGroupIndex = useCallback(name => groupNames.indexOf(name), [groupNames])
+
+  const handleLegendMouseEnter = useCallback(
+    item => {
+      setHoveredItemIndex(getGroupIndex(item.value))
+    },
+    [clickedItemIndex]
+  )
+  const handleLegendMouseLeave = useCallback(
+    item => {
+      setHoveredItemIndex(-1)
+    },
+    [clickedItemIndex]
+  )
+  const handleLegendClick = useCallback(
+    item => {
+      const selectedIndex = getGroupIndex(item.value)
+      if (clickedItemIndex === selectedIndex) {
+        setClickedItemIndex(-1)
+      } else {
+        setClickedItemIndex(selectedIndex)
+      }
+    },
+    [clickedItemIndex]
+  )
+
+  return {
+    hoveredItemIndex,
+    clickedItemIndex,
+    handleLegendMouseEnter,
+    handleLegendMouseLeave,
+    handleLegendClick,
+  }
 }
 
 export default withStyles({}, { withTheme: true })(MonitoringLineChart)
