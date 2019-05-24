@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react'
+import moment from 'moment'
 
 import { useQuery } from 'react-apollo-hooks'
+import { Grid, Paper, withStyles } from '@material-ui/core'
 import { SectionHeader, Loader } from '~components'
 
 import { MonitoringLineChart } from './components'
 import { getDataForChart } from './module.js'
 import { GET_EXECUTION_WITH_MONITORING_DATA } from './graphql'
+import styles from './Monitoring.styles'
 
-function Monitoring({ match, history, location }) {
+function Monitoring({ classes, match, history, location }) {
   const { executionId } = match.params
 
   const {
@@ -37,22 +40,30 @@ function Monitoring({ match, history, location }) {
 
   return (
     <div>
-      <SectionHeader title="Monitoring" />
-
-      {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
-        return (
-          <React.Fragment key={`chart-${index}`}>
-            <SectionHeader title={chartConfig.title} size="small" marginBottom />
-            <MonitoringLineChart
-              data={data}
-              config={chartConfig}
-              groupNames={groupNames}
-            />
-          </React.Fragment>
-        )
-      })}
+      <SectionHeader
+        title={`Monitoring for Test Run ${moment(
+          execution.start_locust || execution.start
+        ).format('YYYY-MM-DD HH:mm:ss')}`}
+        marginBottom
+      />
+      <Grid container spacing={16}>
+        {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
+          return (
+            <Grid item xs={12} key={`chart-${index}`}>
+              <Paper square className={classes.tile}>
+                <SectionHeader title={chartConfig.title} size="small" marginBottom />
+                <MonitoringLineChart
+                  data={data}
+                  config={chartConfig}
+                  groupNames={groupNames}
+                />
+              </Paper>
+            </Grid>
+          )
+        })}
+      </Grid>
     </div>
   )
 }
 
-export default Monitoring
+export default withStyles(styles)(Monitoring)
