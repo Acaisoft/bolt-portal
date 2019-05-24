@@ -18,7 +18,7 @@ import styles from './TestExecutionsList.styles'
 
 function TestExecutionsList({
   classes,
-  configurationId,
+  configuration: { id: configurationId, has_monitoring, has_load_tests },
   getMonitoringDetailsUrl,
   getTestDetailsUrl,
   hasMonitoring,
@@ -148,13 +148,15 @@ function TestExecutionsList({
           key="actions"
           render={execution => (
             <React.Fragment>
-              <LinkButton
-                href={getTestDetailsUrl(execution)}
-                title="Show test run details"
-              >
-                Tests
-              </LinkButton>
-              {hasMonitoring && (
+              {has_load_tests && (
+                <LinkButton
+                  href={getTestDetailsUrl(execution)}
+                  title="Show test run details"
+                >
+                  Tests
+                </LinkButton>
+              )}
+              {has_monitoring && (
                 <LinkButton
                   href={getMonitoringDetailsUrl(execution)}
                   title="Show monitoring details"
@@ -171,7 +173,7 @@ function TestExecutionsList({
 }
 TestExecutionsList.propTypes = {
   classes: PropTypes.object.isRequired,
-  configurationId: PropTypes.string.isRequired,
+  configuration: PropTypes.object.isRequired,
   getMonitoringDetailsUrl: PropTypes.func.isRequired,
   getTestDetailsUrl: PropTypes.func.isRequired,
   hasMonitoring: PropTypes.bool,

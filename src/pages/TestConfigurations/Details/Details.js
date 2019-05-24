@@ -55,7 +55,7 @@ function Details({ classes, history, match }) {
       />
       <div className={classes.tableContainer}>
         <TestExecutionsList
-          configurationId={configurationId}
+          configuration={configuration}
           getTestDetailsUrl={getTestDetailsUrl}
           getMonitoringDetailsUrl={getMonitoringDetailsUrl}
           hasMonitoring={configuration.has_monitoring}
