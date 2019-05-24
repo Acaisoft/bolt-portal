@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const GET_EXECUTION_WITH_MONITORING_DATA = gql`
-  query getExecutionWithMonitoringData($executionId: uuid!) {
+export const SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA = gql`
+  subscription subscribeToExecutionWithMonitoringData($executionId: uuid!) {
     execution: execution_by_pk(id: $executionId) {
       id
       start
