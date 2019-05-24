@@ -108,6 +108,7 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
             height: 230,
             overflow: 'auto',
             whiteSpace: 'nowrap',
+            userSelect: 'none',
           }}
           onMouseEnter={handleLegendMouseEnter}
           onMouseLeave={handleLegendMouseLeave}
