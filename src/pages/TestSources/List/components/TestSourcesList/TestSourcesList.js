@@ -80,7 +80,7 @@ function TestSourcesList({ classes, onCreate, onDelete, onEdit, projectId }) {
           }
           title="URL"
         />
-        {/* <DataTable.Column
+        <DataTable.Column
           key="actions"
           render={source => (
             <div className={classes.iconsContainer}>
@@ -91,17 +91,17 @@ function TestSourcesList({ classes, onCreate, onDelete, onEdit, projectId }) {
               >
                 <Edit />
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 aria-label="Delete source"
                 className={classes.icon}
                 onClick={() => onDelete(source)}
               >
                 <Delete />
-              </IconButton>
+              </IconButton> */}
             </div>
           )}
           title="Actions"
-        /> */}
+        />
       </DataTable>
     </React.Fragment>
   )

@@ -1,9 +1,8 @@
+import { useMemo } from 'react'
 import { TestSourceType } from '~config/constants'
-import {
-  makeFlatValidationSchema,
-  makeEmptyInitialValues,
-  validateOnFieldValue,
-} from '~utils/forms'
+import { validateOnFieldValue } from '~utils/forms'
+import { GET_CONFIGURATION_TYPES_QUERY } from './graphql'
+import { useQuery } from 'react-apollo-hooks'
 
 const sourceTypeOptions = Object.entries(TestSourceType).map(([type, value]) => ({
   key: type,
@@ -11,7 +10,24 @@ const sourceTypeOptions = Object.entries(TestSourceType).map(([type, value]) => 
   label: type,
 }))
 
-const createFormConfig = ({ configurationTypes }) => {
+function useFormSchema({ mode }) {
+  const {
+    data: { configurationTypes },
+    loading,
+  } = useQuery(GET_CONFIGURATION_TYPES_QUERY)
+
+  const fields = useMemo(
+    () =>
+      generateFields({
+        configurationTypes: configurationTypes || [],
+      }),
+    [configurationTypes]
+  )
+
+  return { loading, fields }
+}
+
+function generateFields({ configurationTypes }) {
   const fields = {
     source_type: {
       validator: {
@@ -66,18 +82,56 @@ const createFormConfig = ({ configurationTypes }) => {
             label: 'Repository URL',
           },
         },
-
-        connection_status: {},
       },
     },
   }
 
-  const validationSchema = makeFlatValidationSchema(fields)
-  const mergeInitialValues = values => {
-    return makeEmptyInitialValues(fields, values)
-  }
-
-  return { fields, validationSchema, mergeInitialValues }
+  return fields
 }
 
-export { createFormConfig }
+function prepareInitialValues(data) {
+  if (!data) {
+    return {}
+  }
+
+  const formValues = {
+    source_type: data.source_type,
+  }
+
+  if (data.source_type === TestSourceType.REPOSITORY) {
+    const { name, type_slug, url } = data.repository
+    formValues.repository = {
+      name,
+      type_slug,
+      url,
+    }
+  } else {
+    // TODO: Add mapping for test creator when needed
+  }
+
+  return formValues
+}
+
+function preparePayload(formValues, { mode, projectId, sourceId }) {
+  if (!formValues) {
+    return {}
+  }
+
+  const { repository } = formValues
+
+  const dbValues = {
+    name: repository.name,
+    repository_url: repository.url,
+    type_slug: repository.type_slug,
+  }
+
+  if (mode === 'create') {
+    dbValues.project_id = projectId
+  } else {
+    dbValues.id = sourceId
+  }
+
+  return dbValues
+}
+
+export { useFormSchema, prepareInitialValues, preparePayload }
