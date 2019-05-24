@@ -3,7 +3,7 @@ export default ({ mixins, spacing }) => ({
     marginBottom: spacing.unit * 3,
   },
   paper: {
-    padding: mixins.scaledSpaceAround(6, 4, 4),
+    padding: mixins.scaledSpaceAround(4),
   },
   buttonMargin: {
     marginLeft: spacing.unit,
