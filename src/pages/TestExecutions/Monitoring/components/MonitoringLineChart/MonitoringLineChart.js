@@ -110,6 +110,15 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
             whiteSpace: 'nowrap',
             userSelect: 'none',
           }}
+          formatter={(value, entry, index) => (
+            <span
+              style={
+                clickedItemIndex === index ? { textDecoration: 'underline' } : {}
+              }
+            >
+              {value}
+            </span>
+          )}
           onMouseEnter={handleLegendMouseEnter}
           onMouseLeave={handleLegendMouseLeave}
           onClick={handleLegendClick}
