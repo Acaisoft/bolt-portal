@@ -77,12 +77,12 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           dataKey={config.x_data_key}
           name={config.x_label}
           tickFormatter={formatTimestamp}
-          tick={{ ...font }}
+          tick={{ ...font, fontSize: 12 }}
           domain={['dataMin', 'dataMax']}
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash }}
-          tick={{ ...font }}
+          tick={{ ...font, fontSize: 12 }}
           tickFormatter={formatters[config.y_format].axis}
         />
 
