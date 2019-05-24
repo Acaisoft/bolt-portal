@@ -60,17 +60,23 @@ const palette = {
   },
   warning: {
     contrastText: '#FFFFFF',
-    light: '#EB8967',
     main: '#F76F40',
   },
   error: {
     contrastText: '#FFFFFF',
-    main: '#FF5EA1',
+    main: '#EB6767',
+  },
+  info: {
+    contrastText: '#FFFFFF',
+    main: '#7297FF',
   },
   divider: '#343252',
   text: {
     primary: '#FFFFFF',
     secondary: '#CFCFEA',
+    error: '#FF5EA1',
+    success: '#1EB1B1',
+    warning: '#EB8967',
   },
 }
 

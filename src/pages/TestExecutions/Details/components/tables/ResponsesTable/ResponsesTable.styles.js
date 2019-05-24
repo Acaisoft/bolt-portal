@@ -7,9 +7,9 @@ export default ({ mixins, palette }) => ({
     alignItems: 'center',
   },
   success: {
-    color: palette.success.main,
+    color: palette.text.success,
   },
   failure: {
-    color: palette.error.main,
+    color: palette.text.error,
   },
 })

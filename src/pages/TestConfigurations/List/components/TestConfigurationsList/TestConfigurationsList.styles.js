@@ -10,12 +10,12 @@ export default ({ palette }) => ({
     alignItems: 'center',
   },
   good: {
-    color: palette.success.main,
+    color: palette.text.success,
   },
   average: {
-    color: palette.warning.light,
+    color: palette.text.warning,
   },
   bad: {
-    color: palette.error.main,
+    color: palette.text.error,
   },
 })
