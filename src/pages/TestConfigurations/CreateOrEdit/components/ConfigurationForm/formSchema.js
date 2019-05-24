@@ -145,8 +145,14 @@ function generateFields({
         (acc, parameter) => ({
           ...acc,
           [parameter.slug_name]: {
-            validator: (value, attributes, attributeName) => {
-              if (attributes.configuration_type === parameter.type_slug) {
+            validator: (value, formValues) => {
+              if (
+                formValues.configuration_type === parameter.type_slug &&
+                ((formValues.scenario_parts.has_load_tests &&
+                  parameter.slug_name.includes('load_tests')) ||
+                  (formValues.scenario_parts.has_monitoring &&
+                    parameter.slug_name.includes('monitoring')))
+              ) {
                 return {
                   presence: { allowEmpty: true },
                   ...paramTypeValidators[parameter.param_type],
@@ -201,7 +207,6 @@ function generateFields({
       ),
     },
   }
-
   return fields
 }
 

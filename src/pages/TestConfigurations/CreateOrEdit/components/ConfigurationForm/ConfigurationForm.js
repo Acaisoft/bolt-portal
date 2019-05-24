@@ -76,7 +76,6 @@ export function ConfigurationForm({
   if (fieldsLoading || configurationLoading) {
     return <Loader loading />
   }
-
   return (
     <Form
       initialValues={initialValues}
