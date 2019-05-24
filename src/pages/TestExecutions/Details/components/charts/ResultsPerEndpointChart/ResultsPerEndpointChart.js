@@ -50,6 +50,7 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
           type="category"
           tickFormatter={formatLabel}
           tick={{ width: 140, ...font }}
+          domain={['dataMin', 'dataMax']}
         />
 
         <Tooltip

@@ -84,6 +84,7 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash }}
           tick={{ ...font, fontSize: 12 }}
           tickFormatter={formatters[config.y_format].axis}
+          domain={['dataMin', 'dataMax']}
         />
 
         <Tooltip

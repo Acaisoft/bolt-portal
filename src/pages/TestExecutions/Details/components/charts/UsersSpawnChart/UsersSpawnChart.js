@@ -52,6 +52,7 @@ export function UsersSpawnChart({ data, execution, syncId, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           tickFormatter={formatThousands}
           tick={{ ...font }}
+          domain={['dataMin', 'dataMax']}
         />
         <Legend
           verticalAlign="bottom"

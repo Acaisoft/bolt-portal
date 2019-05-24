@@ -56,6 +56,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
           tickFormatter={formatDuration}
           tick={{ ...font }}
+          domain={['dataMin', 'dataMax']}
         />
         <Legend
           verticalAlign="bottom"

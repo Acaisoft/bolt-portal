@@ -52,6 +52,7 @@ export function RequestsChart({ data, execution, syncId, theme }) {
           axisLine={{ strokeDasharray: gridLine.dash }}
           tick={{ ...font }}
           tickFormatter={formatThousands}
+          domain={['dataMin', 'dataMax']}
         />
         <Legend
           verticalAlign="bottom"
