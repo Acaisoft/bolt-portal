@@ -1,9 +1,6 @@
 export default ({ palette }) => ({
-  iconsContainer: {
+  actionsContainer: {
     display: 'flex',
-  },
-  icon: {
-    padding: '0.25em',
   },
   dateContainer: {
     display: 'flex',

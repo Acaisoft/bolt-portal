@@ -1,11 +1,17 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useSubscription } from 'react-apollo-hooks'
 
-import { withStyles, IconButton, Tooltip } from '@material-ui/core'
-import { Add, Pageview, History, PlayArrow } from '@material-ui/icons'
-import { ButtonWithIcon, SectionHeader, DataTable, NoWrap } from '~components'
+import { withStyles, IconButton } from '@material-ui/core'
+import { Add, History } from '@material-ui/icons'
+import {
+  ButtonWithIcon,
+  SectionHeader,
+  DataTable,
+  NoWrap,
+  LinkButton,
+} from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -15,7 +21,6 @@ import {
   SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM,
   SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM,
 } from './graphql'
-import { useConfigurationRun } from '../../../hooks'
 import styles from './TestConfigurationsList.styles'
 
 export function TestConfigurationsList({
@@ -54,18 +59,6 @@ export function TestConfigurationsList({
   })
 
   const loading = loadingConfigurations || loadingConfigurationsAggregate
-
-  const {
-    loading: isStartingRun,
-    mutation: runConfiguration,
-  } = useConfigurationRun()
-
-  const handleRun = useCallback(async configuration => {
-    const error = await runConfiguration({
-      variables: { configurationId: configuration.id },
-    })
-    onRun({ configuration, error })
-  }, runConfiguration)
 
   const totalCount = configurationsAggregate
     ? configurationsAggregate.aggregate.count
@@ -179,32 +172,13 @@ export function TestConfigurationsList({
           key="actions"
           render={configuration => {
             return (
-              <div className={classes.iconsContainer}>
-                <Tooltip
-                  title={
-                    !configuration.test_source
-                      ? 'You need to assign a test source before you will be able to start a test.'
-                      : ''
-                  }
-                >
-                  <span>
-                    <IconButton
-                      aria-label="Run scenario"
-                      className={classes.icon}
-                      onClick={() => handleRun(configuration)}
-                      disabled={isStartingRun || !configuration.test_source}
-                    >
-                      <PlayArrow />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-                <IconButton
-                  aria-label="Show scenario details"
-                  className={classes.icon}
+              <div className={classes.actionsContainer}>
+                <LinkButton
                   onClick={() => onDetails(configuration)}
+                  title="Show scenario details"
                 >
-                  <Pageview />
-                </IconButton>
+                  Details
+                </LinkButton>
               </div>
             )
           }}

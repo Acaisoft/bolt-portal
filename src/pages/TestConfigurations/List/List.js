@@ -13,7 +13,7 @@ import styles from './List.styles'
 export function List({ classes, history, match }) {
   const { projectId } = match.params
 
-  const { handleCreate, handleDetails, handleRun } = useHandlers(history, match)
+  const { handleCreate, handleDetails } = useHandlers(history, match)
 
   return (
     <div className={classes.root}>
@@ -21,7 +21,6 @@ export function List({ classes, history, match }) {
         projectId={projectId}
         onCreate={handleCreate}
         onDetails={handleDetails}
-        onRun={handleRun}
       />
     </div>
   )
