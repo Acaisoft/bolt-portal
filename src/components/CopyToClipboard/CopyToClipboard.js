@@ -25,13 +25,7 @@ export function CopyToClipboard({ label, text, timeout = 2000, ...textFieldProps
       label={label}
       value={text}
       id="copy-to-clipboard"
-      InputLabelProps={{
-        'data-testid': 'label',
-      }}
       InputProps={{
-        inputProps: {
-          'data-testid': 'input',
-        },
         readOnly: true,
         endAdornment: (
           <InputAdornment position="end">
@@ -43,15 +37,11 @@ export function CopyToClipboard({ label, text, timeout = 2000, ...textFieldProps
               <span>
                 {copied ? (
                   <IconButton data-testid="copied-button" disabled>
-                    <Check data-testid="check-icon" />
+                    <Check />
                   </IconButton>
                 ) : (
-                  <IconButton
-                    data-testid="copy-button"
-                    aria-label="Copy to clipboard"
-                    onClick={handleCopy}
-                  >
-                    <FileCopy data-testid="copy-icon" />
+                  <IconButton data-testid="copy-button" onClick={handleCopy}>
+                    <FileCopy />
                   </IconButton>
                 )}
               </span>

@@ -24,22 +24,13 @@ describe('CopyToClipboard', () => {
     text = 'value to copy'
   })
 
-  test('render proper input label', () => {
-    const { getByTestId } = render(<CopyToClipboard label={label} />)
-
-    expect(getByTestId('label')).toHaveTextContent(label)
-  })
-
-  test('render a readonly text input', () => {
+  test('put the text into a readonly input', () => {
     const { getByLabelText } = render(<CopyToClipboard label={label} text={text} />)
 
-    expect(getByLabelText(label)).toHaveAttribute('readonly')
-  })
+    const input = getByLabelText(label)
 
-  test('put the text into the input', () => {
-    const { getByTestId } = render(<CopyToClipboard label={label} text={text} />)
-
-    expect(getByTestId('input')).toHaveAttribute('value', text)
+    expect(input).toHaveAttribute('readonly')
+    expect(input).toHaveAttribute('value', text)
   })
 
   test('clicking should copy and switch icons', () => {
@@ -66,7 +57,7 @@ describe('CopyToClipboard', () => {
       jest.runOnlyPendingTimers()
     })
 
-    expect(queryByTestId('copy-button')).toBeVisible()
+    expect(getByTestId('copy-button')).toBeVisible()
     expect(queryByTestId('copied-button')).not.toBeInTheDocument()
   })
 })
