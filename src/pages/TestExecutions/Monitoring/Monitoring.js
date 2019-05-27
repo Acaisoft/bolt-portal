@@ -50,7 +50,9 @@ function Monitoring({ classes, match, history, location }) {
         }`}
         marginBottom
       />
-      <NoDataPlaceholder data={chartsWithData} label="Waiting for data...">
+      {!chartsWithData ? (
+        <NoDataPlaceholder label="Waiting for data..." />
+      ) : (
         <Grid container spacing={16}>
           {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
             return (
@@ -71,7 +73,7 @@ function Monitoring({ classes, match, history, location }) {
             )
           })}
         </Grid>
-      </NoDataPlaceholder>
+      )}
     </div>
   )
 }

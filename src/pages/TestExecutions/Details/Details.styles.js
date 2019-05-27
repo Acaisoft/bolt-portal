@@ -1,4 +1,4 @@
-export default ({ palette, mixins, spacing, typography }) => {
+export default ({ mixins, spacing }) => {
   return {
     root: {
       flexGrow: 1,

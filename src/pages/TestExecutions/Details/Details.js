@@ -5,13 +5,7 @@ import { useSubscription } from 'react-apollo-hooks'
 
 import { withStyles, Paper, Grid } from '@material-ui/core'
 
-import {
-  Loader,
-  SectionHeader,
-  ZoomButton,
-  NoDataPlaceholder,
-  Breadcrumbs,
-} from '~components'
+import { Loader, SectionHeader, ZoomButton, NoDataPlaceholder } from '~components'
 
 import {
   RequestsChart,
@@ -75,108 +69,121 @@ export function Details({ classes, history, match }) {
       />
 
       <Grid container spacing={16}>
-        <Grid item xs={12} md={isZoomed ? 12 : 4}>
-          <Paper square className={classes.tile}>
-            <SectionHeader
-              size="small"
-              className={classes.tileTitle}
-              title="All Requests"
-            >
-              <ZoomButton
-                isZoomed={isZoomed}
-                onZoomIn={() => setIsZoomed(true)}
-                onZoomOut={() => setIsZoomed(false)}
-              />
-            </SectionHeader>
-            <div className={classes.chartContainer}>
-              <RequestsChart
-                execution={execution}
-                data={resultsPerTick}
-                syncId="sync-chart"
-              />
-            </div>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={isZoomed ? 12 : 4}>
-          <Paper square className={classes.tile}>
-            <SectionHeader
-              size="small"
-              className={classes.tileTitle}
-              title="Requests Response Time"
-            >
-              <ZoomButton
-                isZoomed={isZoomed}
-                onZoomIn={() => setIsZoomed(true)}
-                onZoomOut={() => setIsZoomed(false)}
-              />
-            </SectionHeader>
-            <div className={classes.chartContainer}>
-              <ResponseTimeChart
-                execution={execution}
-                data={resultsPerTick}
-                syncId="sync-chart"
-              />
-            </div>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={isZoomed ? 12 : 4}>
-          <Paper square className={classes.tile}>
-            <SectionHeader
-              size="small"
-              className={classes.tileTitle}
-              title="Users Spawn"
-            >
-              <ZoomButton
-                isZoomed={isZoomed}
-                onZoomIn={() => setIsZoomed(true)}
-                onZoomOut={() => setIsZoomed(false)}
-              />
-            </SectionHeader>
-            <div className={classes.chartContainer}>
-              <UsersSpawnChart
-                execution={execution}
-                data={resultsPerTick}
-                syncId="sync-chart"
-              />
-            </div>
-          </Paper>
-        </Grid>
+        {resultsPerTick.length === 0 ? (
+          <Grid item xs={12}>
+            <Paper square className={classes.tile}>
+              <NoDataPlaceholder label={noDataMessage} />
+            </Paper>
+          </Grid>
+        ) : (
+          <React.Fragment>
+            <Grid item xs={12} md={isZoomed ? 12 : 4}>
+              <Paper square className={classes.tile}>
+                <SectionHeader
+                  size="small"
+                  className={classes.tileTitle}
+                  title="All Requests"
+                >
+                  <ZoomButton
+                    isZoomed={isZoomed}
+                    onZoomIn={() => setIsZoomed(true)}
+                    onZoomOut={() => setIsZoomed(false)}
+                  />
+                </SectionHeader>
+                <div className={classes.chartContainer}>
+                  <RequestsChart
+                    execution={execution}
+                    data={resultsPerTick}
+                    syncId="sync-chart"
+                  />
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={isZoomed ? 12 : 4}>
+              <Paper square className={classes.tile}>
+                <SectionHeader
+                  size="small"
+                  className={classes.tileTitle}
+                  title="Requests Response Time"
+                >
+                  <ZoomButton
+                    isZoomed={isZoomed}
+                    onZoomIn={() => setIsZoomed(true)}
+                    onZoomOut={() => setIsZoomed(false)}
+                  />
+                </SectionHeader>
+                <div className={classes.chartContainer}>
+                  <ResponseTimeChart
+                    execution={execution}
+                    data={resultsPerTick}
+                    syncId="sync-chart"
+                  />
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={isZoomed ? 12 : 4}>
+              <Paper square className={classes.tile}>
+                <SectionHeader
+                  size="small"
+                  className={classes.tileTitle}
+                  title="Users Spawn"
+                >
+                  <ZoomButton
+                    isZoomed={isZoomed}
+                    onZoomIn={() => setIsZoomed(true)}
+                    onZoomOut={() => setIsZoomed(false)}
+                  />
+                </SectionHeader>
+                <div className={classes.chartContainer}>
+                  <UsersSpawnChart
+                    execution={execution}
+                    data={resultsPerTick}
+                    syncId="sync-chart"
+                  />
+                </div>
+              </Paper>
+            </Grid>
+          </React.Fragment>
+        )}
+        {resultsPerEndpoint.length === 0 ? (
+          <Grid item xs={12}>
+            <Paper square className={classes.tile}>
+              <NoDataPlaceholder label={noDataMessage} />
+            </Paper>
+          </Grid>
+        ) : (
+          <React.Fragment>
+            <Grid item xs={12} md={6}>
+              <Paper square className={classes.tile}>
+                <SectionHeader
+                  size="small"
+                  className={classes.tileTitle}
+                  title="Request Results"
+                />
+                <ResultsPerEndpointChart data={resultsPerEndpoint} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper square className={classes.tile}>
+                <SectionHeader
+                  size="small"
+                  className={classes.tileTitle}
+                  title="Requests/Second by request"
+                />
+                <RequestsPerSecondChart data={resultsPerEndpoint} />
+              </Paper>
+            </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Paper square className={classes.tile}>
-            <SectionHeader
-              size="small"
-              className={classes.tileTitle}
-              title="Request Results"
-            />
-            <NoDataPlaceholder label={noDataMessage} data={resultsPerEndpoint}>
-              <ResultsPerEndpointChart data={resultsPerEndpoint} />
-            </NoDataPlaceholder>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper square className={classes.tile}>
-            <SectionHeader
-              size="small"
-              className={classes.tileTitle}
-              title="Requests/Second by request"
-            />
-            <NoDataPlaceholder label={noDataMessage} data={resultsPerEndpoint}>
-              <RequestsPerSecondChart data={resultsPerEndpoint} />
-            </NoDataPlaceholder>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper square className={classes.tile}>
-            <NoDataPlaceholder label={noDataMessage} data={resultsPerEndpoint}>
-              <ResponsesTable
-                data={resultsPerEndpoint}
-                getEndpointDetailsUrl={getEndpointDetailsUrl}
-              />
-            </NoDataPlaceholder>
-          </Paper>
-        </Grid>
+            <Grid item xs={12}>
+              <Paper square className={classes.tile}>
+                <ResponsesTable
+                  data={resultsPerEndpoint}
+                  getEndpointDetailsUrl={getEndpointDetailsUrl}
+                />
+              </Paper>
+            </Grid>
+          </React.Fragment>
+        )}
       </Grid>
     </div>
   )

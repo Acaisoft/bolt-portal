@@ -1,21 +1,35 @@
 import React from 'react'
-
-import { Typography, withStyles } from '@material-ui/core'
-import { CloudOff } from '@material-ui/icons'
+import PropTypes from 'prop-types'
+import { Typography, withStyles, CircularProgress } from '@material-ui/core'
+import { NoData } from '~assets/icons'
 
 import styles from './NoDataPlaceholder.styles'
 
-function NoDataPlaceholder({ children, classes, data, label }) {
-  if (!data || (Array.isArray(data) && data.length === 0)) {
-    return (
-      <Typography className={classes.root} variant="body2" color="secondary">
-        <CloudOff className={classes.icon} />
-        {label}
-      </Typography>
-    )
-  }
+function NoDataPlaceholder({ actions, classes, description, label }) {
+  return (
+    <div className={classes.root}>
+      <NoData />
+      <div className={classes.titleHolder}>
+        <CircularProgress className={classes.progress} size={22} />
+        <Typography className={classes.title} variant="body1">
+          {label}
+        </Typography>
+      </div>
+      {description && (
+        <Typography className={classes.description} variant="body2">
+          {description}
+        </Typography>
+      )}
+      {actions && actions}
+    </div>
+  )
+}
 
-  return children
+NoDataPlaceholder.propTypes = {
+  actions: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  classes: PropTypes.object,
+  description: PropTypes.string,
+  label: PropTypes.string.isRequired,
 }
 
 export default withStyles(styles)(NoDataPlaceholder)
