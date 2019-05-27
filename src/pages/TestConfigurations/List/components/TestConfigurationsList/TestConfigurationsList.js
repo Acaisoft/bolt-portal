@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { useQuery } from 'react-apollo-hooks'
+import { useSubscription } from 'react-apollo-hooks'
 
 import { withStyles, IconButton, Tooltip } from '@material-ui/core'
 import { Add, Pageview, History, PlayArrow } from '@material-ui/icons'
@@ -11,7 +11,10 @@ import { useListFilters } from '~hooks'
 
 import { formatPercent, formatThousands } from '~utils/numbers'
 
-import { GET_TEST_CONFIGURATIONS } from './graphql'
+import {
+  SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM,
+  SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM,
+} from './graphql'
 import { useConfigurationRun } from '../../../hooks'
 import styles from './TestConfigurationsList.styles'
 
@@ -28,9 +31,9 @@ export function TestConfigurationsList({
   })
 
   const {
-    data: { configurations = [], configurationsAggregate },
-    loading,
-  } = useQuery(GET_TEST_CONFIGURATIONS, {
+    data: { configurations } = {},
+    loading: loadingConfigurations,
+  } = useSubscription(SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM, {
     variables: {
       projectId,
       limit: pagination.rowsPerPage,
@@ -39,6 +42,18 @@ export function TestConfigurationsList({
     },
     fetchPolicy: 'cache-and-network',
   })
+
+  const {
+    data: { configurationsAggregate } = {},
+    loading: loadingConfigurationsAggregate,
+  } = useSubscription(SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM, {
+    variables: {
+      projectId,
+    },
+    fetchPolicy: 'cache-and-network',
+  })
+
+  const loading = loadingConfigurations || loadingConfigurationsAggregate
 
   const {
     loading: isStartingRun,

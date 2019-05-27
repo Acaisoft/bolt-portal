@@ -51,8 +51,20 @@ const TEST_CONFIGURATION_LIST_ITEM = gql`
   }
 `
 
-export const GET_TEST_CONFIGURATIONS = gql`
-  query getTestConfigurations(
+export const SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM = gql`
+  subscription subscribeConfigurationListItem($projectId: uuid) {
+    configurationsAggregate: configuration_aggregate(
+      where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM = gql`
+  subscription subscribeConfigurationListItem(
     $projectId: uuid
     $limit: Int
     $offset: Int
@@ -65,13 +77,6 @@ export const GET_TEST_CONFIGURATIONS = gql`
       order_by: $order_by
     ) {
       ...testConfigurationListItem
-    }
-    configurationsAggregate: configuration_aggregate(
-      where: { project_id: { _eq: $projectId }, is_deleted: { _eq: false } }
-    ) {
-      aggregate {
-        count
-      }
     }
   }
 
