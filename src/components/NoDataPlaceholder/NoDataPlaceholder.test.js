@@ -56,5 +56,14 @@ describe('component: NoDataPlaceholder', () => {
       const icon = getByTestId('circular-progress-spinner')
       expect(icon).toBeVisible()
     })
+
+    test("set the container's height", () => {
+      const { getByTestId } = render(
+        <NoDataPlaceholder classes={ClassesProxy} label={label} height="20vh" />
+      )
+
+      const container = getByTestId('no-data-container')
+      expect(container).toHaveStyle('height: 20vh')
+    })
   })
 })

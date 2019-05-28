@@ -5,12 +5,13 @@ import { NoData } from '~assets/icons'
 
 import styles from './NoDataPlaceholder.styles'
 
-export function NoDataPlaceholder({ actions, classes, description, label }) {
+export function NoDataPlaceholder({ actions, classes, description, label, height }) {
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ height }} data-testid="no-data-container">
       <NoData className={classes.icon} />
       <div className={classes.titleHolder}>
         <CircularProgress
+          color="primary"
           className={classes.progress}
           data-testid="circular-progress-spinner"
           size={22}
@@ -33,6 +34,7 @@ NoDataPlaceholder.propTypes = {
   actions: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   classes: PropTypes.object,
   description: PropTypes.string,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   label: PropTypes.string.isRequired,
 }
 
