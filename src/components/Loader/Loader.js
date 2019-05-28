@@ -4,28 +4,28 @@ import { CircularProgress, withStyles } from '@material-ui/core'
 
 import style from './Loader.styles'
 
-export function Loader({ loading, children, ...rest }) {
-  return loading ? <RenderLoader {...rest} /> : children
-}
-
-function RenderLoader({ fill, classes }) {
-  const LoaderWithProps = function() {
-    return <CircularProgress color="secondary" className={classes.root} />
+export function Loader({
+  children,
+  classes,
+  color = 'primary',
+  fill = false,
+  loading = false,
+}) {
+  if (!loading) {
+    return children
   }
-  return fill ? (
-    <div className={classes.holder}>
-      <LoaderWithProps />
-    </div>
-  ) : (
-    <LoaderWithProps />
-  )
+
+  const loader = <CircularProgress color={color} className={classes.root} />
+
+  return fill ? <div className={classes.holder}>{loader}</div> : loader
 }
 
 Loader.propTypes = {
-  loading: PropTypes.bool,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  classes: PropTypes.object.isRequired,
+  color: PropTypes.oneOf(['primary', 'secondary', 'inherit']),
   fill: PropTypes.bool,
-  classes: PropTypes.object,
+  loading: PropTypes.bool,
 }
 
 export default withStyles(style)(Loader)
