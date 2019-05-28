@@ -40,4 +40,8 @@ export default ({ mixins, palette, spacing, typography, zIndex }) => ({
   icon: {
     marginRight: spacing.unit * 2,
   },
+  button: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
 })
