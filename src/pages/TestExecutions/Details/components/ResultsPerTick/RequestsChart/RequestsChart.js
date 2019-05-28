@@ -14,18 +14,16 @@ import {
 
 import { withStyles } from '@material-ui/core'
 
+import { Chart } from '~config/constants'
 import { formatThousands } from '~utils/numbers'
-import { getExecutionTimestampDomain } from '../helpers'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
-export function RequestsChart({ data, execution, syncId, theme }) {
+export function RequestsChart({ data, execution, syncId, theme, domainX }) {
   const { color, gridLine, font, tooltip } = theme.palette.chart
 
-  const domainX = getExecutionTimestampDomain(execution)
-
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={Chart.HEIGHT}>
       <AreaChart
         style={{ ...font }}
         data={data}

@@ -1,5 +1,0 @@
-export { default as RequestsChart } from './RequestsChart'
-export { default as RequestsPerSecondChart } from './RequestsPerSecondChart'
-export { default as ResponseTimeChart } from './ResponseTimeChart'
-export { default as ResultsPerEndpointChart } from './ResultsPerEndpointChart'
-export { default as UsersSpawnChart } from './UsersSpawnChart'
