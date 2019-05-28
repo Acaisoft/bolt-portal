@@ -77,6 +77,7 @@ const palette = {
     error: '#FF5EA1',
     success: '#1EB1B1',
     warning: '#EB8967',
+    icon: '#A7A7C5',
   },
 }
 

@@ -5,12 +5,16 @@ import { NoData } from '~assets/icons'
 
 import styles from './NoDataPlaceholder.styles'
 
-function NoDataPlaceholder({ actions, classes, description, label }) {
+export function NoDataPlaceholder({ actions, classes, description, label }) {
   return (
     <div className={classes.root}>
-      <NoData />
+      <NoData className={classes.icon} />
       <div className={classes.titleHolder}>
-        <CircularProgress className={classes.progress} size={22} />
+        <CircularProgress
+          className={classes.progress}
+          data-testid="circular-progress-spinner"
+          size={22}
+        />
         <Typography className={classes.title} variant="body1">
           {label}
         </Typography>

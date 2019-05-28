@@ -6,7 +6,8 @@ export default ({ palette, spacing }) => ({
     flexDirection: 'column',
   },
   icon: {
-    marginRight: spacing.unit,
+    fontSize: '9rem',
+    color: palette.text.icon,
   },
   progress: {
     marginRight: spacing.unit * 1.5,
@@ -22,6 +23,6 @@ export default ({ palette, spacing }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: spacing.unit * 3,
+    marginTop: spacing.unit,
   },
 })
