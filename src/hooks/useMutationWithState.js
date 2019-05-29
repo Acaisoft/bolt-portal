@@ -7,28 +7,31 @@ function useMutationWithState(mutationDoc, options) {
 
   const rawMutation = useMutation(mutationDoc, options)
 
-  const mutation = useCallback(async mutationCallOptions => {
-    setLoading(true)
-    setError(null)
+  const mutation = useCallback(
+    async mutationCallOptions => {
+      setLoading(true)
+      setError(null)
 
-    let errorMessage = null
-    let response
-    try {
-      response = await rawMutation(mutationCallOptions)
-      if (Array.isArray(response.errors) && response.errors.length > 0) {
-        errorMessage = response.errors[0].message
+      let errorMessage = null
+      let response
+      try {
+        response = await rawMutation(mutationCallOptions)
+        if (Array.isArray(response.errors) && response.errors.length > 0) {
+          errorMessage = response.errors[0].message
+        }
+      } catch (ex) {
+        errorMessage =
+          Array.isArray(ex.graphQLErrors) && ex.graphQLErrors.length > 0
+            ? ex.graphQLErrors[0].message
+            : ex.message
       }
-    } catch (ex) {
-      errorMessage =
-        Array.isArray(ex.graphQLErrors) && ex.graphQLErrors.length > 0
-          ? ex.graphQLErrors[0].message
-          : ex.message
-    }
-    setError(errorMessage)
-    setLoading(false)
+      setError(errorMessage)
+      setLoading(false)
 
-    return { errorMessage, response }
-  }, [])
+      return { errorMessage, response }
+    },
+    [rawMutation]
+  )
 
   return { loading, mutation, error }
 }
