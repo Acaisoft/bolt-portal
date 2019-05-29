@@ -1,2 +1,3 @@
-export { default as FailuresChart } from './FailuresChart'
-export { default as TimeDistributionChart } from './TimeDistributionChart'
+export { default as Failures } from './Failures'
+export { default as Stats } from './Stats'
+export { default as TimeDistribution } from './TimeDistribution'

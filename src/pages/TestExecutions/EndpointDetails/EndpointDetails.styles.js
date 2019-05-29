@@ -6,7 +6,17 @@ export default ({ palette, mixins, spacing, typography }) => {
       maxHeight: 500,
     },
     tileContent: {
-      margin: mixins.scaledSpaceAround(4, 0, 2),
+      padding: mixins.scaledSpaceAround(4, 0, 2),
+    },
+    verticalGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'stretch',
+    },
+    verticalGridItem: {
+      '& + &': {
+        marginTop: spacing.unit * 2,
+      },
     },
   }
 }

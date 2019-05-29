@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { ResponsiveContainer, PieChart, Pie, Sector, Cell, Text } from 'recharts'
 
+import { ResponsiveContainer, PieChart, Pie, Sector, Cell, Text } from 'recharts'
 import { withStyles } from '@material-ui/core'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
