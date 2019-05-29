@@ -6,7 +6,7 @@ import { ChevronRight } from '@material-ui/icons'
 
 import styles from './Breadcrumbs.styles'
 
-function Breadcrumbs({ classes, items = [] }) {
+export function Breadcrumbs({ classes, items = [] }) {
   if (items.length === 0) {
     return null
   }
@@ -19,6 +19,7 @@ function Breadcrumbs({ classes, items = [] }) {
             render({ index })
           ) : url ? (
             <Link
+              data-testid="link"
               component={RouterLink}
               color="inherit"
               to={url}
@@ -27,11 +28,10 @@ function Breadcrumbs({ classes, items = [] }) {
               {label}
             </Link>
           ) : (
-            <div className={classes.textItem}>{label}</div>
-          )}
-
+                <div data-testid="item" className={classes.textItem}>{label}</div>
+              )}
           {index < items.length - 1 && (
-            <div className={classes.separator}>
+            <div data-testid="separator" className={classes.separator}>
               <ChevronRight />
             </div>
           )}
