@@ -362,23 +362,13 @@ function useConfigurationSubmit({
 
   const handleSubmit = useCallback(
     async values => {
-      const dbValues = preparePayload(values)
-
-      let variables
-      if (isPerformed) {
-        variables = { id: configurationId, name: dbValues.name }
-      } else {
-        variables = dbValues
-
-        if (mode === 'create') {
-          variables.project_id = projectId
-        } else {
-          variables.id = configurationId
-        }
-      }
-
+      const variables = preparePayload(values, {
+        mode,
+        isPerformed,
+        configurationId,
+        projectId,
+      })
       const { errorMessage } = await submitMutation({ variables })
-
       onSubmit({ values, errorMessage })
     },
     [submitMutation, isPerformed, mode, configurationId, projectId, onSubmit]

@@ -257,7 +257,10 @@ function prepareInitialValues(data) {
   }
 }
 
-function preparePayload(formValues) {
+function preparePayload(
+  formValues,
+  { isPerformed, mode, configurationId, projectId }
+) {
   if (!formValues) {
     return {}
   }
@@ -272,29 +275,42 @@ function preparePayload(formValues) {
     configuration_envvars,
   } = formValues
 
-  return {
+  const variables = {
     name: scenario_name,
-    type_slug: configuration_type,
-    has_pre_test,
-    has_post_test,
-    has_load_tests,
-    has_monitoring,
-    configuration_parameters: Object.entries(parameters)
-      .map(([slug, value]) => ({
-        parameter_slug: slug,
-        value,
-      }))
-      // Skip parameters for not checked scenario parts
-      .filter(
-        ({ parameter_slug }) =>
-          (has_load_tests && parameter_slug.includes('load_tests')) ||
-          (has_monitoring && parameter_slug.includes('monitoring'))
-      ),
-    test_source_id: test_source[test_source_type],
     configuration_envvars: configuration_envvars.filter(
       ce => ce.name !== '' && typeof ce.name !== 'undefined'
     ),
   }
+
+  if (mode === 'create') {
+    variables.project_id = projectId
+  } else {
+    variables.id = configurationId
+  }
+
+  if (!isPerformed) {
+    Object.assign(variables, {
+      type_slug: configuration_type,
+      has_pre_test,
+      has_post_test,
+      has_load_tests,
+      has_monitoring,
+      configuration_parameters: Object.entries(parameters)
+        .map(([slug, value]) => ({
+          parameter_slug: slug,
+          value,
+        }))
+        // Skip parameters for not checked scenario parts
+        .filter(
+          ({ parameter_slug }) =>
+            (has_load_tests && parameter_slug.includes('load_tests')) ||
+            (has_monitoring && parameter_slug.includes('monitoring'))
+        ),
+      test_source_id: test_source[test_source_type],
+    })
+  }
+
+  return variables
 }
 
 export { useFormSchema, prepareInitialValues, preparePayload }

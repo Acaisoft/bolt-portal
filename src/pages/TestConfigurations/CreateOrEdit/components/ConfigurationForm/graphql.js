@@ -91,8 +91,16 @@ export const EDIT_CONFIGURATION_MUTATION = gql`
 `
 
 export const EDIT_PERFORMED_CONFIGURATION_MUTATION = gql`
-  mutation editPerformedTestConfiguration($id: UUID!, $name: String!) {
-    testrun_configuration_update(id: $id, name: $name) {
+  mutation editPerformedTestConfiguration(
+    $id: UUID!
+    $name: String!
+    $configuration_envvars: [ConfigurationEnvVarInput]
+  ) {
+    testrun_configuration_update(
+      id: $id
+      name: $name
+      configuration_envvars: $configuration_envvars
+    ) {
       returning {
         id
       }
