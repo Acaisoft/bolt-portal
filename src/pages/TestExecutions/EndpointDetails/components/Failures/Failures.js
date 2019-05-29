@@ -13,7 +13,7 @@ function Failures({ classes, endpointId }) {
   return (
     <Paper square className={classes.tile}>
       {loading ? (
-        <NoDataPlaceholder label="Loading failures..." height="100%" />
+        <NoDataPlaceholder label="Loading failures..." />
       ) : (
         <React.Fragment>
           <SectionHeader title="Failures" size="small" />

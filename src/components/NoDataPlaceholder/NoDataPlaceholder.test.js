@@ -57,13 +57,19 @@ describe('component: NoDataPlaceholder', () => {
       expect(icon).toBeVisible()
     })
 
-    test("set the container's height", () => {
-      const { getByTestId } = render(
-        <NoDataPlaceholder classes={ClassesProxy} label={label} height="20vh" />
-      )
+    describe("set the container's height", () => {
+      test.each([
+        [undefined, '100%'], // default
+        ['20vh', '20vh'],
+        [100, 100],
+      ])('when height is %s, should set to %s', (height, expected) => {
+        const { getByTestId } = render(
+          <NoDataPlaceholder classes={ClassesProxy} label={label} height={height} />
+        )
 
-      const container = getByTestId('no-data-container')
-      expect(container).toHaveStyle('height: 20vh')
+        const container = getByTestId('no-data-container')
+        expect(container).toHaveStyle(`height: ${expected}`)
+      })
     })
   })
 })

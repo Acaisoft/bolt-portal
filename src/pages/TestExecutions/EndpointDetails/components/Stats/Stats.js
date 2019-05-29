@@ -15,7 +15,7 @@ function Stats({ classes, endpointId }) {
   if (loading) {
     return (
       <Paper square className={classes.tile}>
-        <NoDataPlaceholder label="Loading stats..." height="100%" />
+        <NoDataPlaceholder label="Loading stats..." />
       </Paper>
     )
   }

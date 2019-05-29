@@ -5,7 +5,13 @@ import { NoData } from '~assets/icons'
 
 import styles from './NoDataPlaceholder.styles'
 
-export function NoDataPlaceholder({ actions, classes, description, label, height }) {
+export function NoDataPlaceholder({
+  actions,
+  classes,
+  description,
+  label,
+  height = '100%',
+}) {
   return (
     <div className={classes.root} style={{ height }} data-testid="no-data-container">
       <NoData className={classes.icon} />

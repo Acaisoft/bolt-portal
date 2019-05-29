@@ -13,7 +13,7 @@ function TimeDistribution({ classes, endpointId }) {
   return (
     <Paper square className={classes.tile}>
       {loading ? (
-        <NoDataPlaceholder label="Loading time distribution..." height="100%" />
+        <NoDataPlaceholder label="Loading time distribution..." />
       ) : (
         <React.Fragment>
           <SectionHeader title="Time Distribution" size="small" />
