@@ -17,10 +17,16 @@ import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 import styles from './ProjectCard.styles'
 
 function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
-  const { num_tests_passed, num_tests_failed } = project
+  const {
+    num_tests_passed = 0,
+    num_tests_failed = 0,
+    num_scenarios = 0,
+    num_sources = 0,
+  } = project
   const tests_overall = num_tests_failed + num_tests_passed
   const progress =
     tests_overall === 0 ? tests_overall : (num_tests_passed / tests_overall) * 100
+
   return (
     <React.Fragment>
       <CardHeader
@@ -40,15 +46,13 @@ function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
         subheader={
           <div className={classes.chips}>
             <Chip
-              label={`${project.num_scenarios} Test Scenario${
-                project.num_scenarios !== 1 ? 's' : ''
+              label={`${num_scenarios} Test Scenario${
+                num_scenarios !== 1 ? 's' : ''
               }`}
               className={classes.chip}
             />
             <Chip
-              label={`${project.num_sources} Test Source${
-                project.num_sources !== 1 ? 's' : ''
-              }`}
+              label={`${num_sources} Test Source${num_sources !== 1 ? 's' : ''}`}
               className={classes.chip}
             />
           </div>

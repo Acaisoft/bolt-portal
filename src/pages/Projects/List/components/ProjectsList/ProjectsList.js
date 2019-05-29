@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 import { Menu, MenuItem, Typography, withStyles, Card } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
@@ -41,14 +42,7 @@ function ProjectsList({ classes, onDetails }) {
     return <Typography variant="body1">Error :(</Typography>
   if (projectsLoading || summariesLoading) return <Loader loading fill />
 
-  const summaries = summariesData.summaries.projects.reduce((acc, currVal) => {
-    const summaryWithoutId = { ...currVal }
-    delete summaryWithoutId.project_id
-    return {
-      ...acc,
-      [currVal.project_id]: summaryWithoutId,
-    }
-  }, {})
+  const summaries = _.keyBy(summariesData.summaries.projects, 'project_id')
 
   const projectsItems = [
     { id: 'new-project' },
