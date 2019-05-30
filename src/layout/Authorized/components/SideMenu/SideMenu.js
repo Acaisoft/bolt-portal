@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import { NavLink } from 'react-router-dom'
@@ -12,15 +12,18 @@ import {
   Backdrop,
   withStyles,
 } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
+import { Close, ExitToApp } from '@material-ui/icons'
 import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons'
 
+import { AuthContext } from '~contexts'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
 
 import styles from './SideMenu.styles'
 
 function SideMenu({ classes, isOpen, onClose, projectId }) {
+  const { logout } = useContext(AuthContext)
+
   const items = useMemo(() => {
     if (!projectId) {
       return []
@@ -71,7 +74,7 @@ function SideMenu({ classes, isOpen, onClose, projectId }) {
               Acai Bolt
             </Typography>
           </div>
-          <MenuList component="div">
+          <MenuList component="div" className={classes.menu}>
             {items.map(item => (
               <MenuItem
                 key={item.linkTo}
@@ -86,6 +89,12 @@ function SideMenu({ classes, isOpen, onClose, projectId }) {
                 {item.label}
               </MenuItem>
             ))}
+          </MenuList>
+          <MenuList component="div" className={classes.footerMenu}>
+            <MenuItem onClick={() => logout()} className={classes.item}>
+              <ExitToApp className={classes.icon} fontSize="inherit" />
+              Logout
+            </MenuItem>
           </MenuList>
         </Paper>
       </ClickAwayListener>

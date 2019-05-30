@@ -6,6 +6,7 @@ const dirAliases = [
   'components',
   'config',
   'containers',
+  'contexts',
   'hooks',
   'layout',
   'pages',

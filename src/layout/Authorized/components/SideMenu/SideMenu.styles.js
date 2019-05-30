@@ -9,6 +9,15 @@ export default ({ mixins, palette, spacing, typography, zIndex }) => ({
   },
   paper: {
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'stretch',
+  },
+  menu: {
+    flexGrow: 1,
+  },
+  footerMenu: {
+    borderTop: `1px solid ${palette.divider}`,
   },
   header: {
     ...mixins.gutters(),

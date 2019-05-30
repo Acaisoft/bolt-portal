@@ -7,7 +7,8 @@ import { ApolloLink, Observable } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { split } from 'apollo-link'
 import { getMainDefinition } from 'apollo-utilities'
-import Config from '~services/Config/Config'
+
+import Config from '~services/Config'
 
 /*
  * Links
@@ -99,12 +100,6 @@ const cache = new InMemoryCache()
 persistCache({
   cache,
   storage: window.localStorage,
-})
-
-cache.writeData({
-  data: {
-    isAuthorized: true,
-  },
 })
 
 /*
