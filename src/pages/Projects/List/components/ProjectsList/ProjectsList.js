@@ -6,27 +6,14 @@ import _ from 'lodash'
 import { Menu, MenuItem, Typography, withStyles, Card } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
 
-import { GET_PROJECTS, GET_PROJECT_SUMMARIES } from './graphql'
+import { GET_PROJECT_SUMMARIES } from './graphql'
 import { useQuery } from 'react-apollo-hooks'
 
 import styles from './ProjectsList.styles'
 import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from '..'
 
 function ProjectsList({ classes, onDetails }) {
-  const {
-    data: { projects = [] },
-    loading: projectsLoading,
-    error: projectsError,
-  } = useQuery(GET_PROJECTS, {
-    fetchPolicy: 'cache-and-network',
-  })
-  const {
-    data: summariesData,
-    loading: summariesLoading,
-    error: summariesError,
-  } = useQuery(GET_PROJECT_SUMMARIES, {
-    fetchPolicy: 'cache-and-network',
-  })
+  const { summaries, loading, error } = useProjectSummaries()
 
   const {
     editedItem,
@@ -38,25 +25,16 @@ function ProjectsList({ classes, onDetails }) {
     handleMenuClose,
   } = useProjectsListState()
 
-  if (projectsError || summariesError)
-    return <Typography variant="body1">Error :(</Typography>
-  if (projectsLoading || summariesLoading) return <Loader loading fill />
+  if (error) return <Typography variant="body1">Error :(</Typography>
+  if (loading) return <Loader loading fill />
 
-  const summaries = _.keyBy(summariesData.summaries.projects, 'project_id')
-
-  const projectsItems = [
-    { id: 'new-project' },
-    ...projects.map(project => ({
-      ...summaries[project.id],
-      ...project,
-    })),
-  ]
+  const projectsItems = [{ id: 'new-project' }, ...summaries]
 
   return (
     <React.Fragment>
       <SectionHeader
         title="Your Projects"
-        subtitle={`(${projects.length})`}
+        subtitle={`(${summaries.length})`}
         marginBottom
       />
 
@@ -122,6 +100,17 @@ function ProjectsList({ classes, onDetails }) {
 
 ProjectsList.propTypes = {
   onDetails: PropTypes.func.isRequired,
+}
+
+function useProjectSummaries() {
+  const { data: { summaries = {} } = {}, loading, error } = useQuery(
+    GET_PROJECT_SUMMARIES,
+    {
+      fetchPolicy: 'cache-and-network',
+    }
+  )
+
+  return { loading, error, summaries: summaries.projects || [] }
 }
 
 function useProjectsListState() {
