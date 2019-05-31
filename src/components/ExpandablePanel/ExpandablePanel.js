@@ -11,12 +11,13 @@ import { ExpandMore } from '@material-ui/icons'
 
 import useStyles from './ExpandablePanel.styles'
 
-function ExpandablePanel({ children, title, ...panelProps }) {
+export function ExpandablePanel({ children, title, ...panelProps }) {
   const classes = useStyles()
 
   return (
-    <ExpansionPanel className={classes.root} elevation={0} {...panelProps}>
+    <ExpansionPanel data-testid="expansion-panel" className={classes.root} elevation={0} {...panelProps}>
       <ExpansionPanelSummary
+        data-testid="expansion-panel-summary"
         expandIcon={<ExpandMore />}
         classes={{
           content: classes.summaryContent,
