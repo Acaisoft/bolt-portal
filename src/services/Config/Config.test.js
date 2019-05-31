@@ -5,22 +5,22 @@ describe('service: Config', () => {
     it('should contain all required keys', () => {
       const config = new Config()
       expect(Object.keys(config)).toEqual(
-        expect.arrayContaining(['apiBase', 'env', 'stage', 'version'])
+        expect.arrayContaining(['hasura', 'keycloak', 'env', 'stage', 'version'])
       )
     })
 
-    describe('getting apiBase', () => {
-      describe('should return correct apiBase for any APP_STAGE', () => {
-        it('should return dev apiBase if stage is "stage"', () => {
+    describe('getting apiUri', () => {
+      describe('should return correct apiUri for any APP_STAGE', () => {
+        it('should return dev apiUri if stage is "stage"', () => {
           process.env.REACT_APP_STAGE = 'stage'
           const config = new Config()
-          expect(config.apiBase).toContain('hasura.dev.bolt')
+          expect(config.hasura.apiUri).toContain('hasura.dev.bolt')
         })
 
-        it('should return prod apiBase if stage is "prod"', () => {
+        it('should return prod apiUri if stage is "prod"', () => {
           process.env.REACT_APP_STAGE = 'prod'
           const config = new Config()
-          expect(config.apiBase).toContain('hasura.bolt')
+          expect(config.hasura.apiUri).toContain('hasura.bolt')
         })
 
         it('should return local api url if stage is not "stage" or "prod"', () => {
@@ -28,7 +28,7 @@ describe('service: Config', () => {
           for (const stage of stages) {
             process.env.REACT_APP_STAGE = stage
             const config = new Config()
-            expect(config.apiBase).toContain('localhost')
+            expect(config.hasura.apiUri).toContain('localhost')
           }
         })
       })
