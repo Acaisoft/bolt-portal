@@ -5,7 +5,7 @@ import { useQuery } from 'react-apollo-hooks'
 import { Add, Edit, Delete } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
 import { Pagination } from '~containers'
-import { ButtonWithIcon, DataTable, SectionHeader } from '~components'
+import { ButtonWithIcon, DataTable, SectionHeader, LinkButton } from '~components'
 
 import { useListFilters } from '~hooks'
 import { TestSourceType } from '~config/constants'
@@ -13,7 +13,12 @@ import { TestSourceType } from '~config/constants'
 import { GET_TEST_SOURCES } from './graphql'
 import useStyles from './TestSourcesList.styles'
 
-function TestSourcesList({ onCreate, onDelete, onEdit, projectId }) {
+function TestSourcesList({
+  getCreateTestSourceUrl,
+  onDelete,
+  getEditTestSourceUrl,
+  projectId,
+}) {
   const classes = useStyles()
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 10 },
@@ -47,10 +52,11 @@ function TestSourcesList({ onCreate, onDelete, onEdit, projectId }) {
           />
         )}
         <ButtonWithIcon
+          button={LinkButton}
           icon={Add}
           color="secondary"
           variant="contained"
-          onClick={onCreate}
+          href={getCreateTestSourceUrl}
         >
           New
         </ButtonWithIcon>
@@ -85,13 +91,9 @@ function TestSourcesList({ onCreate, onDelete, onEdit, projectId }) {
           key="actions"
           render={source => (
             <div className={classes.iconsContainer}>
-              <IconButton
-                aria-label="Edit source"
-                className={classes.icon}
-                onClick={() => onEdit(source)}
-              >
-                <Edit />
-              </IconButton>
+              <LinkButton title="Edit source" href={getEditTestSourceUrl(source)}>
+                Edit
+              </LinkButton>
               {/* <IconButton
                 aria-label="Delete source"
                 className={classes.icon}
@@ -109,9 +111,9 @@ function TestSourcesList({ onCreate, onDelete, onEdit, projectId }) {
 }
 
 TestSourcesList.propTypes = {
-  onCreate: PropTypes.func.isRequired,
+  getCreateTestSourceUrl: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
+  getEditTestSourceUrl: PropTypes.func.isRequired,
   projectId: PropTypes.string,
 }
 

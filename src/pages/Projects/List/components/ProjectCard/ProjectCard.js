@@ -9,13 +9,13 @@ import {
   Typography,
   CardActions,
 } from '@material-ui/core'
-import { ButtonWithIcon, SuccessRatePieChart } from '~components'
+import { ButtonWithIcon, SuccessRatePieChart, LinkButton } from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import useStyles from './ProjectCard.styles'
 
-function ProjectCard({ project, onDetails, onMenuOpen }) {
+function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
   const {
     num_tests_passed = 0,
     num_tests_failed = 0,
@@ -72,7 +72,8 @@ function ProjectCard({ project, onDetails, onMenuOpen }) {
         <ButtonWithIcon
           variant="contained"
           color="primary"
-          onClick={() => onDetails(project)}
+          button={LinkButton}
+          href={getProjectDetailsUrl(project)}
           className={classes.actionButton}
           icon={ChevronRight}
         >
@@ -83,7 +84,7 @@ function ProjectCard({ project, onDetails, onMenuOpen }) {
   )
 }
 ProjectCard.propTypes = {
-  onDetails: PropTypes.func.isRequired,
+  getProjectDetailsUrl: PropTypes.func.isRequired,
   onMenuOpen: PropTypes.func.isRequired,
   project: PropTypes.shape({
     id: PropTypes.string.isRequired,

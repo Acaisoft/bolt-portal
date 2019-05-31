@@ -15,15 +15,13 @@ export function List({ history, match }) {
 
   const classes = useStyles()
 
-  const handleDetails = useCallback(
+  const getExecutionDetailsUrl = useCallback(
     execution => {
-      history.push(
-        getUrl(routes.projects.configurations.executions.details, {
-          ...match.params,
-          configurationId: execution.configuration.id,
-          executionId: execution.id,
-        })
-      )
+      return getUrl(routes.projects.configurations.executions.details, {
+        ...match.params,
+        configurationId: execution.configuration.id,
+        executionId: execution.id,
+      })
     },
     [history, match]
   )
@@ -34,7 +32,10 @@ export function List({ history, match }) {
         Here you see results of all tests performed in all of your projects
       </Typography>
       <div className={classes.tableContainer}>
-        <TestExecutionsList projectId={projectId} onDetails={handleDetails} />
+        <TestExecutionsList
+          projectId={projectId}
+          getExecutionDetailsUrl={getExecutionDetailsUrl}
+        />
       </div>
     </div>
   )

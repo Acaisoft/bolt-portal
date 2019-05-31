@@ -24,8 +24,8 @@ import {
 import useStyles from './TestConfigurationsList.styles'
 
 export function TestConfigurationsList({
-  onCreate = () => {},
-  onDetails = () => {},
+  getTestConfigurationCreateUrl = () => {},
+  getTestConfigurationDetailsUrl = () => {},
   onRun = () => {},
   projectId,
 }) {
@@ -76,9 +76,10 @@ export function TestConfigurationsList({
         )}
         <ButtonWithIcon
           icon={Add}
+          button={LinkButton}
           variant="contained"
           color="secondary"
-          onClick={onCreate}
+          href={getTestConfigurationCreateUrl}
         >
           New
         </ButtonWithIcon>
@@ -174,7 +175,7 @@ export function TestConfigurationsList({
             return (
               <div className={classes.actionsContainer}>
                 <LinkButton
-                  onClick={() => onDetails(configuration)}
+                  href={getTestConfigurationDetailsUrl(configuration)}
                   title="Show scenario details"
                 >
                   Details
@@ -190,8 +191,8 @@ export function TestConfigurationsList({
 }
 
 TestConfigurationsList.propTypes = {
-  onCreate: PropTypes.func.isRequired,
-  onDetails: PropTypes.func.isRequired,
+  getTestConfigurationCreateUrl: PropTypes.func.isRequired,
+  getTestConfigurationDetailsUrl: PropTypes.func.isRequired,
   projectId: PropTypes.string,
 }
 

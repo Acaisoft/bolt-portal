@@ -12,14 +12,17 @@ export function List({ history, match }) {
   const { projectId } = match.params
   const classes = useStyles()
 
-  const { handleCreate, handleDetails } = useHandlers(history, match)
+  const {
+    getTestConfigurationCreateUrl,
+    getTestConfigurationDetailsUrl,
+  } = useHandlers(history, match)
 
   return (
     <div className={classes.root}>
       <TestConfigurationsList
         projectId={projectId}
-        onCreate={handleCreate}
-        onDetails={handleDetails}
+        onCreate={getTestConfigurationCreateUrl}
+        onDetails={getTestConfigurationDetailsUrl}
       />
     </div>
   )
@@ -36,19 +39,19 @@ List.propTypes = {
 }
 
 function useHandlers(history, match) {
-  const redirectToPage = useCallback(
+  const getRedirectUrl = useCallback(
     (path, params = {}) => {
-      history.push(getUrl(path, { ...match.params, ...params }))
+      return getUrl(path, { ...match.params, ...params })
     },
     [history, match]
   )
 
-  const handleCreate = useCallback(() => {
-    redirectToPage(routes.projects.configurations.create)
+  const getTestConfigurationCreateUrl = useCallback(() => {
+    return getRedirectUrl(routes.projects.configurations.create)
   }, [])
 
-  const handleDetails = useCallback(configuration => {
-    redirectToPage(routes.projects.configurations.details, {
+  const getTestConfigurationDetailsUrl = useCallback(configuration => {
+    return getRedirectUrl(routes.projects.configurations.details, {
       configurationId: configuration.id,
     })
   }, [])
@@ -63,7 +66,7 @@ function useHandlers(history, match) {
     }
   }, [])
 
-  return { handleCreate, handleDetails, handleRun }
+  return { getTestConfigurationCreateUrl, getTestConfigurationDetailsUrl, handleRun }
 }
 
 export default List

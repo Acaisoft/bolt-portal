@@ -11,7 +11,7 @@ import { useQuery } from 'react-apollo-hooks'
 import useStyles from './ProjectsList.styles'
 import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from '..'
 
-function ProjectsList({ onDetails }) {
+function ProjectsList({ getProjectDetailsUrl }) {
   const classes = useStyles()
   const { summaries, loading, error } = useProjectSummaries()
 
@@ -71,7 +71,7 @@ function ProjectsList({ onDetails }) {
                     <NewProjectCard onCreate={handleCreate} />
                   ) : (
                     <ProjectCard
-                      onDetails={onDetails}
+                      getProjectDetailsUrl={getProjectDetailsUrl}
                       onMenuOpen={handleMenuOpen}
                       onMenuClose={handleMenuClose}
                       project={project}
@@ -99,7 +99,7 @@ function ProjectsList({ onDetails }) {
 }
 
 ProjectsList.propTypes = {
-  onDetails: PropTypes.func.isRequired,
+  getProjectDetailsUrl: PropTypes.func.isRequired,
 }
 
 function useProjectSummaries() {

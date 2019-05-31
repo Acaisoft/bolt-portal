@@ -24,15 +24,18 @@ export function List({ history, match }) {
     handleDeleteSubmit,
     handleCloseModal,
   } = useDelete()
-  const { handleCreate, handleEdit } = useHandlers(history, match)
+  const { getCreateTestSourceUrl, getEditTestSourceUrl } = useHandlers(
+    history,
+    match
+  )
 
   return (
     <div className={classes.root}>
       <TestSourcesList
         projectId={projectId}
-        onCreate={handleCreate}
+        getCreateTestSourceUrl={getCreateTestSourceUrl}
         onDelete={handleDelete}
-        onEdit={handleEdit}
+        getEditTestSourceUrl={getEditTestSourceUrl}
       />
       {isModalOpen && (
         <DeleteModal
@@ -87,24 +90,24 @@ function useDelete() {
 }
 
 function useHandlers(history, match) {
-  const redirectToPage = useCallback(
+  const getRedirectUr = useCallback(
     (path, params = {}) => {
-      history.push(getUrl(path, { ...match.params, ...params }))
+      return getUrl(path, { ...match.params, ...params })
     },
     [history, match]
   )
 
-  const handleCreate = useCallback(() => {
-    redirectToPage(routes.projects.sources.create)
+  const getCreateTestSourceUrl = useCallback(() => {
+    return getRedirectUr(routes.projects.sources.create)
   }, [])
 
-  const handleEdit = useCallback(({ id }) => {
-    redirectToPage(routes.projects.sources.edit, { sourceId: id })
+  const getEditTestSourceUrl = useCallback(({ id }) => {
+    return getRedirectUr(routes.projects.sources.edit, { sourceId: id })
   }, [])
 
   return {
-    handleCreate,
-    handleEdit,
+    getCreateTestSourceUrl,
+    getEditTestSourceUrl,
   }
 }
 

@@ -4,14 +4,14 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
-import { DataTable, SectionHeader, NoWrap } from '~components'
+import { DataTable, SectionHeader, NoWrap, LinkButton } from '~components'
 import { useListFilters } from '~hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
 import { Pagination } from '~containers'
 import { formatThousands } from '~utils/numbers'
 
-function TestExecutionsList({ projectId, onDetails }) {
+function TestExecutionsList({ projectId, getExecutionDetailsUrl }) {
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 10 },
     orderBy: [{ start: 'desc' }],
@@ -113,14 +113,12 @@ function TestExecutionsList({ projectId, onDetails }) {
         <DataTable.Column
           key="actions"
           render={execution => (
-            <div>
-              <IconButton
-                aria-label="Show details"
-                onClick={() => onDetails(execution)}
-              >
-                <Pageview />
-              </IconButton>
-            </div>
+            <LinkButton
+              title="Show details"
+              href={getExecutionDetailsUrl(execution)}
+            >
+              Details
+            </LinkButton>
           )}
           title="Actions"
         />

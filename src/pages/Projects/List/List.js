@@ -7,14 +7,14 @@ import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
 export function List({ history }) {
-  const handleDetails = useCallback(
+  const getProjectDetailsUrl = useCallback(
     ({ id }) => {
-      history.push(getUrl(routes.projects.details, { projectId: id }))
+      return getUrl(routes.projects.details, { projectId: id })
     },
     [history]
   )
 
-  return <ProjectsList onDetails={handleDetails} />
+  return <ProjectsList getProjectDetailsUrl={getProjectDetailsUrl} />
 }
 List.propTypes = {
   history: PropTypes.shape({
