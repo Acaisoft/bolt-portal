@@ -144,4 +144,4 @@ FailuresChart.propTypes = {
   theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(React.memo(FailuresChart))
+export default withStyles({}, { withTheme: true })(FailuresChart)

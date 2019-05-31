@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { withStyles } from '@material-ui/core'
+import useStyles from './LabeledValue.styles'
 
-import styles from './LabeledValue.styles'
+function LabeledValue({ label, value }) {
+  const classes = useStyles()
 
-function LabeledValue({ classes, label, value }) {
   return (
     <div className={classes.root}>
       <div className={classes.label}>{label}</div>
@@ -13,4 +13,4 @@ function LabeledValue({ classes, label, value }) {
   )
 }
 
-export default withStyles(styles)(LabeledValue)
+export default LabeledValue

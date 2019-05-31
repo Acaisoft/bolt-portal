@@ -5,14 +5,7 @@ import { useQuery } from 'react-apollo-hooks'
 import { Form } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import arrayMutators from 'final-form-arrays'
-import {
-  Button,
-  Grid,
-  MenuItem,
-  withStyles,
-  Typography,
-  IconButton,
-} from '@material-ui/core'
+import { Button, Grid, MenuItem, Typography, IconButton } from '@material-ui/core'
 import { FormField, CheckboxField, FormValue } from '~containers'
 import { ExpandablePanel, SectionHeader, Loader, ButtonWithIcon } from '~components'
 import { Delete, Add } from '@material-ui/icons'
@@ -34,16 +27,17 @@ import {
   EDIT_CONFIGURATION_MUTATION,
 } from './graphql'
 import { useFormSchema, prepareInitialValues, preparePayload } from './formSchema'
-import styles from './ConfigurationForm.styles'
+import useStyles from './ConfigurationForm.styles'
 
 export function ConfigurationForm({
-  classes,
   mode,
   onCancel = () => {},
   onSubmit = () => {},
   configurationId,
   projectId,
 }) {
+  const classes = useStyles()
+
   const { data: { configuration } = {}, loading: configurationLoading } = useQuery(
     GET_CONFIGURATION,
     {
@@ -117,7 +111,7 @@ export function ConfigurationForm({
             </Button>
           </SectionHeader>
           <ExpandablePanel defaultExpanded title="Scenario">
-            <Grid container spacing={32}>
+            <Grid container spacing={4}>
               <Grid item xs={6}>
                 <FormField
                   name="scenario_name"
@@ -145,7 +139,7 @@ export function ConfigurationForm({
           </ExpandablePanel>
 
           <ExpandablePanel defaultExpanded title="Scenario Parts">
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
               {Object.entries(fields.scenario_parts.fields).map(([name, field]) => (
                 <Grid item xs={12} md={6} key={name}>
                   <FormField
@@ -170,7 +164,7 @@ export function ConfigurationForm({
                       defaultExpanded={Boolean(configurationType)}
                       title="Test Parameters"
                     >
-                      <Grid container spacing={32}>
+                      <Grid container spacing={4}>
                         {!configurationType ||
                         (!scenarioParts.has_load_tests &&
                           !scenarioParts.has_monitoring) ? (
@@ -209,7 +203,7 @@ export function ConfigurationForm({
                   defaultExpanded={Boolean(configurationType)}
                   title="Test Source"
                 >
-                  <Grid container spacing={32}>
+                  <Grid container spacing={4}>
                     {!configurationType ? (
                       <Grid item xs={12}>
                         <Typography variant="body1">
@@ -273,7 +267,7 @@ export function ConfigurationForm({
           <ExpandablePanel defaultExpanded title="Environment Variables">
             <FieldArray name="configuration_envvars">
               {({ fields: arrayFields }) => (
-                <Grid container spacing={32}>
+                <Grid container spacing={4}>
                   {arrayFields.map((name, index) => (
                     <React.Fragment key={name}>
                       <Grid item xs={12} md={5}>
@@ -376,4 +370,4 @@ function useConfigurationSubmit({
 
   return handleSubmit
 }
-export default withStyles(styles)(ConfigurationForm)
+export default ConfigurationForm

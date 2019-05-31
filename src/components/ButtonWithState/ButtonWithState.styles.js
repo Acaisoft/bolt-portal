@@ -1,4 +1,6 @@
-export default ({ palette }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette }) => ({
   error: {
     backgroundColor: palette.error.main,
     color: palette.error.contrastText,
@@ -7,4 +9,4 @@ export default ({ palette }) => ({
     backgroundColor: palette.success.main,
     color: palette.error.contrastText,
   },
-})
+}))

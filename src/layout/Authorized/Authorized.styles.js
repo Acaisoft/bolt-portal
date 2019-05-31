@@ -1,11 +1,13 @@
-export default ({ mixins, spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ mixins, spacing }) => ({
   root: {},
   content: {
     ...mixins.gutters(),
-    paddingTop: spacing.unit * 3,
-    paddingBottom: spacing.unit * 3,
+    paddingTop: spacing(3),
+    paddingBottom: spacing(3),
   },
   nav: {
     display: 'flex',
   },
-})
+}))

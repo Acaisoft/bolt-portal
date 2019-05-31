@@ -7,14 +7,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  withStyles,
 } from '@material-ui/core'
-
-import styles from './DeleteModal.styles'
 
 export class DeleteModal extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -50,4 +46,4 @@ export class DeleteModal extends React.Component {
   }
 }
 
-export default withStyles(styles)(DeleteModal)
+export default DeleteModal

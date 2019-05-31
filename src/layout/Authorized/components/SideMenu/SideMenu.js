@@ -10,7 +10,6 @@ import {
   MenuList,
   MenuItem,
   Backdrop,
-  withStyles,
 } from '@material-ui/core'
 import { Close, ExitToApp } from '@material-ui/icons'
 import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons'
@@ -19,9 +18,10 @@ import { AuthContext } from '~contexts'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
 
-import styles from './SideMenu.styles'
+import useStyles from './SideMenu.styles'
 
-function SideMenu({ classes, isOpen, onClose, projectId }) {
+function SideMenu({ isOpen, onClose, projectId }) {
+  const classes = useStyles()
   const { logout } = useContext(AuthContext)
 
   const items = useMemo(() => {
@@ -102,9 +102,8 @@ function SideMenu({ classes, isOpen, onClose, projectId }) {
   )
 }
 SideMenu.propTypes = {
-  classes: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(SideMenu)
+export default SideMenu

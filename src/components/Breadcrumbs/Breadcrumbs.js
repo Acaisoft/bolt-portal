@@ -1,12 +1,14 @@
 import React from 'react'
 
 import { Link as RouterLink } from 'react-router-dom'
-import { withStyles, Link } from '@material-ui/core'
+import { Link } from '@material-ui/core'
 import { ChevronRight } from '@material-ui/icons'
 
-import styles from './Breadcrumbs.styles'
+import useStyles from './Breadcrumbs.styles'
 
-export function Breadcrumbs({ classes, items = [] }) {
+export function Breadcrumbs({ items = [] }) {
+  const classes = useStyles()
+
   if (items.length === 0) {
     return null
   }
@@ -28,8 +30,10 @@ export function Breadcrumbs({ classes, items = [] }) {
               {label}
             </Link>
           ) : (
-                <div data-testid="item" className={classes.textItem}>{label}</div>
-              )}
+            <div data-testid="item" className={classes.textItem}>
+              {label}
+            </div>
+          )}
           {index < items.length - 1 && (
             <div data-testid="separator" className={classes.separator}>
               <ChevronRight />
@@ -41,4 +45,4 @@ export function Breadcrumbs({ classes, items = [] }) {
   )
 }
 
-export default withStyles(styles)(Breadcrumbs)
+export default Breadcrumbs

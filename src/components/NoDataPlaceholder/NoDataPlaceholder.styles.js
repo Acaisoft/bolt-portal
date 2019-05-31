@@ -1,4 +1,6 @@
-export default ({ palette, spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, spacing }) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -10,11 +12,11 @@ export default ({ palette, spacing }) => ({
     color: palette.text.icon,
   },
   progress: {
-    marginRight: spacing.unit * 1.5,
+    marginRight: spacing(1.5),
   },
   description: {
     color: palette.text.secondary,
-    marginTop: spacing.unit * 0.5,
+    marginTop: spacing(0.5),
   },
   title: {
     color: palette.text.primary,
@@ -23,6 +25,6 @@ export default ({ palette, spacing }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: spacing.unit,
+    marginTop: spacing(1),
   },
-})
+}))

@@ -1,17 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Typography, withStyles, CircularProgress } from '@material-ui/core'
+import { Typography, CircularProgress } from '@material-ui/core'
 import { NoData } from '~assets/icons'
 
-import styles from './NoDataPlaceholder.styles'
+import useStyles from './NoDataPlaceholder.styles'
 
 export function NoDataPlaceholder({
   actions,
-  classes,
+
   description,
   label,
   height = '100%',
 }) {
+  const classes = useStyles()
+
   return (
     <div className={classes.root} style={{ height }} data-testid="no-data-container">
       <NoData className={classes.icon} />
@@ -38,10 +40,9 @@ export function NoDataPlaceholder({
 
 NoDataPlaceholder.propTypes = {
   actions: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  classes: PropTypes.object,
   description: PropTypes.string,
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   label: PropTypes.string.isRequired,
 }
 
-export default withStyles(styles)(NoDataPlaceholder)
+export default NoDataPlaceholder

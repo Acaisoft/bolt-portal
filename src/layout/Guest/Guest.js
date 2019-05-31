@@ -1,14 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { withRouter } from 'react-router-dom'
-import { withStyles } from '@material-ui/core'
 
 import GuestPages from '~pages/Guest'
 
-import styles from './Guest.styles'
+import useStyles from './Guest.styles'
 
-export function Guest({ classes }) {
+export function Guest() {
+  const classes = useStyles()
+
   return (
     <div className={classes.root}>
       <div>
@@ -18,8 +18,5 @@ export function Guest({ classes }) {
     </div>
   )
 }
-Guest.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
 
-export default withRouter(withStyles(styles)(Guest))
+export default withRouter(Guest)

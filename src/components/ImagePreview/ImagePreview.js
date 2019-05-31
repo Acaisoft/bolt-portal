@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withStyles } from '@material-ui/core'
+import useStyles from './ImagePreview.styles'
 
-import styles from './ImagePreview.styles'
+function ImagePreview({ alt, src }) {
+  const classes = useStyles()
 
-function ImagePreview({ alt, classes, src }) {
   if (!src) {
     return null
   }
@@ -19,8 +19,7 @@ function ImagePreview({ alt, classes, src }) {
 
 ImagePreview.propTypes = {
   alt: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired,
   src: PropTypes.string,
 }
 
-export default withStyles(styles)(ImagePreview)
+export default ImagePreview

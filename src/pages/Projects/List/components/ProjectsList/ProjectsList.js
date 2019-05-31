@@ -1,18 +1,18 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import _ from 'lodash'
 
-import { Menu, MenuItem, Typography, withStyles, Card } from '@material-ui/core'
+import { Menu, MenuItem, Typography, Card } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
 
 import { GET_PROJECT_SUMMARIES } from './graphql'
 import { useQuery } from 'react-apollo-hooks'
 
-import styles from './ProjectsList.styles'
+import useStyles from './ProjectsList.styles'
 import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from '..'
 
-function ProjectsList({ classes, onDetails }) {
+function ProjectsList({ onDetails }) {
+  const classes = useStyles()
   const { summaries, loading, error } = useProjectSummaries()
 
   const {
@@ -149,4 +149,4 @@ function useProjectsListState() {
   }
 }
 
-export default withStyles(styles)(ProjectsList)
+export default ProjectsList

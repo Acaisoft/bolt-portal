@@ -1,15 +1,17 @@
 import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Grid, withStyles } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { SectionHeader, Loader } from '~components'
 
 import { Failures, TimeDistribution, Stats } from './components'
 import { GET_ENDPOINT } from './graphql'
-import styles from './EndpointDetails.styles'
+import useStyles from './EndpointDetails.styles'
 
-function EndpointDetails({ classes, history, match }) {
+function EndpointDetails({ history, match }) {
   const { endpointId } = match.params
+
+  const classes = useStyles()
 
   const { endpoint, loading } = useEndpointQuery(endpointId)
 
@@ -21,7 +23,7 @@ function EndpointDetails({ classes, history, match }) {
     <div>
       <SectionHeader title={`${endpoint.method} ${endpoint.name}`} marginBottom />
 
-      <Grid container spacing={16} alignItems="stretch">
+      <Grid container spacing={2} alignItems="stretch">
         <Grid item xs={12} md={3} className={classes.verticalGrid}>
           <Stats classes={classes} endpointId={endpointId} />
         </Grid>
@@ -50,4 +52,4 @@ function useEndpointQuery(endpointId) {
   return { loading, endpoint: endpoint[0] || {} }
 }
 
-export default withStyles(styles)(EndpointDetails)
+export default EndpointDetails

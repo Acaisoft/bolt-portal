@@ -2,13 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Grid, withStyles } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
-import styles from './SectionHeader.styles'
+import useStyles from './SectionHeader.styles'
 
 function SectionHeader({
   children,
-  classes,
   className,
   description,
   marginBottom = false,
@@ -17,10 +16,12 @@ function SectionHeader({
   title,
   ...containerProps
 }) {
+  const classes = useStyles()
+
   const gridProps = {
     alignItems: 'center',
     justify: 'space-between',
-    spacing: 32,
+    spacing: 4,
     ...containerProps,
   }
 
@@ -51,7 +52,6 @@ function SectionHeader({
   )
 }
 SectionHeader.propTypes = {
-  classes: PropTypes.object.isRequired,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   marginBottom: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
@@ -59,4 +59,4 @@ SectionHeader.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
 }
 
-export default withStyles(styles)(SectionHeader)
+export default SectionHeader

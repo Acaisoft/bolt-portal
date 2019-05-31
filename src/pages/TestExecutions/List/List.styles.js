@@ -1,4 +1,6 @@
-export default ({ palette, spacing, typography }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, typography }) => {
   return {
     root: {
       flexGrow: 1,
@@ -8,4 +10,4 @@ export default ({ palette, spacing, typography }) => {
       marginTop: 30,
     },
   }
-}
+})

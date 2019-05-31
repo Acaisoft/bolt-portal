@@ -1,4 +1,6 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(theme => ({
   iconsContainer: {
     display: 'flex',
   },
@@ -9,4 +11,4 @@ export default theme => ({
     display: 'flex',
     alignItems: 'center',
   },
-})
+}))

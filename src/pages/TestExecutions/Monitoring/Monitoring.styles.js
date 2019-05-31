@@ -1,5 +1,7 @@
-export default ({ mixins }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing }) => ({
   tile: {
-    padding: mixins.scaledSpaceAround(5, 5),
+    padding: spacing(5),
   },
-})
+}))

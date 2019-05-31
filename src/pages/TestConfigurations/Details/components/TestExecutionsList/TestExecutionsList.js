@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
-import { withStyles } from '@material-ui/core'
 import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
@@ -14,15 +13,15 @@ import {
   GET_TEST_EXECUTIONS_AGGREGATE,
   SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
 } from './graphql'
-import styles from './TestExecutionsList.styles'
+import useStyles from './TestExecutionsList.styles'
 
 function TestExecutionsList({
-  classes,
   configuration: { id: configurationId, has_monitoring, has_load_tests },
   getMonitoringDetailsUrl,
   getTestDetailsUrl,
   hasMonitoring,
 }) {
+  const classes = useStyles()
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 5 },
     orderBy: [{ start: 'desc' }],
@@ -172,11 +171,10 @@ function TestExecutionsList({
   )
 }
 TestExecutionsList.propTypes = {
-  classes: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   getMonitoringDetailsUrl: PropTypes.func.isRequired,
   getTestDetailsUrl: PropTypes.func.isRequired,
   hasMonitoring: PropTypes.bool,
 }
 
-export default withStyles(styles)(TestExecutionsList)
+export default TestExecutionsList

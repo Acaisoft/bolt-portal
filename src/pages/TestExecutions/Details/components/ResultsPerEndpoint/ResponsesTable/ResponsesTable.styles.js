@@ -1,6 +1,8 @@
-export default ({ mixins, palette }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing, palette }) => ({
   tableContainer: {
-    margin: mixins.scaledSpaceAround(0, -5),
+    margin: spacing(0, -5),
   },
   dateContainer: {
     display: 'flex',
@@ -12,4 +14,4 @@ export default ({ mixins, palette }) => ({
   failure: {
     color: palette.text.error,
   },
-})
+}))

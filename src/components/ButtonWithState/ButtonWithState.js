@@ -1,22 +1,23 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import { CircularProgress, withStyles } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 import { Check, Close } from '@material-ui/icons'
 
 import { ButtonWithIcon } from '~components'
 
-import styles from './ButtonWithState.styles'
+import useStyles from './ButtonWithState.styles'
 
 function ButtonWithState({
   children,
-  classes,
   className,
   loading = false,
   success = false,
   error = false,
   ...buttonProps
 }) {
+  const classes = useStyles()
+
   let icon
   if (loading) {
     icon = props => (
@@ -47,4 +48,4 @@ function ButtonWithState({
   )
 }
 
-export default withStyles(styles)(ButtonWithState)
+export default ButtonWithState

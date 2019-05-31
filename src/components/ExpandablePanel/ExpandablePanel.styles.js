@@ -1,4 +1,6 @@
-export default ({ spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing }) => ({
   root: {
     backgroundColor: 'transparent',
 
@@ -10,13 +12,14 @@ export default ({ spacing }) => ({
     fontWeight: 'bold',
   },
   summaryContent: {
-    paddingLeft: spacing.unit * 3,
+    paddingLeft: spacing(3),
   },
   expandIcon: {
+    position: 'absolute',
     left: 8,
     right: 'auto',
   },
   details: {
-    paddingLeft: spacing.unit * 6,
+    paddingLeft: spacing(6),
   },
-})
+}))

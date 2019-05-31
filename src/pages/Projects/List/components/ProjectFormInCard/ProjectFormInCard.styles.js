@@ -1,10 +1,12 @@
-export default ({ palette, spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, spacing }) => ({
   root: {
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
-    padding: spacing.unit * 3,
+    padding: spacing(3),
   },
   header: {
     flexGrow: 1,
@@ -12,18 +14,18 @@ export default ({ palette, spacing }) => ({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '150%',
-    marginBottom: spacing.unit * 3,
+    marginBottom: spacing(3),
   },
   headerIcon: {
     height: 78,
-    marginRight: spacing.unit * 3,
+    marginRight: spacing(3),
   },
   headerTitle: {
     fontWeight: 'bold',
   },
   form: {
-    paddingLeft: spacing.unit * 4,
-    paddingRight: spacing.unit * 4,
+    paddingLeft: spacing(4),
+    paddingRight: spacing(4),
   },
   formFields: {
     flexGrow: 1,
@@ -32,11 +34,11 @@ export default ({ palette, spacing }) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     '& > button': {
-      marginLeft: spacing.unit,
+      marginLeft: spacing(1),
     },
   },
   imagePreviewContainer: {
     maxWidth: '100%',
     width: 200,
   },
-})
+}))

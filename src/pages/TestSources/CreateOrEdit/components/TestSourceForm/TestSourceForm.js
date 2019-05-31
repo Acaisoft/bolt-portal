@@ -3,13 +3,7 @@ import PropTypes from 'prop-types'
 
 import { useQuery } from 'react-apollo-hooks'
 import { Form } from 'react-final-form'
-import {
-  Button,
-  Grid,
-  MenuItem,
-  FormHelperText,
-  withStyles,
-} from '@material-ui/core'
+import { Button, Grid, MenuItem, FormHelperText } from '@material-ui/core'
 import { Add, VpnKey } from '@material-ui/icons'
 import { FormField, FormCondition } from '~containers'
 import {
@@ -36,11 +30,10 @@ import {
   ADD_REPOSITORY_VALIDATE_MUTATION,
   EDIT_REPOSITORY_VALIDATE_MUTATION,
 } from './graphql'
-import styles from './TestSourceForm.styles'
+import useStyles from './TestSourceForm.styles'
 import { useFormSchema, preparePayload, prepareInitialValues } from './formSchema'
 
 function TestSourceForm({
-  classes,
   mode,
   onCancel,
   onSubmit,
@@ -48,6 +41,7 @@ function TestSourceForm({
   projectId,
   sourceId,
 }) {
+  const classes = useStyles()
   const [isKeyVisible, toggleKeyInput] = useToggle(false)
 
   const {
@@ -143,7 +137,7 @@ function TestSourceForm({
           </SectionHeader>
 
           <form onSubmit={form.handleSubmit}>
-            <Grid container spacing={32}>
+            <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <FormField
                   name="source_type"
@@ -324,4 +318,4 @@ function useConnectionTest({ mode, projectId, sourceId, onTestConnection }) {
   }
 }
 
-export default withStyles(styles)(TestSourceForm)
+export default TestSourceForm

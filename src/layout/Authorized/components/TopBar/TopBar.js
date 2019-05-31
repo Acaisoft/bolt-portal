@@ -2,23 +2,18 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { withRouter, Link, matchPath } from 'react-router-dom'
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  withStyles,
-} from '@material-ui/core'
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core'
 import { Menu as Hamburger } from '@material-ui/icons'
 
 import routes from '~config/routes'
 import { useMenu } from '~hooks'
 
-import styles from './TopBar.styles'
+import useStyles from './TopBar.styles'
 import NavBreadcrumbs from '../NavBreadcrumbs'
 import SideMenu from '../SideMenu'
 
-export function TopBar({ classes, history, location }) {
+export function TopBar({ history, location }) {
+  const classes = useStyles()
   const { handleMenuOpen, handleMenuClose, isMenuOpen } = useMenu()
 
   const projectId = useMemo(() => {
@@ -46,7 +41,7 @@ export function TopBar({ classes, history, location }) {
           )}
 
           <Link to="/" className={classes.title}>
-            <Typography variant="h6" noWrap color="inherit">
+            <Typography variant="h6" noWrap>
               Acai Bolt
             </Typography>
           </Link>
@@ -69,10 +64,9 @@ export function TopBar({ classes, history, location }) {
 }
 
 TopBar.propTypes = {
-  classes: PropTypes.object.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 }
 
-export default withRouter(withStyles(styles)(TopBar))
+export default withRouter(TopBar)

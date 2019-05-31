@@ -1,4 +1,6 @@
-export default ({ mixins, palette, spacing, typography, zIndex }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => ({
   root: {
     position: 'absolute',
     top: 0,
@@ -27,7 +29,7 @@ export default ({ mixins, palette, spacing, typography, zIndex }) => ({
     borderBottom: '1px solid transparent',
   },
   item: {
-    padding: mixins.scaledSpaceAround(2, 3),
+    padding: spacing(2, 3),
     marginLeft: 2,
     borderLeft: '3px solid transparent',
     color: palette.text.secondary,
@@ -47,10 +49,10 @@ export default ({ mixins, palette, spacing, typography, zIndex }) => ({
     color: palette.text.primary,
   },
   icon: {
-    marginRight: spacing.unit * 2,
+    marginRight: spacing(2),
   },
   button: {
     marginLeft: -12,
     marginRight: 20,
   },
-})
+}))

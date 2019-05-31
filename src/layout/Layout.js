@@ -1,19 +1,18 @@
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ToastContainer } from 'react-toastify'
 import { withRouter } from 'react-router-dom'
-import { withStyles } from '@material-ui/core'
 import { AuthContext } from '~contexts'
 
 import Authorized from './Authorized'
 import Guest from './Guest'
 import Splash from './Splash'
 
-import styles from './Layout.styles'
+import useStyles from './Layout.styles'
 
-export function Layout({ classes }) {
+export function Layout() {
+  const classes = useStyles()
   const { isAuthenticated, isInitialized } = useContext(AuthContext)
 
   return (
@@ -26,8 +25,4 @@ export function Layout({ classes }) {
   )
 }
 
-Layout.propTypes = {
-  classes: PropTypes.object,
-}
-
-export default withRouter(withStyles(styles)(Layout))
+export default withRouter(Layout)

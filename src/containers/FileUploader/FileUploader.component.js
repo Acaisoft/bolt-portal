@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { FormControl, withStyles, FormHelperText } from '@material-ui/core'
+import { FormControl, FormHelperText } from '@material-ui/core'
 import { Image } from '@material-ui/icons'
 import { ButtonWithIcon } from '~components'
 
-import styles from './FileUploader.component.styles'
+import useStyles from './FileUploader.component.styles'
 
-function FileUploader({ accept, classes, error, id, label, loading, onChange }) {
+function FileUploader({ accept, error, id, label, loading, onChange }) {
+  const classes = useStyles()
+
   return (
     <FormControl error={!!error} margin="normal">
       <input
@@ -35,11 +37,10 @@ function FileUploader({ accept, classes, error, id, label, loading, onChange }) 
 
 FileUploader.propTypes = {
   accept: PropTypes.string,
-  classes: PropTypes.object.isRequired,
   error: PropTypes.string,
   id: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(FileUploader)
+export default FileUploader

@@ -2,14 +2,20 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { withStyles } from '@material-ui/core'
 import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
 
-import styles from './ResponsesTable.styles'
+import useStyles from './ResponsesTable.styles'
 
-export function ResponsesTable({ classes, data, getEndpointDetailsUrl }) {
+export function ResponsesTable({
+  classes: parentClasses,
+  data,
+  getEndpointDetailsUrl,
+}) {
+  const ownClasses = useStyles()
+  const classes = { ...parentClasses, ownClasses }
+
   const summary = useMemo(
     () => ({
       requests: _.sum(data.map(x => +x.num_requests)),
@@ -131,4 +137,4 @@ ResponsesTable.propTypes = {
   getEndpointDetailsUrl: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(ResponsesTable)
+export default ResponsesTable

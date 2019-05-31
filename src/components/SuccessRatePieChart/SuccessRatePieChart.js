@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Cell, PieChart, Pie, Text } from 'recharts'
-import { withStyles } from '@material-ui/core'
+import { useTheme } from '@material-ui/styles'
 
-export function SuccessRatePieChart({ classes, value, theme, size = 62.5 }) {
+export function SuccessRatePieChart({ value, size = 62.5 }) {
+  const theme = useTheme()
+
   const radius = Math.floor(size / 2)
   const colors = [
     theme.palette.chart.color.area.error,
@@ -69,10 +71,8 @@ export function SuccessRatePieChart({ classes, value, theme, size = 62.5 }) {
 }
 
 SuccessRatePieChart.propTypes = {
-  classes: PropTypes.object,
   value: PropTypes.number,
-  theme: PropTypes.object,
   size: PropTypes.number,
 }
 
-export default withStyles({}, { withTheme: true })(SuccessRatePieChart)
+export default SuccessRatePieChart

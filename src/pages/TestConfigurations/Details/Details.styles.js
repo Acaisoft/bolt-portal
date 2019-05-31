@@ -1,9 +1,11 @@
-export default ({ spacing }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing }) => {
   return {
     header: {
       display: 'flex',
       flexDirection: 'row',
-      marginBottom: spacing.unit * 1.5,
+      marginBottom: spacing(1.5),
     },
     root: {
       flexGrow: 1,
@@ -13,4 +15,4 @@ export default ({ spacing }) => {
       marginTop: 30,
     },
   }
-}
+})

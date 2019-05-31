@@ -1,12 +1,14 @@
-export default ({ palette, mixins, spacing, typography }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, spacing, typography }) => {
   return {
     tile: {
-      padding: mixins.scaledSpaceAround(5, 5),
+      padding: spacing(5),
       height: '100%',
       maxHeight: 500,
     },
     tileContent: {
-      padding: mixins.scaledSpaceAround(4, 0, 2),
+      padding: spacing(4, 0, 2),
     },
     verticalGrid: {
       display: 'flex',
@@ -15,8 +17,8 @@ export default ({ palette, mixins, spacing, typography }) => {
     },
     verticalGridItem: {
       '& + &': {
-        marginTop: spacing.unit * 2,
+        marginTop: spacing(2),
       },
     },
   }
-}
+})

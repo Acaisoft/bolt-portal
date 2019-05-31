@@ -1,4 +1,6 @@
-export default ({ palette, typography }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, typography }) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -10,4 +12,4 @@ export default ({ palette, typography }) => ({
   value: {
     ...typography.body2,
   },
-})
+}))

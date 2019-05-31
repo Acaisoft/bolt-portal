@@ -1,16 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { CircularProgress, withStyles } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 
-import style from './Loader.styles'
+import useStyles from './Loader.styles'
 
 export function Loader({
   children,
-  classes,
   color = 'primary',
   fill = false,
   loading = false,
 }) {
+  const classes = useStyles()
+
   if (!loading) {
     return children
   }
@@ -22,10 +23,9 @@ export function Loader({
 
 Loader.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(['primary', 'secondary', 'inherit']),
   fill: PropTypes.bool,
   loading: PropTypes.bool,
 }
 
-export default withStyles(style)(Loader)
+export default Loader

@@ -1,11 +1,13 @@
-export default ({ mixins, spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ mixins, spacing }) => ({
   header: {
-    marginBottom: spacing.unit * 3,
+    marginBottom: spacing(3),
   },
   paper: {
-    padding: mixins.scaledSpaceAround(4),
+    padding: spacing(4),
   },
   buttonMargin: {
-    marginLeft: spacing.unit,
+    marginLeft: spacing(1),
   },
-})
+}))

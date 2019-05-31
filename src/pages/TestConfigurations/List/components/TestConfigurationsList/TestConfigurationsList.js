@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useSubscription } from 'react-apollo-hooks'
 
-import { withStyles, IconButton } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import { Add, History } from '@material-ui/icons'
 import {
   ButtonWithIcon,
@@ -21,15 +21,15 @@ import {
   SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM,
   SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM,
 } from './graphql'
-import styles from './TestConfigurationsList.styles'
+import useStyles from './TestConfigurationsList.styles'
 
 export function TestConfigurationsList({
-  classes,
   onCreate = () => {},
   onDetails = () => {},
   onRun = () => {},
   projectId,
 }) {
+  const classes = useStyles()
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 10 },
     orderBy: [{ id: 'asc' }],
@@ -199,4 +199,4 @@ function getSuccessRateLevel(successRate) {
   return successRate >= 0.95 ? 'good' : successRate >= 0.8 ? 'average' : 'bad'
 }
 
-export default withStyles(styles)(TestConfigurationsList)
+export default TestConfigurationsList

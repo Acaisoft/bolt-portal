@@ -1,6 +1,8 @@
-export default ({ palette, spacing, typography }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, spacing, typography }) => ({
   marginBottom: {
-    marginBottom: spacing.unit * 3,
+    marginBottom: spacing(3),
   },
   description: {
     ...typography.subtitle1,
@@ -9,7 +11,7 @@ export default ({ palette, spacing, typography }) => ({
   subtitle: {
     ...typography.h3,
     fontWeight: 'normal',
-    marginLeft: spacing.unit,
+    marginLeft: spacing(1),
     color: palette.text.secondary,
   },
   title: {
@@ -53,4 +55,4 @@ export default ({ palette, spacing, typography }) => ({
       fontSize: '0.85rem',
     },
   },
-})
+}))

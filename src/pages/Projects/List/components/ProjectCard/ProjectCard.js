@@ -8,15 +8,14 @@ import {
   CardContent,
   Typography,
   CardActions,
-  withStyles,
 } from '@material-ui/core'
 import { ButtonWithIcon, SuccessRatePieChart } from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
-import styles from './ProjectCard.styles'
+import useStyles from './ProjectCard.styles'
 
-function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
+function ProjectCard({ project, onDetails, onMenuOpen }) {
   const {
     num_tests_passed = 0,
     num_tests_failed = 0,
@@ -26,6 +25,8 @@ function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
   const tests_overall = num_tests_failed + num_tests_passed
   const progress =
     tests_overall === 0 ? tests_overall : (num_tests_passed / tests_overall) * 100
+
+  const classes = useStyles()
 
   return (
     <React.Fragment>
@@ -82,7 +83,6 @@ function ProjectCard({ classes, project, onDetails, onMenuOpen }) {
   )
 }
 ProjectCard.propTypes = {
-  classes: PropTypes.object.isRequired,
   onDetails: PropTypes.func.isRequired,
   onMenuOpen: PropTypes.func.isRequired,
   project: PropTypes.shape({
@@ -93,4 +93,4 @@ ProjectCard.propTypes = {
   }).isRequired,
 }
 
-export default withStyles(styles)(ProjectCard)
+export default ProjectCard

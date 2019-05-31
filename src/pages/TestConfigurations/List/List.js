@@ -2,16 +2,16 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { toast } from 'react-toastify'
-import { withStyles } from '@material-ui/core'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
 import { TestConfigurationsList } from './components'
-import styles from './List.styles'
+import useStyles from './List.styles'
 
-export function List({ classes, history, match }) {
+export function List({ history, match }) {
   const { projectId } = match.params
+  const classes = useStyles()
 
   const { handleCreate, handleDetails } = useHandlers(history, match)
 
@@ -26,7 +26,6 @@ export function List({ classes, history, match }) {
   )
 }
 List.propTypes = {
-  classes: PropTypes.object.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -66,4 +65,4 @@ function useHandlers(history, match) {
   return { handleCreate, handleDetails, handleRun }
 }
 
-export default withStyles(styles)(List)
+export default List

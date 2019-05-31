@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
 import { Add, Edit, Delete } from '@material-ui/icons'
-import { IconButton, withStyles } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import { Pagination } from '~containers'
 import { ButtonWithIcon, DataTable, SectionHeader } from '~components'
 
@@ -11,9 +11,10 @@ import { useListFilters } from '~hooks'
 import { TestSourceType } from '~config/constants'
 
 import { GET_TEST_SOURCES } from './graphql'
-import styles from './TestSourcesList.styles'
+import useStyles from './TestSourcesList.styles'
 
-function TestSourcesList({ classes, onCreate, onDelete, onEdit, projectId }) {
+function TestSourcesList({ onCreate, onDelete, onEdit, projectId }) {
+  const classes = useStyles()
   const { pagination, orderBy, setPagination } = useListFilters({
     pagination: { rowsPerPage: 10 },
     orderBy: [{ id: 'asc' }],
@@ -114,4 +115,4 @@ TestSourcesList.propTypes = {
   projectId: PropTypes.string,
 }
 
-export default withStyles(styles)(TestSourcesList)
+export default TestSourcesList

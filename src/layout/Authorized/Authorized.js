@@ -1,14 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-import { CssBaseline, withStyles } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
 
 import AuthorizedPages from '~pages/Authorized'
 
 import TopBar from './components/TopBar'
-import styles from './Authorized.styles'
+import useStyles from './Authorized.styles'
 
-export function Authorized({ classes }) {
+export function Authorized() {
+  const classes = useStyles()
+
   return (
     <div className={classes.root}>
       <div className={classes.nav}>
@@ -21,8 +22,5 @@ export function Authorized({ classes }) {
     </div>
   )
 }
-Authorized.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
 
-export default withStyles(styles)(Authorized)
+export default Authorized

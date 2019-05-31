@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { useMutation } from 'react-apollo-hooks'
-import { withStyles } from '@material-ui/core'
 import { DeleteModal } from '~components'
 import { TestSourcesList } from './components'
 
@@ -12,10 +11,11 @@ import { useToggle } from '~hooks'
 
 import { DELETE_REPOSITORY } from './graphql'
 
-import styles from './List.styles'
+import useStyles from './List.styles'
 
-export function List({ classes, history, match }) {
+export function List({ history, match }) {
   const { projectId } = match.params
+  const classes = useStyles()
 
   const {
     isModalOpen,
@@ -46,7 +46,6 @@ export function List({ classes, history, match }) {
   )
 }
 List.propTypes = {
-  classes: PropTypes.object.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -109,4 +108,4 @@ function useHandlers(history, match) {
   }
 }
 
-export default withStyles(styles)(List)
+export default List

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Typography, withStyles } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { Add, Edit, Close } from '@material-ui/icons'
 import { Field } from 'react-final-form'
 import { FileUploader, FormField } from '~containers'
@@ -10,15 +10,16 @@ import { ProjectForm } from '~containers/forms'
 import { ButtonWithIcon, ImagePreview } from '~components'
 import { CreateProject } from '~assets/icons'
 
-import styles from './ProjectFormInCard.styles'
+import useStyles from './ProjectFormInCard.styles'
 
 function ProjectFormInCard({
-  classes,
   initialValues,
   mode,
   onCancel = () => {},
   onSubmit = () => {},
 }) {
+  const classes = useStyles()
+
   return (
     <ProjectForm
       initialValues={initialValues}
@@ -98,11 +99,10 @@ function ProjectFormInCard({
   )
 }
 ProjectFormInCard.propTypes = {
-  classes: PropTypes.object.isRequired,
   initialValues: PropTypes.object,
   mode: PropTypes.oneOf(['create', 'edit']),
   onCancel: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
-export default withStyles(styles)(ProjectFormInCard)
+export default ProjectFormInCard

@@ -1,15 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { CardContent, CardActions, withStyles } from '@material-ui/core'
+import { CardContent, CardActions } from '@material-ui/core'
 import { ButtonWithIcon } from '~components'
 
 import { Add } from '@material-ui/icons'
 import { CreateProject } from '~assets/icons'
 
-import styles from './NewProjectCard.styles'
+import useStyles from './NewProjectCard.styles'
 
-function NewProjectCard({ classes, onCreate }) {
+function NewProjectCard({ onCreate }) {
+  const classes = useStyles()
+
   return (
     <React.Fragment>
       <CardContent className={classes.content}>
@@ -29,8 +31,7 @@ function NewProjectCard({ classes, onCreate }) {
   )
 }
 NewProjectCard.propTypes = {
-  classes: PropTypes.object.isRequired,
   onCreate: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(NewProjectCard)
+export default NewProjectCard

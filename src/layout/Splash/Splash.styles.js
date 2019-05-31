@@ -1,4 +1,6 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(theme => ({
   root: {
     height: '100vh',
     width: '100vw',
@@ -6,4 +8,4 @@ export default theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+}))

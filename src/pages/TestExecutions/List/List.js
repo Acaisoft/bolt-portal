@@ -1,17 +1,19 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { Typography, withStyles } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
 
 import { TestExecutionsList } from './components'
 
-import styles from './List.styles'
+import useStyles from './List.styles'
 
-export function List({ classes, history, match }) {
+export function List({ history, match }) {
   const { projectId } = match.params
+
+  const classes = useStyles()
 
   const handleDetails = useCallback(
     execution => {
@@ -38,7 +40,6 @@ export function List({ classes, history, match }) {
   )
 }
 List.propTypes = {
-  classes: PropTypes.object.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -50,4 +51,4 @@ List.propTypes = {
   }).isRequired,
 }
 
-export default withStyles(styles)(List)
+export default List

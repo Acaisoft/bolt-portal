@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { withStyles } from '@material-ui/core'
 import { NoDataPlaceholder } from '~components'
 
-import styles from './Splash.styles'
+import useStyles from './Splash.styles'
 
-function Splash({ classes }) {
+function Splash() {
+  const classes = useStyles()
+
   return (
     <div className={classes.root}>
       <NoDataPlaceholder label="Initializing Acai Bolt..." />
@@ -13,4 +14,4 @@ function Splash({ classes }) {
   )
 }
 
-export default React.memo(withStyles(styles)(Splash))
+export default Splash

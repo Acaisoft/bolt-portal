@@ -1,4 +1,6 @@
-export default ({ palette, shape, spacing, typography }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, shape, typography }) => {
   return {
     content: {
       flexGrow: 1,
@@ -10,4 +12,4 @@ export default ({ palette, shape, spacing, typography }) => {
       justifyContent: 'center',
     },
   }
-}
+})

@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Link } from 'react-router-dom'
-import { Button, withStyles } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
-import styles from './LinkButton.styles'
+import useStyles from './LinkButton.styles'
 
-function LinkButton({ children, classes, href, onClick, title, ...buttonProps }) {
+function LinkButton({ children, href, onClick, title, ...buttonProps }) {
+  const classes = useStyles()
+
   return (
     <Button
       component={Link}
@@ -26,10 +28,9 @@ function LinkButton({ children, classes, href, onClick, title, ...buttonProps })
 
 LinkButton.propTypes = {
   children: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired,
   href: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   title: PropTypes.string.isRequired,
 }
 
-export default withStyles(styles)(LinkButton)
+export default LinkButton

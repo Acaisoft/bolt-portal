@@ -1,4 +1,6 @@
-export default ({ palette }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette }) => ({
   actionsContainer: {
     display: 'flex',
   },
@@ -15,4 +17,4 @@ export default ({ palette }) => ({
   bad: {
     color: palette.text.error,
   },
-})
+}))

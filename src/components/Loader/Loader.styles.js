@@ -1,6 +1,8 @@
-export default ({ spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing }) => ({
   root: {
-    margin: spacing.unit * 2,
+    margin: spacing(2),
   },
   holder: {
     display: 'flex',
@@ -10,4 +12,4 @@ export default ({ spacing }) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+}))

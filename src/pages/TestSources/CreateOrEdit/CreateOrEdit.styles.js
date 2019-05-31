@@ -1,5 +1,7 @@
-export default ({ spacing }) => ({
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ spacing }) => ({
   marginLeft: {
-    marginLeft: spacing.unit,
+    marginLeft: spacing(1),
   },
-})
+}))

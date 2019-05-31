@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Typography, withStyles } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
-import styles from './Details.styles'
+import useStyles from './Details.styles'
 
-export function Details({ classes, match }) {
+export function Details({ match }) {
   const { sourceId } = match.params
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
@@ -18,7 +19,6 @@ export function Details({ classes, match }) {
   )
 }
 Details.propTypes = {
-  classes: PropTypes.object.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       sourceId: PropTypes.string,
@@ -27,4 +27,4 @@ Details.propTypes = {
   }).isRequired,
 }
 
-export default withStyles(styles)(Details)
+export default Details

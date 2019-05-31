@@ -8,7 +8,7 @@
  * -- ./Component.styles.js --
  * export default theme => ({
  *  root: {
- *   padding: `${theme.spacing.unit * 3}px 0`,
+ *   padding: theme.spacing(3, 0),
  *   font-size: '120%',
  *  },
  *  button: {

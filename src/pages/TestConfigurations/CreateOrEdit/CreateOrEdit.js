@@ -2,14 +2,11 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { toast } from 'react-toastify'
-import { withStyles } from '@material-ui/core'
 
 import { ConfigurationForm } from './components'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
-
-import styles from './CreateOrEdit.styles'
 
 export function CreateOrEdit({ history, match }) {
   const { projectId, configurationId } = match.params
@@ -56,4 +53,4 @@ CreateOrEdit.propTypes = {
   }).isRequired,
 }
 
-export default withStyles(styles)(CreateOrEdit)
+export default CreateOrEdit

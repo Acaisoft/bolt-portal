@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { withStyles } from '@material-ui/core'
+import useStyles from './BackgroundImage.styles'
 
-import styles from './BackgroundImage.styles'
+function BackgroundImage({ url }) {
+  const classes = useStyles()
 
-function BackgroundImage({ classes, url }) {
   if (!url) {
     return null
   }
@@ -19,4 +19,4 @@ function BackgroundImage({ classes, url }) {
   )
 }
 
-export default withStyles(styles)(BackgroundImage)
+export default BackgroundImage

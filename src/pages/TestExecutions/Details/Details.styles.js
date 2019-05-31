@@ -1,4 +1,6 @@
-export default ({ mixins, spacing }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ mixins, spacing }) => {
   return {
     root: {
       flexGrow: 1,
@@ -8,14 +10,14 @@ export default ({ mixins, spacing }) => {
       marginTop: 30,
     },
     tile: {
-      padding: mixins.scaledSpaceAround(5, 5),
+      padding: spacing(5),
     },
     tileTitle: {
       fontWeight: 'bold',
-      marginBottom: spacing.unit * 4,
+      marginBottom: spacing(4),
     },
     chartContainer: {
-      marginBottom: -spacing.unit * 4,
+      marginBottom: spacing(-4),
     },
   }
-}
+})

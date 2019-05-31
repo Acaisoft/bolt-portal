@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
-import { withStyles, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { Loader, SectionHeader } from '~components'
 
 import { getUrl } from '~utils/router'
@@ -12,10 +12,12 @@ import routes from '~config/routes'
 import { ResultsPerEndpoint, ResultsPerTick } from './components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 
-import styles from './Details.styles'
+import useStyles from './Details.styles'
 
-export function Details({ classes, history, match }) {
+export function Details({ history, match }) {
   const { executionId } = match.params
+
+  const classes = useStyles()
 
   const { data: { execution } = {}, loading } = useSubscription(
     SUBSCRIBE_TO_EXECUTION,
@@ -48,7 +50,7 @@ export function Details({ classes, history, match }) {
         marginBottom
       />
 
-      <Grid container spacing={16}>
+      <Grid container spacing={2}>
         <ResultsPerTick classes={classes} execution={execution} />
         <ResultsPerEndpoint
           classes={classes}
@@ -61,7 +63,6 @@ export function Details({ classes, history, match }) {
 }
 
 Details.propTypes = {
-  classes: PropTypes.object.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       executionId: PropTypes.string.isRequired,
@@ -69,4 +70,4 @@ Details.propTypes = {
   }).isRequired,
 }
 
-export default withStyles(styles)(Details)
+export default Details

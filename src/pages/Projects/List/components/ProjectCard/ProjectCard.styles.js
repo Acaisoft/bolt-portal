@@ -1,4 +1,6 @@
-export default ({ shape, spacing }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ shape, spacing }) => {
   return {
     header: {
       alignItems: 'flex-start',
@@ -10,13 +12,13 @@ export default ({ shape, spacing }) => {
       display: 'flex',
     },
     chip: {
-      padding: `${spacing.unit * 0.25}px ${spacing.unit}px`,
+      padding: spacing(0.25, 1),
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
       height: 'auto',
       borderRadius: shape.borderRadius,
 
       '& + &': {
-        marginLeft: spacing.unit * 1.5,
+        marginLeft: spacing(1.5),
       },
 
       '& > span': {
@@ -24,8 +26,8 @@ export default ({ shape, spacing }) => {
       },
     },
     actions: {
-      padding: `0 ${spacing.unit * 2 - 4}px ${spacing.unit}px`,
+      padding: `0 ${spacing(2) - 4}px ${spacing(1)}px`,
       justifyContent: 'flex-end',
     },
   }
-}
+})

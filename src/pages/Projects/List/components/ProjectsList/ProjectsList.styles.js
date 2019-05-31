@@ -1,8 +1,10 @@
-export default ({ palette, shape, spacing, typography }) => {
+import { makeStyles } from '@material-ui/core'
+
+export default makeStyles(({ palette, shape, spacing, typography }) => {
   return {
     card: {
       height: '100%',
-      padding: spacing.unit * 2,
+      padding: spacing(2),
       display: 'flex',
       flexDirection: 'column',
       borderRadius: shape.borderRadius * 2,
@@ -25,7 +27,7 @@ export default ({ palette, shape, spacing, typography }) => {
     },
     gridItem: {
       flex: '1 1 250px',
-      margin: spacing.unit,
+      margin: spacing(1),
     },
     gridItemBig: {
       flexBasis: '100%',
@@ -44,4 +46,4 @@ export default ({ palette, shape, spacing, typography }) => {
       height: '100%',
     },
   }
-}
+})

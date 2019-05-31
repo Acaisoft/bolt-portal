@@ -1,16 +1,17 @@
 import React from 'react'
 
-import { Button, withStyles } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
-import styles from './ButtonWithIcon.styles'
+import useStyles from './ButtonWithIcon.styles'
 
 function ButtonWithIcon({
   children,
-  classes,
   button: ButtonComponent = Button,
   icon: IconComponent,
   ...buttonProps
 }) {
+  const classes = useStyles()
+
   return (
     <ButtonComponent {...buttonProps}>
       {IconComponent && <IconComponent className={classes.icon} />}
@@ -19,4 +20,4 @@ function ButtonWithIcon({
   )
 }
 
-export default withStyles(styles)(ButtonWithIcon)
+export default ButtonWithIcon

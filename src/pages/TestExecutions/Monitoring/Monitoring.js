@@ -2,16 +2,18 @@ import React, { useMemo } from 'react'
 import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
-import { Grid, Paper, withStyles } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 import { SectionHeader, Loader, NoDataPlaceholder } from '~components'
 
 import { MonitoringLineChart } from './components'
 import { getDataForChart } from './module.js'
 import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
-import styles from './Monitoring.styles'
+import useStyles from './Monitoring.styles'
 
-function Monitoring({ classes, match, history, location }) {
+function Monitoring({ match, history, location }) {
   const { executionId } = match.params
+
+  const classes = useStyles()
 
   const { data: { execution } = {}, loading } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
@@ -53,7 +55,7 @@ function Monitoring({ classes, match, history, location }) {
       {!chartsWithData ? (
         <NoDataPlaceholder label="Waiting for data..." />
       ) : (
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
             return (
               <Grid item xs={12} key={`chart-${index}`}>
@@ -78,4 +80,4 @@ function Monitoring({ classes, match, history, location }) {
   )
 }
 
-export default withStyles(styles)(Monitoring)
+export default Monitoring

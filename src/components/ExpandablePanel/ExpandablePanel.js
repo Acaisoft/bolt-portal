@@ -6,13 +6,14 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Typography,
-  withStyles,
 } from '@material-ui/core'
 import { ExpandMore } from '@material-ui/icons'
 
-import styles from './ExpandablePanel.styles'
+import useStyles from './ExpandablePanel.styles'
 
-function ExpandablePanel({ children, classes, title, ...panelProps }) {
+function ExpandablePanel({ children, title, ...panelProps }) {
+  const classes = useStyles()
+
   return (
     <ExpansionPanel className={classes.root} elevation={0} {...panelProps}>
       <ExpansionPanelSummary
@@ -34,9 +35,7 @@ function ExpandablePanel({ children, classes, title, ...panelProps }) {
 }
 
 ExpandablePanel.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  classes: PropTypes.object.isRequired,
   title: PropTypes.string,
 }
 
-export default withStyles(styles)(ExpandablePanel)
+export default ExpandablePanel

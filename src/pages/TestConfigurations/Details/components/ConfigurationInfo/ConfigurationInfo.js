@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { Grid, Typography, Paper, withStyles, Tooltip } from '@material-ui/core'
+import { Grid, Typography, Paper, Tooltip } from '@material-ui/core'
 import { PlayArrow, Edit, Delete } from '@material-ui/icons'
 import {
   SectionHeader,
@@ -17,16 +17,16 @@ import { TestSourceType } from '~config/constants'
 
 import { useConfigurationRun, useConfigurationDelete } from '../../../hooks'
 
-import styles from './ConfigurationInfo.styles'
+import useStyles from './ConfigurationInfo.styles'
 
 export function ConfigurationInfo({
   breadcrumbs,
-  classes,
   configuration,
   onEdit = () => {},
   onDelete = () => {},
   onRun = () => {},
 }) {
+  const classes = useStyles()
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle(false)
 
   const { loading: isStartingRun, mutation: runConfiguration } = useConfigurationRun(
@@ -112,14 +112,14 @@ export function ConfigurationInfo({
 
       <Paper square className={classes.paper}>
         <ExpandablePanel defaultExpanded={false} title="Scenario Details">
-          <Grid container spacing={40} alignItems="center">
+          <Grid container spacing={5} alignItems="center">
             <Grid item hidden="sm" md={1} container justify="center">
               <Grid item>
                 <Details height={80} width={70} />
               </Grid>
             </Grid>
             <Grid item xs>
-              <Grid container spacing={32} alignItems="center">
+              <Grid container spacing={4} alignItems="center">
                 <Grid item xs={12}>
                   <SectionHeader size="medium" title="General" />
                 </Grid>
@@ -216,14 +216,14 @@ export function ConfigurationInfo({
             </Grid>
           </Grid>
         </ExpandablePanel>
-        <Grid container spacing={40}>
+        <Grid container spacing={5}>
           <Grid
             item
             xs={12}
             container
             justify="flex-end"
             alignItems="center"
-            spacing={8}
+            spacing={1}
           >
             <Grid item>
               <ButtonWithIcon
@@ -276,4 +276,4 @@ ConfigurationInfo.propTypes = {
   onRun: PropTypes.func,
 }
 
-export default withStyles(styles)(ConfigurationInfo)
+export default ConfigurationInfo

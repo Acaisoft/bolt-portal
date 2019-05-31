@@ -1,4 +1,3 @@
-const spacingUnit = 8
 const palette = {
   type: 'dark',
   actions: {
@@ -82,12 +81,8 @@ const palette = {
 }
 
 export default {
-  spacing: {
-    unit: spacingUnit,
-  },
   palette,
   typography: {
-    useNextVariants: true,
     fontSize: 15,
     fontFamily: 'Montserrat, Arial, sans-serif',
     button: {
@@ -128,6 +123,8 @@ export default {
     MuiTableCell: {
       root: {
         borderBottom: 'none',
+        paddingTop: 4,
+        paddingBottom: 4,
       },
       head: {
         color: palette.text.primary,
@@ -155,13 +152,5 @@ export default {
     MuiInputBase: {
       autoComplete: 'off',
     },
-  },
-  mixins: {
-    // Usage:
-    // scaledSpaceAround(2, 3, 4, 5) -> '16px 24px 32px 40px'.
-    // scaledSpaceAround(0, 4) -> '0 32px'
-    // You can provide any number of sides
-    scaledSpaceAround: (...sideScales) =>
-      sideScales.map(scale => `${scale * spacingUnit}px`).join(' '),
   },
 }

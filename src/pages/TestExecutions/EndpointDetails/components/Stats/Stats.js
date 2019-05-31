@@ -26,7 +26,7 @@ function Stats({ classes, endpointId }) {
         <Paper square className={classes.tile}>
           <SectionHeader title="Response Times" size="small" />
           <div className={classes.tileContent}>
-            <Grid container spacing={8}>
+            <Grid container spacing={1}>
               <Grid item xs={4}>
                 <LabeledValue
                   label="Minimal"
@@ -56,7 +56,7 @@ function Stats({ classes, endpointId }) {
           <SectionHeader title="Response Size" size="small" />
 
           <div className={classes.tileContent}>
-            <Grid container spacing={32}>
+            <Grid container spacing={4}>
               <Grid item xs={4}>
                 <LabeledValue
                   label="Minimal"

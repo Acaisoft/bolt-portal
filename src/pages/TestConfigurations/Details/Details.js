@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
 import { toast } from 'react-toastify'
-import { withStyles } from '@material-ui/core'
 import { Loader } from '~components'
 
 import routes from '~config/routes'
@@ -11,10 +10,11 @@ import { getUrl } from '~utils/router'
 
 import { ConfigurationInfo, TestExecutionsList } from './components'
 import { GET_CONFIGURATION } from './graphql'
-import styles from './Details.styles'
+import useStyles from './Details.styles'
 
-function Details({ classes, history, match }) {
+function Details({ history, match }) {
   const { configurationId } = match.params
+  const classes = useStyles()
 
   const { getMonitoringDetailsUrl, getTestDetailsUrl } = useUrlGetters(match.params)
   const { handleEdit, handleDelete, handleRun } = useHandlers(history, match.params)
@@ -66,7 +66,6 @@ function Details({ classes, history, match }) {
 }
 
 Details.propTypes = {
-  classes: PropTypes.object.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       configurationId: PropTypes.string.isRequired,
@@ -130,4 +129,4 @@ function useHandlers(history, params) {
   return { handleEdit, handleDelete, handleRun }
 }
 
-export default withStyles(styles)(Details)
+export default Details
