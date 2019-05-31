@@ -34,8 +34,8 @@ const request = async operation => {
   // const authToken = localStorage.getItem('token') || initToken
   operation.setContext({
     headers: {
-      'X-Hasura-Access-Key': Config.hasuraAccessKey,
-      'X-Hasura-User-Id': Config.hasuraUserID,
+      'X-Hasura-Access-Key': Config.hasura.accessKey,
+      'X-Hasura-User-Id': Config.hasura.userID,
       // Authorization: token ? `Bearer ${authToken}` : '',
     },
   })
@@ -62,9 +62,8 @@ const requestLink = new ApolloLink(
     })
 )
 
-const stage = process.env.REACT_APP_STAGE
 const wsLink = new WebSocketLink({
-  uri: `ws${stage !== 'local' ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
+  uri: Config.hasura.wsUri,
   options: {
     lazy: true,
     reconnect: true,
@@ -72,7 +71,7 @@ const wsLink = new WebSocketLink({
       // const authToken = localStorage.getItem('token') || initToken
       return {
         headers: {
-          'X-Hasura-Access-Key': Config.hasuraAccessKey,
+          'X-Hasura-Access-Key': Config.hasura.accessKey,
           // Authorization: token ? `Bearer ${authToken}` : '',
         },
       }
@@ -80,7 +79,7 @@ const wsLink = new WebSocketLink({
   },
 })
 const httpLink = new HttpLink({
-  uri: `http${stage !== 'local' ? 's' : ''}://${Config.apiBase}/v1alpha1/graphql`,
+  uri: Config.hasura.apiUri,
 })
 
 const link = split(
