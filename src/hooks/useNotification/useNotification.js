@@ -4,26 +4,28 @@ import { makeStyles } from '@material-ui/styles'
 import { ToastSuccess, ToastError, ToastInfo } from '~assets/icons'
 import { ToastContent } from './components'
 
-const variants = [
-  {
-    name: 'info',
+const variants = {
+  info: {
     defaultTitle: 'Information',
-    color: '#7297FF',
     icon: ToastInfo,
   },
-  {
-    name: 'success',
+  success: {
     defaultTitle: 'Success',
-    color: '#1EB1B1',
     icon: ToastSuccess,
   },
-  {
-    name: 'error',
+  error: {
     defaultTitle: 'Error',
-    color: '#EB6767F',
     icon: ToastError,
   },
-]
+}
+
+function useNotification() {
+  return {
+    success: createVariant(variants.success),
+    info: createVariant(variants.info),
+    error: createVariant(variants.error),
+  }
+}
 
 const useStyle = makeStyles(({ palette }) => {
   return {
@@ -41,7 +43,7 @@ const useStyle = makeStyles(({ palette }) => {
 })
 
 function createVariant({ name, defaultTitle, icon }) {
-  const toastVariantMethod = useCallback((message, options = {}) => {
+  return useCallback((message, options = {}) => {
     const { title, ...toastifyOptions } = options
     const classes = useStyle({ name })
 
@@ -57,24 +59,6 @@ function createVariant({ name, defaultTitle, icon }) {
       }
     )
   }, [])
-
-  return toastVariantMethod
-}
-
-function useNotification() {
-  return {
-    success: createVariant({
-      name: 'success',
-      defaultTitle: 'Success',
-      icon: ToastSuccess,
-    }),
-    info: createVariant({
-      name: 'info',
-      defaultTitle: 'Information',
-      icon: ToastInfo,
-    }),
-    error: createVariant({ name: 'error', defaultTitle: 'Error', icon: ToastError }),
-  }
 }
 
 export default useNotification
