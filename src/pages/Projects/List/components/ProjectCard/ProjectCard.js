@@ -9,7 +9,7 @@ import {
   Typography,
   CardActions,
 } from '@material-ui/core'
-import { ButtonWithIcon, SuccessRatePieChart, LinkButton } from '~components'
+import { Button, SuccessRatePieChart } from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
@@ -69,16 +69,15 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
         )}
       </CardContent>
       <CardActions className={classes.actions}>
-        <ButtonWithIcon
+        <Button
           variant="contained"
           color="primary"
-          button={LinkButton}
           href={getProjectDetailsUrl(project)}
           className={classes.actionButton}
           icon={ChevronRight}
         >
           More
-        </ButtonWithIcon>
+        </Button>
       </CardActions>
     </React.Fragment>
   )

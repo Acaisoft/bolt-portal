@@ -5,13 +5,7 @@ import { useSubscription } from 'react-apollo-hooks'
 
 import { IconButton } from '@material-ui/core'
 import { Add, History } from '@material-ui/icons'
-import {
-  ButtonWithIcon,
-  SectionHeader,
-  DataTable,
-  NoWrap,
-  LinkButton,
-} from '~components'
+import { Button, SectionHeader, DataTable, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -74,15 +68,14 @@ export function TestConfigurationsList({
             totalCount={totalCount}
           />
         )}
-        <ButtonWithIcon
+        <Button
           icon={Add}
-          button={LinkButton}
           variant="contained"
           color="secondary"
-          href={getTestConfigurationCreateUrl}
+          href={getTestConfigurationCreateUrl()}
         >
           New
-        </ButtonWithIcon>
+        </Button>
       </SectionHeader>
       <DataTable
         data={configurations}
@@ -174,12 +167,13 @@ export function TestConfigurationsList({
           render={configuration => {
             return (
               <div className={classes.actionsContainer}>
-                <LinkButton
+                <Button
                   href={getTestConfigurationDetailsUrl(configuration)}
                   title="Show scenario details"
+                  variant="link"
                 >
                   Details
-                </LinkButton>
+                </Button>
               </div>
             )
           }}

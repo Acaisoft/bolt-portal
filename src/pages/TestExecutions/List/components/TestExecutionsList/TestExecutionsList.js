@@ -4,7 +4,7 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { IconButton } from '@material-ui/core'
 import { Pageview } from '@material-ui/icons'
-import { DataTable, SectionHeader, NoWrap, LinkButton } from '~components'
+import { DataTable, SectionHeader, NoWrap, Button } from '~components'
 import { useListFilters } from '~hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
@@ -113,12 +113,13 @@ function TestExecutionsList({ projectId, getExecutionDetailsUrl }) {
         <DataTable.Column
           key="actions"
           render={execution => (
-            <LinkButton
+            <Button
               title="Show details"
               href={getExecutionDetailsUrl(execution)}
+              variant="link"
             >
               Details
-            </LinkButton>
+            </Button>
           )}
           title="Actions"
         />

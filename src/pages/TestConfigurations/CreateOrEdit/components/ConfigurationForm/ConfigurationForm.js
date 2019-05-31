@@ -5,9 +5,9 @@ import { useQuery } from 'react-apollo-hooks'
 import { Form } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import arrayMutators from 'final-form-arrays'
-import { Button, Grid, MenuItem, Typography, IconButton } from '@material-ui/core'
+import { Grid, MenuItem, Typography, IconButton } from '@material-ui/core'
 import { FormField, CheckboxField, FormValue } from '~containers'
-import { ExpandablePanel, SectionHeader, Loader, ButtonWithIcon } from '~components'
+import { ExpandablePanel, SectionHeader, Loader, Button } from '~components'
 import { Delete, Add } from '@material-ui/icons'
 
 import {
@@ -305,7 +305,7 @@ export function ConfigurationForm({
                     </React.Fragment>
                   ))}
                   <Grid item xs={12}>
-                    <ButtonWithIcon
+                    <Button
                       onClick={() =>
                         form.form.mutators.push('configuration_envvars', undefined)
                       }
@@ -314,7 +314,7 @@ export function ConfigurationForm({
                       icon={Add}
                     >
                       Add a variable
-                    </ButtonWithIcon>
+                    </Button>
                   </Grid>
                 </Grid>
               )}

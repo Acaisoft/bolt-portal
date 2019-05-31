@@ -7,7 +7,7 @@ import { Field } from 'react-final-form'
 import { FileUploader, FormField } from '~containers'
 import { ProjectForm } from '~containers/forms'
 
-import { ButtonWithIcon, ImagePreview } from '~components'
+import { Button, ImagePreview } from '~components'
 import { CreateProject } from '~assets/icons'
 
 import useStyles from './ProjectFormInCard.styles'
@@ -72,7 +72,7 @@ function ProjectFormInCard({
               </div>
 
               <div className={classes.actionButtons}>
-                <ButtonWithIcon
+                <Button
                   color="default"
                   icon={Close}
                   variant="contained"
@@ -80,8 +80,8 @@ function ProjectFormInCard({
                   onClick={onCancel}
                 >
                   Cancel
-                </ButtonWithIcon>
-                <ButtonWithIcon
+                </Button>
+                <Button
                   color="secondary"
                   variant="contained"
                   type="submit"
@@ -89,7 +89,7 @@ function ProjectFormInCard({
                   icon={mode === 'create' ? Add : Edit}
                 >
                   {mode === 'create' ? 'Add' : 'Update'}
-                </ButtonWithIcon>
+                </Button>
               </div>
             </form>
           </div>

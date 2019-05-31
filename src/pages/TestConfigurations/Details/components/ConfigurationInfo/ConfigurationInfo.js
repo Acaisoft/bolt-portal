@@ -6,7 +6,7 @@ import { PlayArrow, Edit, Delete } from '@material-ui/icons'
 import {
   SectionHeader,
   SubmitCancelModal,
-  ButtonWithIcon,
+  Button,
   LabeledValue,
   ExpandablePanel,
 } from '~components'
@@ -85,7 +85,7 @@ export function ConfigurationInfo({
           }
         >
           <span>
-            <ButtonWithIcon
+            <Button
               variant="contained"
               color="primary"
               icon={PlayArrow}
@@ -94,8 +94,8 @@ export function ConfigurationInfo({
               aria-label="Run"
             >
               Run
-            </ButtonWithIcon>
-            <ButtonWithIcon
+            </Button>
+            <Button
               variant="contained"
               color="secondary"
               icon={PlayArrow}
@@ -105,7 +105,7 @@ export function ConfigurationInfo({
               aria-label="Cold Run"
             >
               Cold Run
-            </ButtonWithIcon>
+            </Button>
           </span>
         </Tooltip>
       </SectionHeader>
@@ -226,21 +226,21 @@ export function ConfigurationInfo({
             spacing={1}
           >
             <Grid item>
-              <ButtonWithIcon
+              <Button
                 icon={Edit}
                 variant="outlined"
                 color="default"
                 onClick={onEdit}
               >
                 <Typography variant="body2">Edit</Typography>
-              </ButtonWithIcon>
+              </Button>
             </Grid>
             <Grid item>
               <Tooltip
                 title={isPerformed ? "You can't delete a performed scenario." : ''}
               >
                 <span>
-                  <ButtonWithIcon
+                  <Button
                     icon={Delete}
                     aria-label="Delete scenario"
                     variant="outlined"
@@ -249,7 +249,7 @@ export function ConfigurationInfo({
                     onClick={() => toggleDeleteModal(true)}
                   >
                     <Typography variant="body2">Delete</Typography>
-                  </ButtonWithIcon>
+                  </Button>
                 </span>
               </Tooltip>
             </Grid>

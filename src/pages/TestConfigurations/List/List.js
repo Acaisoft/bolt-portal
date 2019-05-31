@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 import { TestConfigurationsList } from './components'
@@ -21,8 +20,8 @@ export function List({ history, match }) {
     <div className={classes.root}>
       <TestConfigurationsList
         projectId={projectId}
-        onCreate={getTestConfigurationCreateUrl}
-        onDetails={getTestConfigurationDetailsUrl}
+        getTestConfigurationCreateUrl={getTestConfigurationCreateUrl}
+        getTestConfigurationDetailsUrl={getTestConfigurationDetailsUrl}
       />
     </div>
   )

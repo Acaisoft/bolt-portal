@@ -5,7 +5,7 @@ import { useQuery } from 'react-apollo-hooks'
 import { Add, Edit, Delete } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
 import { Pagination } from '~containers'
-import { ButtonWithIcon, DataTable, SectionHeader, LinkButton } from '~components'
+import { Button, DataTable, SectionHeader } from '~components'
 
 import { useListFilters } from '~hooks'
 import { TestSourceType } from '~config/constants'
@@ -51,15 +51,14 @@ function TestSourcesList({
             totalCount={totalCount}
           />
         )}
-        <ButtonWithIcon
-          button={LinkButton}
+        <Button
           icon={Add}
           color="secondary"
           variant="contained"
           href={getCreateTestSourceUrl}
         >
           New
-        </ButtonWithIcon>
+        </Button>
       </SectionHeader>
 
       <DataTable data={testSources} isLoading={loading} rowKey={source => source.id}>
@@ -91,9 +90,13 @@ function TestSourcesList({
           key="actions"
           render={source => (
             <div className={classes.iconsContainer}>
-              <LinkButton title="Edit source" href={getEditTestSourceUrl(source)}>
+              <Button
+                title="Edit source"
+                href={getEditTestSourceUrl(source)}
+                variant="link"
+              >
                 Edit
-              </LinkButton>
+              </Button>
               {/* <IconButton
                 aria-label="Delete source"
                 className={classes.icon}

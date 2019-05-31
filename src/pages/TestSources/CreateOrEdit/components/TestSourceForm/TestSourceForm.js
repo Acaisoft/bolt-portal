@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 import { useQuery } from 'react-apollo-hooks'
 import { Form } from 'react-final-form'
-import { Button, Grid, MenuItem, FormHelperText } from '@material-ui/core'
+import { Grid, MenuItem, FormHelperText } from '@material-ui/core'
 import { Add, VpnKey } from '@material-ui/icons'
 import { FormField, FormCondition } from '~containers'
 import {
   SectionHeader,
-  ButtonWithIcon,
+  Button,
   CopyToClipboard,
   Loader,
   ButtonWithState,
@@ -116,7 +116,7 @@ function TestSourceForm({
             >
               Cancel
             </Button>
-            <ButtonWithIcon
+            <Button
               className={classes.marginLeft}
               color="secondary"
               variant="contained"
@@ -133,7 +133,7 @@ function TestSourceForm({
               type="submit"
             >
               {mode === 'create' ? 'Create' : 'Update'}
-            </ButtonWithIcon>
+            </Button>
           </SectionHeader>
 
           <form onSubmit={form.handleSubmit}>
@@ -203,14 +203,14 @@ function TestSourceForm({
                         fullWidth
                       />
                     )}
-                    <ButtonWithIcon
+                    <Button
                       color="primary"
                       variant="contained"
                       onClick={() => toggleKeyInput()}
                       icon={VpnKey}
                     >
                       {isKeyVisible ? 'Hide' : 'Show'} Key
-                    </ButtonWithIcon>
+                    </Button>
                     <ButtonWithState
                       color="primary"
                       variant="contained"

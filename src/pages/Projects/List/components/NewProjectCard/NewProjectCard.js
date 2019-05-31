@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { CardContent, CardActions } from '@material-ui/core'
-import { ButtonWithIcon } from '~components'
+import { Button } from '~components'
 
 import { Add } from '@material-ui/icons'
 import { CreateProject } from '~assets/icons'
@@ -18,14 +18,9 @@ function NewProjectCard({ onCreate }) {
         <CreateProject height={97} />
       </CardContent>
       <CardActions className={classes.actions}>
-        <ButtonWithIcon
-          color="secondary"
-          variant="contained"
-          onClick={onCreate}
-          icon={Add}
-        >
+        <Button color="secondary" variant="contained" onClick={onCreate} icon={Add}>
           New
-        </ButtonWithIcon>
+        </Button>
       </CardActions>
     </React.Fragment>
   )

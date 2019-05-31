@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
+import { DataTable, SectionHeader, Button, NoWrap } from '~components'
 
 import { formatThousands, formatPercent } from '~utils/numbers'
 
@@ -121,9 +121,13 @@ export function ResponsesTable({
           <DataTable.Column
             key="actions"
             render={response => (
-              <LinkButton title="Show fails" href={getEndpointDetailsUrl(response)}>
+              <Button
+                title="Show fails"
+                href={getEndpointDetailsUrl(response)}
+                variant="link"
+              >
                 Details
-              </LinkButton>
+              </Button>
             )}
           />
         </DataTable>

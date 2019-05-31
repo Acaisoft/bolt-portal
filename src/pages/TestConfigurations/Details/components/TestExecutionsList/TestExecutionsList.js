@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
-import { DataTable, SectionHeader, LinkButton, NoWrap } from '~components'
+import { DataTable, SectionHeader, Button, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -148,20 +148,22 @@ function TestExecutionsList({
           render={execution => (
             <React.Fragment>
               {has_load_tests && (
-                <LinkButton
+                <Button
                   href={getTestDetailsUrl(execution)}
                   title="Show test run details"
+                  variant="link"
                 >
                   Tests
-                </LinkButton>
+                </Button>
               )}
               {has_monitoring && (
-                <LinkButton
+                <Button
                   href={getMonitoringDetailsUrl(execution)}
                   title="Show monitoring details"
+                  variant="link"
                 >
                   Monitoring
-                </LinkButton>
+                </Button>
               )}
             </React.Fragment>
           )}

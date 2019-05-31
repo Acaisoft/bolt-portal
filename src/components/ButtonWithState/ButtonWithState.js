@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { CircularProgress } from '@material-ui/core'
 import { Check, Close } from '@material-ui/icons'
 
-import { ButtonWithIcon } from '~components'
+import { Button } from '~components'
 
 import useStyles from './ButtonWithState.styles'
 
@@ -35,7 +35,7 @@ function ButtonWithState({
   }
 
   return (
-    <ButtonWithIcon
+    <Button
       {...buttonProps}
       className={classNames(className, {
         [classes.error]: error,
@@ -44,7 +44,7 @@ function ButtonWithState({
       icon={icon}
     >
       {children}
-    </ButtonWithIcon>
+    </Button>
   )
 }
 
