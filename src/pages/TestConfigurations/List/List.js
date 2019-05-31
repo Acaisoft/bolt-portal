@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { toast } from 'react-toastify'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
-
 import { TestConfigurationsList } from './components'
 import useStyles from './List.styles'
+import { useNotification } from '~hooks'
 
 export function List({ history, match }) {
   const { projectId } = match.params
@@ -54,11 +53,13 @@ function useHandlers(history, match) {
     })
   }, [])
 
+  const notify = useNotification()
+
   const handleRun = useCallback(({ configuration, error }) => {
     if (error) {
-      toast.error(error)
+      notify.error(error)
     } else {
-      toast.success(`Scenario '${configuration.name}' was successfully started.`)
+      notify.success(`Scenario '${configuration.name}' was successfully started.`)
     }
   }, [])
 

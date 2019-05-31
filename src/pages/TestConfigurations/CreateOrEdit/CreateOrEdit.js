@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { toast } from 'react-toastify'
-
 import { ConfigurationForm } from './components'
-
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
+import { useNotification } from '~hooks'
 
 export function CreateOrEdit({ history, match }) {
   const { projectId, configurationId } = match.params
@@ -16,12 +14,14 @@ export function CreateOrEdit({ history, match }) {
     history.goBack()
   }, [])
 
+  const notify = useNotification()
+
   const handleSubmit = useCallback(
     ({ values, errorMessage }) => {
       if (errorMessage) {
-        toast.error(errorMessage)
+        notify.error(errorMessage)
       } else {
-        toast.success(
+        notify.success(
           `Scenario ${configurationId ? 'updated' : 'created'} successfully`
         )
         history.push(getUrl(routes.projects.configurations.list, match.params))

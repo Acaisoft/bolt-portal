@@ -2,15 +2,13 @@ import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
-import { toast } from 'react-toastify'
 import { Loader } from '~components'
-
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
-
 import { ConfigurationInfo, TestExecutionsList } from './components'
 import { GET_CONFIGURATION } from './graphql'
 import useStyles from './Details.styles'
+import { useNotification } from '~hooks'
 
 function Details({ history, match }) {
   const { configurationId } = match.params
@@ -106,12 +104,14 @@ function useHandlers(history, params) {
     history.push(getUrl(routes.projects.configurations.edit, params))
   }, [history, params])
 
+  const notify = useNotification()
+
   const handleDelete = useCallback(
     error => {
       if (error) {
-        toast.error(error)
+        notify.error(error)
       } else {
-        toast.success('Configuration has been deleted.')
+        notify.success('Configuration has been deleted.')
         history.push(getUrl(routes.projects.configurations.list, params))
       }
     },
@@ -120,9 +120,9 @@ function useHandlers(history, params) {
 
   const handleRun = useCallback(error => {
     if (error) {
-      toast.error(`Could not start: ${error}`)
+      notify.error(`Could not start: ${error}`)
     } else {
-      toast.success('Configuration has been started.')
+      notify.success('Configuration has been started.')
     }
   })
 

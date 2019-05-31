@@ -1,71 +1,67 @@
-import React, { Component } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { Form } from 'react-final-form'
 import { Mutation } from 'react-apollo'
-import { toast } from 'react-toastify'
 
 import { createFormConfig } from './formSchema'
-
 import { validateForm, mutators } from '~utils/forms'
-
 import { ADD_PROJECT, EDIT_PROJECT } from './graphql'
+import { useNotification } from '~hooks'
 
-export class ProjectForm extends Component {
-  static propTypes = {
-    initialValues: PropTypes.object,
-    onCancel: PropTypes.func,
-    onSubmit: PropTypes.func,
-    mode: PropTypes.oneOf(['create', 'edit']),
-  }
+export function ProjectForm({
+  children,
+  initialValues,
+  mode = 'create',
+  onSubmit = () => {},
+  onCancel = () => {},
+}) {
+  const notify = useNotification()
 
-  static defaultProps = {
-    mode: 'create',
-    onCancel: () => {},
-    onSubmit: () => {},
-  }
-
-  handleSubmit = async (values, { projectMutation }) => {
+  const handleSubmit = useCallback(async (values, { projectMutation }) => {
     const { id, name, description, image_url } = values
 
     try {
       await projectMutation({
         variables: {
-          id: this.props.mode === 'create' ? undefined : id,
+          id: mode === 'create' ? undefined : id,
           name,
           description,
           image_url,
         },
       })
-      this.props.onSubmit(values)
+      onSubmit(values)
     } catch (err) {
-      toast.error(err.message)
+      notify.error(err.message)
     }
-  }
+  }, [])
 
-  render() {
-    const { children, initialValues, mode } = this.props
+  const formConfig = useMemo(() => createFormConfig(), [])
 
-    const formConfig = createFormConfig()
+  return (
+    <Mutation
+      mutation={mode === 'create' ? ADD_PROJECT : EDIT_PROJECT}
+      refetchQueries={['getProjects']}
+    >
+      {(projectMutation, { data }) => (
+        <Form
+          initialValues={initialValues}
+          mutators={{ ...mutators }}
+          onSubmit={values => handleSubmit(values, { projectMutation })}
+          validate={validateForm(formConfig.validationSchema)}
+        >
+          {form => children({ form, fields: formConfig.fields })}
+        </Form>
+      )}
+    </Mutation>
+  )
+}
 
-    return (
-      <Mutation
-        mutation={mode === 'create' ? ADD_PROJECT : EDIT_PROJECT}
-        refetchQueries={['getProjects']}
-      >
-        {(projectMutation, { data }) => (
-          <Form
-            initialValues={initialValues}
-            mutators={{ ...mutators }}
-            onSubmit={values => this.handleSubmit(values, { projectMutation })}
-            validate={validateForm(formConfig.validationSchema)}
-          >
-            {form => children({ form, fields: formConfig.fields })}
-          </Form>
-        )}
-      </Mutation>
-    )
-  }
+ProjectForm.propTypes = {
+  initialValues: PropTypes.object,
+  onCancel: PropTypes.func,
+  onSubmit: PropTypes.func,
+  mode: PropTypes.oneOf(['create', 'edit']),
 }
 
 export default ProjectForm
