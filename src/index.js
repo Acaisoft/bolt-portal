@@ -1,14 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 
-import apolloClient from '~services/GraphQL/client'
 import App from './App'
 
 import { AuthProvider } from '~contexts'
 import Config from '~services/Config'
 import AuthKeycloak from '~services/AuthKeycloak'
+import AuthApolloProvider from '~services/GraphQL/AuthApolloProvider'
 
 import * as serviceWorker from './serviceWorker'
 
@@ -16,11 +14,9 @@ const keycloak = new AuthKeycloak(Config.keycloak)
 
 ReactDOM.render(
   <AuthProvider client={keycloak}>
-    <ApolloProvider client={apolloClient}>
-      <ApolloHooksProvider client={apolloClient}>
-        <App />
-      </ApolloHooksProvider>
-    </ApolloProvider>
+    <AuthApolloProvider>
+      <App />
+    </AuthApolloProvider>
   </AuthProvider>,
   document.getElementById('root')
 )

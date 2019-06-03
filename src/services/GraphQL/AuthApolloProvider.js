@@ -1,0 +1,39 @@
+import React, { useContext, useMemo } from 'react'
+
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
+import { ApolloProvider } from 'react-apollo'
+import ApolloClient from 'apollo-client'
+import { ApolloLink } from 'apollo-link'
+
+import { AuthContext } from '~contexts'
+import {
+  makeErrorHandlingLink,
+  makeRequestLink,
+  makeTransportLinks,
+  makeCache,
+} from './handlers'
+
+function AuthApolloProvider({ children }) {
+  const auth = useContext(AuthContext)
+
+  const client = useMemo(
+    () =>
+      new ApolloClient({
+        link: ApolloLink.from([
+          makeErrorHandlingLink(),
+          makeRequestLink(),
+          makeTransportLinks(auth.getToken),
+        ]),
+        cache: makeCache(),
+      }),
+    []
+  )
+
+  return (
+    <ApolloProvider client={client}>
+      <ApolloHooksProvider client={client}>{children}</ApolloHooksProvider>
+    </ApolloProvider>
+  )
+}
+
+export default AuthApolloProvider

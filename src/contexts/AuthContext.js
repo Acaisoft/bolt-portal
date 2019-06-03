@@ -12,17 +12,24 @@ const { Provider, Consumer } = AuthContext
 function StatefulProvider({ children, client }) {
   const [isSyncing, setIsSyncing] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [token, setToken] = useState(null)
-  const [user, setUser] = useState(null)
+
+  const [state, setState] = useState({
+    isAuthenticated: false,
+    token: null,
+    user: null,
+  })
 
   const syncAuthState = useCallback(async () => {
-    setIsSyncing(true)
-    setIsAuthenticated(client.getIsAuthenticated())
-    setToken(client.getToken())
-    setUser(await client.getUser())
-    setIsSyncing(false)
-  }, [client])
+    if (!isSyncing) {
+      setIsSyncing(true)
+      setState({
+        isAuthenticated: client.getIsAuthenticated(),
+        token: client.getToken(),
+        user: await client.getUser(),
+      })
+      setIsSyncing(false)
+    }
+  }, [client, isSyncing])
 
   const login = useCallback(async (...args) => {
     await client.login(...args)
@@ -48,11 +55,10 @@ function StatefulProvider({ children, client }) {
     return {
       isSyncing,
       isInitialized,
-      isAuthenticated,
-      user,
-      token,
       login,
       logout,
+      getToken: client.getToken,
+      ...state,
     }
   }, [isSyncing, isInitialized])
 

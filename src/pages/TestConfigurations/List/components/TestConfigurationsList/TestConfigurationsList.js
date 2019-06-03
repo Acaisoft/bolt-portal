@@ -30,7 +30,7 @@ export function TestConfigurationsList({
   })
 
   const {
-    data: { configurations } = {},
+    data: { configurations = [] } = {},
     loading: loadingConfigurations,
   } = useSubscription(SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM, {
     variables: {

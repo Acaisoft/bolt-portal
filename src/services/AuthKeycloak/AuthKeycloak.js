@@ -3,6 +3,8 @@ import KeycloakClient from 'keycloak-js'
 export default class AuthKeycloak {
   constructor(config) {
     this.client = KeycloakClient(config)
+
+    this.getToken = this.getToken.bind(this)
   }
 
   logInfo(...args) {
@@ -21,22 +23,28 @@ export default class AuthKeycloak {
     return this.client.authenticated
   }
 
-  async getUser() {
+  getUser() {
     return new Promise((resolve, reject) => {
-      if (!this.client.profile) {
-        this.client
-          .loadUserProfile()
-          .success(profile => {
-            this.logInfo('Profile loaded')
-            resolve(profile)
-          })
-          .error(() => {
-            this.logError('Profile loading failed')
-            // reject()
-          })
+      if (this.client.profile) {
+        return resolve({
+          id: this.client.subject,
+          ...this.client.profile,
+        })
       }
 
-      resolve(this.client.profile)
+      this.client
+        .loadUserProfile()
+        .success(profile => {
+          this.logInfo('Profile loaded')
+          resolve({
+            id: this.client.subject,
+            ...profile,
+          })
+        })
+        .error(() => {
+          this.logError('Profile loading failed')
+          // reject()
+        })
     })
   }
 
