@@ -1,5 +1,5 @@
 import React from 'react'
-import { cleanup, fireEvent, render, act } from 'react-testing-library'
+import { cleanup, fireEvent, render, act } from '@testing-library/react'
 
 import { ExpandablePanel } from './ExpandablePanel'
 

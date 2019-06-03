@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, cleanup, getByTestId, act, fireEvent } from 'react-testing-library'
+import { render, cleanup, getByTestId, act, fireEvent } from '@testing-library/react'
 import { MockedRouter } from '~utils/tests/mocks'
 
 import { Button } from './Button'

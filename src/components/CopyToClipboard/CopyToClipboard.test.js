@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup, fireEvent, act } from 'react-testing-library'
+import { render, cleanup, fireEvent, act } from '@testing-library/react'
 
 import { copyValueFromInput } from '~utils/browser'
 import { CopyToClipboard } from './CopyToClipboard'
