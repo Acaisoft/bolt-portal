@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { Typography, CircularProgress } from '@material-ui/core'
-import { Close, Done } from '@material-ui/icons'
+import { Close, Done, PriorityHigh } from '@material-ui/icons'
 
 import { TestRunStatus as Status } from '~config/constants'
+import { Monitor } from '~assets/icons'
 
 import useStyles from './TestRunStatus.style'
 
@@ -24,10 +25,20 @@ export const configurations = {
     name: Status.ERROR,
     title: 'Error',
   },
+  [Status.MONITORING]: {
+    icon: props => <Monitor {...props} />,
+    name: Status.MONITORING,
+    title: 'Monitoring',
+  },
+  [Status.UNKNOWN]: {
+    icon: props => <PriorityHigh {...props} />,
+    name: Status.UNKNOWN,
+    title: 'Unknown',
+  },
 }
 
 export function TestRunStatus({ status }) {
-  const validatedStatus = configurations[status] ? status : Status.ERROR
+  const validatedStatus = configurations[status] ? status : Status.UNKNOWN
   const validConfiguration = configurations[validatedStatus]
   const classes = useStyles()
 
@@ -35,7 +46,7 @@ export function TestRunStatus({ status }) {
   return (
     <div className={classes.wrapper}>
       <div
-        className={classNames(classes.root, classes[validatedStatus])}
+        className={classNames(classes.root, classes[name])}
         data-testid="test-run-status-wrapper"
       >
         <Icon data-testid="test-run-status-icon" className={classes.icon} />

@@ -11,4 +11,6 @@ export const TestRunStatus = {
   PENDING: 'PENDING',
   FINISHED: 'FINISHED',
   ERROR: 'ERROR',
+  MONITORING: 'MONITORING',
+  UNKNOWN: 'UNKNOWN',
 }

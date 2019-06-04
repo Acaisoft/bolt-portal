@@ -17,10 +17,11 @@ describe('component: TestRunStatus', () => {
         [Status.FINISHED, configurations.FINISHED.title],
         [Status.PENDING, configurations.PENDING.title],
         [Status.ERROR, configurations.ERROR.title],
-        ['ANYOTHERSTATUS', configurations.ERROR.title],
-        ['', configurations.ERROR.title],
-        [null, configurations.ERROR.title],
-        [undefined, configurations.ERROR.title],
+        [Status.MONITORING, configurations.MONITORING.title],
+        ['ANYOTHERSTATUS', configurations.UNKNOWN.title],
+        ['', configurations.UNKNOWN.title],
+        [null, configurations.UNKNOWN.title],
+        [undefined, configurations.UNKNOWN.title],
       ])(
         'when status is %s expect %s as title',
         (specifiedStatus, expectedTitle) => {

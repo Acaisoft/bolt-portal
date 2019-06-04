@@ -3,7 +3,7 @@ import { TestRunStatus as Status } from '~config/constants'
 
 export default makeStyles(({ palette, spacing }) => ({
   icon: {
-    marginRight: spacing(1.5),
+    marginRight: spacing(1.2),
     fontSize: '0.9rem',
     color: palette.info.contrastText,
   },
@@ -16,6 +16,12 @@ export default makeStyles(({ palette, spacing }) => ({
   [Status.PENDING]: {
     background: palette.info.main,
   },
+  [Status.MONITORING]: {
+    background: palette.warning.main,
+  },
+  [Status.UNKNOWN]: {
+    background: palette.text.disabled,
+  },
   root: {
     padding: spacing(0.5, 1),
     borderRadius: spacing(0.5),
@@ -26,6 +32,7 @@ export default makeStyles(({ palette, spacing }) => ({
   title: {
     fontSize: '0.8rem',
     color: palette.text.primary,
+    fontWeight: 'bold',
   },
   wrapper: {
     display: 'flex',
