@@ -4,6 +4,7 @@ export default makeStyles(({ palette, shape, spacing }) => {
   return {
     header: {
       alignItems: 'flex-start',
+      maxWidth: '100%',
     },
     grow: {
       flexGrow: 1,

@@ -4,7 +4,7 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
   return {
     card: {
       height: '100%',
-      padding: spacing(2),
+      padding: spacing(3),
       display: 'flex',
       flexDirection: 'column',
       borderRadius: shape.borderRadius * 2,
@@ -22,7 +22,7 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
       // For browsers supporting grid.
       '&': {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))',
       },
     },
     gridItem: {
