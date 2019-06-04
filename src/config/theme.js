@@ -107,6 +107,9 @@ export default {
         color: palette.text.primary,
         boxShadow: 'none',
       },
+      sizeLarge: {
+        padding: '14px 30px',
+      },
     },
     MuiFormLabel: {
       root: {

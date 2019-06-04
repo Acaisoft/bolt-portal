@@ -78,8 +78,8 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
           variant="contained"
           color="primary"
           href={getProjectDetailsUrl(project)}
-          className={classes.actionButton}
           icon={ChevronRight}
+          size="large"
         >
           More
         </Button>
