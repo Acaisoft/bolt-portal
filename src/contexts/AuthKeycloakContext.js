@@ -6,8 +6,8 @@ import React, {
   createContext,
 } from 'react'
 
-const AuthContext = createContext(null)
-const { Provider, Consumer } = AuthContext
+const AuthKeycloakContext = createContext(null)
+const { Provider, Consumer } = AuthKeycloakContext
 
 function StatefulProvider({ children, client }) {
   const [isSyncing, setIsSyncing] = useState(false)
@@ -42,6 +42,22 @@ function StatefulProvider({ children, client }) {
   }, [])
 
   useEffect(() => {
+    client.registerOnTokenExpired({
+      minValidity: 5,
+      onSuccess: refreshed => {
+        if (refreshed) {
+          syncAuthState()
+        }
+      },
+      onError: () => {
+        syncAuthState()
+      },
+    })
+  }, [])
+
+  useEffect(() => {
+    // useEffect callback cannot be async, but the function inside can.
+    // We fire it only once anyway.
     async function initializeClient() {
       await client.init()
       await syncAuthState()
@@ -65,4 +81,8 @@ function StatefulProvider({ children, client }) {
   return <Provider value={context}>{children}</Provider>
 }
 
-export { AuthContext, Consumer as AuthConsumer, StatefulProvider as AuthProvider }
+export {
+  AuthKeycloakContext,
+  Consumer as AuthKeycloakConsumer,
+  StatefulProvider as AuthKeycloakProvider,
+}

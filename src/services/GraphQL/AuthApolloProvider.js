@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import ApolloClient from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
 
-import { AuthContext } from '~contexts'
+import { AuthKeycloakContext } from '~contexts'
 import {
   makeErrorHandlingLink,
   makeRequestLink,
@@ -14,7 +14,7 @@ import {
 } from './handlers'
 
 function AuthApolloProvider({ children }) {
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthKeycloakContext)
 
   const client = useMemo(
     () =>

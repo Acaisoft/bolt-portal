@@ -1,1 +1,5 @@
-export { AuthContext, AuthProvider, AuthConsumer } from './AuthContext'
+export {
+  AuthKeycloakContext,
+  AuthKeycloakProvider,
+  AuthKeycloakConsumer,
+} from './AuthKeycloakContext'

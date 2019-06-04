@@ -14,7 +14,7 @@ import {
 import { Close, ExitToApp } from '@material-ui/icons'
 import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons'
 
-import { AuthContext } from '~contexts'
+import { AuthKeycloakContext } from '~contexts'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
 
@@ -22,7 +22,7 @@ import useStyles from './SideMenu.styles'
 
 function SideMenu({ isOpen, onClose, projectId }) {
   const classes = useStyles()
-  const { logout } = useContext(AuthContext)
+  const { logout } = useContext(AuthKeycloakContext)
 
   const items = useMemo(() => {
     if (!projectId) {

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
-import { AuthProvider } from '~contexts'
+import { AuthKeycloakProvider } from '~contexts'
 import Config from '~services/Config'
 import AuthKeycloak from '~services/AuthKeycloak'
 import AuthApolloProvider from '~services/GraphQL/AuthApolloProvider'
@@ -13,11 +13,11 @@ import * as serviceWorker from './serviceWorker'
 const keycloak = new AuthKeycloak(Config.keycloak)
 
 ReactDOM.render(
-  <AuthProvider client={keycloak}>
+  <AuthKeycloakProvider client={keycloak}>
     <AuthApolloProvider>
       <App />
     </AuthApolloProvider>
-  </AuthProvider>,
+  </AuthKeycloakProvider>,
   document.getElementById('root')
 )
 

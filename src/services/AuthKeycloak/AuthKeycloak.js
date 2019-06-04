@@ -48,6 +48,32 @@ export default class AuthKeycloak {
     })
   }
 
+  registerOnTokenExpired({
+    minValidity,
+    onSuccess = () => {},
+    onError = () => {},
+  } = {}) {
+    this.client.onTokenExpired = () => {
+      this.client
+        .updateToken(minValidity)
+        .success(refreshed => {
+          if (refreshed) {
+            this.logInfo('Token was successfully refreshed')
+          } else {
+            this.logInfo('Token is still valid')
+          }
+          onSuccess(refreshed)
+        })
+        .error(error => {
+          this.logError(
+            'Failed to refresh the token, or the session has expired',
+            error
+          )
+          onError(error)
+        })
+    }
+  }
+
   init({ onLoad = 'login-required', ...options } = {}) {
     return new Promise((resolve, reject) => {
       this.client
@@ -91,25 +117,5 @@ export default class AuthKeycloak {
           reject(error)
         })
     })
-  }
-
-  onTokenExpired(minValidity, onSuccess, onError) {
-    this.client
-      .updateToken(minValidity)
-      .success(refreshed => {
-        if (refreshed) {
-          this.logInfo('Token was successfully refreshed')
-        } else {
-          this.logInfo('Token is still valid')
-        }
-        onSuccess(refreshed)
-      })
-      .error(error => {
-        this.logError(
-          'Failed to refresh the token, or the session has expired',
-          error
-        )
-        onError(error)
-      })
   }
 }
