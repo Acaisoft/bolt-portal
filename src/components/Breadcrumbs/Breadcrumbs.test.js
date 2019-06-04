@@ -6,6 +6,8 @@ import { ClassesProxy } from '~utils/tests/mocks'
 
 afterEach(cleanup)
 
+jest.unmock('@material-ui/core')
+
 describe('Breadcrumbs', () => {
   test('should render null when no items', () => {
     const { container } = render(<Breadcrumbs />)

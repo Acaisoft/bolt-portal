@@ -1,22 +1,20 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { cleanup, render } from '@testing-library/react'
 
 import { Guest } from './Guest'
-import { ClassesProxy } from '~utils/tests/mocks'
 
-const initGuest = overrides => {
-  const mockProps = {}
-  const wrapper = shallow(
-    <Guest classes={ClassesProxy} {...mockProps} {...overrides} />
-  )
-  return { mockProps, wrapper }
-}
+jest.unmock('@material-ui/core')
+
+jest.mock('~pages/Guest', () => () => <div>test guest pages</div>)
 
 describe('layout: Guest', () => {
+  afterEach(cleanup)
+
   describe('rendering', () => {
-    it('should render without crashing', () => {
-      const { wrapper } = initGuest()
-      expect(wrapper).toBeTruthy()
+    test('render without crashing', () => {
+      const { getByText } = render(<Guest />)
+
+      expect(getByText('test guest pages')).toBeVisible()
     })
   })
 })

@@ -6,3 +6,9 @@ export const TestSourceType = {
 export const Chart = {
   HEIGHT: 400,
 }
+
+export const TestRunStatus = {
+  PENDING: 'PENDING',
+  FINISHED: 'FINISHED',
+  ERROR: 'ERROR',
+}

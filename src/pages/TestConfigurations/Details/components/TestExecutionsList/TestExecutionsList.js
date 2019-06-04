@@ -6,7 +6,7 @@ import { useQuery, useSubscription } from 'react-apollo-hooks'
 import { DataTable, SectionHeader, Button, NoWrap } from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
-
+import { TestRunStatus } from '~components'
 import { formatThousands, formatPercent } from '~utils/numbers'
 
 import {
@@ -77,7 +77,7 @@ function TestExecutionsList({
         />
         <DataTable.Column
           key="status"
-          render={execution => execution.status}
+          render={execution => <TestRunStatus status={execution.status} />}
           title="Status"
         />
         <DataTable.Column

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`component: DefaultFooterRenderer rendering should render loader if isLoading is set 1`] = `""`;
