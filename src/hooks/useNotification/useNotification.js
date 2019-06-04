@@ -8,14 +8,17 @@ const variants = {
   info: {
     defaultTitle: 'Information',
     icon: ToastInfo,
+    name: 'info',
   },
   success: {
     defaultTitle: 'Success',
     icon: ToastSuccess,
+    name: 'success',
   },
   error: {
     defaultTitle: 'Error',
     icon: ToastError,
+    name: 'error',
   },
 }
 
@@ -43,9 +46,9 @@ const useStyle = makeStyles(({ palette }) => {
 })
 
 function createVariant({ name, defaultTitle, icon }) {
+  const classes = useStyle({ name })
   return useCallback((message, options = {}) => {
     const { title, ...toastifyOptions } = options
-    const classes = useStyle({ name })
 
     toast[name](
       <ToastContent
