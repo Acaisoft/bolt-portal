@@ -17,14 +17,18 @@ export default makeStyles(({ palette, spacing }) => ({
     background: palette.info.main,
   },
   root: {
-    padding: spacing(0.5, 0),
+    padding: spacing(0.5, 1),
     borderRadius: spacing(0.5),
-    width: 110,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     fontSize: '0.8rem',
+    color: palette.text.primary,
+  },
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 }))

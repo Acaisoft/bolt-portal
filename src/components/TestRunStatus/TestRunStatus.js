@@ -33,14 +33,16 @@ export function TestRunStatus({ status }) {
 
   const { icon: Icon, name, title } = validConfiguration
   return (
-    <div
-      className={classNames(classes.root, classes[validatedStatus])}
-      data-testid="test-run-status-wrapper"
-    >
-      <Icon data-testid="test-run-status-icon" className={classes.icon} />
-      <Typography className={classes.title} variant="body1">
-        {title}
-      </Typography>
+    <div className={classes.wrapper}>
+      <div
+        className={classNames(classes.root, classes[validatedStatus])}
+        data-testid="test-run-status-wrapper"
+      >
+        <Icon data-testid="test-run-status-icon" className={classes.icon} />
+        <Typography className={classes.title} variant="body1">
+          {title}
+        </Typography>
+      </div>
     </div>
   )
 }

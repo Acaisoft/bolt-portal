@@ -72,7 +72,7 @@ const palette = {
   divider: '#343252',
   text: {
     primary: '#FFFFFF',
-    secondary: '#CFCFEA',
+    secondary: '#BFBFE8',
     error: '#FF5EA1',
     success: '#1EB1B1',
     warning: '#EB8967',
@@ -91,6 +91,11 @@ export default {
     },
   },
   overrides: {
+    MuiChip: {
+      label: {
+        color: palette.text.secondary,
+      },
+    },
     MuiIconButton: {
       root: {
         color: palette.text.icon,
