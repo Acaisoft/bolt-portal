@@ -61,7 +61,12 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
       />
       <CardContent className={classes.grow}>
         {project.description && (
-          <Typography component="p" variant="body1" gutterBottom>
+          <Typography
+            color="textSecondary"
+            component="p"
+            variant="body1"
+            gutterBottom
+          >
             {project.description.length > 200
               ? `${project.description.slice(0, 200)}...`
               : project.description}
