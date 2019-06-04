@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 
-export default makeStyles(({ shape, spacing }) => {
+export default makeStyles(({ palette, shape, spacing }) => {
   return {
     header: {
       alignItems: 'flex-start',

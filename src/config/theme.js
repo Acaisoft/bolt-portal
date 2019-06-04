@@ -91,6 +91,11 @@ export default {
     },
   },
   overrides: {
+    MuiIconButton: {
+      root: {
+        color: palette.text.icon,
+      },
+    },
     MuiButton: {
       contained: {
         backgroundColor: palette.background.paper,
