@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
 import { Grid } from '@material-ui/core'
-import { Loader, SectionHeader } from '~components'
+import { Loader, SectionHeader, Button } from '~components'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
@@ -37,6 +37,12 @@ export function Details({ history, match }) {
     [match.params]
   )
 
+  const getMonitoringUrl = useCallback(() => {
+    return getUrl(routes.projects.configurations.executions.monitoring, {
+      ...match.params,
+    })
+  }, [match.params])
+
   if (loading) {
     return <Loader loading fill />
   }
@@ -48,7 +54,11 @@ export function Details({ history, match }) {
           'YYYY-MM-DD HH:mm:ss'
         )}
         marginBottom
-      />
+      >
+        {execution.configuration.has_monitoring && (
+          <Button href={getMonitoringUrl()}>Monitoring</Button>
+        )}
+      </SectionHeader>
 
       <Grid container spacing={2}>
         <ResultsPerTick classes={classes} execution={execution} />

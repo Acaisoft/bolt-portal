@@ -7,6 +7,11 @@ export const SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA = gql`
       start
       start_locust
 
+      configuration {
+        has_load_tests
+        has_monitoring
+      }
+
       execution_metrics_data(order_by: { timestamp: asc }) {
         id
         timestamp
