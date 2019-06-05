@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_PROJECT_SUMMARIES = gql`
-  query getProjectSummaries {
+  query getProjectCards {
     summaries: testrun_project_summary {
       projects {
         id: project_id

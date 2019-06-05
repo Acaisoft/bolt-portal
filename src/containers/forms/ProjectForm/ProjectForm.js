@@ -41,7 +41,7 @@ export function ProjectForm({
   return (
     <Mutation
       mutation={mode === 'create' ? ADD_PROJECT : EDIT_PROJECT}
-      refetchQueries={['getProjects']}
+      refetchQueries={['getProjectCards']}
     >
       {(projectMutation, { data }) => (
         <Form
