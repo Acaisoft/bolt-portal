@@ -14,7 +14,7 @@ describe('service: Config', () => {
         it('should return dev apiUri if stage is "stage"', () => {
           process.env.REACT_APP_STAGE = 'stage'
           const config = new Config()
-          expect(config.hasura.apiUri).toContain('hasura.dev.bolt')
+          expect(config.hasura.apiUri).toContain('hasura.dev-lite.bolt')
         })
 
         it('should return prod apiUri if stage is "prod"', () => {
