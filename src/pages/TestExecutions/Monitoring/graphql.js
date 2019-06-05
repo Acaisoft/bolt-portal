@@ -8,6 +8,7 @@ export const SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA = gql`
       start_locust
 
       configuration {
+        id
         has_load_tests
         has_monitoring
       }
