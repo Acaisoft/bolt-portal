@@ -35,7 +35,7 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
       gridColumnEnd: 'span 2',
     },
     formCard: {
-      border: '2px dashed white',
+      border: `2px dashed ${palette.border}`,
       backgroundColor: 'transparent',
     },
     newProjectContainer: {

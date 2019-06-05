@@ -14,6 +14,7 @@ const palette = {
       even: 'trasparent',
     },
   },
+  border: '#A7A7C5',
   chart: {
     gridLine: {
       color: '#535273',
