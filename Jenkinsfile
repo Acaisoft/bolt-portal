@@ -5,6 +5,7 @@ properties(
           strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '15', artifactNumToKeepStr: '15', daysToKeepStr: '15', numToKeepStr: '15']]])
 
 def DEV_BRANCH = "master"
+def DEV_LITE_BRANCH = "dev-lite"
 def PROD_BRANCH = "prod"
 def FIREBASE_CI_TOKEN = "bolt-firebase-token"
 
@@ -69,7 +70,19 @@ node('docker') {
 
                 return;
             }
-            echo "Skipping. Runs only for ${DEV_BRANCH} and ${PROD_BRANCH} branches"
+
+            if (env.BRANCH_NAME == DEV_LITE_BRANCH) {
+                echo "Deploy to prod"
+                withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
+                    docker.image('node:9.10-alpine').inside("-u root") {
+                        sh "npm install -g firebase-tools"
+                        sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt-lite"
+                    }
+                }
+
+                return;
+            }
+            echo "Skipping. Runs only for ${DEV_BRANCH}, ${PROD_BRANCH} and ${DEV_LITE_BRANCH} branches"
         }
     }
     catch (ex) {
