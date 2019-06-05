@@ -31,7 +31,17 @@ node('docker') {
 
         stage('Build') {
 
-          def stage = env.BRANCH_NAME == PROD_BRANCH ? "prod" : (env.BRANCH_NAME == DEV_BRANCH ? "stage" : "unknown")
+          def stage
+
+          if (env.BRANCH_NAME == PROD_BRANCH) {
+              stage = "prod"
+          }
+          if (env.BRANCH_NAME == DEV_BRANCH) {
+              stage = "stage"
+          }
+          if (env.BRANCH_NAME == DEV_LITE_BRANCH) {
+              stage = "dev-lite"
+          }
 
             docker.image('node:8.12').inside() {
                 sh "yarn"
