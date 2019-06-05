@@ -10,6 +10,9 @@
         ],
         "acai-bolt-prod": [
           "acai-bolt-prod"
+        ],
+        "acai-bolt-lite": [
+          "acai-bolt-lite"
         ]
       }
     }
