@@ -1,10 +1,8 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
 import { cleanup, render } from '@testing-library/react'
 
 import { Breadcrumbs } from './Breadcrumbs'
-import { ClassesProxy } from '~utils/tests/mocks'
+import { ClassesProxy, MockedRouter } from '~utils/tests/mocks'
 
 afterEach(cleanup)
 
@@ -12,14 +10,8 @@ jest.unmock('react-router-dom')
 jest.unmock('@material-ui/core')
 jest.unmock('@material-ui/icons')
 
-function renderWithRouter(
-  ui,
-  { route = '/', history = createMemoryHistory({ initialEntries: [route] }) } = {}
-) {
-  return {
-    ...render(<Router history={history}>{ui}</Router>),
-    history,
-  }
+function renderWithRouter(ui) {
+  return render(<MockedRouter>{ui}</MockedRouter>)
 }
 
 describe('Breadcrumbs', () => {
