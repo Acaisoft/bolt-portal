@@ -1,4 +1,6 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { cleanup, render } from '@testing-library/react'
 
 import { Breadcrumbs } from './Breadcrumbs'
@@ -6,7 +8,19 @@ import { ClassesProxy } from '~utils/tests/mocks'
 
 afterEach(cleanup)
 
+jest.unmock('react-router-dom')
 jest.unmock('@material-ui/core')
+jest.unmock('@material-ui/icons')
+
+function renderWithRouter(
+  ui,
+  { route = '/', history = createMemoryHistory({ initialEntries: [route] }) } = {}
+) {
+  return {
+    ...render(<Router history={history}>{ui}</Router>),
+    history,
+  }
+}
 
 describe('Breadcrumbs', () => {
   test('should render null when no items', () => {
@@ -52,7 +66,7 @@ describe('Breadcrumbs', () => {
         label: 'executions_label',
       },
     ]
-    const { queryAllByText, queryAllByTestId } = render(
+    const { queryAllByText, queryAllByTestId } = renderWithRouter(
       <Breadcrumbs classes={ClassesProxy} items={items} />
     )
 
