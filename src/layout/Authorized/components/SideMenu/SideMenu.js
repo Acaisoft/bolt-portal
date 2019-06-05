@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { NavLink } from 'react-router-dom'
@@ -11,10 +11,9 @@ import {
   MenuItem,
   Backdrop,
 } from '@material-ui/core'
-import { Close, ExitToApp } from '@material-ui/icons'
+import { Close } from '@material-ui/icons'
 import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons'
 
-import { AuthKeycloakContext } from '~contexts'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
 
@@ -22,7 +21,6 @@ import useStyles from './SideMenu.styles'
 
 function SideMenu({ isOpen, onClose, projectId }) {
   const classes = useStyles()
-  const { logout } = useContext(AuthKeycloakContext)
 
   const items = useMemo(() => {
     if (!projectId) {
@@ -89,12 +87,6 @@ function SideMenu({ isOpen, onClose, projectId }) {
                 {item.label}
               </MenuItem>
             ))}
-          </MenuList>
-          <MenuList component="div" className={classes.footerMenu}>
-            <MenuItem onClick={() => logout()} className={classes.item}>
-              <ExitToApp className={classes.icon} fontSize="inherit" />
-              Logout
-            </MenuItem>
           </MenuList>
         </Paper>
       </ClickAwayListener>

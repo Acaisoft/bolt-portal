@@ -11,6 +11,7 @@ import { useMenu } from '~hooks'
 import useStyles from './TopBar.styles'
 import NavBreadcrumbs from '../NavBreadcrumbs'
 import SideMenu from '../SideMenu'
+import UserMenu from '../UserMenu'
 
 export function TopBar({ history, location }) {
   const classes = useStyles()
@@ -52,6 +53,7 @@ export function TopBar({ history, location }) {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop} />
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <SideMenu
