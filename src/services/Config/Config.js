@@ -49,7 +49,7 @@ export class Config {
           wsUri: 'wss://hasura.dev-lite.bolt.acaisoft.io/v1alpha1/graphql',
           apiUri: 'https://hasura.dev-lite.bolt.acaisoft.io/v1alpha1/graphql',
           accessKey: '26ec3dc5f542a792890f',
-          userID: 'aaaaaaaa-ef65-4556-a1a5-96ff1f0068cb',
+          userID: '7f1aab7a-e941-46a2-b63a-5b28b80ad384',
         }
         this.keycloak = {
           ...this.keycloak,
