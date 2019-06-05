@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Add, Edit, Delete } from '@material-ui/icons'
-import { IconButton } from '@material-ui/core'
+import { Add } from '@material-ui/icons'
 import { Pagination } from '~containers'
 import { Button, DataTable, SectionHeader } from '~components'
 
@@ -55,7 +54,7 @@ function TestSourcesList({
           icon={Add}
           color="secondary"
           variant="contained"
-          href={getCreateTestSourceUrl}
+          href={getCreateTestSourceUrl()}
         >
           New
         </Button>
