@@ -1,3 +1,5 @@
+import { ExpandMore } from '@material-ui/icons'
+
 const palette = {
   type: 'dark',
   actions: {
@@ -109,6 +111,13 @@ export default {
         color: palette.text.icon,
       },
     },
+    MuiListItem: {
+      root: {
+        '&$selected': {
+          background: palette.background.striped.odd,
+        },
+      },
+    },
     MuiButton: {
       root: {
         padding: '10px 20px',
@@ -151,6 +160,14 @@ export default {
         },
       },
     },
+    MuiSelect: {
+      select: {
+        paddingRight: 32,
+      },
+      icon: {
+        right: 5,
+      },
+    },
     MuiTooltip: {
       popper: {
         opacity: 1,
@@ -178,6 +195,11 @@ export default {
   props: {
     MuiButtonBase: {
       // disableRipple: true, // No more ripple, on the whole application!
+    },
+    MuiTextField: {
+      SelectProps: {
+        IconComponent: ExpandMore,
+      },
     },
     DataTable: {
       striped: true,

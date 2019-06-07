@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
 import { Link, withRouter, matchPath } from 'react-router-dom'
-
+import { ExpandMore } from '@material-ui/icons'
 import { Loader, Breadcrumbs } from '~components'
 
 import routes from '~config/routes'
@@ -102,12 +102,14 @@ function Selector({ options, value, generateUrl, ...fieldProps }) {
       select
       value={value}
       {...fieldProps}
+      variant="filled"
       SelectProps={{
         autoWidth: true,
         disableUnderline: true,
         SelectDisplayProps: {
           style: { minWidth: 80 },
         },
+        IconComponent: ExpandMore,
       }}
     >
       {options.map(option => (
