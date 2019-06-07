@@ -3,12 +3,15 @@ import { makeStyles } from '@material-ui/core'
 export default makeStyles(({ palette, shape, spacing, typography }) => {
   return {
     card: {
+      minHeight: 250,
+      justifyContent: 'center',
       height: '100%',
-      padding: spacing(3),
+      padding: spacing(3, 3, 4),
       display: 'flex',
       flexDirection: 'column',
       borderRadius: shape.borderRadius * 2,
       position: 'relative',
+      flexGrow: 1,
       '& > *': {
         zIndex: 1,
       },
@@ -41,8 +44,6 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
     newProjectContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'stretch',
-      alignItems: 'stretch',
       height: '100%',
     },
   }

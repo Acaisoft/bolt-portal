@@ -9,6 +9,7 @@ export default makeStyles(({ palette, shape, typography }) => {
       alignItems: 'center',
     },
     actions: {
+      padding: 0,
       justifyContent: 'center',
     },
   }

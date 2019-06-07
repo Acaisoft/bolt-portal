@@ -6,7 +6,6 @@ export default makeStyles(({ palette, spacing }) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
-    padding: spacing(3),
     height: 560,
   },
   header: {
@@ -40,10 +39,10 @@ export default makeStyles(({ palette, spacing }) => ({
   },
   cancelButton: {
     '&:hover': {
-      backgroundColor: palette.button.cancel.hover
+      backgroundColor: palette.button.cancel.hover,
     },
     '& svg': {
-      color: palette.text.error
+      color: palette.text.error,
     },
   },
   imagePreviewContainer: {

@@ -28,7 +28,7 @@ export default makeStyles(({ palette, shape, spacing }) => {
       },
     },
     actions: {
-      padding: `0 ${spacing(2) - 4}px ${spacing(1)}px`,
+      padding: `0 ${spacing(2) - 4}px`,
       justifyContent: 'flex-end',
     },
   }
