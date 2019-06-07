@@ -79,7 +79,6 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
           color="primary"
           href={getProjectDetailsUrl(project)}
           icon={ChevronRight}
-          size="large"
         >
           More
         </Button>

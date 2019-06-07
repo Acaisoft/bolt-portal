@@ -15,6 +15,11 @@ const palette = {
     },
   },
   border: '#A7A7C5',
+  button: {
+    cancel: {
+      hover: '#434267',
+    },
+  },
   chart: {
     gridLine: {
       color: '#535273',
@@ -74,10 +79,12 @@ const palette = {
   text: {
     primary: '#FFFFFF',
     secondary: '#BFBFE8',
-    error: '#FF5EA1',
+    error: '#FF748D',
     success: '#1EB1B1',
     warning: '#EB8967',
     icon: '#A7A7C5',
+    hint: '#BFBFE8',
+    caret: '#A192FF',
   },
 }
 
@@ -103,13 +110,16 @@ export default {
       },
     },
     MuiButton: {
+      root: {
+        padding: '10px 20px',
+      },
       contained: {
         backgroundColor: palette.background.paper,
         color: palette.text.primary,
         boxShadow: 'none',
       },
-      sizeLarge: {
-        padding: '14px 30px',
+      outlined: {
+        borderColor: palette.text.secondary,
       },
     },
     MuiFormLabel: {
@@ -119,6 +129,14 @@ export default {
         },
       },
     },
+    MuiInputBase: {
+      input: {
+        '&::placeholder': {
+          color: palette.text.hint,
+        },
+        caretColor: palette.text.caret,
+      },
+    },
     MuiFilledInput: {
       underline: {
         '&:after': {
@@ -126,6 +144,10 @@ export default {
         },
         '&:before': {
           borderBottomColor: 'transparent',
+        },
+        '&:hover:before, &:focus-within:before': {
+          borderBottomColor: '#A192FF',
+          borderBottomWidth: 2,
         },
       },
     },

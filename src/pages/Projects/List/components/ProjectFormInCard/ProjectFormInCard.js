@@ -15,8 +15,8 @@ import useStyles from './ProjectFormInCard.styles'
 function ProjectFormInCard({
   initialValues,
   mode,
-  onCancel = () => {},
-  onSubmit = () => {},
+  onCancel = () => { },
+  onSubmit = () => { },
 }) {
   const classes = useStyles()
 
@@ -73,6 +73,7 @@ function ProjectFormInCard({
 
               <div className={classes.actionButtons}>
                 <Button
+                  className={classes.cancelButton}
                   color="default"
                   icon={Close}
                   variant="contained"

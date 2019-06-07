@@ -27,6 +27,9 @@ export function Button({
     <ButtonComponent
       role="button"
       variant={variant === 'link' ? 'text' : variant}
+      classes={{
+        label: classes.label,
+      }}
       className={classNames({
         [classes.link]: variant === 'link',
       })}

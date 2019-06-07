@@ -6,9 +6,11 @@ export default makeStyles(({ spacing }) => ({
     fontWeight: 'normal',
     fontSize: 'inherit',
   },
+  label: {
+    marginRight: spacing(0.5),
+  },
   icon: {
-    marginLeft: spacing(-1),
-    marginRight: spacing(1),
+    margin: spacing(0, 1, 0, -0.5),
     fontSize: '1.1rem',
   },
 }))

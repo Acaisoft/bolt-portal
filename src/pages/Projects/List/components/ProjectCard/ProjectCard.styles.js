@@ -17,6 +17,7 @@ export default makeStyles(({ palette, shape, spacing }) => {
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
       height: 'auto',
       borderRadius: shape.borderRadius,
+      fontWeight: '600',
 
       '& + &': {
         marginLeft: spacing(1.5),

@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { FormControl, FormHelperText } from '@material-ui/core'
-import { Image } from '@material-ui/icons'
 import { Button } from '~components'
+import { UploadImage } from '~assets/icons'
 
 import useStyles from './FileUploader.component.styles'
 
@@ -20,7 +20,7 @@ function FileUploader({ accept, error, id, label, loading, onChange }) {
         className={classes.input}
       />
       <label htmlFor={id}>
-        <Button variant="outlined" color="default" component="span" icon={Image}>
+        <Button variant="outlined" color="default" component="span" icon={UploadImage} className={classes.button}>
           {label}
         </Button>
       </label>
