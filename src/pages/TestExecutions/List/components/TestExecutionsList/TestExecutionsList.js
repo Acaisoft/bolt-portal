@@ -2,8 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-apollo-hooks'
 
-import { IconButton } from '@material-ui/core'
-import { Pageview } from '@material-ui/icons'
 import { DataTable, SectionHeader, NoWrap, Button } from '~components'
 import { useListFilters } from '~hooks'
 

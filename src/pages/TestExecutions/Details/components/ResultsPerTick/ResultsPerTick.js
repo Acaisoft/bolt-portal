@@ -3,29 +3,39 @@ import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
 import { Grid, Paper } from '@material-ui/core'
-import { NoDataPlaceholder, SectionHeader, ZoomButton } from '~components'
+import {
+  SectionHeader,
+  ZoomButton,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+} from '~components'
+import { Chart } from '~config/constants'
 
 import RequestsChart from './RequestsChart'
 import ResponseTimeChart from './ResponseTimeChart'
 import UsersSpawnChart from './UsersSpawnChart'
-
-import { Chart } from '~config/constants'
 import { SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK } from './graphql'
 
 function ResultsPerTick({ classes, execution }) {
   const [isZoomed, setIsZoomed] = useState(false)
 
-  const { resultsPerTick, loading } = useResultsPerTickQuery(execution.id)
+  const { resultsPerTick, loading, error } = useResultsPerTickQuery(execution.id)
   const domainX = useExecutionTimeDomain(execution)
 
-  if (loading || resultsPerTick.length === 0) {
+  if (loading || error || resultsPerTick.length === 0) {
     return (
       <Grid item xs={12}>
         <Paper square className={classes.tile}>
-          <NoDataPlaceholder
-            height={Chart.HEIGHT}
-            label={loading ? 'Loading data...' : 'Waiting for test run results...'}
-          />
+          {loading ? (
+            <LoadingPlaceholder title="Loading data..." height={Chart.HEIGHT} />
+          ) : error ? (
+            <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
+          ) : (
+            <LoadingPlaceholder
+              title="Waiting for test run results..."
+              height={Chart.HEIGHT}
+            />
+          )}
         </Paper>
       </Grid>
     )
@@ -107,7 +117,7 @@ function ResultsPerTick({ classes, execution }) {
 }
 
 function useResultsPerTickQuery(executionId) {
-  const { data: { resultsPerTick } = {}, loading } = useSubscription(
+  const { data: { resultsPerTick } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK,
     {
       variables: { executionId },
@@ -127,10 +137,15 @@ function useResultsPerTickQuery(executionId) {
   return {
     resultsPerTick: preparedData,
     loading,
+    error,
   }
 }
 
 function useExecutionTimeDomain(execution) {
+  if (!execution || execution.configuration.configuration_parameters.length === 0) {
+    return undefined
+  }
+
   return useMemo(() => {
     const executionDuration = +execution.configuration.configuration_parameters[0]
       .value

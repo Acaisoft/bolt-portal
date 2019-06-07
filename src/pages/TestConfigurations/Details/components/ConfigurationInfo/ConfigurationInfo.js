@@ -20,7 +20,6 @@ import { useConfigurationRun, useConfigurationDelete } from '../../../hooks'
 import useStyles from './ConfigurationInfo.styles'
 
 export function ConfigurationInfo({
-  breadcrumbs,
   configuration,
   onEdit = () => {},
   onDelete = () => {},
@@ -73,7 +72,7 @@ export function ConfigurationInfo({
   return (
     <React.Fragment>
       <SectionHeader
-        title={breadcrumbs[breadcrumbs.length - 1].label}
+        title={name}
         description={(configuration_type || {}).name}
         className={classes.header}
       >
@@ -269,7 +268,6 @@ export function ConfigurationInfo({
   )
 }
 ConfigurationInfo.propTypes = {
-  breadcrumbs: PropTypes.array,
   configuration: PropTypes.object.isRequired,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,

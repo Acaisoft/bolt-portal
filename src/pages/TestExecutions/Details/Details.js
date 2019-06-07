@@ -3,8 +3,14 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
-import { Grid } from '@material-ui/core'
-import { Loader, SectionHeader, Button } from '~components'
+import { Grid, Box } from '@material-ui/core'
+import {
+  SectionHeader,
+  Button,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NotFoundPlaceholder,
+} from '~components'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
@@ -19,7 +25,7 @@ export function Details({ history, match }) {
 
   const classes = useStyles()
 
-  const { data: { execution } = {}, loading } = useSubscription(
+  const { data: { execution } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_EXECUTION,
     {
       variables: { executionId },
@@ -43,8 +49,18 @@ export function Details({ history, match }) {
     })
   }, [match.params])
 
-  if (loading) {
-    return <Loader loading fill />
+  if (loading || error || !execution) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading test run results..." />
+        ) : error ? (
+          <ErrorPlaceholder title="Error" error={error} />
+        ) : (
+          <NotFoundPlaceholder title="Test run not found" />
+        )}
+      </Box>
+    )
   }
 
   return (

@@ -1,17 +1,16 @@
 import React from 'react'
-import { SvgIcon } from '@material-ui/core'
 
-function NoData(props) {
+function LoadingPlaceholder(props) {
   return (
-    <SvgIcon
-      width="128"
+    <svg
+      width="126"
       height="79"
-      viewBox="0 0 128 79"
+      viewBox="0 0 126 79"
       fill="none"
-      titleAccess="no-data-icon"
       fontSize="inherit"
       {...props}
     >
+      <title>loading-placeholder</title>
       <rect x="1" y="58" width="72" height="2" fill="currentColor" />
       <ellipse cx="9.87923" cy="9" rx="1.97315" ry="2" fill="currentColor" />
       <ellipse cx="16.7852" cy="9" rx="1.97315" ry="2" fill="currentColor" />
@@ -85,8 +84,8 @@ function NoData(props) {
         d="M108.277 67.7211L120.4 76.5996C121.959 77.7418 124.149 77.4035 125.292 75.844C126.434 74.2846 126.095 72.0945 124.536 70.9523L112.451 62.1008C112.168 62.7152 111.849 63.3099 111.498 63.8821L123.354 72.5658C124.023 73.0553 124.168 73.9939 123.678 74.6623C123.189 75.3306 122.25 75.4756 121.582 74.9861L109.709 66.2907C109.261 66.7953 108.783 67.273 108.277 67.7211Z"
         fill="currentColor"
       />
-    </SvgIcon>
+    </svg>
   )
 }
 
-export default NoData
+export default LoadingPlaceholder

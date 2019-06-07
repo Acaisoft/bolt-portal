@@ -1,8 +1,13 @@
 import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Grid } from '@material-ui/core'
-import { SectionHeader, Loader } from '~components'
+import { Grid, Box } from '@material-ui/core'
+import {
+  SectionHeader,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NotFoundPlaceholder,
+} from '~components'
 
 import { Failures, TimeDistribution, Stats } from './components'
 import { GET_ENDPOINT } from './graphql'
@@ -13,10 +18,20 @@ function EndpointDetails({ history, match }) {
 
   const classes = useStyles()
 
-  const { endpoint, loading } = useEndpointQuery(endpointId)
+  const { endpoint, loading, error } = useEndpointQuery(endpointId)
 
-  if (loading) {
-    return <Loader loading />
+  if (loading || error || !endpoint) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading endpoint results..." />
+        ) : error ? (
+          <ErrorPlaceholder title="Error" error={error} />
+        ) : (
+          <NotFoundPlaceholder title="Endpoint not found" />
+        )}
+      </Box>
+    )
   }
 
   return (
@@ -43,13 +58,14 @@ function EndpointDetails({ history, match }) {
 function useEndpointQuery(endpointId) {
   const {
     loading,
+    error,
     data: { endpoint = [] },
   } = useQuery(GET_ENDPOINT, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',
   })
 
-  return { loading, endpoint: endpoint[0] || {} }
+  return { loading, error, endpoint: endpoint[0] || {} }
 }
 
 export default EndpointDetails

@@ -4,13 +4,21 @@ import { useQuery } from 'react-apollo-hooks'
 
 import { Add } from '@material-ui/icons'
 import { Pagination } from '~containers'
-import { Button, DataTable, SectionHeader } from '~components'
+import {
+  Button,
+  DataTable,
+  SectionHeader,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NoDataPlaceholder,
+} from '~components'
 
 import { useListFilters } from '~hooks'
 import { TestSourceType } from '~config/constants'
 
 import { GET_TEST_SOURCES } from './graphql'
 import useStyles from './TestSourcesList.styles'
+import { Box } from '@material-ui/core'
 
 function TestSourcesList({
   getCreateTestSourceUrl,
@@ -27,6 +35,7 @@ function TestSourcesList({
   const {
     data: { testSources = [], testSourcesAggregate },
     loading,
+    error,
   } = useQuery(GET_TEST_SOURCES, {
     fetchPolicy: 'cache-and-network',
     variables: {
@@ -36,6 +45,25 @@ function TestSourcesList({
       order_by: orderBy,
     },
   })
+
+  if (loading || error || testSources.length === 0) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading test sources..." />
+        ) : error ? (
+          <ErrorPlaceholder title="Error" error={error} />
+        ) : (
+          <NoDataPlaceholder
+            title="No test sources"
+            description="Seems like you haven't created any test sources in this project yet."
+            buttonUrl={getCreateTestSourceUrl()}
+            buttonLabel="Create a test source"
+          />
+        )}
+      </Box>
+    )
+  }
 
   const totalCount =
     (testSourcesAggregate && testSourcesAggregate.aggregate.count) || 0

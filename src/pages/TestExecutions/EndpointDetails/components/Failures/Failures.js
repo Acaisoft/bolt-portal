@@ -2,26 +2,38 @@ import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 
 import { Paper } from '@material-ui/core'
-import { NoDataPlaceholder, SectionHeader } from '~components'
+import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
 
 import FailuresChart from './FailuresChart'
 import { GET_ENDPOINT_FAILURES } from './graphql'
+import { Chart } from '~config/constants'
 
 function Failures({ classes, endpointId }) {
-  const { endpointFailures, loading } = useEndpointFailures(endpointId)
+  const { endpointFailures, loading, error } = useEndpointFailures(endpointId)
+
+  if (loading || error || endpointFailures.length === 0) {
+    return (
+      <Paper square className={classes.tile}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading failures..." height={Chart.HEIGHT} />
+        ) : error ? (
+          <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
+        ) : (
+          <LoadingPlaceholder
+            title="Waiting for endpoint results..."
+            height={Chart.HEIGHT}
+          />
+        )}
+      </Paper>
+    )
+  }
 
   return (
     <Paper square className={classes.tile}>
-      {loading ? (
-        <NoDataPlaceholder label="Loading failures..." />
-      ) : (
-        <React.Fragment>
-          <SectionHeader title="Failures" size="small" />
-          <div className={classes.tileContent}>
-            <FailuresChart data={endpointFailures} />
-          </div>
-        </React.Fragment>
-      )}
+      <SectionHeader title="Failures" size="small" />
+      <div className={classes.tileContent}>
+        <FailuresChart data={endpointFailures} />
+      </div>
     </Paper>
   )
 }
@@ -29,6 +41,7 @@ function Failures({ classes, endpointId }) {
 function useEndpointFailures(endpointId) {
   const {
     loading,
+    error,
     data: { endpointFailures = [] },
   } = useQuery(GET_ENDPOINT_FAILURES, {
     variables: { endpointId },
@@ -37,6 +50,7 @@ function useEndpointFailures(endpointId) {
 
   return {
     loading,
+    error,
     endpointFailures,
   }
 }

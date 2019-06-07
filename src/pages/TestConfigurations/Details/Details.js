@@ -1,14 +1,20 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo-hooks'
 
-import { Loader } from '~components'
+import { Box } from '@material-ui/core'
+import {
+  NotFoundPlaceholder,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+} from '~components'
+import { useNotification } from '~hooks'
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
+
 import { ConfigurationInfo, TestExecutionsList } from './components'
 import { GET_CONFIGURATION } from './graphql'
 import useStyles from './Details.styles'
-import { useNotification } from '~hooks'
 
 function Details({ history, match }) {
   const { configurationId } = match.params
@@ -20,32 +26,29 @@ function Details({ history, match }) {
   const {
     loading,
     data: { configuration },
+    error,
   } = useQuery(GET_CONFIGURATION, {
     variables: { configurationId },
     fetchPolicy: 'cache-and-network',
   })
 
-  const breadcrumbs = useMemo(() => {
-    return [
-      {
-        url: getUrl(routes.projects.configurations.list, { ...match.params }),
-        label: 'Scenarios',
-      },
-      {
-        url: null,
-        label: configuration && configuration.name,
-      },
-    ]
-  }, [configuration])
-
-  if (loading) {
-    return <Loader loading />
+  if (loading || error || !configuration) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading scenario..." />
+        ) : error ? (
+          <ErrorPlaceholder title="Error" error={error} />
+        ) : (
+          <NotFoundPlaceholder title="Scenario not found" />
+        )}
+      </Box>
+    )
   }
 
   return (
     <div className={classes.root}>
       <ConfigurationInfo
-        breadcrumbs={breadcrumbs}
         configuration={configuration}
         onDelete={handleDelete}
         onEdit={handleEdit}

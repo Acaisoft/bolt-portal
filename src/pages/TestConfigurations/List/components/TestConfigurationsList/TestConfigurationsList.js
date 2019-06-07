@@ -3,9 +3,17 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useSubscription } from 'react-apollo-hooks'
 
-import { IconButton } from '@material-ui/core'
+import { IconButton, Box } from '@material-ui/core'
 import { Add, History } from '@material-ui/icons'
-import { Button, SectionHeader, DataTable, NoWrap } from '~components'
+import {
+  Button,
+  SectionHeader,
+  DataTable,
+  NoWrap,
+  NoDataPlaceholder,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+} from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
 
@@ -32,6 +40,7 @@ export function TestConfigurationsList({
   const {
     data: { configurations = [] } = {},
     loading: loadingConfigurations,
+    error,
   } = useSubscription(SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM, {
     variables: {
       projectId,
@@ -53,6 +62,25 @@ export function TestConfigurationsList({
   })
 
   const loading = loadingConfigurations || loadingConfigurationsAggregate
+
+  if (loading || error || configurations.length === 0) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading scenarios..." />
+        ) : error ? (
+          <ErrorPlaceholder error={error} />
+        ) : (
+          <NoDataPlaceholder
+            title="No scenarios"
+            description="Seems like you haven't created any scenarios in this project yet."
+            buttonUrl={getTestConfigurationCreateUrl()}
+            buttonLabel="Create a scenario"
+          />
+        )}
+      </Box>
+    )
+  }
 
   const totalCount = configurationsAggregate
     ? configurationsAggregate.aggregate.count

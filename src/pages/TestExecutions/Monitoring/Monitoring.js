@@ -1,9 +1,15 @@
 import React, { useMemo, useCallback } from 'react'
 import moment from 'moment'
 
-import { useSubscription, useQuery } from 'react-apollo-hooks'
-import { Grid, Paper } from '@material-ui/core'
-import { SectionHeader, Loader, NoDataPlaceholder, Button } from '~components'
+import { useSubscription } from 'react-apollo-hooks'
+import { Grid, Paper, Box } from '@material-ui/core'
+import {
+  SectionHeader,
+  Button,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NotFoundPlaceholder,
+} from '~components'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
@@ -18,7 +24,7 @@ function Monitoring({ match, history, location }) {
 
   const classes = useStyles()
 
-  const { data: { execution } = {}, loading } = useSubscription(
+  const { data: { execution } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
     {
       variables: { executionId },
@@ -45,8 +51,20 @@ function Monitoring({ match, history, location }) {
     })
   }, [match.params])
 
-  if (loading) {
-    return <Loader loading />
+  if (loading || error || !execution || !chartsWithData) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading monitoring results..." />
+        ) : error ? (
+          <ErrorPlaceholder title="Error" error={error} />
+        ) : !execution ? (
+          <NotFoundPlaceholder title="Test run not found" />
+        ) : (
+          <LoadingPlaceholder title="Waiting for results..." />
+        )}
+      </Box>
+    )
   }
 
   const { configuration } = execution
@@ -67,30 +85,23 @@ function Monitoring({ match, history, location }) {
           <Button href={getTestDetailsUrl()}>Test details</Button>
         )}
       </SectionHeader>
-      {!chartsWithData ? (
-        <NoDataPlaceholder label="Waiting for data..." />
-      ) : (
-        <Grid container spacing={2}>
-          {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
-            return (
-              <Grid item xs={12} key={`chart-${index}`}>
-                <Paper square className={classes.tile}>
-                  <SectionHeader
-                    title={chartConfig.title}
-                    size="small"
-                    marginBottom
-                  />
-                  <MonitoringLineChart
-                    data={data}
-                    config={chartConfig}
-                    groupNames={groupNames}
-                  />
-                </Paper>
-              </Grid>
-            )
-          })}
-        </Grid>
-      )}
+
+      <Grid container spacing={2}>
+        {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
+          return (
+            <Grid item xs={12} key={`chart-${index}`}>
+              <Paper square className={classes.tile}>
+                <SectionHeader title={chartConfig.title} size="small" marginBottom />
+                <MonitoringLineChart
+                  data={data}
+                  config={chartConfig}
+                  groupNames={groupNames}
+                />
+              </Paper>
+            </Grid>
+          )
+        })}
+      </Grid>
     </div>
   )
 }

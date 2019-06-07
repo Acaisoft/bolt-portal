@@ -2,26 +2,43 @@ import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 
 import { Paper } from '@material-ui/core'
-import { NoDataPlaceholder, SectionHeader } from '~components'
+import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
 
 import TimeDistributionChart from './TimeDistributionChart'
 import { GET_ENDPOINT_DISTRIBUTION } from './graphql'
+import { Chart } from '~config/constants'
 
 function TimeDistribution({ classes, endpointId }) {
-  const { endpointDistribution, loading } = useEndpointDistributionQuery(endpointId)
+  const { endpointDistribution, loading, error } = useEndpointDistributionQuery(
+    endpointId
+  )
+
+  if (loading || error || endpointDistribution.length === 0) {
+    return (
+      <Paper square className={classes.tile}>
+        {loading ? (
+          <LoadingPlaceholder
+            title="Loading time distribution..."
+            height={Chart.HEIGHT}
+          />
+        ) : error ? (
+          <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
+        ) : (
+          <LoadingPlaceholder
+            title="Waiting for endpoint results..."
+            height={Chart.HEIGHT}
+          />
+        )}
+      </Paper>
+    )
+  }
 
   return (
     <Paper square className={classes.tile}>
-      {loading ? (
-        <NoDataPlaceholder label="Loading time distribution..." />
-      ) : (
-        <React.Fragment>
-          <SectionHeader title="Time Distribution" size="small" />
-          <div className={classes.tileContent}>
-            <TimeDistributionChart data={endpointDistribution} />
-          </div>
-        </React.Fragment>
-      )}
+      <SectionHeader title="Time Distribution" size="small" />
+      <div className={classes.tileContent}>
+        <TimeDistributionChart data={endpointDistribution} />
+      </div>
     </Paper>
   )
 }
@@ -29,6 +46,7 @@ function TimeDistribution({ classes, endpointId }) {
 function useEndpointDistributionQuery(endpointId) {
   const {
     loading,
+    error,
     data: { endpointDistribution = [] },
   } = useQuery(GET_ENDPOINT_DISTRIBUTION, {
     variables: { endpointId },
@@ -37,6 +55,7 @@ function useEndpointDistributionQuery(endpointId) {
 
   return {
     loading,
+    error,
     endpointDistribution: endpointDistribution[0] || {},
   }
 }

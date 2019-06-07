@@ -3,19 +3,34 @@ import { useQuery } from 'react-apollo-hooks'
 import filesize from 'filesize'
 
 import { Grid, Paper } from '@material-ui/core'
-import { NoDataPlaceholder, SectionHeader, LabeledValue } from '~components'
+import {
+  SectionHeader,
+  LabeledValue,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+} from '~components'
 
 import { formatThousands } from '~utils/numbers'
 
 import { GET_ENDPOINT_TOTALS } from './graphql'
+import { Chart } from '~config/constants'
 
 function Stats({ classes, endpointId }) {
-  const { endpointTotals, loading } = useEndpointTotals(endpointId)
+  const { endpointTotals, loading, error } = useEndpointTotals(endpointId)
 
-  if (loading) {
+  if (loading || error || endpointTotals.length === 0) {
     return (
       <Paper square className={classes.tile}>
-        <NoDataPlaceholder label="Loading stats..." />
+        {loading ? (
+          <LoadingPlaceholder title="Loading stats..." height={Chart.HEIGHT} />
+        ) : error ? (
+          <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
+        ) : (
+          <LoadingPlaceholder
+            title="Waiting for endpoint stats..."
+            height={Chart.HEIGHT}
+          />
+        )}
       </Paper>
     )
   }
@@ -92,13 +107,14 @@ function Stats({ classes, endpointId }) {
 function useEndpointTotals(endpointId) {
   const {
     loading,
+    error,
     data: { endpointTotals = [] },
   } = useQuery(GET_ENDPOINT_TOTALS, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',
   })
 
-  return { loading, endpointTotals: endpointTotals[0] || {} }
+  return { loading, error, endpointTotals: endpointTotals[0] || {} }
 }
 
 export default Stats

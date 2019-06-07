@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { useSubscription } from 'react-apollo-hooks'
 import { Grid, Paper } from '@material-ui/core'
-import { NoDataPlaceholder, SectionHeader } from '~components'
+import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
 import { Chart } from '~config/constants'
 
 import ResultsPerEndpointChart from './ResultsPerEndpointChart'
@@ -12,16 +12,24 @@ import ResponsesTable from './ResponsesTable'
 import { SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION } from './graphql'
 
 function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
-  const { resultsPerEndpoint, loading } = useResultsPerEndpointQuery(execution.id)
+  const { resultsPerEndpoint, loading, error } = useResultsPerEndpointQuery(
+    execution.id
+  )
 
-  if (loading || resultsPerEndpoint.length === 0) {
+  if (loading || error || resultsPerEndpoint.length === 0) {
     return (
       <Grid item xs={12}>
         <Paper square className={classes.tile}>
-          <NoDataPlaceholder
-            height={Chart.HEIGHT}
-            label={loading ? 'Loading data...' : 'Waiting for test run results...'}
-          />
+          {loading ? (
+            <LoadingPlaceholder title="Loading data..." height={Chart.HEIGHT} />
+          ) : error ? (
+            <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
+          ) : (
+            <LoadingPlaceholder
+              title="Waiting for test run results..."
+              height={Chart.HEIGHT}
+            />
+          )}
         </Paper>
       </Grid>
     )
@@ -63,7 +71,7 @@ function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
 }
 
 function useResultsPerEndpointQuery(executionId) {
-  const { data: { resultsPerEndpoint } = {}, loading } = useSubscription(
+  const { data: { resultsPerEndpoint } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION,
     {
       variables: { executionId },
@@ -83,6 +91,7 @@ function useResultsPerEndpointQuery(executionId) {
   return {
     resultsPerEndpoint: preparedData,
     loading,
+    error,
   }
 }
 
