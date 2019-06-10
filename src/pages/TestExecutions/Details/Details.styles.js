@@ -14,7 +14,7 @@ export default makeStyles(({ mixins, spacing }) => {
     },
     tileTitle: {
       fontWeight: 'bold',
-      marginBottom: spacing(4),
+      marginBottom: spacing(2),
     },
     chartContainer: {
       marginBottom: spacing(-4),

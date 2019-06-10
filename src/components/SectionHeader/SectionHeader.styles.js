@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core'
 
 export default makeStyles(({ palette, spacing, typography }) => ({
   marginBottom: {
-    marginBottom: spacing(3),
+    marginBottom: spacing(1),
   },
   description: {
     ...typography.subtitle1,

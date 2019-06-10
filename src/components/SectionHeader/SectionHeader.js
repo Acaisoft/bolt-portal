@@ -26,14 +26,15 @@ function SectionHeader({
   }
 
   return (
-    <Grid container className={className} {...gridProps}>
+    <Grid
+      container
+      className={classNames(className, {
+        [classes.marginBottom]: Boolean(marginBottom),
+      })}
+      {...gridProps}
+    >
       <Grid item>
-        <div
-          className={classNames({
-            [classes.marginBottom]: Boolean(marginBottom),
-            [classes[size]]: true,
-          })}
-        >
+        <div className={classes[size]}>
           <div className={classes.titleContainer}>
             <div className={classes.title}>{title}</div>
             {subtitle && <div className={classes.subtitle}>{subtitle}</div>}

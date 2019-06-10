@@ -31,7 +31,12 @@ export function ResponsesTable({
 
   return (
     <React.Fragment>
-      <SectionHeader title="Responses" size="small" className={classes.header} />
+      <SectionHeader
+        title="Responses"
+        size="small"
+        className={classes.header}
+        marginBottom
+      />
 
       <div className={classes.tableContainer}>
         <DataTable
