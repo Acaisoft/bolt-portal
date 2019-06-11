@@ -89,9 +89,8 @@ function Monitoring({ match, history, location }) {
       <Grid container spacing={2}>
         {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
           return (
-            <Grid item xs={12} key={`chart-${index}`}>
+            <Grid item xs={12} md={6} key={`chart-${index}`}>
               <Paper square className={classes.tile}>
-                <SectionHeader title={chartConfig.title} size="small" marginBottom />
                 <MonitoringLineChart
                   data={data}
                   config={chartConfig}

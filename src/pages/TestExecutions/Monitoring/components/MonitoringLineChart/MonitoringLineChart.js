@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {
   LineChart,
   Line,
-  Legend,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
@@ -16,6 +15,9 @@ import { withStyles } from '@material-ui/core'
 
 import filesize from 'filesize'
 import { formatThousands, formatPercent } from '~utils/numbers'
+import { SectionHeader } from '~components'
+
+import ChartFilter from '../ChartFilter'
 
 const formatters = {
   bytes: {
@@ -50,150 +52,79 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
     'pink',
   ]
 
-  const {
-    hoveredItemIndex,
-    clickedItemIndex,
-    handleLegendMouseEnter,
-    handleLegendMouseLeave,
-    handleLegendClick,
-  } = useLegendHandlers(groupNames)
+  const [selected, setSelected] = useState([...groupNames])
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart
-        style={{ ...font }}
-        data={data}
-        margin={{
-          top: 10,
-          bottom: 30,
-          right: 0,
-          left: 10,
-        }}
-      >
-        <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
-        <XAxis
-          axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          type={config.x_format}
-          dataKey={config.x_data_key}
-          name={config.x_label}
-          tickFormatter={formatTimestamp}
-          tick={{ ...font, fontSize: 12 }}
-          domain={['dataMin', 'dataMax']}
+    <React.Fragment>
+      <SectionHeader title={config.title} size="small" marginBottom>
+        <ChartFilter
+          groupNames={groupNames}
+          onChange={evt => setSelected(evt.target.value)}
+          selected={selected}
         />
-        <YAxis
-          axisLine={{ strokeDasharray: gridLine.dash }}
-          tick={{ ...font, fontSize: 12 }}
-          tickFormatter={formatters[config.y_format].axis}
-          domain={['dataMin', 'dataMax']}
-        />
+      </SectionHeader>
 
-        <Tooltip
-          isAnimationActive={false}
-          labelFormatter={formatTimestamp}
-          formatter={formatters[config.y_format].tooltip}
-          wrapperStyle={{ ...tooltip, zIndex: 1 }}
-        />
-
-        <Legend
-          layout="vertical"
-          verticalAlign="top"
-          align="right"
-          iconType="plainline"
-          wrapperStyle={{
-            marginLeft: 70,
-            marginBottom: 30,
-            paddingLeft: 20,
-            paddingRight: 30,
-            width: 300,
-            height: 230,
-            overflow: 'auto',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          style={{ ...font }}
+          data={data}
+          margin={{
+            top: 10,
+            bottom: 30,
+            right: 0,
+            left: 10,
           }}
-          formatter={(value, entry, index) => (
-            <span
-              style={
-                clickedItemIndex === index ? { textDecoration: 'underline' } : {}
-              }
-            >
-              {value}
-            </span>
-          )}
-          onMouseEnter={handleLegendMouseEnter}
-          onMouseLeave={handleLegendMouseLeave}
-          onClick={handleLegendClick}
-        />
+        >
+          <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
+          <XAxis
+            axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
+            type={config.x_format}
+            dataKey={config.x_data_key}
+            name={config.x_label}
+            tickFormatter={formatTimestamp}
+            tick={{ ...font, fontSize: 12 }}
+            domain={['dataMin', 'dataMax']}
+          />
+          <YAxis
+            axisLine={{ strokeDasharray: gridLine.dash }}
+            tick={{ ...font, fontSize: 12 }}
+            tickFormatter={formatters[config.y_format].axis}
+            domain={['dataMin', 'dataMax']}
+          />
 
-        {groupNames.map((groupName, index) => {
-          const lineColor = lineColors[index % lineColors.length]
+          <Tooltip
+            isAnimationActive={false}
+            labelFormatter={formatTimestamp}
+            formatter={formatters[config.y_format].tooltip}
+            wrapperStyle={{ ...tooltip, zIndex: 1 }}
+          />
 
-          const isVisible =
-            clickedItemIndex === index ||
-            hoveredItemIndex === index ||
-            (clickedItemIndex === -1 && hoveredItemIndex === -1)
+          {selected.map((groupName, index) => {
+            const lineColor = lineColors[index % lineColors.length]
 
-          return (
-            <Line
-              key={groupName}
-              type="linear"
-              strokeWidth={2}
-              stroke={lineColor}
-              strokeOpacity={isVisible ? 1 : 0.1}
-              fill={lineColor}
-              dataKey={tick => tick.groups[groupName]}
-              name={groupName}
-              dot={false}
-            />
-          )
-        })}
-      </LineChart>
-    </ResponsiveContainer>
+            return (
+              <Line
+                key={groupName}
+                type="linear"
+                strokeWidth={2}
+                stroke={lineColor}
+                fill={lineColor}
+                dataKey={tick => tick.groups[groupName]}
+                name={groupName}
+                dot={false}
+              />
+            )
+          })}
+        </LineChart>
+      </ResponsiveContainer>
+    </React.Fragment>
   )
 }
 MonitoringLineChart.propTypes = {
-  data: PropTypes.array,
-  execution: PropTypes.object,
-  syncId: PropTypes.string,
+  config: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
+  groupNames: PropTypes.array.isRequired,
   theme: PropTypes.object.isRequired,
-}
-
-function useLegendHandlers(groupNames) {
-  const [hoveredItemIndex, setHoveredItemIndex] = useState(-1)
-  const [clickedItemIndex, setClickedItemIndex] = useState(-1)
-
-  const getGroupIndex = useCallback(name => groupNames.indexOf(name), [groupNames])
-
-  const handleLegendMouseEnter = useCallback(
-    item => {
-      setHoveredItemIndex(getGroupIndex(item.value))
-    },
-    [clickedItemIndex]
-  )
-  const handleLegendMouseLeave = useCallback(
-    item => {
-      setHoveredItemIndex(-1)
-    },
-    [clickedItemIndex]
-  )
-  const handleLegendClick = useCallback(
-    item => {
-      const selectedIndex = getGroupIndex(item.value)
-      if (clickedItemIndex === selectedIndex) {
-        setClickedItemIndex(-1)
-      } else {
-        setClickedItemIndex(selectedIndex)
-      }
-    },
-    [clickedItemIndex]
-  )
-
-  return {
-    hoveredItemIndex,
-    clickedItemIndex,
-    handleLegendMouseEnter,
-    handleLegendMouseLeave,
-    handleLegendClick,
-  }
 }
 
 export default withStyles({}, { withTheme: true })(MonitoringLineChart)
