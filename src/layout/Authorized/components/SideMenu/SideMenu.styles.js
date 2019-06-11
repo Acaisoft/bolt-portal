@@ -14,6 +14,7 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
+    background: palette.dropdown.main,
   },
   menu: {
     flexGrow: 1,
@@ -32,10 +33,9 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
     padding: spacing(2, 3),
     marginLeft: 2,
     borderLeft: '3px solid transparent',
-    color: palette.text.secondary,
   },
   itemSelected: {
-    backgroundColor: palette.action.hover,
+    backgroundColor: palette.dropdown.hover,
     borderLeftColor: palette.action.selected,
     fontWeight: 'bold',
     color: palette.text.primary,

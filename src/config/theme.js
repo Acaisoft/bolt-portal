@@ -88,6 +88,11 @@ const palette = {
     hint: '#BFBFE8',
     caret: '#A192FF',
   },
+  dropdown: {
+    main: '#434267',
+    hover: '#56557D',
+    fontSize: 15,
+  },
 }
 
 export default {
@@ -118,10 +123,28 @@ export default {
         color: palette.text.icon,
       },
     },
+    MuiMenu: {
+      paper: {
+        background: palette.dropdown.main,
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        fontSize: palette.dropdown.fontSize,
+      },
+    },
     MuiListItem: {
       root: {
+        background: palette.dropdown.main,
         '&$selected': {
-          background: palette.background.striped.odd,
+          background: palette.dropdown.hover,
+          color: palette.text.primary,
+        },
+      },
+      button: {
+        color: palette.text.secondary,
+        '&:hover': {
+          backgroundColor: palette.dropdown.hover,
         },
       },
     },
@@ -173,6 +196,9 @@ export default {
       },
       icon: {
         right: 5,
+      },
+      selectMenu: {
+        fontSize: palette.dropdown.fontSize,
       },
     },
     MuiTooltip: {

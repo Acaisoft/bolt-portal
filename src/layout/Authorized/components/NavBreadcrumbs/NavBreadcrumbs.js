@@ -8,6 +8,10 @@ import { Loader, Breadcrumbs } from '~components'
 
 import routes from '~config/routes'
 
+import useStyles from './NavBreadcrumbs.styles'
+
+import _ from 'lodash'
+
 import {
   SUBSCRIBE_TO_PROJECTS,
   SUBSCRIBE_TO_SCENARIOS,
@@ -48,7 +52,7 @@ function NavBreadcrumbs({ history, location }) {
           label="Project"
           options={projects.map(item => ({
             value: item.id,
-            label: item.name,
+            label: _.truncate(item.name, { length: 45, omission: '...' }),
           }))}
           generateUrl={getProjectUrl}
           value={projectId || ''}
@@ -57,7 +61,7 @@ function NavBreadcrumbs({ history, location }) {
     },
   ]
 
-  if (configurationId) {
+  if (configurationId && configurations.find(item => item.id === configurationId)) {
     breadcrumbs.push({
       key: 'configurations',
       render: () => (
@@ -73,7 +77,7 @@ function NavBreadcrumbs({ history, location }) {
       ),
     })
   }
-  if (executionId) {
+  if (executionId && executions.find(item => item.id === executionId)) {
     breadcrumbs.push({
       key: 'executions',
       render: () => (
@@ -97,6 +101,8 @@ function NavBreadcrumbs({ history, location }) {
 }
 
 function Selector({ options, value, generateUrl, ...fieldProps }) {
+  const classes = useStyles()
+
   return (
     <TextField
       select
@@ -122,6 +128,16 @@ function Selector({ options, value, generateUrl, ...fieldProps }) {
           {option.label}
         </MenuItem>
       ))}
+
+      {fieldProps.label === 'Project' && (
+        <MenuItem
+          className={classes.allItem}
+          to={getUrl(routes.projects.list)}
+          component={Link}
+        >
+          All Projects
+        </MenuItem>
+      )}
     </TextField>
   )
 }
