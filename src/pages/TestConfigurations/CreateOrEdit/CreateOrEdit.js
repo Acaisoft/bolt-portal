@@ -10,9 +10,21 @@ export function CreateOrEdit({ history, match }) {
   const { projectId, configurationId } = match.params
   const mode = configurationId ? 'edit' : 'create'
 
+  const goToList = useCallback(() => {
+    history.push(getUrl(routes.projects.configurations.list, { ...match.params }))
+  }, [history, match.params])
+
+  const goToDetails = useCallback(() => {
+    history.push(getUrl(routes.projects.configurations.details, { ...match.params }))
+  }, [history, match.params])
+
   const handleCancel = useCallback(() => {
-    history.goBack()
-  }, [])
+    if (configurationId) {
+      goToDetails()
+    } else {
+      goToList()
+    }
+  }, [goToDetails, goToList])
 
   const notify = useNotification()
 
