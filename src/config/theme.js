@@ -101,6 +101,13 @@ export default {
     },
   },
   overrides: {
+    MuiCardHeader: {
+      action: {
+        position: 'absolute',
+        right: 6,
+        top: 0,
+      }
+    },
     MuiChip: {
       label: {
         color: palette.text.secondary,

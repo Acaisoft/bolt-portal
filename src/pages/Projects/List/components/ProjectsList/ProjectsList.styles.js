@@ -25,7 +25,7 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
       // For browsers supporting grid.
       '&': {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(430px, 1fr))',
       },
     },
     gridItem: {
@@ -45,6 +45,7 @@ export default makeStyles(({ palette, shape, spacing, typography }) => {
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
+      position: 'relative',
     },
   }
 })
