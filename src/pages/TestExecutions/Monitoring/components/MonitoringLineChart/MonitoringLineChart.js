@@ -21,7 +21,7 @@ import ChartFilter from '../ChartFilter'
 
 const formatters = {
   bytes: {
-    axis: value => filesize(value, { round: 0, exponent: 3 }),
+    axis: value => filesize(value, { round: 2, exponent: 3 }),
     tooltip: value => filesize(value, { round: 3 }),
   },
   number: {
@@ -29,7 +29,7 @@ const formatters = {
     tooltip: value => formatThousands(value),
   },
   percent: {
-    axis: value => formatPercent(value, 0),
+    axis: value => formatPercent(value, 1),
     tooltip: value => formatPercent(value, 2),
   },
 }
@@ -71,8 +71,8 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           margin={{
             top: 10,
             bottom: 30,
-            right: 0,
-            left: 10,
+            right: 40,
+            left: 20,
           }}
         >
           <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
@@ -87,9 +87,10 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           />
           <YAxis
             axisLine={{ strokeDasharray: gridLine.dash }}
-            tick={{ ...font, fontSize: 12 }}
+            tick={{ ...font, fontSize: 12, width: 80 }}
             tickFormatter={formatters[config.y_format].axis}
             domain={['dataMin', 'dataMax']}
+            interval="preserveStartEnd"
           />
 
           <Tooltip

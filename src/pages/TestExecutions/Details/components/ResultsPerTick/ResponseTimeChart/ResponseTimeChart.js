@@ -15,13 +15,10 @@ import {
 import { withStyles } from '@material-ui/core'
 
 import { Chart } from '~config/constants'
-import { formatThousands, formatNumber } from '~utils/numbers'
+import { formatThousands } from '~utils/numbers'
+import { formatScaledDuration } from '~utils/datetime'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
-const formatDuration = duration =>
-  duration > 1000
-    ? `${formatNumber(duration / 1000, 1)} s`
-    : `${formatThousands(duration)} ms`
 
 export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
   const backgroundColor = theme.palette.background.paper
@@ -52,7 +49,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
         />
         <YAxis
           axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          tickFormatter={formatDuration}
+          tickFormatter={formatScaledDuration}
           tick={{ ...font }}
           domain={['dataMin', 'dataMax']}
         />
@@ -65,7 +62,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
         <Tooltip
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
-          formatter={value => `${formatThousands(value)} ms`}
+          formatter={value => `${formatThousands(value, 2)} ms`}
           wrapperStyle={{ ...tooltip }}
         />
         <Line
