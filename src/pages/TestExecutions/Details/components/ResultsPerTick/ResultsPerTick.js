@@ -142,11 +142,14 @@ function useResultsPerTickQuery(executionId) {
 }
 
 function useExecutionTimeDomain(execution) {
-  if (!execution || execution.configuration.configuration_parameters.length === 0) {
-    return undefined
-  }
-
   return useMemo(() => {
+    if (
+      !execution ||
+      execution.configuration.configuration_parameters.length === 0
+    ) {
+      return undefined
+    }
+
     const executionDuration = +execution.configuration.configuration_parameters[0]
       .value
 

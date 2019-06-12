@@ -67,19 +67,22 @@ function useDelete() {
     refetchQueries: ['getTestSources'],
   })
 
-  const handleDelete = useCallback(testSource => {
-    toggleModal(true)
-    setSelectedTestSource(testSource)
-  }, [])
+  const handleDelete = useCallback(
+    testSource => {
+      toggleModal(true)
+      setSelectedTestSource(testSource)
+    },
+    [toggleModal]
+  )
 
   const handleCloseModal = useCallback(() => {
     toggleModal(false)
-  }, [])
+  }, [toggleModal])
 
   const handleDeleteSubmit = useCallback(async () => {
     await deleteRepositoryMutation({ variables: { id: selectedTestSource.id } })
     handleCloseModal()
-  }, [selectedTestSource])
+  }, [deleteRepositoryMutation, handleCloseModal, selectedTestSource.id])
 
   return {
     isModalOpen,
@@ -94,16 +97,19 @@ function useHandlers(history, match) {
     (path, params = {}) => {
       return getUrl(path, { ...match.params, ...params })
     },
-    [history, match]
+    [match]
   )
 
   const getCreateTestSourceUrl = useCallback(() => {
     return getRedirectUr(routes.projects.sources.create)
-  }, [])
+  }, [getRedirectUr])
 
-  const getEditTestSourceUrl = useCallback(({ id }) => {
-    return getRedirectUr(routes.projects.sources.edit, { sourceId: id })
-  }, [])
+  const getEditTestSourceUrl = useCallback(
+    ({ id }) => {
+      return getRedirectUr(routes.projects.sources.edit, { sourceId: id })
+    },
+    [getRedirectUr]
+  )
 
   return {
     getCreateTestSourceUrl,

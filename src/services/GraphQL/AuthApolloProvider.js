@@ -26,7 +26,7 @@ function AuthApolloProvider({ children }) {
         ]),
         cache: makeCache(),
       }),
-    []
+    [auth.getToken]
   )
 
   return (

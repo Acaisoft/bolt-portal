@@ -7,12 +7,9 @@ import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
 export function List({ history }) {
-  const getProjectDetailsUrl = useCallback(
-    ({ id }) => {
-      return getUrl(routes.projects.details, { projectId: id })
-    },
-    [history]
-  )
+  const getProjectDetailsUrl = useCallback(({ id }) => {
+    return getUrl(routes.projects.details, { projectId: id })
+  }, [])
 
   return <ProjectsList getProjectDetailsUrl={getProjectDetailsUrl} />
 }

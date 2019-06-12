@@ -43,14 +43,14 @@ export function ConfigurationInfo({
       })
       onRun(errorMessage)
     },
-    [runConfiguration, configuration]
+    [runConfiguration, configuration.id, onRun]
   )
 
   const handleDeleteSubmit = useCallback(async () => {
     const { errorMessage } = await deleteConfiguration()
     toggleDeleteModal(false)
     onDelete(errorMessage)
-  }, [onDelete])
+  }, [deleteConfiguration, onDelete, toggleDeleteModal])
 
   const {
     test_source,

@@ -92,14 +92,17 @@ export function FailuresChart({ data = [], theme }) {
   const { color } = theme.palette.chart
 
   const [activeIndex, setActiveIndex] = useState(0)
-  const onPieEnter = useCallback((data, index) => setActiveIndex(index))
+  const onPieEnter = useCallback((data, index) => setActiveIndex(index), [])
 
   const totalErrors = useMemo(() => _.sumBy(data, 'number_of_occurrences'), [data])
 
-  const getColor = useCallback(index => {
-    const colors = [color.area.secondary]
-    return colors[index % colors.length]
-  }, [])
+  const getColor = useCallback(
+    index => {
+      const colors = [color.area.secondary]
+      return colors[index % colors.length]
+    },
+    [color.area.secondary]
+  )
 
   const activeShapeRenderer = useCallback(
     props =>
@@ -109,7 +112,7 @@ export function FailuresChart({ data = [], theme }) {
         total: totalErrors,
         activeColor: getColor(activeIndex),
       }),
-    []
+    [activeIndex, getColor, theme, totalErrors]
   )
 
   return (

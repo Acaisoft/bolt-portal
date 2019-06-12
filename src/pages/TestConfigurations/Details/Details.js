@@ -118,16 +118,19 @@ function useHandlers(history, params) {
         history.push(getUrl(routes.projects.configurations.list, params))
       }
     },
-    [params]
+    [history, notify, params]
   )
 
-  const handleRun = useCallback(error => {
-    if (error) {
-      notify.error(`Could not start: ${error}`)
-    } else {
-      notify.success('Configuration has been started.')
-    }
-  })
+  const handleRun = useCallback(
+    error => {
+      if (error) {
+        notify.error(`Could not start: ${error}`)
+      } else {
+        notify.success('Configuration has been started.')
+      }
+    },
+    [notify]
+  )
 
   return { handleEdit, handleDelete, handleRun }
 }

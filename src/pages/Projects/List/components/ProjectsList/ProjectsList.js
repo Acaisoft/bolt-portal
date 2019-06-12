@@ -138,14 +138,14 @@ function useProjectsListState() {
     setSelectedItem(null)
     setEditedItem(null)
     handleMenuClose()
-  })
+  }, [handleMenuClose])
   const handleCreate = useCallback(() => {
     setEditedItem({ id: 'new-project' })
   }, [])
   const handleEdit = useCallback(() => {
     setEditedItem(selectedItem)
     handleMenuClose()
-  }, [selectedItem])
+  }, [selectedItem, handleMenuClose])
 
   return {
     editedItem,

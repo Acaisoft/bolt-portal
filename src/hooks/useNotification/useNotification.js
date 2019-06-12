@@ -24,9 +24,9 @@ const variants = {
 
 function useNotification() {
   return {
-    success: createVariant(variants.success),
-    info: createVariant(variants.info),
-    error: createVariant(variants.error),
+    success: useVariant(variants.success),
+    info: useVariant(variants.info),
+    error: useVariant(variants.error),
   }
 }
 
@@ -45,23 +45,27 @@ const useStyle = makeStyles(({ palette }) => {
   }
 })
 
-function createVariant({ name, defaultTitle, icon }) {
+function useVariant({ name, defaultTitle, icon }) {
   const classes = useStyle({ name })
-  return useCallback((message, options = {}) => {
-    const { title, ...toastifyOptions } = options
 
-    toast[name](
-      <ToastContent
-        IconComponent={icon}
-        message={message}
-        title={title || defaultTitle}
-      />,
-      {
-        ...toastifyOptions,
-        ...classes,
-      }
-    )
-  }, [])
+  return useCallback(
+    (message, options = {}) => {
+      const { title, ...toastifyOptions } = options
+
+      toast[name](
+        <ToastContent
+          IconComponent={icon}
+          message={message}
+          title={title || defaultTitle}
+        />,
+        {
+          ...toastifyOptions,
+          ...classes,
+        }
+      )
+    },
+    [classes, defaultTitle, icon, name]
+  )
 }
 
 export default useNotification

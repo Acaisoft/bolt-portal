@@ -18,23 +18,26 @@ export function ProjectForm({
 }) {
   const notify = useNotification()
 
-  const handleSubmit = useCallback(async (values, { projectMutation }) => {
-    const { id, name, description, image_url } = values
+  const handleSubmit = useCallback(
+    async (values, { projectMutation }) => {
+      const { id, name, description, image_url } = values
 
-    try {
-      await projectMutation({
-        variables: {
-          id: mode === 'create' ? undefined : id,
-          name,
-          description,
-          image_url,
-        },
-      })
-      onSubmit(values)
-    } catch (err) {
-      notify.error(err.message)
-    }
-  }, [])
+      try {
+        await projectMutation({
+          variables: {
+            id: mode === 'create' ? undefined : id,
+            name,
+            description,
+            image_url,
+          },
+        })
+        onSubmit(values)
+      } catch (err) {
+        notify.error(err.message)
+      }
+    },
+    [mode, notify, onSubmit]
+  )
 
   const formConfig = useMemo(() => createFormConfig(), [])
 

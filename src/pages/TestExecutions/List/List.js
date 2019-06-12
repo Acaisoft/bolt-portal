@@ -23,7 +23,7 @@ export function List({ history, match }) {
         executionId: execution.id,
       })
     },
-    [history, match]
+    [match]
   )
 
   return (

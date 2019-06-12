@@ -11,7 +11,7 @@ const useListFilters = (initialValues = {}) => {
       orderBy: initialValues.orderBy,
       filters: initialValues.filters,
     }
-  }, initialValues)
+  }, [initialValues])
 
   const [rowsPerPage, setRowsPerPage] = useState(initialState.pagination.rowsPerPage)
   const [offset, setOffset] = useState(initialState.pagination.offset)

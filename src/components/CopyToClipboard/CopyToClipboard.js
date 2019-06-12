@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 
 import { TextField, InputAdornment, IconButton, Tooltip } from '@material-ui/core'
 import { FileCopy, Check } from '@material-ui/icons'
@@ -13,9 +13,14 @@ export function CopyToClipboard({ label, text, timeout = 2000, ...textFieldProps
     copyValueFromInput(inputEl)
     setCopied(true)
     inputEl.focus()
-
-    setTimeout(() => setCopied(false), timeout)
   }, [])
+
+  useEffect(() => {
+    if (copied) {
+      const handle = setTimeout(() => setCopied(false), timeout)
+      return () => clearTimeout(handle)
+    }
+  }, [copied, timeout])
 
   const tooltipText = copied ? 'Copied!' : 'Copy to clipboard'
 

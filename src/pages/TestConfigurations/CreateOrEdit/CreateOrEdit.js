@@ -39,7 +39,7 @@ export function CreateOrEdit({ history, match }) {
         history.push(getUrl(routes.projects.configurations.list, match.params))
       }
     },
-    [configurationId]
+    [configurationId, history, match.params, notify]
   )
 
   return (

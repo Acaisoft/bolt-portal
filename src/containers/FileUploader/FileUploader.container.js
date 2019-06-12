@@ -69,7 +69,7 @@ export function FileUploadContainer({
         onError(ex)
       }
     },
-    [onLoad, onError, onStart, onSuccess]
+    [onStart, onLoad, requestUploadUrlMutation, onSuccess, onError]
   )
 
   const errorMessage = (error || customError || {}).message

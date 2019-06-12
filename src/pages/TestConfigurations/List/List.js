@@ -42,28 +42,34 @@ function useHandlers(history, match) {
     (path, params = {}) => {
       return getUrl(path, { ...match.params, ...params })
     },
-    [history, match]
+    [match]
   )
 
   const getTestConfigurationCreateUrl = useCallback(() => {
     return getRedirectUrl(routes.projects.configurations.create)
-  }, [])
+  }, [getRedirectUrl])
 
-  const getTestConfigurationDetailsUrl = useCallback(configuration => {
-    return getRedirectUrl(routes.projects.configurations.details, {
-      configurationId: configuration.id,
-    })
-  }, [])
+  const getTestConfigurationDetailsUrl = useCallback(
+    configuration => {
+      return getRedirectUrl(routes.projects.configurations.details, {
+        configurationId: configuration.id,
+      })
+    },
+    [getRedirectUrl]
+  )
 
   const notify = useNotification()
 
-  const handleRun = useCallback(({ configuration, error }) => {
-    if (error) {
-      notify.error(error)
-    } else {
-      notify.success(`Scenario '${configuration.name}' was successfully started.`)
-    }
-  }, [])
+  const handleRun = useCallback(
+    ({ configuration, error }) => {
+      if (error) {
+        notify.error(error)
+      } else {
+        notify.success(`Scenario '${configuration.name}' was successfully started.`)
+      }
+    },
+    [notify]
+  )
 
   return { getTestConfigurationCreateUrl, getTestConfigurationDetailsUrl, handleRun }
 }
