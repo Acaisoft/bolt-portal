@@ -1,6 +1,7 @@
 export { default as Button } from './Button'
 export { default as ButtonWithState } from './ButtonWithState'
 export { default as Breadcrumbs } from './Breadcrumbs'
+export { default as ChartTooltip } from './ChartTooltip'
 export { default as CopyToClipboard } from './CopyToClipboard'
 export { default as DataTable } from './DataTable'
 export { default as DeleteModal } from './DeleteModal'

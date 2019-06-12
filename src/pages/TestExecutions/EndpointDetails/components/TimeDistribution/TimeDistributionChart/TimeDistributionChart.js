@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { withStyles } from '@material-ui/core'
+import { ChartTooltip } from '~components'
 
 import { formatThousands } from '~utils/numbers'
 import { formatScaledDuration } from '~utils/datetime'
@@ -49,9 +50,9 @@ export function TimeDistributionChart({ data, theme }) {
         />
 
         <Tooltip
+          content={<ChartTooltip />}
           isAnimationActive={false}
           cursor={false}
-          wrapperStyle={{ ...font }}
           labelFormatter={label => `${label}th percentile`}
           formatter={value => `${formatThousands(value)} ms`}
         />

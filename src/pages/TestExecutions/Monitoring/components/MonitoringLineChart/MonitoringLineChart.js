@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core'
 
 import filesize from 'filesize'
 import { formatThousands, formatPercent } from '~utils/numbers'
-import { SectionHeader } from '~components'
+import { SectionHeader, ChartTooltip } from '~components'
 
 import ChartFilter from '../ChartFilter'
 
@@ -37,7 +37,7 @@ const formatters = {
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function MonitoringLineChart({ config, data, groupNames, theme }) {
-  const { color, gridLine, font, tooltip } = theme.palette.chart
+  const { color, gridLine, font } = theme.palette.chart
 
   // TODO: Assign better colors
   const lineColors = [
@@ -94,10 +94,11 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
           />
 
           <Tooltip
+            content={<ChartTooltip />}
             isAnimationActive={false}
             labelFormatter={formatTimestamp}
             formatter={formatters[config.y_format].tooltip}
-            wrapperStyle={{ ...tooltip, zIndex: 1 }}
+            wrapperStyle={{ zIndex: 1 }}
           />
 
           {selected.map((groupName, index) => {

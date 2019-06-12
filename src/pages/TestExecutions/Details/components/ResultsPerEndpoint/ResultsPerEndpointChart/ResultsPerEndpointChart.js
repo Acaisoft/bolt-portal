@@ -13,12 +13,13 @@ import {
 } from 'recharts'
 
 import { withStyles } from '@material-ui/core'
+import { ChartTooltip } from '~components'
 import { formatThousands } from '~utils/numbers'
 
 const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 
 export function ResultsPerEndpointChart({ data, execution, theme }) {
-  const { color, gridLine, font, tooltip } = theme.palette.chart
+  const { color, gridLine, font } = theme.palette.chart
 
   return (
     <ResponsiveContainer width="100%" height={400}>
@@ -54,10 +55,10 @@ export function ResultsPerEndpointChart({ data, execution, theme }) {
         />
 
         <Tooltip
+          content={<ChartTooltip />}
           isAnimationActive={false}
           cursor={false}
           formatter={formatThousands}
-          wrapperStyle={{ ...tooltip }}
         />
 
         <Bar

@@ -13,6 +13,7 @@ import {
 } from 'recharts'
 
 import { withStyles } from '@material-ui/core'
+import { ChartTooltip } from '~components'
 
 import { Chart } from '~config/constants'
 import { formatThousands } from '~utils/numbers'
@@ -21,7 +22,7 @@ const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function UsersSpawnChart({ data, execution, syncId, theme, domainX }) {
   const backgroundColor = theme.palette.background.paper
-  const { color, font, gridLine, tooltip } = theme.palette.chart
+  const { color, font, gridLine } = theme.palette.chart
 
   return (
     <ResponsiveContainer width="100%" height={Chart.HEIGHT}>
@@ -59,10 +60,10 @@ export function UsersSpawnChart({ data, execution, syncId, theme, domainX }) {
         />
 
         <Tooltip
+          content={<ChartTooltip />}
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={formatThousands}
-          wrapperStyle={{ ...tooltip }}
         />
         <Line
           type="linear"

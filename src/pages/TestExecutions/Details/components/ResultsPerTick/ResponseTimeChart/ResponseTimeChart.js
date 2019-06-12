@@ -13,6 +13,7 @@ import {
 } from 'recharts'
 
 import { withStyles } from '@material-ui/core'
+import { ChartTooltip } from '~components'
 
 import { Chart } from '~config/constants'
 import { formatThousands } from '~utils/numbers'
@@ -22,7 +23,7 @@ const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
   const backgroundColor = theme.palette.background.paper
-  const { color, gridLine, font, tooltip } = theme.palette.chart
+  const { color, gridLine, font } = theme.palette.chart
 
   return (
     <ResponsiveContainer width="100%" height={Chart.HEIGHT}>
@@ -60,10 +61,10 @@ export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
         />
 
         <Tooltip
+          content={<ChartTooltip />}
           isAnimationActive={false}
           labelFormatter={formatTimestamp}
           formatter={value => `${formatThousands(value, 2)} ms`}
-          wrapperStyle={{ ...tooltip }}
         />
         <Line
           type="linear"
