@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { Typography, CircularProgress } from '@material-ui/core'
-import { Close, Done, PriorityHigh } from '@material-ui/icons'
+import { Close, Done, ArrowRightAlt, ErrorOutline } from '@material-ui/icons'
 
 import { TestRunStatus as Status } from '~config/constants'
 import { Monitor } from '~assets/icons'
@@ -14,6 +14,11 @@ export const configurations = {
     icon: props => <CircularProgress size={13} {...props} />,
     name: Status.PENDING,
     title: 'In progress',
+  },
+  [Status.RUNNING]: {
+    icon: props => <ArrowRightAlt {...props} />,
+    name: Status.RUNNING,
+    title: 'Running',
   },
   [Status.FINISHED]: {
     icon: props => <Done {...props} />,
@@ -31,7 +36,7 @@ export const configurations = {
     title: 'Monitoring',
   },
   [Status.UNKNOWN]: {
-    icon: props => <PriorityHigh {...props} />,
+    icon: props => <ErrorOutline {...props} />,
     name: Status.UNKNOWN,
     title: 'Unknown',
   },

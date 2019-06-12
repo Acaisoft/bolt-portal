@@ -111,7 +111,7 @@ export default {
         position: 'absolute',
         right: 6,
         top: 0,
-      }
+      },
     },
     MuiChip: {
       label: {

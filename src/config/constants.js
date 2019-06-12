@@ -9,6 +9,7 @@ export const Chart = {
 
 export const TestRunStatus = {
   PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
   FINISHED: 'FINISHED',
   ERROR: 'ERROR',
   MONITORING: 'MONITORING',

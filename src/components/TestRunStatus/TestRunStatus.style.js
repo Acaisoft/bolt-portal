@@ -7,6 +7,9 @@ export default makeStyles(({ palette, spacing }) => ({
     fontSize: '0.9rem',
     color: palette.info.contrastText,
   },
+  [Status.RUNNING]: {
+    background: palette.primary.main,
+  },
   [Status.FINISHED]: {
     background: palette.success.main,
   },
