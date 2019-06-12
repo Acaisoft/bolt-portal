@@ -55,7 +55,7 @@ export function Details({ history, match }) {
         {loading ? (
           <LoadingPlaceholder title="Loading test run results..." />
         ) : error ? (
-          <ErrorPlaceholder title="Error" error={error} />
+          <ErrorPlaceholder error={error} />
         ) : (
           <NotFoundPlaceholder title="Test run not found" />
         )}

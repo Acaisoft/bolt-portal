@@ -13,17 +13,26 @@ import Config from '~services/Config'
  * Links
  */
 export function makeErrorHandlingLink() {
-  return onError(({ graphQLErrors, networkError }) => {
+  return onError(({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors) {
-      graphQLErrors.map(({ message, locations, path }) =>
+      graphQLErrors.forEach(({ message, locations = [], path = '' }) => {
+        const parsedLocations = locations
+          .map(l => `(${l.line}:${l.column})`)
+          .join(',')
+
         console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          `[GraphQL error] Error: ${message}`,
+          parsedLocations && `, Locations: ${parsedLocations}`,
+          path && `, Path: ${path}`,
+          `\nFor operation: ${operation.operationName ||
+            '[no name]'} with variables: ${JSON.stringify(operation.variables)}`
         )
-      )
+      })
     }
 
     if (networkError) {
-      console.log('[Network error]', networkError)
+      const { name, message, response, result } = networkError
+      console.log(`[Network error] ${name}: ${message}`, { response, result })
     }
   })
 }

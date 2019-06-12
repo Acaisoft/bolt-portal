@@ -57,7 +57,7 @@ function Monitoring({ match, history, location }) {
         {loading ? (
           <LoadingPlaceholder title="Loading monitoring results..." />
         ) : error ? (
-          <ErrorPlaceholder title="Error" error={error} />
+          <ErrorPlaceholder error={error} />
         ) : !execution ? (
           <NotFoundPlaceholder title="Test run not found" />
         ) : (

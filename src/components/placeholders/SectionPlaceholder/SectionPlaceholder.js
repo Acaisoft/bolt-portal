@@ -33,7 +33,12 @@ export function SectionPlaceholder({
             </div>
           )}
 
-          <Typography className={classes.title} variant="h6" component="h2">
+          <Typography
+            className={classes.title}
+            variant="h6"
+            component="h2"
+            align="center"
+          >
             {title}
           </Typography>
         </div>

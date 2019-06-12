@@ -3,10 +3,18 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
-import { DataTable, SectionHeader, Button, NoWrap } from '~components'
+import { Box } from '@material-ui/core'
+import {
+  DataTable,
+  SectionHeader,
+  Button,
+  NoWrap,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  TestRunStatus,
+} from '~components'
 import { Pagination } from '~containers'
 import { useListFilters } from '~hooks'
-import { TestRunStatus } from '~components'
 import { formatThousands, formatPercent } from '~utils/numbers'
 
 import {
@@ -35,7 +43,7 @@ function TestExecutionsList({
     }
   )
 
-  const { data: { executions = [] } = {}, loading } = useSubscription(
+  const { data: { executions = [] } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
     {
       fetchPolicy: 'cache-and-network',
@@ -47,6 +55,18 @@ function TestExecutionsList({
       },
     }
   )
+
+  if (loading || error) {
+    return (
+      <Box p={2}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading latest test runs" />
+        ) : (
+          <ErrorPlaceholder error={error} />
+        )}
+      </Box>
+    )
+  }
 
   const totalCount =
     (executionsAggregate && executionsAggregate.aggregate.count) || 0

@@ -38,7 +38,7 @@ function Details({ history, match }) {
         {loading ? (
           <LoadingPlaceholder title="Loading scenario..." />
         ) : error ? (
-          <ErrorPlaceholder title="Error" error={error} />
+          <ErrorPlaceholder error={error} />
         ) : (
           <NotFoundPlaceholder title="Scenario not found" />
         )}

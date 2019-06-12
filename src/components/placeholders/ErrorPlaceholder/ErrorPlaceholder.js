@@ -6,16 +6,19 @@ import { ErrorPlaceholder as ErrorPlaceholderImage } from '~assets/icons'
 import SectionPlaceholder from '../SectionPlaceholder'
 
 function ErrorPlaceholder({
-  title = 'Error',
   error,
+  title,
+  description,
   actions,
   ...sectionPlaceholderProps
 }) {
+  const parsedError = parseError(error)
+
   return (
     <SectionPlaceholder
       {...sectionPlaceholderProps}
-      title={title}
-      description={error && error.message} // Add better GraphQL errors formatting
+      title={parsedError.title || title}
+      description={parsedError.description || description}
       topImage={<ErrorPlaceholderImage height={78} />}
       icon={<Close color="error" data-testid="error-icon" />}
       actions={actions}
@@ -25,7 +28,33 @@ function ErrorPlaceholder({
 ErrorPlaceholder.propTypes = {
   actions: PropTypes.node,
   description: PropTypes.string,
+  error: PropTypes.object,
   title: PropTypes.string,
+}
+
+function parseError(error) {
+  if (!error) {
+    return {}
+  }
+
+  if ((error.graphQLErrors || []).length > 0) {
+    return {
+      title: 'GraphQL Error',
+      description: error.graphQLErrors[0].message,
+    }
+  }
+
+  if (error.networkError) {
+    return {
+      title: 'Network Error',
+      description: error.networkError.message,
+    }
+  }
+
+  return {
+    title: error.name,
+    description: error.message,
+  }
 }
 
 export default ErrorPlaceholder

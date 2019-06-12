@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Menu, MenuItem, Typography, Card } from '@material-ui/core'
-import { Loader, SectionHeader } from '~components'
+import { Menu, MenuItem, Card, Box } from '@material-ui/core'
+import { ErrorPlaceholder, LoadingPlaceholder, SectionHeader } from '~components'
 
 import { GET_PROJECT_SUMMARIES } from './graphql'
 import { useQuery } from 'react-apollo-hooks'
@@ -25,8 +25,17 @@ function ProjectsList({ getProjectDetailsUrl }) {
     handleMenuClose,
   } = useProjectsListState()
 
-  if (error) return <Typography variant="body1">Error :(</Typography>
-  if (loading) return <Loader loading fill />
+  if (loading || error) {
+    return (
+      <Box p={2}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading projects..." />
+        ) : (
+          <ErrorPlaceholder error={error} />
+        )}
+      </Box>
+    )
+  }
 
   const projectsItems = [{ id: 'new-project' }, ...summaries]
 

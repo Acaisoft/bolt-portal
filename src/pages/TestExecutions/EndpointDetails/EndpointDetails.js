@@ -26,7 +26,7 @@ function EndpointDetails({ history, match }) {
         {loading ? (
           <LoadingPlaceholder title="Loading endpoint results..." />
         ) : error ? (
-          <ErrorPlaceholder title="Error" error={error} />
+          <ErrorPlaceholder error={error} />
         ) : (
           <NotFoundPlaceholder title="Endpoint not found" />
         )}

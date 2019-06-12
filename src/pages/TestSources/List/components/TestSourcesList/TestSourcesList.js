@@ -52,7 +52,7 @@ function TestSourcesList({
         {loading ? (
           <LoadingPlaceholder title="Loading test sources..." />
         ) : error ? (
-          <ErrorPlaceholder title="Error" error={error} />
+          <ErrorPlaceholder error={error} />
         ) : (
           <NoDataPlaceholder
             title="No test sources"
