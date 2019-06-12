@@ -3,14 +3,39 @@ import PropTypes from 'prop-types'
 import { Cell, PieChart, Pie, Text } from 'recharts'
 import { useTheme } from '@material-ui/styles'
 
-export function SuccessRatePieChart({ value, size = 62.5 }) {
-  const theme = useTheme()
+const rangeOfColors = [
+  [90, '#32D4C0'],
+  [75, '#AAD432'],
+  [50, '#D4CD32'],
+  [30, '#D48932'],
+  [0, '#F76F40'],
+]
 
-  const radius = Math.floor(size / 2)
-  const colors = [
+function getColorsForValue(value) {
+  for (let [threshold, color] of rangeOfColors) {
+    if (value >= threshold) {
+      return color
+    }
+  }
+}
+
+export function SuccessRatePieChart({
+  value,
+  size = 62.5,
+  variant = 'default',
+  innerRadiusMultiplier = 0.08,
+  showLabel = false,
+}) {
+  const theme = useTheme()
+  const defaultColors = [
     theme.palette.chart.color.area.error,
     theme.palette.chart.color.area.success,
   ]
+
+  const colors =
+    variant === 'multicolor' ? ['#42405E', getColorsForValue(value)] : defaultColors
+
+  const radius = Math.floor(size / 2)
   const data = [
     {
       name: 'Not finished',
@@ -24,7 +49,7 @@ export function SuccessRatePieChart({ value, size = 62.5 }) {
 
   const customizedLabel = useCallback(
     ({ cx, cy, percent, index, ...rest }) => {
-      if (index !== 1) return null
+      if (index !== 1 || !showLabel) return null
 
       return (
         <Text
@@ -56,7 +81,7 @@ export function SuccessRatePieChart({ value, size = 62.5 }) {
         cx="50%"
         cy="50%"
         anglePadding={0}
-        innerRadius={radius - size * 0.08}
+        innerRadius={radius - size * innerRadiusMultiplier}
         outerRadius={radius}
         label={customizedLabel}
         startAngle={90}

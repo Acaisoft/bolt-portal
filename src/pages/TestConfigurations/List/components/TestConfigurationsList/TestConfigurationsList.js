@@ -19,6 +19,8 @@ import { useListFilters } from '~hooks'
 
 import { formatPercent, formatThousands } from '~utils/numbers'
 
+import { SuccessRatePieChart } from '~components'
+
 import {
   SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM,
   SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM,
@@ -152,14 +154,24 @@ export function TestConfigurationsList({
 
             const totals = executions[0].execution_request_totals_aggregate.aggregate
             const successRate =
-              (totals.sum.num_requests - totals.sum.num_failures) /
-              totals.sum.num_requests
-            const successRateClass = getSuccessRateLevel(successRate)
+              totals.sum.num_requests === 0
+                ? 0
+                : (totals.sum.num_requests - totals.sum.num_failures) /
+                  totals.sum.num_requests
 
             return (
-              <span className={classes[successRateClass]}>
-                {formatPercent(successRate)}
-              </span>
+              <div className={classes.rateContainer}>
+                <SuccessRatePieChart
+                  value={successRate * 100}
+                  size={20}
+                  variant="multicolor"
+                  innerRadiusMultiplier={0.15}
+                />
+
+                <span className={classes.rateMeter}>
+                  {formatPercent(successRate)}
+                </span>
+              </div>
             )
           }}
           title="Success Rate"
@@ -216,10 +228,6 @@ TestConfigurationsList.propTypes = {
   getTestConfigurationCreateUrl: PropTypes.func.isRequired,
   getTestConfigurationDetailsUrl: PropTypes.func.isRequired,
   projectId: PropTypes.string,
-}
-
-function getSuccessRateLevel(successRate) {
-  return successRate >= 0.95 ? 'good' : successRate >= 0.8 ? 'average' : 'bad'
 }
 
 export default TestConfigurationsList

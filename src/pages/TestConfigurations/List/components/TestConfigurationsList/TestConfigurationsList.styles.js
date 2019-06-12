@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 
-export default makeStyles(({ palette }) => ({
+export default makeStyles(({ palette, spacing }) => ({
   actionsContainer: {
     display: 'flex',
   },
@@ -8,13 +8,11 @@ export default makeStyles(({ palette }) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  good: {
-    color: palette.text.success,
+  rateContainer: {
+    display: 'flex',
+    alignItems: 'center',
   },
-  average: {
-    color: palette.text.warning,
-  },
-  bad: {
-    color: palette.text.error,
+  rateMeter: {
+    marginLeft: spacing(1.5),
   },
 }))

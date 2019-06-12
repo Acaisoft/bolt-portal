@@ -32,7 +32,7 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
     <React.Fragment>
       <CardHeader
         className={classes.header}
-        avatar={<SuccessRatePieChart value={progress} size={65} />}
+        avatar={<SuccessRatePieChart value={progress} size={65} showLabel={true} />}
         action={
           <IconButton onClick={e => onMenuOpen(e, project)}>
             <MoreHoriz />
