@@ -71,11 +71,7 @@ export function ConfigurationInfo({
   const isRepository = source_type === TestSourceType.REPOSITORY
   return (
     <React.Fragment>
-      <SectionHeader
-        title={name}
-        description={(configuration_type || {}).name}
-        className={classes.header}
-      >
+      <SectionHeader title={name} description={(configuration_type || {}).name}>
         <Tooltip
           title={
             !canRun
@@ -109,8 +105,8 @@ export function ConfigurationInfo({
         </Tooltip>
       </SectionHeader>
 
-      <Paper square className={classes.paper}>
-        <ExpandablePanel defaultExpanded={false} title="Scenario Details">
+      <ExpandablePanel defaultExpanded={false} title="Scenario Details">
+        <Paper square className={classes.paper}>
           <Grid container spacing={5} alignItems="center">
             <Grid item hidden="sm" md={1} container justify="center">
               <Grid item>
@@ -214,47 +210,48 @@ export function ConfigurationInfo({
               </Grid>
             </Grid>
           </Grid>
-        </ExpandablePanel>
-        <Grid container spacing={5}>
-          <Grid
-            item
-            xs={12}
-            container
-            justify="flex-end"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>
-              <Button
-                icon={Edit}
-                variant="outlined"
-                color="default"
-                onClick={onEdit}
-              >
-                <Typography variant="body2">Edit</Typography>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Tooltip
-                title={isPerformed ? "You can't delete a performed scenario." : ''}
-              >
-                <span>
-                  <Button
-                    icon={Delete}
-                    aria-label="Delete scenario"
-                    variant="outlined"
-                    color="default"
-                    disabled={isPerformed || isDeleting}
-                    onClick={() => toggleDeleteModal(true)}
-                  >
-                    <Typography variant="body2">Delete</Typography>
-                  </Button>
-                </span>
-              </Tooltip>
+
+          <Grid container spacing={5}>
+            <Grid
+              item
+              xs={12}
+              container
+              justify="flex-end"
+              alignItems="center"
+              spacing={1}
+            >
+              <Grid item>
+                <Button
+                  icon={Edit}
+                  variant="outlined"
+                  color="default"
+                  onClick={onEdit}
+                >
+                  <Typography variant="body2">Edit</Typography>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Tooltip
+                  title={isPerformed ? "You can't delete a performed scenario." : ''}
+                >
+                  <span>
+                    <Button
+                      icon={Delete}
+                      aria-label="Delete scenario"
+                      variant="outlined"
+                      color="default"
+                      disabled={isPerformed || isDeleting}
+                      onClick={() => toggleDeleteModal(true)}
+                    >
+                      <Typography variant="body2">Delete</Typography>
+                    </Button>
+                  </span>
+                </Tooltip>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </ExpandablePanel>
 
       <SubmitCancelModal
         isOpen={isDeleteModalOpen}

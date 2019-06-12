@@ -11,15 +11,16 @@ export default makeStyles(({ spacing }) => ({
   title: {
     fontWeight: 'bold',
   },
+  summary: {
+    padding: 0,
+    justifyContent: 'flex-start',
+  },
   summaryContent: {
-    paddingLeft: spacing(3),
+    flexGrow: 0,
   },
-  expandIcon: {
-    position: 'absolute',
-    left: 8,
-    right: 'auto',
-  },
+  expandIcon: {},
   details: {
-    paddingLeft: spacing(6),
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 }))

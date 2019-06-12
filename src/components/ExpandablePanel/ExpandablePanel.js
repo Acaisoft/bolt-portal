@@ -15,11 +15,17 @@ export function ExpandablePanel({ children, title, ...panelProps }) {
   const classes = useStyles()
 
   return (
-    <ExpansionPanel data-testid="expansion-panel" className={classes.root} elevation={0} {...panelProps}>
+    <ExpansionPanel
+      data-testid="expansion-panel"
+      className={classes.root}
+      elevation={0}
+      {...panelProps}
+    >
       <ExpansionPanelSummary
         data-testid="expansion-panel-summary"
         expandIcon={<ExpandMore />}
         classes={{
+          root: classes.summary,
           content: classes.summaryContent,
           expandIcon: classes.expandIcon,
         }}
