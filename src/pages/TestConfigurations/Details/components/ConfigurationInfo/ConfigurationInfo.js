@@ -1,14 +1,23 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { Grid, Typography, Paper, Tooltip } from '@material-ui/core'
-import { PlayArrow, Edit, Delete } from '@material-ui/icons'
+import {
+  Grid,
+  Typography,
+  Paper,
+  Tooltip,
+  IconButton,
+  MenuItem,
+} from '@material-ui/core'
+
+import { PlayArrow, Edit, Delete, MoreVert } from '@material-ui/icons'
 import {
   SectionHeader,
   SubmitCancelModal,
   Button,
   LabeledValue,
   ExpandablePanel,
+  PopoverMenu,
 } from '~components'
 import { Details } from '~assets/icons'
 
@@ -90,17 +99,23 @@ export function ConfigurationInfo({
             >
               Run
             </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              icon={PlayArrow}
-              disabled={isStartingRun || !canRun}
-              onClick={() => handleRun({ coldStart: true })}
-              className={classes.buttonMargin}
-              aria-label="Cold Run"
+
+            <PopoverMenu
+              id="config-more-options"
+              closeOnClick
+              trigger={
+                <IconButton
+                  className={classes.buttonMargin}
+                  aria-label="Scenario Actions Menu"
+                >
+                  <MoreVert />
+                </IconButton>
+              }
             >
-              Cold Run
-            </Button>
+              <MenuItem onClick={() => handleRun({ coldStart: true })}>
+                Cold Run
+              </MenuItem>
+            </PopoverMenu>
           </span>
         </Tooltip>
       </SectionHeader>
