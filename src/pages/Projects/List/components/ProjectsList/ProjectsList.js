@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Menu, MenuItem, Card, Box } from '@material-ui/core'
+import { Card, Box } from '@material-ui/core'
 import { ErrorPlaceholder, LoadingPlaceholder, SectionHeader } from '~components'
 
 import { GET_PROJECT_SUMMARIES } from './graphql'
@@ -17,12 +17,9 @@ function ProjectsList({ getProjectDetailsUrl }) {
 
   const {
     editedItem,
-    menuAnchorEl,
-    handleCreate,
-    handleEdit,
+    handleClickCreate,
+    handleClickEdit,
     handleFormClose,
-    handleMenuOpen,
-    handleMenuClose,
   } = useProjectsListState()
 
   if (loading || error) {
@@ -77,12 +74,11 @@ function ProjectsList({ getProjectDetailsUrl }) {
                       onSubmit={handleFormClose}
                     />
                   ) : isNewProject ? (
-                    <NewProjectCard onCreate={handleCreate} />
+                    <NewProjectCard onCreate={handleClickCreate} />
                   ) : (
                     <ProjectCard
                       getProjectDetailsUrl={getProjectDetailsUrl}
-                      onMenuOpen={handleMenuOpen}
-                      onMenuClose={handleMenuClose}
+                      onEdit={handleClickEdit}
                       project={project}
                     />
                   )}
@@ -92,17 +88,6 @@ function ProjectsList({ getProjectDetailsUrl }) {
           )
         })}
       </div>
-
-      <Menu
-        id="project-menu"
-        anchorEl={menuAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={!!menuAnchorEl}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleEdit}>Edit project</MenuItem>
-      </Menu>
     </React.Fragment>
   )
 }
@@ -124,37 +109,22 @@ function useProjectSummaries() {
 
 function useProjectsListState() {
   const [editedItem, setEditedItem] = useState(null)
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [menuAnchorEl, setMenuAnchorEl] = useState(null)
 
-  const handleMenuOpen = useCallback((e, project) => {
-    setSelectedItem(project)
-    setMenuAnchorEl(e.currentTarget)
-  }, [])
-  const handleMenuClose = useCallback(() => {
-    setMenuAnchorEl(null)
-  }, [])
   const handleFormClose = useCallback(() => {
-    setSelectedItem(null)
     setEditedItem(null)
-    handleMenuClose()
-  }, [handleMenuClose])
-  const handleCreate = useCallback(() => {
+  }, [])
+  const handleClickCreate = useCallback(() => {
     setEditedItem({ id: 'new-project' })
   }, [])
-  const handleEdit = useCallback(() => {
-    setEditedItem(selectedItem)
-    handleMenuClose()
-  }, [selectedItem, handleMenuClose])
+  const handleClickEdit = useCallback(project => {
+    setEditedItem(project)
+  }, [])
 
   return {
     editedItem,
-    menuAnchorEl,
-    handleMenuOpen,
-    handleMenuClose,
     handleFormClose,
-    handleCreate,
-    handleEdit,
+    handleClickCreate,
+    handleClickEdit,
   }
 }
 

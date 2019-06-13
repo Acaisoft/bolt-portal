@@ -8,14 +8,15 @@ import {
   CardContent,
   Typography,
   CardActions,
+  MenuItem,
 } from '@material-ui/core'
-import { Button, SuccessRatePieChart } from '~components'
+import { Button, SuccessRatePieChart, PopoverMenu } from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import useStyles from './ProjectCard.styles'
 
-function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
+function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
   const {
     num_tests_passed = 0,
     num_tests_failed = 0,
@@ -34,9 +35,17 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
         className={classes.header}
         avatar={<SuccessRatePieChart value={progress} size={65} showLabel={true} />}
         action={
-          <IconButton onClick={e => onMenuOpen(e, project)}>
-            <MoreHoriz />
-          </IconButton>
+          <PopoverMenu
+            id={`project-${project.id}`}
+            closeOnClick
+            trigger={
+              <IconButton aria-label="Project Menu">
+                <MoreHoriz />
+              </IconButton>
+            }
+          >
+            <MenuItem onClick={() => onEdit(project)}>Edit project</MenuItem>
+          </PopoverMenu>
         }
         title={project.name}
         titleTypographyProps={{
@@ -88,7 +97,7 @@ function ProjectCard({ project, getProjectDetailsUrl, onMenuOpen }) {
 }
 ProjectCard.propTypes = {
   getProjectDetailsUrl: PropTypes.func.isRequired,
-  onMenuOpen: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   project: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
