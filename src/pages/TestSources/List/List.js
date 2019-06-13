@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
-import { useMutation } from 'react-apollo-hooks'
-import { DeleteModal } from '~components'
 import { TestSourcesList } from './components'
 
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
-import { useToggle } from '~hooks'
-
-import { DELETE_REPOSITORY } from './graphql'
 
 import useStyles from './List.styles'
 
@@ -17,13 +12,6 @@ export function List({ history, match }) {
   const { projectId } = match.params
   const classes = useStyles()
 
-  const {
-    isModalOpen,
-    selectedTestSource,
-    handleDelete,
-    handleDeleteSubmit,
-    handleCloseModal,
-  } = useDelete()
   const { getCreateTestSourceUrl, getEditTestSourceUrl } = useHandlers(
     history,
     match
@@ -34,17 +22,8 @@ export function List({ history, match }) {
       <TestSourcesList
         projectId={projectId}
         getCreateTestSourceUrl={getCreateTestSourceUrl}
-        onDelete={handleDelete}
         getEditTestSourceUrl={getEditTestSourceUrl}
       />
-      {isModalOpen && (
-        <DeleteModal
-          onClose={handleCloseModal}
-          onSubmit={handleDeleteSubmit}
-          type="test source"
-          name={selectedTestSource.name}
-        />
-      )}
     </div>
   )
 }
@@ -57,39 +36,6 @@ List.propTypes = {
       projectId: PropTypes.string,
     }).isRequired,
   }).isRequired,
-}
-
-function useDelete() {
-  const [isModalOpen, toggleModal] = useToggle(false)
-  const [selectedTestSource, setSelectedTestSource] = useState(null)
-
-  const deleteRepositoryMutation = useMutation(DELETE_REPOSITORY, {
-    refetchQueries: ['getTestSources'],
-  })
-
-  const handleDelete = useCallback(
-    testSource => {
-      toggleModal(true)
-      setSelectedTestSource(testSource)
-    },
-    [toggleModal]
-  )
-
-  const handleCloseModal = useCallback(() => {
-    toggleModal(false)
-  }, [toggleModal])
-
-  const handleDeleteSubmit = useCallback(async () => {
-    await deleteRepositoryMutation({ variables: { id: selectedTestSource.id } })
-    handleCloseModal()
-  }, [deleteRepositoryMutation, handleCloseModal, selectedTestSource.id])
-
-  return {
-    isModalOpen,
-    handleDelete,
-    handleDeleteSubmit,
-    handleCloseModal,
-  }
 }
 
 function useHandlers(history, match) {

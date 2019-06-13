@@ -22,7 +22,6 @@ import { Box } from '@material-ui/core'
 
 function TestSourcesList({
   getCreateTestSourceUrl,
-  onDelete,
   getEditTestSourceUrl,
   projectId,
 }) {
@@ -124,13 +123,6 @@ function TestSourcesList({
               >
                 Edit
               </Button>
-              {/* <IconButton
-                aria-label="Delete source"
-                className={classes.icon}
-                onClick={() => onDelete(source)}
-              >
-                <Delete />
-              </IconButton> */}
             </div>
           )}
           title="Actions"
@@ -142,7 +134,6 @@ function TestSourcesList({
 
 TestSourcesList.propTypes = {
   getCreateTestSourceUrl: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
   getEditTestSourceUrl: PropTypes.func.isRequired,
   projectId: PropTypes.string,
 }
