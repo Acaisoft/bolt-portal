@@ -1,9 +1,9 @@
+import { IconButton, ListItemIcon, ListItemText, MenuItem } from '@material-ui/core'
+import { ExitToApp } from '@material-ui/icons'
 import React, { useContext } from 'react'
-import { AccountCircle, ExitToApp } from '@material-ui/icons'
-import { IconButton, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core'
-
 import { PopoverMenu } from '~components'
 import { AuthKeycloakContext } from '~contexts'
+import UserAvatar from '../UserAvatar'
 
 function UserMenu() {
   const { logout } = useContext(AuthKeycloakContext)
@@ -15,7 +15,7 @@ function UserMenu() {
         closeOnClick
         trigger={
           <IconButton aria-label="User Menu" color="inherit">
-            <AccountCircle />
+            <UserAvatar />
           </IconButton>
         }
         MenuProps={{
