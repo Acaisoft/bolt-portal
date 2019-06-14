@@ -14,12 +14,16 @@ function ChartTooltip({
 }) {
   const classes = useStyles()
 
+  if (!payload) {
+    return null
+  }
+
   return (
     <Paper className={classes.root} elevation={4}>
       <div className={classes.label}>{labelFormatter(label)}</div>
       <ul className={classes.list}>
         {payload.map(item => (
-          <li key={item.dataKey} className={classes.item}>
+          <li key={item.name} className={classes.item}>
             <div
               className={classes.itemColor}
               style={{ backgroundColor: item.color }}
