@@ -13,6 +13,7 @@ export default makeStyles(({ palette }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    color: palette.text.secondary,
     '&::before': {
       content: "''",
       position: 'absolute',
@@ -21,7 +22,7 @@ export default makeStyles(({ palette }) => ({
       left: avatarOffset,
       right: avatarOffset,
       borderRadius: '50%',
-      border: `${avatarBorderWidth}px solid #ffffff`,
+      border: `${avatarBorderWidth}px solid ${palette.text.secondary}`,
     },
   },
   badge: {
