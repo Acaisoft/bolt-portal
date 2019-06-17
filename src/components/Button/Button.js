@@ -28,7 +28,8 @@ export function Button({
       role="button"
       variant={variant === 'link' ? 'text' : variant}
       classes={{
-        label: classes.label,
+        root: IconComponent && !children && classes.iconOnly,
+        label: children && classes.label,
       }}
       className={classNames({
         [classes.link]: variant === 'link',

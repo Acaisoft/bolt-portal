@@ -17,8 +17,11 @@ export default makeStyles(
       flexGrow: 1,
     },
     menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
+      marginLeft: spacing(-2),
+      marginRight: spacing(3),
+      width: 50,
+      height: 50,
+      borderRadius: 7,
     },
     title: {
       color: palette.text.primary,

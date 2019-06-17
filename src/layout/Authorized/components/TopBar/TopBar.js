@@ -2,16 +2,17 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { withRouter, Link, matchPath } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core'
-import { Menu as Hamburger } from '@material-ui/icons'
+import { AppBar, Toolbar, Typography } from '@material-ui/core'
 
 import routes from '~config/routes'
 import { useMenu } from '~hooks'
+import { Hamburger } from '~assets/icons'
 
 import useStyles from './TopBar.styles'
 import NavBreadcrumbs from '../NavBreadcrumbs'
 import SideMenu from '../SideMenu'
 import UserMenu from '../UserMenu'
+import { Button } from '~components'
 
 export function TopBar({ history, location }) {
   const classes = useStyles()
@@ -31,14 +32,17 @@ export function TopBar({ history, location }) {
       <AppBar position="sticky" elevation={0}>
         <Toolbar className={classes.appBar}>
           {projectId && (
-            <IconButton
+            <Button
               className={classes.menuButton}
+              variant="contained"
+              color="primary"
+              size="small"
+              icon={Hamburger}
+              edge="start"
               onClick={handleMenuOpen}
               aria-owns={isMenuOpen ? 'project-menu' : undefined}
               aria-haspopup="true"
-            >
-              <Hamburger />
-            </IconButton>
+            />
           )}
 
           <Link to="/" className={classes.title}>
