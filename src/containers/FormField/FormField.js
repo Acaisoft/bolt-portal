@@ -7,7 +7,7 @@ import { Field } from 'react-final-form'
 function FormField({
   children,
   component = TextField,
-  field: { inputProps = {} },
+  field: { inputProps = {} } = {},
   name,
   subscription = {
     value: true,
@@ -28,7 +28,7 @@ FormField.propTypes = {
   component: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   field: PropTypes.shape({
     inputProps: PropTypes.object,
-  }).isRequired,
+  }),
   name: PropTypes.string.isRequired,
   ...Field.propTypes,
 }
