@@ -39,6 +39,10 @@ const palette = {
       fontFamily: 'Montserrat',
       fontSize: 15,
     },
+    slider: {
+      border: '#4E4D6E',
+      background: '#3E3D5A',
+    },
     color: {
       area: {
         success: '#1EB1B1',
@@ -50,6 +54,12 @@ const palette = {
         success: '#1EB1B1',
         error: '#FF5EA1',
         primary: '#7297FF',
+      },
+      heatmap: {
+        bool: {
+          inactive: '#3E3D5A',
+          active: '#1EB1B1',
+        },
       },
     },
   },

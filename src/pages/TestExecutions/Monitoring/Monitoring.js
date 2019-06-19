@@ -14,7 +14,7 @@ import {
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
-import { MonitoringLineChart } from './components'
+import { MonitoringLineChart, MonitoringHeatmapChart } from './components'
 import { getDataForChart } from './module.js'
 import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
 import useStyles from './Monitoring.styles'
@@ -86,11 +86,19 @@ function Monitoring({ match, history, location }) {
             return (
               <Grid item xs={12} md={6} key={`chart-${index}`}>
                 <Paper square className={classes.tile}>
-                  <MonitoringLineChart
-                    data={data}
-                    config={chartConfig}
-                    groupNames={groupNames}
-                  />
+                  {chartConfig.type === 'heatmap' ? (
+                    <MonitoringHeatmapChart
+                      data={data}
+                      config={chartConfig}
+                      groupNames={groupNames}
+                    />
+                  ) : (
+                    <MonitoringLineChart
+                      data={data}
+                      config={chartConfig}
+                      groupNames={groupNames}
+                    />
+                  )}
                 </Paper>
               </Grid>
             )
