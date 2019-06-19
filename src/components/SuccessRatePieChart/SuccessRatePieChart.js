@@ -66,7 +66,7 @@ export function SuccessRatePieChart({
         </Text>
       )
     },
-    [theme]
+    [showLabel, theme.palette.chart.font, theme.palette.text.primary]
   )
 
   return (

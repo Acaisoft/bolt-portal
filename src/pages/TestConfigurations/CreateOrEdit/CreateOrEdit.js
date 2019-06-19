@@ -24,7 +24,7 @@ export function CreateOrEdit({ history, match }) {
     } else {
       goToList()
     }
-  }, [goToDetails, goToList])
+  }, [configurationId, goToDetails, goToList])
 
   const notify = useNotification()
 
