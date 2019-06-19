@@ -34,7 +34,7 @@ const palette = {
       fontSize: 15,
     },
     tooltip: {
-      fill: '#434267',
+      fill: '#42405E',
       color: '#CFCFEA',
       fontFamily: 'Montserrat',
       fontSize: 15,
