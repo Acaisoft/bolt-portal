@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react'
 import moment from 'moment'
 
 import { useSubscription } from 'react-apollo-hooks'
-import { Grid, Paper, Box } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 import {
   SectionHeader,
   Button,
@@ -32,7 +32,7 @@ function Monitoring({ match, history, location }) {
   )
 
   const chartsWithData = useMemo(() => {
-    if (!execution) {
+    if (!execution || execution.execution_metrics_data.length === 0) {
       return []
     }
 
@@ -51,24 +51,6 @@ function Monitoring({ match, history, location }) {
     })
   }, [match.params])
 
-  if (loading || error || !execution || !chartsWithData) {
-    return (
-      <Box p={3}>
-        {loading ? (
-          <LoadingPlaceholder title="Loading monitoring results..." />
-        ) : error ? (
-          <ErrorPlaceholder error={error} />
-        ) : !execution ? (
-          <NotFoundPlaceholder title="Test run not found" />
-        ) : (
-          <LoadingPlaceholder title="Waiting for results..." />
-        )}
-      </Box>
-    )
-  }
-
-  const { configuration } = execution
-
   return (
     <div>
       <SectionHeader
@@ -81,26 +63,40 @@ function Monitoring({ match, history, location }) {
         }`}
         marginBottom
       >
-        {configuration.has_load_tests && (
+        {execution && execution.configuration.has_load_tests && (
           <Button href={getTestDetailsUrl()}>Test details</Button>
         )}
       </SectionHeader>
 
-      <Grid container spacing={2}>
-        {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
-          return (
-            <Grid item xs={12} md={6} key={`chart-${index}`}>
-              <Paper square className={classes.tile}>
-                <MonitoringLineChart
-                  data={data}
-                  config={chartConfig}
-                  groupNames={groupNames}
-                />
-              </Paper>
-            </Grid>
-          )
-        })}
-      </Grid>
+      {loading || error || !execution || chartsWithData.length === 0 ? (
+        <div>
+          {loading ? (
+            <LoadingPlaceholder title="Loading monitoring results..." />
+          ) : error ? (
+            <ErrorPlaceholder error={error} />
+          ) : !execution ? (
+            <NotFoundPlaceholder title="Test run not found" />
+          ) : (
+            <LoadingPlaceholder title="Waiting for results..." />
+          )}
+        </div>
+      ) : (
+        <Grid container spacing={2}>
+          {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
+            return (
+              <Grid item xs={12} md={6} key={`chart-${index}`}>
+                <Paper square className={classes.tile}>
+                  <MonitoringLineChart
+                    data={data}
+                    config={chartConfig}
+                    groupNames={groupNames}
+                  />
+                </Paper>
+              </Grid>
+            )
+          })}
+        </Grid>
+      )}
     </div>
   )
 }
