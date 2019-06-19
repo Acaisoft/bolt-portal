@@ -91,12 +91,12 @@ const palette = {
   divider: '#343252',
   text: {
     primary: '#FFFFFF',
-    secondary: '#BFBFE8',
+    secondary: '#CFCFEA',
     error: '#FF748D',
     success: '#1EB1B1',
     warning: '#EB8967',
     icon: '#A7A7C5',
-    hint: '#BFBFE8',
+    hint: '#CFCFEA',
     caret: '#A192FF',
   },
   dropdown: {
