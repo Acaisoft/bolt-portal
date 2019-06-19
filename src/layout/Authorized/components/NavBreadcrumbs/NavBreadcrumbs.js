@@ -113,7 +113,7 @@ function Selector({ options, value, generateUrl, ...fieldProps }) {
         autoWidth: true,
         disableUnderline: true,
         SelectDisplayProps: {
-          style: { minWidth: 80 },
+          style: { width: 200, paddingRight: 40 },
         },
         IconComponent: ExpandMore,
       }}

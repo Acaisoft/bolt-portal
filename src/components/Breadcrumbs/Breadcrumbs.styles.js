@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 
-export default makeStyles(theme => ({
+export default makeStyles(({ palette, spacing }) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -12,6 +12,8 @@ export default makeStyles(theme => ({
     fontWeight: 'bold',
   },
   separator: {
-    color: '#F76F40',
+    color: palette.primary.dark,
+    fontSize: '1.4rem',
+    margin: spacing(0, 1.5),
   },
 }))

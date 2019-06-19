@@ -2,11 +2,9 @@ import { ExpandMore } from '@material-ui/icons'
 
 const palette = {
   type: 'dark',
-  actions: {
-    hover: '#F76F40',
-  },
   action: {
     selected: '#816DFE',
+    hover: '#F76F40',
   },
   background: {
     default: '#24223B',
@@ -192,7 +190,15 @@ export default {
         minWidth: 40,
       },
     },
+    MuiListItemText: {
+      primary: {
+        fontSize: 15,
+      },
+    },
     MuiFilledInput: {
+      root: {
+        backgroundColor: palette.background.paper,
+      },
       underline: {
         '&:after': {
           borderBottomColor: '#A192FF',
@@ -211,7 +217,10 @@ export default {
         paddingRight: 32,
       },
       icon: {
+        top: 'calc(50% - 10px)',
         right: 5,
+        color: palette.text.icon,
+        fontSize: '1.4rem',
       },
       selectMenu: {
         fontSize: palette.dropdown.fontSize,

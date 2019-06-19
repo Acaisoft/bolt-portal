@@ -35,9 +35,7 @@ export function Breadcrumbs({ items = [] }) {
             </div>
           )}
           {index < items.length - 1 && (
-            <div data-testid="separator" className={classes.separator}>
-              <ChevronRight />
-            </div>
+            <ChevronRight className={classes.separator} data-testid="separator" />
           )}
         </React.Fragment>
       ))}

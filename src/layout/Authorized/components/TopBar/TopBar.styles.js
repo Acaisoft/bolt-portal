@@ -17,10 +17,10 @@ export default makeStyles(
       flexGrow: 1,
     },
     menuButton: {
-      marginLeft: spacing(-2),
+      marginLeft: -6,
       marginRight: spacing(3),
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
       borderRadius: 7,
     },
     title: {
