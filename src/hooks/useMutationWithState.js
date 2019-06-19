@@ -1,9 +1,14 @@
 import { useState, useCallback } from 'react'
 import { useMutation } from 'react-apollo-hooks'
+import {
+  parseGraphqlResponseError,
+  parseGraphqlException,
+} from '~utils/errorHandling'
 
 function useMutationWithState(mutationDoc, options) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [data, setData] = useState(null)
 
   const rawMutation = useMutation(mutationDoc, options)
 
@@ -16,15 +21,11 @@ function useMutationWithState(mutationDoc, options) {
       let response
       try {
         response = await rawMutation(mutationCallOptions)
-        if (Array.isArray(response.errors) && response.errors.length > 0) {
-          errorMessage = response.errors[0].message
-        }
+        errorMessage = parseGraphqlResponseError(response)
       } catch (ex) {
-        errorMessage =
-          Array.isArray(ex.graphQLErrors) && ex.graphQLErrors.length > 0
-            ? ex.graphQLErrors[0].message
-            : ex.message
+        errorMessage = parseGraphqlException(ex)
       }
+      setData((response && response.data) || null)
       setError(errorMessage)
       setLoading(false)
 
@@ -33,7 +34,7 @@ function useMutationWithState(mutationDoc, options) {
     [rawMutation]
   )
 
-  return { loading, mutation, error }
+  return { loading, mutation, error, data }
 }
 
 export default useMutationWithState
