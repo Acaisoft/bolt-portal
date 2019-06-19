@@ -27,6 +27,10 @@ function PopoverMenu({
   })
 
   const menuItems = React.Children.map(children, child => {
+    if (!child) {
+      return null
+    }
+
     const childOnClick =
       typeof child.props.onClick === 'function' ? child.props.onClick : noop
 

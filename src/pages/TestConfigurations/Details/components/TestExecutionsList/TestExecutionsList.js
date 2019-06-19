@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import _ from 'lodash'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
-import { Box } from '@material-ui/core'
+import {
+  Box,
+  IconButton,
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+} from '@material-ui/core'
 import {
   DataTable,
   SectionHeader,
@@ -12,21 +19,28 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   TestRunStatus,
+  PopoverMenu,
 } from '~components'
 import { Pagination } from '~containers'
-import { useListFilters } from '~hooks'
+import { useListFilters, useMutationWithState } from '~hooks'
 import { formatThousands, formatPercent } from '~utils/numbers'
+import { TestRunStatus as TestRunStatusEnum } from '~config/constants'
 
 import {
   GET_TEST_EXECUTIONS_AGGREGATE,
   SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
+  TERMINATE_EXECUTION,
 } from './graphql'
 import useStyles from './TestExecutionsList.styles'
+import { MoreVert } from '@material-ui/icons'
+import { Terminate, Debug } from '~assets/icons'
 
 function TestExecutionsList({
   configuration: { id: configurationId, has_monitoring, has_load_tests },
   getMonitoringDetailsUrl,
   getTestDetailsUrl,
+  getDebugUrl,
+  onTerminate,
   hasMonitoring,
 }) {
   const classes = useStyles()
@@ -55,6 +69,8 @@ function TestExecutionsList({
       },
     }
   )
+
+  const handleExecutionTerminate = useExecutionTerminate({ onTerminate })
 
   if (loading || error) {
     return (
@@ -164,9 +180,11 @@ function TestExecutionsList({
           title="Total"
         />
         <DataTable.Column
-          key="actions"
+          key="results"
+          title="Results"
+          width={150}
           render={execution => (
-            <React.Fragment>
+            <NoWrap>
               {has_load_tests && (
                 <Button
                   href={getTestDetailsUrl(execution)}
@@ -185,7 +203,47 @@ function TestExecutionsList({
                   Monitoring
                 </Button>
               )}
-            </React.Fragment>
+            </NoWrap>
+          )}
+        />
+        <DataTable.Column
+          key="actions"
+          width={40}
+          render={execution => (
+            <PopoverMenu
+              id={execution.id}
+              closeOnClick
+              trigger={
+                <IconButton>
+                  <MoreVert />
+                </IconButton>
+              }
+            >
+              {execution && execution.argo_name && (
+                <MenuItem
+                  component="a"
+                  href={getDebugUrl(execution)}
+                  title="View test run in Argo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ListItemIcon>
+                    <Debug />
+                  </ListItemIcon>
+                  <ListItemText>Debug</ListItemText>
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={() => handleExecutionTerminate(execution)}
+                title="Terminate the test run"
+                disabled={execution.status === TestRunStatusEnum.FINISHED}
+              >
+                <ListItemIcon>
+                  <Terminate />
+                </ListItemIcon>
+                <ListItemText>Terminate</ListItemText>
+              </MenuItem>
+            </PopoverMenu>
           )}
         />
       </DataTable>
@@ -197,6 +255,29 @@ TestExecutionsList.propTypes = {
   getMonitoringDetailsUrl: PropTypes.func.isRequired,
   getTestDetailsUrl: PropTypes.func.isRequired,
   hasMonitoring: PropTypes.bool,
+}
+
+function useExecutionTerminate({ onTerminate }) {
+  const { error, data, mutation: terminate } = useMutationWithState(
+    TERMINATE_EXECUTION
+  )
+
+  const handleExecutionTerminate = useCallback(
+    execution =>
+      execution && terminate({ variables: { argoName: execution.argo_name } }),
+    [terminate]
+  )
+
+  useEffect(() => {
+    if (error || data) {
+      onTerminate({
+        error: error ? error : _.get(data, 'testrun_terminate.message'),
+        ok: _.get(data, 'testrun_terminate.ok', false),
+      })
+    }
+  }, [error, data, onTerminate])
+
+  return handleExecutionTerminate
 }
 
 export default TestExecutionsList

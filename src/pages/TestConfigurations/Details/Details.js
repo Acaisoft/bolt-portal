@@ -20,8 +20,13 @@ function Details({ history, match }) {
   const { configurationId } = match.params
   const classes = useStyles()
 
-  const { getMonitoringDetailsUrl, getTestDetailsUrl } = useUrlGetters(match.params)
-  const { handleEdit, handleDelete, handleRun } = useHandlers(history, match.params)
+  const { getMonitoringDetailsUrl, getTestDetailsUrl, getDebugUrl } = useUrlGetters(
+    match.params
+  )
+  const { handleEdit, handleDelete, handleRun, handleTerminate } = useHandlers(
+    history,
+    match.params
+  )
 
   const {
     loading,
@@ -59,6 +64,8 @@ function Details({ history, match }) {
           configuration={configuration}
           getTestDetailsUrl={getTestDetailsUrl}
           getMonitoringDetailsUrl={getMonitoringDetailsUrl}
+          getDebugUrl={getDebugUrl}
+          onTerminate={handleTerminate}
           hasMonitoring={configuration.has_monitoring}
         />
       </div>
@@ -95,10 +102,16 @@ function useUrlGetters(params) {
     },
     [params]
   )
+  const getDebugUrl = useCallback(execution => {
+    return getUrl(routes.argo.workflows.details, {
+      argo_name: execution.argo_name,
+    })
+  }, [])
 
   return {
     getTestDetailsUrl,
     getMonitoringDetailsUrl,
+    getDebugUrl,
   }
 }
 
@@ -132,7 +145,18 @@ function useHandlers(history, params) {
     [notify]
   )
 
-  return { handleEdit, handleDelete, handleRun }
+  const handleTerminate = useCallback(
+    ({ error, ok }) => {
+      if (!ok) {
+        notify.error(`Could not terminate: ${error}`)
+      } else {
+        notify.success(`Test run has been terminated.`)
+      }
+    },
+    [notify]
+  )
+
+  return { handleEdit, handleDelete, handleRun, handleTerminate }
 }
 
 export default Details

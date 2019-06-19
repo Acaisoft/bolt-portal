@@ -1,4 +1,9 @@
 const routes = {
+  argo: {
+    workflows: {
+      details: 'https://argo.dev.bolt.acaisoft.io/workflows/argo/:argo_name',
+    },
+  },
   projects: {
     list: '/projects',
     details: '/projects/:projectId',

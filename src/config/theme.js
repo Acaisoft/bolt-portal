@@ -187,6 +187,11 @@ export default {
         caretColor: palette.text.caret,
       },
     },
+    MuiListItemIcon: {
+      root: {
+        minWidth: 40,
+      },
+    },
     MuiFilledInput: {
       underline: {
         '&:after': {

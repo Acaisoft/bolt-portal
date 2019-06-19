@@ -6,6 +6,7 @@ export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
     start
     start_locust
     status
+    argo_name
 
     executionTotals: execution_request_totals_aggregate {
       aggregate {
@@ -58,4 +59,13 @@ export const SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS = gql`
   }
 
   ${TEST_EXECUTION_ITEM_FRAGMENT}
+`
+
+export const TERMINATE_EXECUTION = gql`
+  mutation terminateExecution($argoName: String!) {
+    testrun_terminate(argo_name: $argoName) {
+      ok
+      message
+    }
+  }
 `
