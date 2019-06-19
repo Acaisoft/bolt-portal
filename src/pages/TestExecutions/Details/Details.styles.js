@@ -19,5 +19,8 @@ export default makeStyles(({ mixins, spacing }) => {
     chartContainer: {
       marginBottom: spacing(-4),
     },
+    configDetails: {
+      marginBottom: spacing(2),
+    },
   }
 })

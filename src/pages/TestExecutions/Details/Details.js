@@ -10,6 +10,7 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   NotFoundPlaceholder,
+  ExpandablePanel,
 } from '~components'
 
 import { getUrl } from '~utils/router'
@@ -20,8 +21,11 @@ import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 
 import useStyles from './Details.styles'
 
+import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
+
 export function Details({ history, match }) {
   const { executionId } = match.params
+  const { configurationId } = match.params
 
   const classes = useStyles()
 
@@ -69,13 +73,16 @@ export function Details({ history, match }) {
         title={moment(execution.start_locust || execution.start).format(
           'YYYY-MM-DD HH:mm:ss'
         )}
-        marginBottom
       >
         {execution.configuration.has_monitoring && (
           <Button href={getMonitoringUrl()}>Monitoring</Button>
         )}
       </SectionHeader>
-
+      <div className={classes.configDetails}>
+        <ExpandablePanel defaultExpanded={false} title="Scenario Details">
+          <TestConfigurationDetails configurationId={configurationId} />
+        </ExpandablePanel>
+      </div>
       <Grid container spacing={2}>
         <ResultsPerTick classes={classes} execution={execution} />
         <ResultsPerEndpoint
