@@ -44,7 +44,7 @@ export function SectionPlaceholder({
         </div>
 
         {description && (
-          <Typography className={classes.description} variant="body2">
+          <Typography className={classes.description} variant="body2" align="center">
             {description}
           </Typography>
         )}
