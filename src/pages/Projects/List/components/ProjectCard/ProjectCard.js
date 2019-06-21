@@ -33,7 +33,7 @@ function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
     <React.Fragment>
       <CardHeader
         className={classes.header}
-        avatar={<SuccessRatePieChart value={progress} size={65} showLabel={true} />}
+        // avatar={<SuccessRatePieChart value={progress} size={65} showLabel={true} />}
         action={
           <PopoverMenu
             id={`project-${project.id}`}
