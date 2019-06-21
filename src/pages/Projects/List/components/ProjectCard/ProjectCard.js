@@ -10,22 +10,29 @@ import {
   CardActions,
   MenuItem,
 } from '@material-ui/core'
-import { Button, SuccessRatePieChart, PopoverMenu } from '~components'
+import {
+  Button,
+  //  SuccessRatePieChart,
+  PopoverMenu,
+} from '~components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import useStyles from './ProjectCard.styles'
+import { useTheme } from '@material-ui/styles'
 
 function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
+  const theme = useTheme()
+
   const {
-    num_tests_passed = 0,
-    num_tests_failed = 0,
+    // num_tests_passed = 0,
+    // num_tests_failed = 0,
     num_scenarios = 0,
     num_sources = 0,
   } = project
-  const tests_overall = num_tests_failed + num_tests_passed
-  const progress =
-    tests_overall === 0 ? tests_overall : (num_tests_passed / tests_overall) * 100
+  // const tests_overall = num_tests_failed + num_tests_passed
+  // const progress =
+  //   tests_overall === 0 ? tests_overall : (num_tests_passed / tests_overall) * 100
 
   const classes = useStyles()
 
@@ -51,7 +58,7 @@ function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
         titleTypographyProps={{
           component: 'p',
           paragraph: true,
-          style: { fontWeight: 'bold' },
+          style: { fontWeight: 'bold', fontSize: theme.typography.body1.fontSize },
         }}
         subheader={
           <div className={classes.chips}>
