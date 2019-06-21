@@ -7,7 +7,7 @@ export default makeStyles(({ palette, spacing }) => ({
     color: palette.chart.tooltip.color,
     fontFamily: palette.chart.tooltip.fontFamily,
     fontSize: palette.chart.tooltip.fontSize,
-    backgroundColor: palette.chart.tooltip.fill,
+    backgroundColor: [palette.chart.tooltip.fill, '!important'],
   },
   label: {},
   list: {
