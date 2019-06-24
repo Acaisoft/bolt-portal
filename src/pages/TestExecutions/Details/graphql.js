@@ -20,6 +20,8 @@ export const SUBSCRIBE_TO_EXECUTION = gql`
       start
       start_locust
       end_locust
+      argo_name
+      status
       configuration {
         id
         name

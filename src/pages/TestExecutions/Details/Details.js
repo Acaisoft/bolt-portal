@@ -12,16 +12,16 @@ import {
   NotFoundPlaceholder,
   ExpandablePanel,
 } from '~components'
+import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
 
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
+import { ExecutionActionsMenu } from '../components'
 import { ResultsPerEndpoint, ResultsPerTick } from './components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 
 import useStyles from './Details.styles'
-
-import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
 
 export function Details({ history, match }) {
   const { executionId } = match.params
@@ -37,21 +37,7 @@ export function Details({ history, match }) {
     }
   )
 
-  const getEndpointDetailsUrl = useCallback(
-    endpoint => {
-      return getUrl(routes.projects.configurations.executions.endpoints.details, {
-        ...match.params,
-        endpointId: endpoint.identifier,
-      })
-    },
-    [match.params]
-  )
-
-  const getMonitoringUrl = useCallback(() => {
-    return getUrl(routes.projects.configurations.executions.monitoring, {
-      ...match.params,
-    })
-  }, [match.params])
+  const { getEndpointDetailsUrl, getMonitoringUrl } = useUrlGetters(match.params)
 
   if (loading || error || !execution) {
     return (
@@ -77,6 +63,7 @@ export function Details({ history, match }) {
         {execution.configuration.has_monitoring && (
           <Button href={getMonitoringUrl()}>Monitoring</Button>
         )}
+        <ExecutionActionsMenu execution={execution} />
       </SectionHeader>
       <div className={classes.configDetails}>
         <ExpandablePanel defaultExpanded={false} title="Scenario Details">
@@ -101,6 +88,29 @@ Details.propTypes = {
       executionId: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+}
+
+function useUrlGetters(matchParams) {
+  const getEndpointDetailsUrl = useCallback(
+    endpoint => {
+      return getUrl(routes.projects.configurations.executions.endpoints.details, {
+        ...matchParams,
+        endpointId: endpoint.identifier,
+      })
+    },
+    [matchParams]
+  )
+
+  const getMonitoringUrl = useCallback(() => {
+    return getUrl(routes.projects.configurations.executions.monitoring, {
+      ...matchParams,
+    })
+  }, [matchParams])
+
+  return {
+    getEndpointDetailsUrl,
+    getMonitoringUrl,
+  }
 }
 
 export default Details

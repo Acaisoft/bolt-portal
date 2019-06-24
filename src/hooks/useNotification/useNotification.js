@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { makeStyles } from '@material-ui/styles'
 import { ToastSuccess, ToastError, ToastInfo } from '~assets/icons'
@@ -22,12 +22,22 @@ const variants = {
   },
 }
 
+// @TODO: Possible optimization:
+//        Rewrite as a context + useNotification hook which gets API from the context
 function useNotification() {
-  return {
-    success: useVariant(variants.success),
-    info: useVariant(variants.info),
-    error: useVariant(variants.error),
-  }
+  const success = useVariant(variants.success)
+  const info = useVariant(variants.info)
+  const error = useVariant(variants.error)
+
+  // Preserve object identity between calls.
+  return useMemo(
+    () => ({
+      success,
+      info,
+      error,
+    }),
+    [success, info, error]
+  )
 }
 
 const useStyle = makeStyles(({ palette }) => {

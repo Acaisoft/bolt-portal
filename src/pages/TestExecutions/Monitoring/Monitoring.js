@@ -14,6 +14,7 @@ import {
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
+import { ExecutionActionsMenu } from '../components'
 import { MonitoringLineChart, MonitoringHeatmapChart } from './components'
 import { getDataForChart } from './module.js'
 import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
@@ -66,6 +67,7 @@ function Monitoring({ match, history, location }) {
         {execution && execution.configuration.has_load_tests && (
           <Button href={getTestDetailsUrl()}>Test details</Button>
         )}
+        {execution && <ExecutionActionsMenu execution={execution} />}
       </SectionHeader>
 
       {loading || error || !execution || chartsWithData.length === 0 ? (

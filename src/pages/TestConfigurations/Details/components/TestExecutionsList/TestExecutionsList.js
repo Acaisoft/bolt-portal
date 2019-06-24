@@ -1,16 +1,9 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import _ from 'lodash'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
-import {
-  Box,
-  IconButton,
-  MenuItem,
-  ListItemText,
-  ListItemIcon,
-} from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import {
   DataTable,
   SectionHeader,
@@ -19,21 +12,18 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   TestRunStatus,
-  PopoverMenu,
 } from '~components'
 import { Pagination } from '~containers'
-import { useListFilters, useMutationWithState } from '~hooks'
+import { useListFilters } from '~hooks'
+import { ExecutionActionsMenu } from '~pages/TestExecutions/components'
+
 import { formatThousands, formatPercent } from '~utils/numbers'
-import { TestRunStatus as TestRunStatusEnum } from '~config/constants'
 
 import {
   GET_TEST_EXECUTIONS_AGGREGATE,
   SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
-  TERMINATE_EXECUTION,
 } from './graphql'
 import useStyles from './TestExecutionsList.styles'
-import { MoreVert } from '@material-ui/icons'
-import { Terminate, Debug } from '~assets/icons'
 
 function TestExecutionsList({
   configuration: { id: configurationId, has_monitoring, has_load_tests },
@@ -69,8 +59,6 @@ function TestExecutionsList({
       },
     }
   )
-
-  const handleExecutionTerminate = useExecutionTerminate({ onTerminate })
 
   if (loading || error) {
     return (
@@ -209,42 +197,7 @@ function TestExecutionsList({
         <DataTable.Column
           key="actions"
           width={40}
-          render={execution => (
-            <PopoverMenu
-              id={execution.id}
-              closeOnClick
-              trigger={
-                <IconButton>
-                  <MoreVert />
-                </IconButton>
-              }
-            >
-              {execution && execution.argo_name && (
-                <MenuItem
-                  component="a"
-                  href={getDebugUrl(execution)}
-                  title="View test run in Argo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ListItemIcon>
-                    <Debug />
-                  </ListItemIcon>
-                  <ListItemText>Debug</ListItemText>
-                </MenuItem>
-              )}
-              <MenuItem
-                onClick={() => handleExecutionTerminate(execution)}
-                title="Terminate the test run"
-                disabled={execution.status === TestRunStatusEnum.FINISHED}
-              >
-                <ListItemIcon>
-                  <Terminate />
-                </ListItemIcon>
-                <ListItemText>Terminate</ListItemText>
-              </MenuItem>
-            </PopoverMenu>
-          )}
+          render={execution => <ExecutionActionsMenu execution={execution} />}
         />
       </DataTable>
     </div>
@@ -255,29 +208,6 @@ TestExecutionsList.propTypes = {
   getMonitoringDetailsUrl: PropTypes.func.isRequired,
   getTestDetailsUrl: PropTypes.func.isRequired,
   hasMonitoring: PropTypes.bool,
-}
-
-function useExecutionTerminate({ onTerminate }) {
-  const { error, data, mutation: terminate } = useMutationWithState(
-    TERMINATE_EXECUTION
-  )
-
-  const handleExecutionTerminate = useCallback(
-    execution =>
-      execution && terminate({ variables: { argoName: execution.argo_name } }),
-    [terminate]
-  )
-
-  useEffect(() => {
-    if (error || data) {
-      onTerminate({
-        error: error ? error : _.get(data, 'testrun_terminate.message'),
-        ok: _.get(data, 'testrun_terminate.ok', false),
-      })
-    }
-  }, [error, data, onTerminate])
-
-  return handleExecutionTerminate
 }
 
 export default TestExecutionsList
