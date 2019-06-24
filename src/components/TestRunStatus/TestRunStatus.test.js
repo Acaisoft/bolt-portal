@@ -15,6 +15,7 @@ describe('component: TestRunStatus', () => {
     describe('render everything properly', () => {
       test.each([
         [Status.FINISHED, configurations.FINISHED.title],
+        [Status.TERMINATED, configurations.TERMINATED.title],
         [Status.RUNNING, configurations.RUNNING.title],
         [Status.PENDING, configurations.PENDING.title],
         [Status.ERROR, configurations.ERROR.title],

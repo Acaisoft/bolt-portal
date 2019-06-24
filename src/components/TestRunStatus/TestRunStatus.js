@@ -5,7 +5,7 @@ import { Typography, CircularProgress } from '@material-ui/core'
 import { Close, Done, ArrowRightAlt, ErrorOutline } from '@material-ui/icons'
 
 import { TestRunStatus as Status } from '~config/constants'
-import { Monitor } from '~assets/icons'
+import { Monitor, Terminate } from '~assets/icons'
 
 import useStyles from './TestRunStatus.style'
 
@@ -24,6 +24,11 @@ export const configurations = {
     icon: props => <Done {...props} />,
     name: Status.FINISHED,
     title: 'Finished',
+  },
+  [Status.TERMINATED]: {
+    icon: props => <Terminate {...props} />,
+    name: Status.TERMINATED,
+    title: 'Terminated',
   },
   [Status.ERROR]: {
     icon: props => <Close {...props} />,
