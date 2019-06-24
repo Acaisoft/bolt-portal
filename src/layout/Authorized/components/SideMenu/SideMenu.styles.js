@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core'
 
 export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => ({
   root: {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     bottom: 0,
