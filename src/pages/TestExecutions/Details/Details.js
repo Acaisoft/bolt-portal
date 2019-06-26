@@ -70,7 +70,11 @@ export function Details({ history, match }) {
         </ExpandablePanel>
       </div>
       <Grid container spacing={2}>
-        <StatusGraph executionId={executionId} configurationId={configurationId} />
+        <StatusGraph
+          executionStatus={execution.status}
+          executionId={executionId}
+          configurationId={configurationId}
+        />
         <ResultsPerTick classes={classes} execution={execution} />
         <ResultsPerEndpoint
           classes={classes}

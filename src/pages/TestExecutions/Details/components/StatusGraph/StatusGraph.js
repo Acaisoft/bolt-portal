@@ -21,7 +21,24 @@ import Step from './Step'
 import useStyles from './StatusGraph.styles'
 import { useSubscription, useQuery } from 'react-apollo-hooks'
 
-export function StatusGraph({ executionId, configurationId }) {
+function calculateNumberOfColumns(config) {
+  let numberOfColumns = 2
+
+  Object.keys(config).forEach(step => {
+    if (config[step] && step !== 'has_pre_test') {
+      numberOfColumns++
+    }
+  })
+
+  numberOfColumns =
+    config.has_load_tests & config.has_monitoring
+      ? numberOfColumns - 1
+      : numberOfColumns
+
+  return numberOfColumns
+}
+
+export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const classes = useStyles()
   const theme = useTheme()
 
@@ -39,8 +56,6 @@ export function StatusGraph({ executionId, configurationId }) {
     fetchPolicy: 'cache-first',
   })
 
-  const { id, __typename, ...config } = configuration
-
   const { data: { execution_stage_log } = {} } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_STATUS,
     {
@@ -48,6 +63,9 @@ export function StatusGraph({ executionId, configurationId }) {
       fetchPolicy: 'cache-and-network',
     }
   )
+  const { id, __typename, ...config } = configuration
+
+  const numberOfColumns = calculateNumberOfColumns(config)
 
   const [preparationEl, preparationRef] = useCallbackRef()
   const [monitoringEl, monitoringRef] = useCallbackRef()
@@ -59,7 +77,7 @@ export function StatusGraph({ executionId, configurationId }) {
 
   let isFinished = false
 
-  if (execution_stage_log) {
+  if (execution_stage_log && executionStatus !== 'TERMINATED') {
     stagesData.preparation = execution_stage_log.find(
       data => data.stage === Stages.PREPARATION
     )
@@ -85,16 +103,19 @@ export function StatusGraph({ executionId, configurationId }) {
           value.msg !== TestRunStageStatus.PENDING
       )
     }
+
+    if (!config.has_pre_start) {
+      if (executionStatus === TestRunStageStatus.PENDING && !stagesData.load) {
+        stagesData.preparation = {
+          msg: TestRunStageStatus.RUNNING,
+        }
+      } else if (stagesData.load) {
+        stagesData.preparation = {
+          msg: TestRunStageStatus.SUCCEEDED,
+        }
+      }
+    }
   }
-
-  const currentStages = Object.keys(config).filter(step => config[step])
-
-  let numberOfColumns = currentStages.length + 1
-
-  numberOfColumns =
-    config.has_load_tests & config.has_monitoring
-      ? numberOfColumns - 1
-      : numberOfColumns
 
   const options = useMemo(() => {
     const { line } = theme.palette.chart.graph
@@ -134,8 +155,6 @@ export function StatusGraph({ executionId, configurationId }) {
   }, [theme])
 
   let lines = []
-
-  //TODO please create function for that
 
   lines = [
     {
@@ -217,93 +236,6 @@ export function StatusGraph({ executionId, configurationId }) {
     ]
   }
 
-  if (!config.has_pre_test) {
-    lines = [
-      {
-        id: 1,
-        from: monitoringEl,
-        to: cleanupEl,
-        options: stagesData.monitoring
-          ? options[stagesData.monitoring.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 2,
-        from: loadTestsEl,
-        to: cleanupEl,
-        options: stagesData.load
-          ? options[stagesData.load.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 3,
-        from: cleanupEl,
-        to: finishEl,
-        options: stagesData.cleanup
-          ? options[stagesData.cleanup.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-    ]
-  }
-
-  if (!config.has_pre_test && !config.has_post_test) {
-    lines = [
-      {
-        id: 1,
-        from: monitoringEl,
-        to: finishEl,
-        options: stagesData.monitoring
-          ? options[stagesData.monitoring.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 2,
-        from: loadTestsEl,
-        to: finishEl,
-        options: stagesData.load
-          ? options[stagesData.load.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-    ]
-  }
-
-  if (!config.has_monitoring || !config.has_load_tests) {
-    lines = [
-      {
-        id: 1,
-        from: preparationEl,
-        to: monitoringEl,
-        options: stagesData.preparation
-          ? options[stagesData.preparation.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 2,
-        from: preparationEl,
-        to: loadTestsEl,
-        options: stagesData.preparation
-          ? options[stagesData.preparation.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 3,
-        from: monitoringEl,
-        to: finishEl,
-        options: stagesData.monitoring
-          ? options[stagesData.monitoring.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 4,
-        from: loadTestsEl,
-        to: finishEl,
-        options: stagesData.load
-          ? options[stagesData.load.msg]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-    ]
-  }
-
   return (
     <React.Fragment>
       {lines &&
@@ -319,25 +251,23 @@ export function StatusGraph({ executionId, configurationId }) {
       <Grid item xs={12}>
         <Paper square>
           <Grid container>
-            {Boolean(config.has_pre_test) && (
-              <Grid
-                container
-                item
-                xs={12 / numberOfColumns}
-                justify="center"
-                alignItems="center"
-                className={classes.section}
-              >
-                <Grid item>
-                  <Step
-                    icon={PreparationIcon}
-                    stepName="Test Preparation"
-                    ref={preparationRef}
-                    stepData={stagesData.preparation}
-                  />
-                </Grid>
+            <Grid
+              container
+              item
+              xs={12 / numberOfColumns}
+              justify="center"
+              alignItems="center"
+              className={classes.section}
+            >
+              <Grid item>
+                <Step
+                  icon={PreparationIcon}
+                  stepName="Test Preparation"
+                  ref={preparationRef}
+                  stepData={stagesData.preparation}
+                />
               </Grid>
-            )}
+            </Grid>
 
             {(Boolean(config.has_monitoring) || Boolean(config.has_load_tests)) && (
               <Grid
