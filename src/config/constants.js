@@ -15,4 +15,14 @@ export const TestRunStatus = {
   ERROR: 'ERROR',
   MONITORING: 'MONITORING',
   UNKNOWN: 'UNKNOWN',
+  FAILED: 'FAILED',
+}
+
+export const TestRunStageStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  ERROR: 'ERROR',
+  FAILED: 'FAILED',
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  SUCCEEDED: 'SUCCEEDED',
 }

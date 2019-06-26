@@ -32,3 +32,29 @@ export const SUBSCRIBE_TO_EXECUTION = gql`
 
   ${EXECUTION_TIME_PARAMETER_FRAGMENT}
 `
+
+export const SUBSCRIBE_TO_EXECUTION_STATUS = gql`
+  subscription subscribeToExecutionStatus($executionId: uuid!) {
+    execution_stage_log(
+      where: { execution_id: { _eq: $executionId } }
+      order_by: { timestamp: desc }
+    ) {
+      msg
+      level
+      stage
+      timestamp
+    }
+  }
+`
+
+export const GET_GRAPH_CONFIGURATION = gql`
+  query getTestConfiguration($configurationId: uuid!) {
+    configuration: configuration_by_pk(id: $configurationId) {
+      id
+      has_monitoring
+      has_post_test
+      has_pre_test
+      has_load_tests
+    }
+  }
+`

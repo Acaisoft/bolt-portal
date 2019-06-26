@@ -35,6 +35,11 @@ export const configurations = {
     name: Status.ERROR,
     title: 'Error',
   },
+  [Status.FAILED]: {
+    icon: props => <Close {...props} />,
+    name: Status.FAILED,
+    title: 'Failed',
+  },
   [Status.MONITORING]: {
     icon: props => <Monitor {...props} />,
     name: Status.MONITORING,

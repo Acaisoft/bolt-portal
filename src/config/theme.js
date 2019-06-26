@@ -60,6 +60,14 @@ const palette = {
         },
       },
     },
+    graph: {
+      line: {
+        default: '#4E4D6E',
+        pending: '#4E4D6E',
+        completed: '#1EB1B1',
+        failed: '#FF5EA1',
+      },
+    },
   },
   primary: {
     light: '#302F4C',

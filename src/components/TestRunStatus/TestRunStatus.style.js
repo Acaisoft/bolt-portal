@@ -19,6 +19,9 @@ export default makeStyles(({ palette, spacing }) => ({
   [Status.ERROR]: {
     background: palette.error.main,
   },
+  [Status.FAILED]: {
+    background: palette.error.main,
+  },
   [Status.PENDING]: {
     background: palette.info.main,
   },

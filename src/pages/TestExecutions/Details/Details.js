@@ -17,10 +17,9 @@ import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/comp
 import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 
+import { ResultsPerEndpoint, ResultsPerTick, StatusGraph } from './components'
 import { ExecutionActionsMenu } from '../components'
-import { ResultsPerEndpoint, ResultsPerTick } from './components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
-
 import useStyles from './Details.styles'
 
 export function Details({ history, match }) {
@@ -71,6 +70,7 @@ export function Details({ history, match }) {
         </ExpandablePanel>
       </div>
       <Grid container spacing={2}>
+        <StatusGraph executionId={executionId} configurationId={configurationId} />
         <ResultsPerTick classes={classes} execution={execution} />
         <ResultsPerEndpoint
           classes={classes}
