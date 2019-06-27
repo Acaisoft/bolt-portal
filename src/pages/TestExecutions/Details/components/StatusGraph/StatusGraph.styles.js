@@ -17,26 +17,27 @@ export default makeStyles(({ palette, spacing }) => ({
   },
   paper: {
     background: '#4E4D6E',
-    padding: spacing(3),
+    padding: spacing(2),
   },
   step: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    padding: `${spacing(15)}px 0`,
-  },
-  section: {
-    // height: 700,
+    padding: `${spacing(8)}px 0`,
   },
   typography: {
     fontSize: 13,
+    display: 'flex',
+    alignItems: 'center',
   },
 
   stepTitle: {
     fontSize: palette.dropdown.fontSize,
     fontWeight: 'normal',
     padding: spacing(1),
+    display: 'flex',
+    alignItems: 'center',
   },
 
   statusIcon: {
@@ -55,6 +56,19 @@ export default makeStyles(({ palette, spacing }) => ({
   failed: {
     background: palette.error.main,
     border: `2px solid ${palette.error.main}`,
+  },
+
+  messageIcon: {
+    fontSize: '0.8rem',
+    fontWeight: 'bold',
+    marginRight: spacing(1),
+  },
+  successMessage: {
+    color: palette.success.main,
+  },
+
+  errorMessage: {
+    color: palette.error.main,
   },
 
   line: {

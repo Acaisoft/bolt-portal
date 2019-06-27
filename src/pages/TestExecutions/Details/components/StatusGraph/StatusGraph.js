@@ -22,6 +22,46 @@ import useStyles from './StatusGraph.styles'
 import { useSubscription, useQuery } from 'react-apollo-hooks'
 import { LoadingPlaceholder, ErrorPlaceholder } from '~components'
 
+const Stages = {
+  PRE_START: 'pre_start',
+  ARGO_PREPARATION: 'argo_preparation',
+  PREPARATION: 'argo_pre_start',
+  MONITORING: 'argo_monitoring',
+  LOAD_TESTS: 'argo_load_tests',
+  CLEAN_UP: 'argo_post_stop',
+}
+function getCurrentStatus(data) {
+  const stagesData = {
+    preparation: data.find(log => log.stage === Stages.PREPARATION),
+    monitoring: data.find(log => log.stage === Stages.MONITORING),
+    load: data.find(log => log.stage === Stages.LOAD_TESTS),
+    cleanup: data.find(log => log.stage === Stages.CLEAN_UP),
+  }
+
+  return stagesData
+}
+
+function getCurrentMessages(data, config) {
+  let stagesMessagesData = {
+    preparation: data.filter(log => log.stage === Stages.ARGO_PREPARATION),
+    monitoring: data.filter(log => log.stage === Stages.MONITORING),
+    load: data.filter(log => log.stage === Stages.LOAD_TESTS),
+    cleanup: data.filter(log => log.stage === Stages.CLEAN_UP),
+  }
+
+  if (config.has_pre_test && stagesMessagesData) {
+    const preStart = data.filter(log => log.stage === Stages.PRE_START)
+
+    stagesMessagesData.preparation = stagesMessagesData.preparation.concat(preStart)
+
+    stagesMessagesData.preparation.sort(function(a, b) {
+      return new Date(b.timestamp) - new Date(a.timestamp)
+    })
+  }
+
+  return stagesMessagesData
+}
+
 function calculateNumberOfColumns(config) {
   let numberOfColumns = 2
 
@@ -42,13 +82,6 @@ function calculateNumberOfColumns(config) {
 export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const classes = useStyles()
   const theme = useTheme()
-
-  const Stages = {
-    PREPARATION: 'argo_pre_start',
-    MONITORING: 'argo_monitoring',
-    LOAD_TESTS: 'argo_load_tests',
-    CLEAN_UP: 'argo_post_stop',
-  }
 
   const {
     data: { configuration },
@@ -74,23 +107,14 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const [cleanupEl, cleanupRef] = useCallbackRef()
   const [finishEl, finishRef] = useCallbackRef()
 
-  const stagesData = {}
+  let stagesData = {}
+  let stagesMessagesData = {}
 
   let isFinished = false
 
   if (execution_stage_log && executionStatus !== 'TERMINATED') {
-    stagesData.preparation = execution_stage_log.find(
-      data => data.stage === Stages.PREPARATION
-    )
-    stagesData.monitoring = execution_stage_log.find(
-      data => data.stage === Stages.MONITORING
-    )
-    stagesData.load = execution_stage_log.find(
-      data => data.stage === Stages.LOAD_TESTS
-    )
-    stagesData.cleanup = execution_stage_log.find(
-      data => data.stage === Stages.CLEAN_UP
-    )
+    stagesData = getCurrentStatus(execution_stage_log)
+    stagesMessagesData = getCurrentMessages(execution_stage_log, config)
 
     Object.keys(stagesData).forEach(
       key => stagesData[key] == null && delete stagesData[key]
@@ -282,6 +306,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                   stepName="Test Preparation"
                   ref={preparationRef}
                   stepData={stagesData.preparation}
+                  stepMessages={stagesMessagesData.preparation}
                 />
               </Grid>
             </Grid>
@@ -302,6 +327,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                       stepName="Run Monitoring"
                       ref={monitoringRef}
                       stepData={stagesData.monitoring}
+                      stepMessages={stagesMessagesData.monitoring}
                     />
                   </Grid>
                 )}
@@ -313,6 +339,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                       stepName="Run Tests"
                       ref={loadTestsRef}
                       stepData={stagesData.load}
+                      stepMessages={stagesMessagesData.load}
                     />
                   </Grid>
                 )}
@@ -333,6 +360,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                     stepName="Clean-up"
                     ref={cleanupRef}
                     stepData={stagesData.cleanup}
+                    stepMessages={stagesMessagesData.cleanup}
                   />
                 </Grid>
               </Grid>

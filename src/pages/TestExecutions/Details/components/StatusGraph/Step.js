@@ -1,6 +1,12 @@
 import React from 'react'
 
-import { CircularProgress, Fade, Paper, Popover } from '@material-ui/core'
+import {
+  CircularProgress,
+  Fade,
+  Paper,
+  Popover,
+  Typography,
+} from '@material-ui/core'
 import { Done, ExpandMore, Close } from '@material-ui/icons'
 import { Button } from '~components'
 import { useMenu } from '~hooks'
@@ -25,13 +31,37 @@ function StatusIcon({ status }) {
   )
 }
 
-function StepDetails({ stepName, stepData }) {
+function MessageStatusIcon({ status }) {
+  const classes = useStyles()
+
+  return (
+    <React.Fragment>
+      {
+        {
+          info: (
+            <Done className={` ${classes.messageIcon} ${classes.successMessage}`} />
+          ),
+          error: (
+            <Close className={` ${classes.messageIcon} ${classes.errorMessage}`} />
+          ),
+        }[status]
+      }
+    </React.Fragment>
+  )
+}
+
+function StepDetails({ stepName, stepMessages, stepData }) {
   const classes = useStyles()
 
   const { menuAnchorEl, isMenuOpen, handleMenuOpen, handleMenuClose } = useMenu()
 
-  if (!stepData) {
-    return <div className={classes.stepTitle}>{stepName}</div>
+  if (!stepMessages.length || !stepData) {
+    return (
+      <div className={classes.stepTitle}>
+        <StatusIcon status={stepData ? stepData.msg : null} />
+        {stepName}
+      </div>
+    )
   }
 
   return (
@@ -41,7 +71,6 @@ function StepDetails({ stepName, stepData }) {
         {stepName}
         <ExpandMore />
       </Button>
-
       <Popover
         open={isMenuOpen}
         anchorEl={menuAnchorEl}
@@ -57,13 +86,20 @@ function StepDetails({ stepName, stepData }) {
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 350 }}
       >
-        <Paper className={classes.paper}>{stepData.msg}</Paper>
+        <Paper className={classes.paper}>
+          {stepMessages.map(step => (
+            <Typography key={step.timestamp} className={classes.typography}>
+              <MessageStatusIcon key={step.timestamp} status={step.level} />
+              {step.msg}
+            </Typography>
+          ))}
+        </Paper>
       </Popover>
     </React.Fragment>
   )
 }
 
-function Step({ icon: IconComponent, stepName, stepData }, ref) {
+function Step({ icon: IconComponent, stepName, stepData, stepMessages }, ref) {
   const classes = useStyles()
 
   return (
@@ -73,7 +109,11 @@ function Step({ icon: IconComponent, stepName, stepData }, ref) {
       </div>
 
       {stepName !== 'Finish' ? (
-        <StepDetails stepName={stepName} stepData={stepData} />
+        <StepDetails
+          stepName={stepName}
+          stepMessages={stepMessages ? stepMessages.reverse() : []}
+          stepData={stepData}
+        />
       ) : (
         <div className={classes.stepTitle}>{stepName}</div>
       )}
