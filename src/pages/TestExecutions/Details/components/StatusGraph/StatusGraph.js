@@ -20,6 +20,7 @@ import {
 import Step from './Step'
 import useStyles from './StatusGraph.styles'
 import { useSubscription, useQuery } from 'react-apollo-hooks'
+import { LoadingPlaceholder, ErrorPlaceholder } from '~components'
 
 function calculateNumberOfColumns(config) {
   let numberOfColumns = 2
@@ -56,7 +57,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
     fetchPolicy: 'cache-first',
   })
 
-  const { data: { execution_stage_log } = {} } = useSubscription(
+  const { data: { execution_stage_log } = {}, loading, error } = useSubscription(
     SUBSCRIBE_TO_EXECUTION_STATUS,
     {
       variables: { executionId },
@@ -234,6 +235,22 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
           : options[TestRunStageStatus.NOT_STARTED],
       },
     ]
+  }
+
+  if (loading || error) {
+    return (
+      <Grid item xs={12}>
+        <Paper square className={classes.tile}>
+          {loading ? (
+            <LoadingPlaceholder title="Loading data..." />
+          ) : error ? (
+            <ErrorPlaceholder error={error} />
+          ) : (
+            <LoadingPlaceholder title="Waiting for test run status..." />
+          )}
+        </Paper>
+      </Grid>
+    )
   }
 
   return (

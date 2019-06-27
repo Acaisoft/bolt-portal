@@ -16,12 +16,14 @@ import routes from '~config/routes'
 
 import { ExecutionActionsMenu } from '../components'
 import { MonitoringLineChart, MonitoringHeatmapChart } from './components'
+import { StatusGraph } from '../Details/components'
 import { getDataForChart } from './module.js'
 import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
 import useStyles from './Monitoring.styles'
 
 function Monitoring({ match, history, location }) {
   const { executionId } = match.params
+  const { configurationId } = match.params
 
   const classes = useStyles()
 
@@ -84,6 +86,12 @@ function Monitoring({ match, history, location }) {
         </div>
       ) : (
         <Grid container spacing={2}>
+          <StatusGraph
+            executionStatus={execution.status}
+            executionId={executionId}
+            configurationId={configurationId}
+          />
+
           {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
             return (
               <Grid item xs={12} md={6} key={`chart-${index}`}>
