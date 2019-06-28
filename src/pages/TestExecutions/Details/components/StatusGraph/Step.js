@@ -13,6 +13,12 @@ import { useMenu } from '~hooks'
 
 import useStyles from './StatusGraph.styles'
 
+function capitalizeFirstLetter(string) {
+  let message = string.toLowerCase()
+
+  return message.charAt(0).toUpperCase() + message.slice(1)
+}
+
 function StatusIcon({ status }) {
   const classes = useStyles()
 
@@ -50,15 +56,15 @@ function MessageStatusIcon({ status }) {
   )
 }
 
-function StepDetails({ stepName, stepMessages, stepData }) {
+function StepDetails({ stepName, stepData }) {
   const classes = useStyles()
 
   const { menuAnchorEl, isMenuOpen, handleMenuOpen, handleMenuClose } = useMenu()
 
-  if (!stepMessages.length || !stepData) {
+  if (!stepData || !stepData.messages.length) {
     return (
       <div className={classes.stepTitle}>
-        <StatusIcon status={stepData ? stepData.msg : null} />
+        <StatusIcon status={stepData ? stepData.status : null} />
         {stepName}
       </div>
     )
@@ -67,7 +73,7 @@ function StepDetails({ stepName, stepMessages, stepData }) {
   return (
     <React.Fragment>
       <Button onClick={handleMenuOpen} className={classes.stepTitle}>
-        <StatusIcon status={stepData ? stepData.msg : null} />
+        <StatusIcon status={stepData ? stepData.status : null} />
         {stepName}
         <ExpandMore />
       </Button>
@@ -87,19 +93,22 @@ function StepDetails({ stepName, stepMessages, stepData }) {
         TransitionProps={{ timeout: 350 }}
       >
         <Paper className={classes.paper}>
-          {stepMessages.map(step => (
-            <Typography key={step.timestamp} className={classes.typography}>
-              <MessageStatusIcon key={step.timestamp} status={step.level} />
-              {step.msg}
-            </Typography>
-          ))}
+          {stepData.messages
+            .slice(0)
+            .reverse()
+            .map(step => (
+              <Typography key={step.timestamp} className={classes.typography}>
+                <MessageStatusIcon key={step.timestamp} status={step.level} />
+                {capitalizeFirstLetter(step.msg)}
+              </Typography>
+            ))}
         </Paper>
       </Popover>
     </React.Fragment>
   )
 }
 
-function Step({ icon: IconComponent, stepName, stepData, stepMessages }, ref) {
+function Step({ icon: IconComponent, stepName, stepData }, ref) {
   const classes = useStyles()
 
   return (
@@ -109,11 +118,7 @@ function Step({ icon: IconComponent, stepName, stepData, stepMessages }, ref) {
       </div>
 
       {stepName !== 'Finish' ? (
-        <StepDetails
-          stepName={stepName}
-          stepMessages={stepMessages ? stepMessages.reverse() : []}
-          stepData={stepData}
-        />
+        <StepDetails stepName={stepName} stepData={stepData} />
       ) : (
         <div className={classes.stepTitle}>{stepName}</div>
       )}

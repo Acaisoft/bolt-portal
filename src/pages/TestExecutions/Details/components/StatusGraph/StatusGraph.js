@@ -30,36 +30,48 @@ const Stages = {
   LOAD_TESTS: 'argo_load_tests',
   CLEAN_UP: 'argo_post_stop',
 }
-function getCurrentStatus(data) {
+
+function getCurrentStatus(data, config) {
   const stagesData = {
-    preparation: data.find(log => log.stage === Stages.PREPARATION),
-    monitoring: data.find(log => log.stage === Stages.MONITORING),
-    load: data.find(log => log.stage === Stages.LOAD_TESTS),
-    cleanup: data.find(log => log.stage === Stages.CLEAN_UP),
+    preparation: {
+      status: data.find(log => log.stage === Stages.PREPARATION)
+        ? data.find(log => log.stage === Stages.PREPARATION).msg
+        : null,
+      messages: data.filter(log => log.stage === Stages.ARGO_PREPARATION),
+    },
+    monitoring: {
+      status: data.find(log => log.stage === Stages.MONITORING)
+        ? data.find(log => log.stage === Stages.MONITORING).msg
+        : null,
+      messages: data.filter(log => log.stage === Stages.MONITORING),
+    },
+    load: {
+      status: data.find(log => log.stage === Stages.LOAD_TESTS)
+        ? data.find(log => log.stage === Stages.LOAD_TESTS).msg
+        : null,
+      messages: data.filter(log => log.stage === Stages.LOAD_TESTS),
+    },
+    cleanup: {
+      status: data.find(log => log.stage === Stages.CLEAN_UP)
+        ? data.find(log => log.stage === Stages.CLEAN_UP).msg
+        : null,
+      messages: data.filter(log => log.stage === Stages.CLEAN_UP),
+    },
   }
 
-  return stagesData
-}
-
-function getCurrentMessages(data, config) {
-  let stagesMessagesData = {
-    preparation: data.filter(log => log.stage === Stages.ARGO_PREPARATION),
-    monitoring: data.filter(log => log.stage === Stages.MONITORING),
-    load: data.filter(log => log.stage === Stages.LOAD_TESTS),
-    cleanup: data.filter(log => log.stage === Stages.CLEAN_UP),
-  }
-
-  if (config.has_pre_test && stagesMessagesData) {
+  if (config.has_pre_test && stagesData) {
     const preStart = data.filter(log => log.stage === Stages.PRE_START)
 
-    stagesMessagesData.preparation = stagesMessagesData.preparation.concat(preStart)
+    stagesData.preparation.messages = stagesData.preparation.messages.concat(
+      preStart
+    )
 
-    stagesMessagesData.preparation.sort(function(a, b) {
+    stagesData.preparation.messages.sort(function(a, b) {
       return new Date(b.timestamp) - new Date(a.timestamp)
     })
   }
 
-  return stagesMessagesData
+  return stagesData
 }
 
 function calculateNumberOfColumns(config) {
@@ -108,13 +120,11 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const [finishEl, finishRef] = useCallbackRef()
 
   let stagesData = {}
-  let stagesMessagesData = {}
 
   let isFinished = false
 
   if (execution_stage_log && executionStatus !== 'TERMINATED') {
-    stagesData = getCurrentStatus(execution_stage_log)
-    stagesMessagesData = getCurrentMessages(execution_stage_log, config)
+    stagesData = getCurrentStatus(execution_stage_log, config)
 
     Object.keys(stagesData).forEach(
       key => stagesData[key] == null && delete stagesData[key]
@@ -130,14 +140,13 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
     }
 
     if (!config.has_pre_start) {
-      if (executionStatus === TestRunStageStatus.PENDING && !stagesData.load) {
-        stagesData.preparation = {
-          msg: TestRunStageStatus.RUNNING,
-        }
+      if (
+        executionStatus === TestRunStageStatus.PENDING &&
+        !stagesData.load.status
+      ) {
+        stagesData.preparation.status = TestRunStageStatus.RUNNING
       } else if (stagesData.load) {
-        stagesData.preparation = {
-          msg: TestRunStageStatus.SUCCEEDED,
-        }
+        stagesData.preparation.status = TestRunStageStatus.SUCCEEDED
       }
     }
   }
@@ -187,7 +196,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       from: preparationEl,
       to: monitoringEl,
       options: stagesData.preparation
-        ? options[stagesData.preparation.msg]
+        ? options[stagesData.preparation.status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
@@ -195,7 +204,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       from: preparationEl,
       to: loadTestsEl,
       options: stagesData.preparation
-        ? options[stagesData.preparation.msg]
+        ? options[stagesData.preparation.status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
@@ -203,7 +212,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       from: monitoringEl,
       to: cleanupEl,
       options: stagesData.monitoring
-        ? options[stagesData.monitoring.msg]
+        ? options[stagesData.monitoring.status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
@@ -211,7 +220,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       from: loadTestsEl,
       to: cleanupEl,
       options: stagesData.load
-        ? options[stagesData.load.msg]
+        ? options[stagesData.load.status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
@@ -219,7 +228,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       from: cleanupEl,
       to: finishEl,
       options: stagesData.cleanup
-        ? options[stagesData.cleanup.msg]
+        ? options[stagesData.cleanup.status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
   ]
@@ -231,7 +240,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
         from: preparationEl,
         to: monitoringEl,
         options: stagesData.preparation
-          ? options[stagesData.preparation.msg]
+          ? options[stagesData.preparation.status]
           : options[TestRunStageStatus.NOT_STARTED],
       },
       {
@@ -239,7 +248,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
         from: preparationEl,
         to: loadTestsEl,
         options: stagesData.preparation
-          ? options[stagesData.preparation.msg]
+          ? options[stagesData.preparation.status]
           : options[TestRunStageStatus.NOT_STARTED],
       },
       {
@@ -247,7 +256,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
         from: monitoringEl,
         to: finishEl,
         options: stagesData.monitoring
-          ? options[stagesData.monitoring.msg]
+          ? options[stagesData.monitoring.status]
           : options[TestRunStageStatus.NOT_STARTED],
       },
       {
@@ -255,7 +264,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
         from: loadTestsEl,
         to: finishEl,
         options: stagesData.load
-          ? options[stagesData.load.msg]
+          ? options[stagesData.load.status]
           : options[TestRunStageStatus.NOT_STARTED],
       },
     ]
@@ -306,7 +315,6 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                   stepName="Test Preparation"
                   ref={preparationRef}
                   stepData={stagesData.preparation}
-                  stepMessages={stagesMessagesData.preparation}
                 />
               </Grid>
             </Grid>
@@ -327,7 +335,6 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                       stepName="Run Monitoring"
                       ref={monitoringRef}
                       stepData={stagesData.monitoring}
-                      stepMessages={stagesMessagesData.monitoring}
                     />
                   </Grid>
                 )}
@@ -339,7 +346,6 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                       stepName="Run Tests"
                       ref={loadTestsRef}
                       stepData={stagesData.load}
-                      stepMessages={stagesMessagesData.load}
                     />
                   </Grid>
                 )}
@@ -360,7 +366,6 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                     stepName="Clean-up"
                     ref={cleanupRef}
                     stepData={stagesData.cleanup}
-                    stepMessages={stagesMessagesData.cleanup}
                   />
                 </Grid>
               </Grid>
