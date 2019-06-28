@@ -42,7 +42,7 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
   // TODO: Assign better colors
   const lineColors = [
     color.line.primary,
-    color.line.secondary,
+    color.line.success,
     color.line.error,
     'green',
     'red',

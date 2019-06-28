@@ -55,7 +55,7 @@ const palette = {
       },
       heatmap: {
         bool: {
-          inactive: '#3E3D5A',
+          inactive: '#1EB1B1',
           active: '#1EB1B1',
         },
       },
