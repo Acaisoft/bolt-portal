@@ -89,7 +89,7 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
             axisLine={{ strokeDasharray: gridLine.dash }}
             tick={{ ...font, fontSize: 12, width: 80 }}
             tickFormatter={formatters[config.y_format].axis}
-            domain={['dataMin', 'dataMax']}
+            domain={config.y_format === 'percent' ? [0, 1] : ['dataMin', 'dataMax']}
             interval="preserveStartEnd"
           />
 
