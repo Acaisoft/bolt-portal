@@ -73,6 +73,7 @@ export function ResponseTimeChart({ data, execution, syncId, theme, domainX }) {
           dataKey="average_response_time"
           name="Avg. response time"
           dot={{ r: 2, strokeWidth: 1, fill: backgroundColor }}
+          isAnimationActive={false}
         />
       </LineChart>
     </ResponsiveContainer>

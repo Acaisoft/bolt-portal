@@ -72,6 +72,7 @@ export function UsersSpawnChart({ data, execution, syncId, theme, domainX }) {
           dataKey="number_of_users"
           name="Users Spawn"
           dot={{ r: 2, strokeWidth: 1, fill: backgroundColor }}
+          isAnimationActive={false}
         />
       </LineChart>
     </ResponsiveContainer>

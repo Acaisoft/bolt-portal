@@ -72,6 +72,7 @@ export function RequestsChart({ data, execution, syncId, theme, domainX }) {
           dataKey="number_of_fails"
           name="Fail"
           stackId={1}
+          isAnimationActive={false}
         />
         <Area
           type="linear"
@@ -80,6 +81,7 @@ export function RequestsChart({ data, execution, syncId, theme, domainX }) {
           dataKey="number_of_successes"
           name="Success"
           stackId={1}
+          isAnimationActive={false}
         />
       </AreaChart>
     </ResponsiveContainer>

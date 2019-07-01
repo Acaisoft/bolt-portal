@@ -114,6 +114,7 @@ export function MonitoringLineChart({ config, data, groupNames, theme }) {
                 dataKey={tick => tick.groups[groupName]}
                 name={groupName}
                 dot={false}
+                isAnimationActive={false}
               />
             )
           })}
