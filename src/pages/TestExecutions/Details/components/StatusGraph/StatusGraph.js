@@ -107,7 +107,6 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       fetchPolicy: 'cache-and-network',
     }
   )
-  const { id, __typename, ...config } = configuration
 
   const [startEl, startRef] = useCallbackRef()
   const [sourceEl, sourceRef] = useCallbackRef()
@@ -126,10 +125,10 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
 
   if (execution_stage_log) {
     isStarted = true
-    stagesData = getCurrentStatus(execution_stage_log, config)
+    stagesData = getCurrentStatus(execution_stage_log, configuration)
     stagesData[Stages.FINISHED] = getFinishStepStatus(stagesData, executionStatus)
 
-    if (!config.has_post_test) {
+    if (!configuration.has_post_test) {
       stagesData[Stages.CLEAN_UP] = TestRunStageStatus.NOT_STARTED
       if (stagesData[Stages.FINISHED] !== TestRunStageStatus.NOT_STARTED) {
         stagesData[Stages.CLEAN_UP] = TestRunStageStatus.SUCCEEDED
@@ -165,36 +164,8 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
     const { line } = theme.palette.chart.graph
 
     return {
-      [TestRunStageStatus.NOT_STARTED]: {
-        color: line.default,
-        size: 1,
-      },
-      [TestRunStageStatus.PENDING]: {
-        color: line.pending,
-        size: 2,
-        dash: {
-          animation: true,
-        },
-      },
-      [TestRunStageStatus.RUNNING]: {
-        color: line.pending,
-        size: 2,
-        dash: {
-          animation: true,
-        },
-      },
-      [TestRunStageStatus.SUCCEEDED]: {
-        color: line.completed,
-        size: 2,
-      },
-      [TestRunStageStatus.FAILED]: {
-        color: line.failed,
-        size: 2,
-      },
-      [TestRunStageStatus.ERROR]: {
-        color: line.failed,
-        size: 2,
-      },
+      color: line.default,
+      size: 2,
     }
   }, [theme])
 
@@ -205,45 +176,43 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       id: 1,
       from: startEl,
       to: sourceEl,
-      options: isStarted
-        ? options[TestRunStageStatus.SUCCEEDED]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options,
     },
     {
       id: 2,
       from: sourceEl,
       to: preparationEl,
-      options: options[stagesData[Stages.DOWNLOADING_SOURCE]],
+      options: options,
     },
     {
       id: 3,
       from: preparationEl,
       to: monitoringEl,
-      options: options[stagesData[Stages.IMAGE_PREPARATION]],
+      options: options,
     },
     {
       id: 4,
       from: preparationEl,
       to: loadTestsEl,
-      options: options[stagesData[Stages.IMAGE_PREPARATION]],
+      options: options,
     },
     {
       id: 5,
       from: monitoringEl,
       to: cleanupEl,
-      options: options[stagesData[Stages.MONITORING]],
+      options: options,
     },
     {
       id: 6,
       from: loadTestsEl,
       to: cleanupEl,
-      options: options[stagesData[Stages.LOAD_TESTS]],
+      options: options,
     },
     {
       id: 7,
       from: cleanupEl,
       to: finishEl,
-      options: options[stagesData[Stages.CLEAN_UP]],
+      options: options,
     },
   ]
 
@@ -307,10 +276,11 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
               </Grid>
             </Grid>
 
-            {(Boolean(config.has_monitoring) || Boolean(config.has_load_tests)) && (
+            {(Boolean(configuration.has_monitoring) ||
+              Boolean(configuration.has_load_tests)) && (
               <Grid item className={classes.section}>
                 <Grid container direction="column">
-                  {Boolean(config.has_monitoring) && (
+                  {Boolean(configuration.has_monitoring) && (
                     <Grid container justify="center" alignItems="center">
                       <Step
                         stepName="Run Monitoring"
@@ -320,7 +290,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                     </Grid>
                   )}
 
-                  {Boolean(config.has_load_tests) && (
+                  {Boolean(configuration.has_load_tests) && (
                     <Grid container justify="center" alignItems="center">
                       <Step
                         stepName="Run Tests"

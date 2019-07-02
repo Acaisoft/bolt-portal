@@ -43,7 +43,7 @@ function SectionHeader({
         </div>
       </Grid>
       {children && (
-        <Grid item>
+        <Grid item className={classes.children}>
           <Grid container justify="flex-end" alignItems="center">
             {children}
           </Grid>

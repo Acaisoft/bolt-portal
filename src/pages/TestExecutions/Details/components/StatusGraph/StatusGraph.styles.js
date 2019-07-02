@@ -59,7 +59,7 @@ export default makeStyles(({ palette, spacing }) => ({
     background: palette.warning.main,
 
     '&::before': {
-      background: fade(palette.warning.main, 0.4),
+      background: fade(palette.warning.secondary, 0.4),
     },
   },
 

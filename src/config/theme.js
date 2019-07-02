@@ -85,6 +85,7 @@ const palette = {
   warning: {
     contrastText: '#FFFFFF',
     main: '#F76F40',
+    secondary: '#f79c40',
   },
   error: {
     contrastText: '#FFFFFF',

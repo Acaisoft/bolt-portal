@@ -9,6 +9,7 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   NotFoundPlaceholder,
+  ExpandablePanel,
 } from '~components'
 
 import { getUrl } from '~utils/router'
@@ -20,6 +21,7 @@ import { StatusGraph } from '../Details/components'
 import { getDataForChart } from './module.js'
 import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
 import useStyles from './Monitoring.styles'
+import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
 
 function Monitoring({ match, history, location }) {
   const { executionId } = match.params
@@ -71,6 +73,12 @@ function Monitoring({ match, history, location }) {
         )}
         {execution && <ExecutionActionsMenu execution={execution} />}
       </SectionHeader>
+
+      <div className={classes.configDetails}>
+        <ExpandablePanel defaultExpanded={false} title="Scenario Details">
+          <TestConfigurationDetails configurationId={configurationId} />
+        </ExpandablePanel>
+      </div>
 
       {loading || error || !execution ? (
         <div>

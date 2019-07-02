@@ -1,7 +1,13 @@
 import React from 'react'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Box } from '@material-ui/core'
 
-import { SectionHeader, LabeledValue } from '~components'
+import {
+  SectionHeader,
+  LabeledValue,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NotFoundPlaceholder,
+} from '~components'
 import useStyles from './TestConfigurationDetails.styles'
 import { TestSourceType } from '~config/constants'
 import { Details } from '~assets/icons'
@@ -14,10 +20,26 @@ function TestConfigurationDetails({ children, configurationId }) {
 
   const {
     data: { configuration },
+    loading,
+    error,
   } = useQuery(GET_CONFIGURATION, {
     variables: { configurationId },
     fetchPolicy: 'cache-first',
   })
+
+  if (loading || error || !configuration) {
+    return (
+      <Box p={3}>
+        {loading ? (
+          <LoadingPlaceholder title="Loading test run details..." />
+        ) : error ? (
+          <ErrorPlaceholder error={error} />
+        ) : (
+          <NotFoundPlaceholder title="Test run not found" />
+        )}
+      </Box>
+    )
+  }
 
   const {
     test_source,
