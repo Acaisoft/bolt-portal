@@ -37,11 +37,11 @@ function getCurrentStatus(data, config) {
   ]
 
   let stagesData = {}
-  stagesOrder.forEach((stage, index) => {
-    stagesData[stage] = {
-      status: data.find(log => log.stage === stage)
-        ? data.find(log => log.stage === stage).msg.toUpperCase()
-        : null,
+  stagesOrder.forEach(stage => {
+    if (data.find(log => log.stage === stage)) {
+      stagesData[stage] = data.find(log => log.stage === stage).msg.toUpperCase()
+    } else {
+      stagesData[stage] = TestRunStageStatus.NOT_STARTED
     }
   })
 
@@ -66,42 +66,27 @@ function getCurrentStatus(data, config) {
 
 function getFinishStepStatus(stagesData, executionStatus) {
   const isFinished = Object.values(stagesData).every(
+    value => value === TestRunStageStatus.SUCCEEDED
+  )
+
+  const hasError = Object.values(stagesData).find(
     value =>
-      value &&
-      value.status &&
-      value.status !== TestRunStageStatus.RUNNING &&
-      value.status !== TestRunStageStatus.PENDING &&
-      value.status !== TestRunStageStatus.FAILED &&
-      value.status !== TestRunStageStatus.ERROR
+      value === TestRunStageStatus.FAILED || value === TestRunStageStatus.ERROR
   )
 
   if (executionStatus === TestRunStageStatus.TERMINATED) {
-    return {
-      status: TestRunStageStatus.TERMINATED,
-    }
+    return TestRunStageStatus.TERMINATED
   }
 
-  if (
-    Object.values(stagesData).find(
-      value =>
-        value.status === TestRunStageStatus.FAILED ||
-        value.status === TestRunStageStatus.ERROR
-    )
-  ) {
-    return {
-      status: TestRunStageStatus.FAILED,
-    }
+  if (hasError) {
+    return TestRunStageStatus.FAILED
   }
 
   if (isFinished) {
-    return {
-      status: TestRunStageStatus.SUCCEEDED,
-    }
+    return TestRunStageStatus.SUCCEEDED
   }
 
-  return {
-    status: null,
-  }
+  return TestRunStageStatus.NOT_STARTED
 }
 
 export function StatusGraph({ executionId, configurationId, executionStatus }) {
@@ -133,46 +118,45 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const [finishEl, finishRef] = useCallbackRef()
 
   let stagesData = {}
-  let isStarted = {
-    status: false,
-  }
+  let isStarted = false
 
   if (executionStatus === TestRunStageStatus.PENDING) {
-    isStarted.status = true
+    isStarted = true
   }
 
   if (execution_stage_log) {
-    isStarted.status = true
+    isStarted = true
     stagesData = getCurrentStatus(execution_stage_log, config)
     stagesData[Stages.FINISHED] = getFinishStepStatus(stagesData, executionStatus)
 
     if (!config.has_post_test) {
-      stagesData[Stages.CLEAN_UP] = {
-        status: null,
-      }
-      if (stagesData[Stages.FINISHED] && stagesData[Stages.FINISHED].status) {
-        stagesData[Stages.CLEAN_UP].status = TestRunStageStatus.SUCCEEDED
+      stagesData[Stages.CLEAN_UP] = TestRunStageStatus.NOT_STARTED
+      if (stagesData[Stages.FINISHED] !== TestRunStageStatus.NOT_STARTED) {
+        stagesData[Stages.CLEAN_UP] = TestRunStageStatus.SUCCEEDED
       }
     }
 
     if (
       isStarted &&
-      stagesData[Stages.DOWNLOADING_SOURCE] &&
-      !stagesData[Stages.DOWNLOADING_SOURCE].status
+      stagesData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.NOT_STARTED
     ) {
-      stagesData[Stages.DOWNLOADING_SOURCE].status = TestRunStageStatus.RUNNING
+      stagesData[Stages.DOWNLOADING_SOURCE] = TestRunStageStatus.RUNNING
     }
 
     if (
-      stagesData[Stages.IMAGE_PREPARATION] &&
-      stagesData[Stages.IMAGE_PREPARATION].status === TestRunStageStatus.SUCCEEDED
+      stagesData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.SUCCEEDED &&
+      stagesData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.NOT_STARTED
     ) {
-      if (stagesData[Stages.LOAD_TESTS] && !stagesData[Stages.LOAD_TESTS].status) {
-        stagesData[Stages.LOAD_TESTS].status = TestRunStageStatus.RUNNING
+      stagesData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
+    }
+
+    if (stagesData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.SUCCEEDED) {
+      if (stagesData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED) {
+        stagesData[Stages.LOAD_TESTS] = TestRunStageStatus.RUNNING
       }
 
-      if (stagesData[Stages.MONITORING] && !stagesData[Stages.MONITORING].status) {
-        stagesData[Stages.MONITORING].status = TestRunStageStatus.RUNNING
+      if (stagesData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED) {
+        stagesData[Stages.MONITORING] = TestRunStageStatus.RUNNING
       }
     }
   }
@@ -221,7 +205,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       id: 1,
       from: startEl,
       to: sourceEl,
-      options: isStarted.status
+      options: isStarted
         ? options[TestRunStageStatus.SUCCEEDED]
         : options[TestRunStageStatus.NOT_STARTED],
     },
@@ -229,49 +213,37 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       id: 2,
       from: sourceEl,
       to: preparationEl,
-      options: stagesData[Stages.DOWNLOADING_SOURCE]
-        ? options[stagesData[Stages.DOWNLOADING_SOURCE].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.DOWNLOADING_SOURCE]],
     },
     {
       id: 3,
       from: preparationEl,
       to: monitoringEl,
-      options: stagesData[Stages.IMAGE_PREPARATION]
-        ? options[stagesData[Stages.IMAGE_PREPARATION].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.IMAGE_PREPARATION]],
     },
     {
       id: 4,
       from: preparationEl,
       to: loadTestsEl,
-      options: stagesData[Stages.IMAGE_PREPARATION]
-        ? options[stagesData[Stages.IMAGE_PREPARATION].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.IMAGE_PREPARATION]],
     },
     {
       id: 5,
       from: monitoringEl,
       to: cleanupEl,
-      options: stagesData[Stages.MONITORING]
-        ? options[stagesData[Stages.MONITORING].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.MONITORING]],
     },
     {
       id: 6,
       from: loadTestsEl,
       to: cleanupEl,
-      options: stagesData[Stages.LOAD_TESTS]
-        ? options[stagesData[Stages.LOAD_TESTS].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.LOAD_TESTS]],
     },
     {
       id: 7,
       from: cleanupEl,
       to: finishEl,
-      options: stagesData[Stages.CLEAN_UP]
-        ? options[stagesData[Stages.CLEAN_UP].status]
-        : options[TestRunStageStatus.NOT_STARTED],
+      options: options[stagesData[Stages.CLEAN_UP]],
     },
   ]
 

@@ -3,6 +3,7 @@ import React from 'react'
 import useStyles from './StatusGraph.styles'
 
 import classNames from 'classnames'
+import { TestRunStageStatus } from '~config/constants'
 
 function Step({ stepName, stepData }, ref) {
   const classes = useStyles()
@@ -12,15 +13,12 @@ function Step({ stepName, stepData }, ref) {
       <div
         className={classNames(
           classes.circle,
-          stepData.status && classes.active,
-          classes[stepData.status]
+          stepData !== TestRunStageStatus.NOT_STARTED && classes.active,
+          classes[stepData]
         )}
         ref={ref}
       />
-      <div className={classes.stepTitle}>
-        {/* <StatusIcon status={stepData.status} /> */}
-        {stepName}
-      </div>
+      <div className={classes.stepTitle}>{stepName}</div>
     </div>
   )
 }
