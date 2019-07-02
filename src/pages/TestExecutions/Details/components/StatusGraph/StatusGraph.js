@@ -3,13 +3,6 @@ import React, { useMemo } from 'react'
 import { Grid, Paper } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
 import { Line } from '~components'
-import {
-  PreparationIcon,
-  MonitoringIcon,
-  TestsIcon,
-  CleanupIcon,
-  FinishIcon,
-} from '~assets/icons'
 import { useCallbackRef } from '~hooks'
 import { TestRunStageStatus } from '~config/constants'
 import {
@@ -23,72 +16,92 @@ import { useSubscription, useQuery } from 'react-apollo-hooks'
 import { LoadingPlaceholder, ErrorPlaceholder } from '~components'
 
 const Stages = {
+  START: 'start',
+  DOWNLOADING_SOURCE: 'downloading_source',
+  IMAGE_PREPARATION: 'image_preparation',
   PRE_START: 'pre_start',
-  ARGO_PREPARATION: 'argo_preparation',
-  PREPARATION: 'argo_pre_start',
-  MONITORING: 'argo_monitoring',
-  LOAD_TESTS: 'argo_load_tests',
-  CLEAN_UP: 'argo_post_stop',
+  LOAD_TESTS: 'load_tests',
+  MONITORING: 'monitoring',
+  CLEAN_UP: 'post_stop',
+  FINISHED: 'finished',
 }
 
 function getCurrentStatus(data, config) {
-  const stagesData = {
-    preparation: {
-      status: data.find(log => log.stage === Stages.PREPARATION)
-        ? data.find(log => log.stage === Stages.PREPARATION).msg
+  const stagesOrder = [
+    Stages.DOWNLOADING_SOURCE,
+    Stages.IMAGE_PREPARATION,
+    Stages.PRE_START,
+    Stages.LOAD_TESTS,
+    Stages.MONITORING,
+    Stages.CLEAN_UP,
+  ]
+
+  let stagesData = {}
+  stagesOrder.forEach((stage, index) => {
+    stagesData[stage] = {
+      status: data.find(log => log.stage === stage)
+        ? data.find(log => log.stage === stage).msg.toUpperCase()
         : null,
-      messages: data.filter(log => log.stage === Stages.ARGO_PREPARATION),
-    },
-    monitoring: {
-      status: data.find(log => log.stage === Stages.MONITORING)
-        ? data.find(log => log.stage === Stages.MONITORING).msg
-        : null,
-      messages: data.filter(log => log.stage === Stages.MONITORING),
-    },
-    load: {
-      status: data.find(log => log.stage === Stages.LOAD_TESTS)
-        ? data.find(log => log.stage === Stages.LOAD_TESTS).msg
-        : null,
-      messages: data.filter(log => log.stage === Stages.LOAD_TESTS),
-    },
-    cleanup: {
-      status: data.find(log => log.stage === Stages.CLEAN_UP)
-        ? data.find(log => log.stage === Stages.CLEAN_UP).msg
-        : null,
-      messages: data.filter(log => log.stage === Stages.CLEAN_UP),
-    },
+    }
+  })
+
+  if (!config.has_load_tests) {
+    delete stagesData[Stages.LOAD_TESTS]
   }
 
-  if (config.has_pre_test && stagesData) {
-    const preStart = data.filter(log => log.stage === Stages.PRE_START)
+  if (!config.has_monitoring) {
+    delete stagesData[Stages.MONITORING]
+  }
 
-    stagesData.preparation.messages = stagesData.preparation.messages.concat(
-      preStart
-    )
+  if (!config.has_post_test) {
+    delete stagesData[Stages.CLEAN_UP]
+  }
 
-    stagesData.preparation.messages.sort(function(a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp)
-    })
+  if (!config.has_pre_start) {
+    delete stagesData[Stages.PRE_START]
   }
 
   return stagesData
 }
 
-function calculateNumberOfColumns(config) {
-  let numberOfColumns = 2
+function getFinishStepStatus(stagesData, executionStatus) {
+  const isFinished = Object.values(stagesData).every(
+    value =>
+      value &&
+      value.status &&
+      value.status !== TestRunStageStatus.RUNNING &&
+      value.status !== TestRunStageStatus.PENDING &&
+      value.status !== TestRunStageStatus.FAILED &&
+      value.status !== TestRunStageStatus.ERROR
+  )
 
-  Object.keys(config).forEach(step => {
-    if (config[step] && step !== 'has_pre_test') {
-      numberOfColumns++
+  if (executionStatus === TestRunStageStatus.TERMINATED) {
+    return {
+      status: TestRunStageStatus.TERMINATED,
     }
-  })
+  }
 
-  numberOfColumns =
-    config.has_load_tests & config.has_monitoring
-      ? numberOfColumns - 1
-      : numberOfColumns
+  if (
+    Object.values(stagesData).find(
+      value =>
+        value.status === TestRunStageStatus.FAILED ||
+        value.status === TestRunStageStatus.ERROR
+    )
+  ) {
+    return {
+      status: TestRunStageStatus.FAILED,
+    }
+  }
 
-  return numberOfColumns
+  if (isFinished) {
+    return {
+      status: TestRunStageStatus.SUCCEEDED,
+    }
+  }
+
+  return {
+    status: null,
+  }
 }
 
 export function StatusGraph({ executionId, configurationId, executionStatus }) {
@@ -111,8 +124,8 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   )
   const { id, __typename, ...config } = configuration
 
-  const numberOfColumns = calculateNumberOfColumns(config)
-
+  const [startEl, startRef] = useCallbackRef()
+  const [sourceEl, sourceRef] = useCallbackRef()
   const [preparationEl, preparationRef] = useCallbackRef()
   const [monitoringEl, monitoringRef] = useCallbackRef()
   const [loadTestsEl, loadTestsRef] = useCallbackRef()
@@ -120,33 +133,46 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const [finishEl, finishRef] = useCallbackRef()
 
   let stagesData = {}
+  let isStarted = {
+    status: false,
+  }
 
-  let isFinished = false
+  if (executionStatus === TestRunStageStatus.PENDING) {
+    isStarted.status = true
+  }
 
-  if (execution_stage_log && executionStatus !== 'TERMINATED') {
+  if (execution_stage_log) {
+    isStarted.status = true
     stagesData = getCurrentStatus(execution_stage_log, config)
+    stagesData[Stages.FINISHED] = getFinishStepStatus(stagesData, executionStatus)
 
-    Object.keys(stagesData).forEach(
-      key => stagesData[key] == null && delete stagesData[key]
-    )
-
-    if (Object.entries(stagesData).length !== 0) {
-      isFinished = Object.values(stagesData).every(
-        value =>
-          value &&
-          value.msg !== TestRunStageStatus.RUNNING &&
-          value.msg !== TestRunStageStatus.PENDING
-      )
+    if (!config.has_post_test) {
+      stagesData[Stages.CLEAN_UP] = {
+        status: null,
+      }
+      if (stagesData[Stages.FINISHED] && stagesData[Stages.FINISHED].status) {
+        stagesData[Stages.CLEAN_UP].status = TestRunStageStatus.SUCCEEDED
+      }
     }
 
-    if (!config.has_pre_start) {
-      if (
-        executionStatus === TestRunStageStatus.PENDING &&
-        !stagesData.load.status
-      ) {
-        stagesData.preparation.status = TestRunStageStatus.RUNNING
-      } else if (stagesData.load) {
-        stagesData.preparation.status = TestRunStageStatus.SUCCEEDED
+    if (
+      isStarted &&
+      stagesData[Stages.DOWNLOADING_SOURCE] &&
+      !stagesData[Stages.DOWNLOADING_SOURCE].status
+    ) {
+      stagesData[Stages.DOWNLOADING_SOURCE].status = TestRunStageStatus.RUNNING
+    }
+
+    if (
+      stagesData[Stages.IMAGE_PREPARATION] &&
+      stagesData[Stages.IMAGE_PREPARATION].status === TestRunStageStatus.SUCCEEDED
+    ) {
+      if (stagesData[Stages.LOAD_TESTS] && !stagesData[Stages.LOAD_TESTS].status) {
+        stagesData[Stages.LOAD_TESTS].status = TestRunStageStatus.RUNNING
+      }
+
+      if (stagesData[Stages.MONITORING] && !stagesData[Stages.MONITORING].status) {
+        stagesData[Stages.MONITORING].status = TestRunStageStatus.RUNNING
       }
     }
   }
@@ -167,7 +193,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
         },
       },
       [TestRunStageStatus.RUNNING]: {
-        color: line.completed,
+        color: line.pending,
         size: 2,
         dash: {
           animation: true,
@@ -193,82 +219,61 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   lines = [
     {
       id: 1,
-      from: preparationEl,
-      to: monitoringEl,
-      options: stagesData.preparation
-        ? options[stagesData.preparation.status]
+      from: startEl,
+      to: sourceEl,
+      options: isStarted.status
+        ? options[TestRunStageStatus.SUCCEEDED]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
       id: 2,
-      from: preparationEl,
-      to: loadTestsEl,
-      options: stagesData.preparation
-        ? options[stagesData.preparation.status]
+      from: sourceEl,
+      to: preparationEl,
+      options: stagesData[Stages.DOWNLOADING_SOURCE]
+        ? options[stagesData[Stages.DOWNLOADING_SOURCE].status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
       id: 3,
-      from: monitoringEl,
-      to: cleanupEl,
-      options: stagesData.monitoring
-        ? options[stagesData.monitoring.status]
+      from: preparationEl,
+      to: monitoringEl,
+      options: stagesData[Stages.IMAGE_PREPARATION]
+        ? options[stagesData[Stages.IMAGE_PREPARATION].status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
       id: 4,
-      from: loadTestsEl,
-      to: cleanupEl,
-      options: stagesData.load
-        ? options[stagesData.load.status]
+      from: preparationEl,
+      to: loadTestsEl,
+      options: stagesData[Stages.IMAGE_PREPARATION]
+        ? options[stagesData[Stages.IMAGE_PREPARATION].status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
     {
       id: 5,
+      from: monitoringEl,
+      to: cleanupEl,
+      options: stagesData[Stages.MONITORING]
+        ? options[stagesData[Stages.MONITORING].status]
+        : options[TestRunStageStatus.NOT_STARTED],
+    },
+    {
+      id: 6,
+      from: loadTestsEl,
+      to: cleanupEl,
+      options: stagesData[Stages.LOAD_TESTS]
+        ? options[stagesData[Stages.LOAD_TESTS].status]
+        : options[TestRunStageStatus.NOT_STARTED],
+    },
+    {
+      id: 7,
       from: cleanupEl,
       to: finishEl,
-      options: stagesData.cleanup
-        ? options[stagesData.cleanup.status]
+      options: stagesData[Stages.CLEAN_UP]
+        ? options[stagesData[Stages.CLEAN_UP].status]
         : options[TestRunStageStatus.NOT_STARTED],
     },
   ]
-
-  if (!config.has_post_test) {
-    lines = [
-      {
-        id: 1,
-        from: preparationEl,
-        to: monitoringEl,
-        options: stagesData.preparation
-          ? options[stagesData.preparation.status]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 2,
-        from: preparationEl,
-        to: loadTestsEl,
-        options: stagesData.preparation
-          ? options[stagesData.preparation.status]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 3,
-        from: monitoringEl,
-        to: finishEl,
-        options: stagesData.monitoring
-          ? options[stagesData.monitoring.status]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-      {
-        id: 4,
-        from: loadTestsEl,
-        to: finishEl,
-        options: stagesData.load
-          ? options[stagesData.load.status]
-          : options[TestRunStageStatus.NOT_STARTED],
-      },
-    ]
-  }
 
   if (loading || error) {
     return (
@@ -300,90 +305,78 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
 
       <Grid item xs={12}>
         <Paper square>
-          <Grid container>
-            <Grid
-              container
-              item
-              xs={12 / numberOfColumns}
-              justify="center"
-              alignItems="center"
-              className={classes.section}
-            >
-              <Grid item>
+          <Grid
+            container
+            className={classes.container}
+            alignItems="center"
+            wrap="nowrap"
+          >
+            <Grid item className={classes.section}>
+              <Grid container justify="center" alignItems="center">
+                <Step stepName="Started" ref={startRef} stepData={isStarted} />
+              </Grid>
+            </Grid>
+            <Grid item className={classes.section}>
+              <Grid container justify="center" alignItems="center">
                 <Step
-                  icon={PreparationIcon}
-                  stepName="Test Preparation"
+                  stepName="Downloading Source"
+                  ref={sourceRef}
+                  stepData={stagesData[Stages.DOWNLOADING_SOURCE]}
+                />
+              </Grid>
+            </Grid>
+            <Grid item className={classes.section}>
+              <Grid container justify="center" alignItems="center">
+                <Step
+                  stepName="Image preparation"
                   ref={preparationRef}
-                  stepData={stagesData.preparation}
+                  stepData={stagesData[Stages.IMAGE_PREPARATION]}
                 />
               </Grid>
             </Grid>
 
             {(Boolean(config.has_monitoring) || Boolean(config.has_load_tests)) && (
-              <Grid
-                container
-                item
-                xs={12 / numberOfColumns}
-                justify="space-around"
-                alignItems="center"
-                direction="column"
-              >
-                {Boolean(config.has_monitoring) && (
-                  <Grid item>
-                    <Step
-                      icon={MonitoringIcon}
-                      stepName="Run Monitoring"
-                      ref={monitoringRef}
-                      stepData={stagesData.monitoring}
-                    />
-                  </Grid>
-                )}
+              <Grid item className={classes.section}>
+                <Grid container direction="column">
+                  {Boolean(config.has_monitoring) && (
+                    <Grid container justify="center" alignItems="center">
+                      <Step
+                        stepName="Run Monitoring"
+                        ref={monitoringRef}
+                        stepData={stagesData[Stages.MONITORING]}
+                      />
+                    </Grid>
+                  )}
 
-                {Boolean(config.has_load_tests) && (
-                  <Grid item>
-                    <Step
-                      icon={TestsIcon}
-                      stepName="Run Tests"
-                      ref={loadTestsRef}
-                      stepData={stagesData.load}
-                    />
-                  </Grid>
-                )}
-              </Grid>
-            )}
-
-            {Boolean(config.has_post_test) && (
-              <Grid
-                container
-                item
-                xs={12 / numberOfColumns}
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Step
-                    icon={CleanupIcon}
-                    stepName="Clean-up"
-                    ref={cleanupRef}
-                    stepData={stagesData.cleanup}
-                  />
+                  {Boolean(config.has_load_tests) && (
+                    <Grid container justify="center" alignItems="center">
+                      <Step
+                        stepName="Run Tests"
+                        ref={loadTestsRef}
+                        stepData={stagesData[Stages.LOAD_TESTS]}
+                      />
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
             )}
 
-            <Grid
-              container
-              item
-              xs={12 / numberOfColumns}
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item>
+            <Grid item className={classes.section}>
+              <Grid container justify="center" alignItems="center">
                 <Step
-                  icon={FinishIcon}
-                  stepName="Finish"
+                  stepName="Clean-up"
+                  ref={cleanupRef}
+                  stepData={stagesData[Stages.CLEAN_UP]}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid item className={classes.section}>
+              <Grid container justify="center" alignItems="center">
+                <Step
+                  stepName="Finished"
                   ref={finishRef}
-                  stepData={isFinished}
+                  stepData={stagesData[Stages.FINISHED]}
                 />
               </Grid>
             </Grid>

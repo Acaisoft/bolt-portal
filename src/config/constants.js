@@ -20,9 +20,11 @@ export const TestRunStatus = {
 
 export const TestRunStageStatus = {
   NOT_STARTED: 'NOT_STARTED',
-  ERROR: 'ERROR',
   FAILED: 'FAILED',
   PENDING: 'PENDING',
   RUNNING: 'RUNNING',
   SUCCEEDED: 'SUCCEEDED',
+  TERMINATED: 'TERMINATED',
+  ERROR: 'ERROR',
+  FINISHED: 'FINISHED',
 }

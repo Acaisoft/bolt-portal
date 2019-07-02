@@ -72,7 +72,7 @@ function Monitoring({ match, history, location }) {
         {execution && <ExecutionActionsMenu execution={execution} />}
       </SectionHeader>
 
-      {loading || error || !execution || chartsWithData.length === 0 ? (
+      {loading || error || !execution ? (
         <div>
           {loading ? (
             <LoadingPlaceholder title="Loading monitoring results..." />
@@ -92,27 +92,35 @@ function Monitoring({ match, history, location }) {
             configurationId={configurationId}
           />
 
-          {chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
-            return (
-              <Grid item xs={12} md={6} key={`chart-${index}`}>
-                <Paper square className={classes.tile}>
-                  {chartConfig.type === 'heatmap' ? (
-                    <MonitoringHeatmapChart
-                      data={data}
-                      config={chartConfig}
-                      groupNames={groupNames}
-                    />
-                  ) : (
-                    <MonitoringLineChart
-                      data={data}
-                      config={chartConfig}
-                      groupNames={groupNames}
-                    />
-                  )}
-                </Paper>
-              </Grid>
-            )
-          })}
+          {chartsWithData.length === 0 ? (
+            <Grid item xs={12}>
+              <Paper>
+                <LoadingPlaceholder title="Waiting for results..." />
+              </Paper>
+            </Grid>
+          ) : (
+            chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
+              return (
+                <Grid item xs={12} md={6} key={`chart-${index}`}>
+                  <Paper square className={classes.tile}>
+                    {chartConfig.type === 'heatmap' ? (
+                      <MonitoringHeatmapChart
+                        data={data}
+                        config={chartConfig}
+                        groupNames={groupNames}
+                      />
+                    ) : (
+                      <MonitoringLineChart
+                        data={data}
+                        config={chartConfig}
+                        groupNames={groupNames}
+                      />
+                    )}
+                  </Paper>
+                </Grid>
+              )
+            })
+          )}
         </Grid>
       )}
     </div>

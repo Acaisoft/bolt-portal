@@ -1,19 +1,72 @@
 import { makeStyles } from '@material-ui/core'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import { TestRunStageStatus as Status } from '~config/constants'
 
 export default makeStyles(({ palette, spacing }) => ({
   circle: {
-    height: 64,
-    width: 64,
+    height: 14,
+    width: 14,
     borderRadius: '50%',
-    border: '2px solid #4E4D6E',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     color: palette.background.paper,
+    background: '#CFCFEA',
   },
   active: {
-    background: '#4E4D6E',
+    background: palette.success.main,
     color: '#4E4D6E',
+
+    '&::before': {
+      content: "''",
+      position: 'absolute',
+      height: 30,
+      width: 30,
+      borderRadius: '50%',
+      background: fade(palette.success.main, 0.4),
+    },
+  },
+
+  [Status.RUNNING]: {
+    '&::before': {
+      animation: '$progress 2s ease-in-out infinite',
+    },
+  },
+  [Status.PENDING]: {
+    '&::before': {
+      animation: '$progress 2s ease-in-out infinite',
+    },
+  },
+  [Status.SUCCEEDED]: {
+    animation: 'none',
+  },
+
+  [Status.FAILED]: {
+    background: palette.chart.graph.line.failed,
+
+    '&::before': {
+      background: fade(palette.error.main, 0.4),
+    },
+  },
+  [Status.ERROR]: {
+    background: palette.chart.graph.line.failed,
+
+    '&::before': {
+      background: fade(palette.error.main, 0.4),
+    },
+  },
+  [Status.TERMINATED]: {
+    background: palette.warning.main,
+
+    '&::before': {
+      background: fade(palette.warning.main, 0.4),
+    },
+  },
+
+  section: {
+    flex: 1,
+    height: '100%',
+    paddingTop: spacing(4),
   },
   paper: {
     background: '#4E4D6E',
@@ -21,10 +74,10 @@ export default makeStyles(({ palette, spacing }) => ({
   },
   step: {
     display: 'flex',
-    justifyContent: 'center',
+    flex: 1,
     alignItems: 'center',
     flexDirection: 'column',
-    padding: `${spacing(8)}px 0`,
+    minHeight: 70,
   },
   typography: {
     fontSize: 13,
@@ -38,6 +91,7 @@ export default makeStyles(({ palette, spacing }) => ({
     padding: spacing(1),
     display: 'flex',
     alignItems: 'center',
+    textAlign: 'center',
   },
 
   statusIcon: {
@@ -79,5 +133,11 @@ export default makeStyles(({ palette, spacing }) => ({
     right: 0,
     transform: 'skewY(-5deg)',
     transformOrigin: '100%',
+  },
+
+  '@keyframes progress': {
+    '0%': { transform: 'scale(0)', opacity: 0 },
+    '50%': { transform: 'scale(1)', opacity: 1 },
+    '100%': { transform: 'scale(0)', opacity: 0 },
   },
 }))
