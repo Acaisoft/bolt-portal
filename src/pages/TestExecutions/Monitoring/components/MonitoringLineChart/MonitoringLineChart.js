@@ -29,7 +29,7 @@ const formatters = {
     tooltip: value => formatThousands(value),
   },
   percent: {
-    axis: value => formatPercent(value, 1),
+    axis: value => formatPercent(value, 0),
     tooltip: value => formatPercent(value, 2),
   },
 }
