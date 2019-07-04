@@ -28,7 +28,7 @@ export const configurations = {
   [Status.SUCCEEDED]: {
     icon: props => <Done {...props} />,
     name: Status.SUCCEEDED,
-    title: 'Succeeded',
+    title: 'Finished',
   },
   [Status.TERMINATED]: {
     icon: props => <Terminate {...props} />,
