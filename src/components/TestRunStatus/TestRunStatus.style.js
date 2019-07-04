@@ -13,6 +13,9 @@ export default makeStyles(({ palette, spacing }) => ({
   [Status.FINISHED]: {
     background: palette.success.main,
   },
+  [Status.SUCCEEDED]: {
+    background: palette.success.main,
+  },
   [Status.TERMINATED]: {
     background: palette.error.main,
   },
