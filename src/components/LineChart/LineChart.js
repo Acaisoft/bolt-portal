@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import moment from 'moment'
 
 import filesize from 'filesize'
@@ -8,6 +8,10 @@ import ReactEcharts from 'echarts-for-react'
 import { withStyles } from '@material-ui/styles'
 
 const formatters = {
+  kBytes: {
+    axis: value => filesize(value, { round: 3 }),
+    tooltip: value => filesize(value, { round: 3 }),
+  },
   bytes: {
     axis: value => filesize(value, { round: 2, exponent: 3 }),
     tooltip: value => filesize(value, { round: 3 }),
@@ -41,6 +45,18 @@ function calculateTooltipPosition(mouse, params, dom, rect, size) {
 
 export function LineChart({ data, config, groupNames, theme }) {
   const { color, gridLine, font, tooltip } = theme.palette.chart
+
+  const maxValue = useMemo(() => {
+    const values = []
+
+    groupNames.forEach(groupName => {
+      data.forEach(datum => {
+        values.push(datum.groups[groupName])
+      })
+    })
+
+    return Math.max(...values)
+  }, [data, groupNames])
 
   const lineColors = [
     color.line.primary,
@@ -124,6 +140,7 @@ export function LineChart({ data, config, groupNames, theme }) {
       yAxis: {
         min: config.y_format === 'percent' ? 0 : null,
         max: config.y_format === 'percent' ? 1 : null,
+        interval: maxValue === 0 && config.y_format === 'number' ? 1 : null,
         type: 'value',
         splitLine: {
           lineStyle: {
@@ -156,7 +173,17 @@ export function LineChart({ data, config, groupNames, theme }) {
         }
       }),
     }
-  }, [data, config, font, gridLine, lineColors, tooltip, groupNames, formatTooltip])
+  }, [
+    data,
+    config,
+    font,
+    gridLine,
+    lineColors,
+    tooltip,
+    groupNames,
+    formatTooltip,
+    maxValue,
+  ])
 
   return (
     <ReactEcharts
