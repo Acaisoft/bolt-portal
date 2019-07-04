@@ -116,49 +116,59 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const [cleanupEl, cleanupRef] = useCallbackRef()
   const [finishEl, finishRef] = useCallbackRef()
 
-  let stagesData = {}
-  let isStarted = false
+  const isStarted = useMemo(() => {
+    if (
+      executionStatus === TestRunStageStatus.PENDING ||
+      (execution_stage_log && execution_stage_log.length !== 0)
+    ) {
+      return true
+    }
 
-  if (executionStatus === TestRunStageStatus.PENDING) {
-    isStarted = true
-  }
+    return false
+  }, [executionStatus, execution_stage_log])
 
-  if (execution_stage_log) {
-    isStarted = true
-    stagesData = getCurrentStatus(execution_stage_log, configuration)
-    stagesData[Stages.FINISHED] = getFinishStepStatus(stagesData, executionStatus)
+  const stagesData = useMemo(() => {
+    if (!execution_stage_log || execution_stage_log.length === 0) {
+      return {}
+    }
+
+    let tempData = getCurrentStatus(execution_stage_log, configuration)
+
+    tempData[Stages.FINISHED] = getFinishStepStatus(tempData, executionStatus)
 
     if (!configuration.has_post_test) {
-      stagesData[Stages.CLEAN_UP] = TestRunStageStatus.NOT_STARTED
-      if (stagesData[Stages.FINISHED] !== TestRunStageStatus.NOT_STARTED) {
-        stagesData[Stages.CLEAN_UP] = TestRunStageStatus.SUCCEEDED
+      tempData[Stages.CLEAN_UP] = TestRunStageStatus.NOT_STARTED
+      if (tempData[Stages.FINISHED] !== TestRunStageStatus.NOT_STARTED) {
+        tempData[Stages.CLEAN_UP] = TestRunStageStatus.SUCCEEDED
       }
     }
 
     if (
       isStarted &&
-      stagesData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.NOT_STARTED
+      tempData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.NOT_STARTED
     ) {
-      stagesData[Stages.DOWNLOADING_SOURCE] = TestRunStageStatus.RUNNING
+      tempData[Stages.DOWNLOADING_SOURCE] = TestRunStageStatus.RUNNING
     }
 
     if (
-      stagesData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.SUCCEEDED &&
-      stagesData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.NOT_STARTED
+      tempData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.SUCCEEDED &&
+      tempData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.NOT_STARTED
     ) {
-      stagesData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
+      tempData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
     }
 
-    if (stagesData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.SUCCEEDED) {
-      if (stagesData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED) {
-        stagesData[Stages.LOAD_TESTS] = TestRunStageStatus.RUNNING
+    if (tempData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.SUCCEEDED) {
+      if (tempData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED) {
+        tempData[Stages.LOAD_TESTS] = TestRunStageStatus.RUNNING
       }
 
-      if (stagesData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED) {
-        stagesData[Stages.MONITORING] = TestRunStageStatus.RUNNING
+      if (tempData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED) {
+        tempData[Stages.MONITORING] = TestRunStageStatus.RUNNING
       }
     }
-  }
+
+    return tempData
+  }, [execution_stage_log, configuration, executionStatus, isStarted])
 
   const options = useMemo(() => {
     const { line } = theme.palette.chart.graph
