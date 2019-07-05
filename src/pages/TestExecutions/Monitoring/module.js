@@ -4,14 +4,10 @@ export function getDataForChart(
   { node_name, x_data_key, y_data_key, y_label },
   monitoringData
 ) {
-  const ticksForNode = monitoringData.map(md => {
-    const parsedData = JSON.parse(md.data)
-
-    return {
-      timestamp: +new Date(parsedData.timestamp),
-      data: parsedData.data[node_name] || [],
-    }
-  })
+  const ticksForNode = monitoringData.map(md => ({
+    timestamp: +new Date(md.timestamp),
+    data: md.data.data[node_name] || [],
+  }))
 
   const groupNames = getUniqueGroupNames(ticksForNode, y_label)
   const emptyGroups = createEmptyGroups(groupNames)
