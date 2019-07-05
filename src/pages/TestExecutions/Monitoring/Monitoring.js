@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import moment from 'moment'
 
-import { useSubscription } from 'react-apollo-hooks'
+import { useQuery } from 'react-apollo-hooks'
 import { Grid, Paper } from '@material-ui/core'
 import {
   SectionHeader,
@@ -19,7 +19,7 @@ import { ExecutionActionsMenu } from '../components'
 import { MonitoringLineChart, MonitoringHeatmapChart } from './components'
 import { StatusGraph } from '../Details/components'
 import { getDataForChart } from './module.js'
-import { SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA } from './graphql'
+import { GET_METRICS_DATA_CONFIG, GET_METRICS_DATA } from './graphql'
 import useStyles from './Monitoring.styles'
 import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
 
@@ -29,26 +29,42 @@ function Monitoring({ match, history, location }) {
 
   const classes = useStyles()
 
-  const { data: { execution } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
+  const { data: { execution } = {}, loading, error } = useQuery(
+    GET_METRICS_DATA_CONFIG,
     {
+      fetchPolicy: 'cache-and-network',
       variables: { executionId },
     }
   )
 
+  const { data: { metrics_data_by_execution_id = {} } = {} } = useQuery(
+    GET_METRICS_DATA,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: { executionId },
+      pollInterval: 5000,
+    }
+  )
+
   const chartsWithData = useMemo(() => {
-    if (!execution || execution.execution_metrics_data.length === 0) {
+    if (
+      !execution ||
+      !execution.execution_metrics_metadata ||
+      !metrics_data_by_execution_id ||
+      !metrics_data_by_execution_id.metrics_data ||
+      metrics_data_by_execution_id.metrics_data.length === 0
+    ) {
       return []
     }
 
     const charts = execution.execution_metrics_metadata[0].chart_configuration.charts
-    const monitoringData = execution.execution_metrics_data
+    const monitoringData = metrics_data_by_execution_id.metrics_data
 
     return charts.map(chartConfig => ({
       chartConfig,
       ...getDataForChart(chartConfig, monitoringData),
     }))
-  }, [execution])
+  }, [execution, metrics_data_by_execution_id])
 
   const getTestDetailsUrl = useCallback(() => {
     return getUrl(routes.projects.configurations.executions.details, {
