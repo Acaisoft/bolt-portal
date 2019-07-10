@@ -61,14 +61,15 @@ export function makeRequestLink() {
   )
 }
 
-export function makeTransportLinks(getToken) {
+export function makeTransportLinks({ getFreshToken, getToken }) {
   const wsLink = new WebSocketLink({
     uri: Config.hasura.wsUri,
     options: {
       lazy: true,
       reconnect: true,
+      reconnectionAttempts: 3,
       connectionParams: async () => {
-        const token = await getToken()
+        const token = await getFreshToken(20)
 
         if (token) {
           return {

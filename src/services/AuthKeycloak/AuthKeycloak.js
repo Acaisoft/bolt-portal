@@ -5,6 +5,7 @@ export default class AuthKeycloak {
     this.client = KeycloakClient(config)
 
     this.getToken = this.getToken.bind(this)
+    this.getFreshToken = this.getFreshToken.bind(this)
   }
 
   logInfo(...args) {
@@ -13,6 +14,26 @@ export default class AuthKeycloak {
 
   logError(...args) {
     console.error('[AuthKeycloak]', ...args)
+  }
+
+  refreshToken(minValidity) {
+    return new Promise((resolve, reject) => {
+      this.client
+        .updateToken(minValidity)
+        .success(refreshed => {
+          this.logInfo('Token updated. Refreshed?', refreshed)
+          resolve()
+        })
+        .error(error => {
+          this.logError('Token update failed. Error:', error)
+          reject()
+        })
+    })
+  }
+
+  async getFreshToken(minValidity = 20) {
+    await this.refreshToken(minValidity)
+    return this.getToken()
   }
 
   getToken() {

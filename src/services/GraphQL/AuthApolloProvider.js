@@ -22,11 +22,14 @@ function AuthApolloProvider({ children }) {
         link: ApolloLink.from([
           makeErrorHandlingLink(),
           makeRequestLink(),
-          makeTransportLinks(auth.getToken),
+          makeTransportLinks({
+            getFreshToken: auth.getFreshToken,
+            getToken: auth.getToken,
+          }),
         ]),
         cache: makeCache(),
       }),
-    [auth.getToken]
+    [auth.getFreshToken, auth.getToken]
   )
 
   return (

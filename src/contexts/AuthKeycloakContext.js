@@ -16,7 +16,7 @@ function StatefulProvider({ children, client }) {
   // Initial setup
   useEffect(() => {
     client.registerOnTokenExpired({
-      minValidity: 5,
+      minValidity: -1, // Force instant token refresh
       onSuccess: refreshed => {
         if (refreshed) {
           setShouldSync(true)
@@ -43,7 +43,7 @@ function StatefulProvider({ children, client }) {
       async function synchronize() {
         setState({
           isAuthenticated: client.getIsAuthenticated(),
-          token: client.getToken(),
+          token: await client.getToken(),
           user: await client.getUser(),
         })
         setShouldSync(false)
@@ -73,6 +73,7 @@ function StatefulProvider({ children, client }) {
       login,
       logout,
       getToken: client.getToken,
+      getFreshToken: client.getFreshToken,
       ...state,
     }
   }, [shouldSync, isInitialized, client, state])
