@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import { useTheme } from '@material-ui/styles'
-import { SectionHeader } from '~components'
+import { SectionHeader, NoDataPlaceholder } from '~components'
 import { truncateStart } from '~utils/strings'
 import HeatmapChart from './HeatmapChart'
 
@@ -49,12 +49,17 @@ function MonitoringHeatmapChart({ data, config, groupNames }) {
   return (
     <React.Fragment>
       <SectionHeader title={config.title} size="small" marginBottom />
-      <HeatmapChart
-        activeColor={theme.palette.error.main}
-        options={options}
-        yFormat={config.y_format}
-        legendLabels={['not backpressed', 'backpressed']}
-      />
+
+      {groupNames.length > 0 ? (
+        <HeatmapChart
+          activeColor={theme.palette.error.main}
+          options={options}
+          yFormat={config.y_format}
+          legendLabels={['not backpressed', 'backpressed']}
+        />
+      ) : (
+        <NoDataPlaceholder title="No Data" height={300} />
+      )}
     </React.Fragment>
   )
 }

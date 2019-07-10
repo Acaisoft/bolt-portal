@@ -20,9 +20,11 @@ function NoDataPlaceholder({
       description={description}
       topImage={<NoDataPlaceholderImage height={78} />}
       actions={
-        <Button icon={Add} variant="contained" color="secondary" href={buttonUrl}>
-          {buttonLabel}
-        </Button>
+        Boolean(buttonLabel && buttonUrl) && (
+          <Button icon={Add} variant="contained" color="secondary" href={buttonUrl}>
+            {buttonLabel}
+          </Button>
+        )
       }
     />
   )

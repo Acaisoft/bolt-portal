@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { SectionHeader } from '~components'
+import { SectionHeader, NoDataPlaceholder } from '~components'
 
 import ChartFilter from '../ChartFilter'
 import LineChart from '~components/LineChart'
@@ -11,7 +11,6 @@ export function MonitoringLineChart({ config, data, groupNames }) {
 
   return (
     <React.Fragment>
-      {' '}
       <SectionHeader title={config.title} size="small" marginBottom>
         <ChartFilter
           groupNames={groupNames}
@@ -19,7 +18,12 @@ export function MonitoringLineChart({ config, data, groupNames }) {
           selected={selected}
         />
       </SectionHeader>
-      <LineChart data={data} config={config} groupNames={selected} />
+
+      {groupNames.length > 0 ? (
+        <LineChart data={data} config={config} groupNames={selected} />
+      ) : (
+        <NoDataPlaceholder title="No Data" height={300} />
+      )}
     </React.Fragment>
   )
 }
