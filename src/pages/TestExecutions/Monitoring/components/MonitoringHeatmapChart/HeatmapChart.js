@@ -4,44 +4,7 @@ import _ from 'lodash'
 
 import ReactEcharts from 'echarts-for-react'
 import { useTheme } from '@material-ui/styles'
-
-function formatTooltip(params, ticket, callback) {
-  const series = Array.isArray(params) ? params : [params]
-
-  return `
-<div style="padding: 16px;">
-  <div>${series[0].name}</div>
-  <ul style="margin: 8px; padding: 0; list-style: none">
-  ${series
-    .map((serie, index) => {
-      return `
-  <li style="margin: 0px; display: flex; flex-wrap: wrap; flex-grow: 1; flex-basis: 30%; align-items: center">
-    <div style="margin-right: 4px;">${serie.marker}</div>
-    <div style="font-weight: bold;">${serie.seriesName}</div>
-    <div style="flex-basis: 100%; margin-left: 17px">${serie.value[2]}</div>
-  </li>
-    `
-    })
-    .join('\n')}
-  </ul>
-</div>
-  `
-}
-
-function calculateTooltipPosition(mouse, params, dom, rect, size) {
-  const [offsetX, offsetY] = [10, 10]
-
-  const [mouseX, mouseY] = mouse
-  const [viewX, viewY] = size.viewSize
-  const { offsetWidth: width, offsetHeight: height } = dom
-  const fitsX = mouseX + width < viewX
-  const fitsY = mouseY + height < viewY
-
-  return {
-    top: fitsY ? mouseY + offsetY : mouseY - height - offsetY,
-    left: fitsX ? mouseX + offsetX : mouseX - width - offsetX,
-  }
-}
+import { TooltipBuilder } from '~utils/echartUtils'
 
 function getVisualMapForFormat({ yFormat, activeColor, theme, legendLabels }) {
   const {
@@ -94,16 +57,15 @@ function HeatmapChart({
     const defaultOptions = {
       backgroundColor: 'transparent',
       tooltip: {
-        show: true,
         trigger: 'axis',
         backgroundColor: tooltip.fill,
-        position: calculateTooltipPosition,
         textStyle: {
           color: font.color,
           fontFamily: font.fontFamily,
         },
-        formatter: formatTooltip,
-        extraCssText: 'border-radius: 0;',
+        formatter: data => {
+          return new TooltipBuilder(data).getTooltipForMonitoring('heatmap')
+        },
       },
       textStyle: {
         color: font.color,

@@ -1,85 +1,66 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import {
-  BarChart,
-  Bar,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
-
 import { withStyles } from '@material-ui/core'
-import { ChartTooltip } from '~components'
+import { TooltipBuilder } from '~utils/echartUtils'
 import { formatThousands } from '~utils/numbers'
+import { DefaultChart } from '~components'
 
 const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 
-export function ResultsPerEndpointChart({ data, execution, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
+export function ResultsPerEndpointChart({ data, theme }) {
+  const { color } = theme.palette.chart
 
-  return (
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart
-        data={data}
-        margin={{
-          top: 10,
-          bottom: 30,
-          right: 0,
-          left: 70,
-        }}
-        layout="vertical"
-        barCategoryGap="20%"
-        barGap={5}
-        barSize={20}
-      >
-        <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
-        <XAxis
-          axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          scale="linear"
-          type="number"
-          tick={{ ...font }}
-          tickFormatter={formatThousands}
-        />
-        <YAxis
-          axisLine={{ strokeDasharray: gridLine.dash }}
-          dataKey="name"
-          name="Name"
-          type="category"
-          tickFormatter={formatLabel}
-          tick={{ width: 140, ...font }}
-          domain={['dataMin', 'dataMax']}
-        />
+  const barColors = [color.area.error, color.area.success]
 
-        <Tooltip
-          content={<ChartTooltip />}
-          isAnimationActive={false}
-          cursor={false}
-          formatter={formatThousands}
-        />
-
-        <Bar
-          {...font}
-          stroke={color.area.error}
-          fill={color.area.error}
-          dataKey="num_failures"
-          name="Fail"
-          stackId={1}
-        />
-        <Bar
-          {...font}
-          stroke={color.area.success}
-          fill={color.area.success}
-          dataKey="num_successes"
-          name="Success"
-          stackId={1}
-        />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+  const options = useMemo(() => {
+    return {
+      tooltip: {
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: data => {
+          return new TooltipBuilder(data)
+            .withDefaultHeader()
+            .withNumericDataLine('Fail')
+            .withNumericDataLine('Success')
+            .getHtml()
+        },
+      },
+      color: barColors,
+      xAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: value => formatThousands(value),
+        },
+      },
+      yAxis: {
+        type: 'category',
+        data: data.map(d => d.name),
+        axisLabel: {
+          formatter: formatLabel,
+        },
+      },
+      series: [
+        {
+          name: 'Fail',
+          type: 'bar',
+          stack: 'group',
+          barWidth: 20,
+          data: data.map(datum => datum.num_failures),
+        },
+        {
+          name: 'Success',
+          type: 'bar',
+          stack: 'group',
+          barWidth: 20,
+          data: data.map(datum => datum.num_successes),
+        },
+      ],
+    }
+  }, [data, barColors])
+  return <DefaultChart options={options} />
 }
 ResultsPerEndpointChart.propTypes = {
   data: PropTypes.array,

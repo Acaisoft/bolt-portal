@@ -1,6 +1,5 @@
-import React, { useState, useMemo } from 'react'
-import moment from 'moment'
-
+import echarts from 'echarts'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSubscription } from 'react-apollo-hooks'
 import { Grid, Paper } from '@material-ui/core'
 import {
@@ -20,7 +19,12 @@ function ResultsPerTick({ classes, execution }) {
   const [isZoomed, setIsZoomed] = useState(false)
 
   const { resultsPerTick, loading, error } = useResultsPerTickQuery(execution.id)
-  const domainX = useExecutionTimeDomain(execution)
+
+  const syncGroup = 'chartsGroup'
+
+  useEffect(() => {
+    echarts.connect(syncGroup)
+  }, [])
 
   if (loading || error || resultsPerTick.length === 0) {
     return (
@@ -57,12 +61,7 @@ function ResultsPerTick({ classes, execution }) {
             />
           </SectionHeader>
           <div className={classes.chartContainer}>
-            <RequestsChart
-              domainX={domainX}
-              execution={execution}
-              data={resultsPerTick}
-              syncId="sync-chart"
-            />
+            <RequestsChart data={resultsPerTick} syncGroup={syncGroup} />
           </div>
         </Paper>
       </Grid>
@@ -80,12 +79,7 @@ function ResultsPerTick({ classes, execution }) {
             />
           </SectionHeader>
           <div className={classes.chartContainer}>
-            <ResponseTimeChart
-              domainX={domainX}
-              execution={execution}
-              data={resultsPerTick}
-              syncId="sync-chart"
-            />
+            <ResponseTimeChart data={resultsPerTick} syncGroup={syncGroup} />
           </div>
         </Paper>
       </Grid>
@@ -103,12 +97,7 @@ function ResultsPerTick({ classes, execution }) {
             />
           </SectionHeader>
           <div className={classes.chartContainer}>
-            <UsersSpawnChart
-              domainX={domainX}
-              execution={execution}
-              data={resultsPerTick}
-              syncId="sync-chart"
-            />
+            <UsersSpawnChart data={resultsPerTick} syncGroup={syncGroup} />
           </div>
         </Paper>
       </Grid>
@@ -139,27 +128,6 @@ function useResultsPerTickQuery(executionId) {
     loading,
     error,
   }
-}
-
-function useExecutionTimeDomain(execution) {
-  return useMemo(() => {
-    if (
-      !execution ||
-      execution.configuration.configuration_parameters.length === 0
-    ) {
-      return undefined
-    }
-
-    const executionDuration = +execution.configuration.configuration_parameters[0]
-      .value
-
-    const startTimestamp = new Date(execution.start_locust)
-    const estimatedEndTimestamp = moment(startTimestamp)
-      .add(executionDuration, 'seconds')
-      .toDate()
-
-    return [+startTimestamp, +estimatedEndTimestamp]
-  }, [execution])
 }
 
 export default ResultsPerTick

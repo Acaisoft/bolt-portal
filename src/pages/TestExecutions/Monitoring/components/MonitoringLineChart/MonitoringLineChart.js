@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { SectionHeader, NoDataPlaceholder } from '~components'
 
 import ChartFilter from '../ChartFilter'
-import LineChart from '~components/LineChart'
+import LineChart from './LineChart'
 
 export function MonitoringLineChart({ config, data, groupNames }) {
   const [selected, setSelected] = useState([...groupNames])

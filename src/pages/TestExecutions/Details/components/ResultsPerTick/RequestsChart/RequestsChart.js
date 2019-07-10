@@ -1,91 +1,62 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import {
-  AreaChart,
-  Area,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
 
 import { withStyles } from '@material-ui/core'
-import { ChartTooltip } from '~components'
 
-import { Chart } from '~config/constants'
+import { TooltipBuilder } from '~utils/echartUtils'
 import { formatThousands } from '~utils/numbers'
+import { DefaultChart } from '~components'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
-export function RequestsChart({ data, execution, syncId, theme, domainX }) {
-  const { color, gridLine, font } = theme.palette.chart
+export function RequestsChart({ data, theme, syncGroup }) {
+  const { color } = theme.palette.chart
+  const areaColors = [color.area.error, color.area.success]
+  const options = React.useMemo(() => {
+    return {
+      tooltip: {
+        formatter: data => {
+          return new TooltipBuilder(data)
+            .withDefaultHeader()
+            .withNumericDataLine('Fail')
+            .withNumericDataLine('Success')
+            .getHtml()
+        },
+      },
+      legend: {
+        show: true,
+        data: ['Fail', 'Success'],
+      },
+      color: areaColors,
+      xAxis: {
+        type: 'category',
+        data: data.map(d => formatTimestamp(d.timestamp)),
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: value => formatThousands(value),
+        },
+      },
+      series: [
+        {
+          name: 'Fail',
+          type: 'line',
+          areaStyle: {},
+          data: data.map(datum => datum.number_of_fails),
+        },
+        {
+          name: 'Success',
+          type: 'line',
+          areaStyle: {},
+          data: data.map(datum => datum.number_of_successes),
+        },
+      ],
+    }
+  }, [data, areaColors])
 
-  return (
-    <ResponsiveContainer width="100%" height={Chart.HEIGHT}>
-      <AreaChart
-        style={{ ...font }}
-        data={data}
-        margin={{
-          top: 10,
-          bottom: 30,
-          right: 0,
-          left: 10,
-        }}
-        syncId={syncId}
-        reverseStackOrder
-      >
-        <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
-        <XAxis
-          axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          dataKey="timestamp"
-          name="Timestamp"
-          tickFormatter={formatTimestamp}
-          domain={domainX}
-          type="number"
-          tick={{ ...font }}
-        />
-        <YAxis
-          axisLine={{ strokeDasharray: gridLine.dash }}
-          tick={{ ...font }}
-          tickFormatter={formatThousands}
-          domain={['dataMin', 'dataMax']}
-        />
-        <Legend
-          verticalAlign="bottom"
-          iconType="square"
-          wrapperStyle={{ paddingTop: 20 }}
-        />
-
-        <Tooltip
-          content={<ChartTooltip />}
-          isAnimationActive={false}
-          labelFormatter={formatTimestamp}
-          formatter={formatThousands}
-        />
-        <Area
-          type="linear"
-          stroke={color.area.error}
-          fill={color.area.error}
-          dataKey="number_of_fails"
-          name="Fail"
-          stackId={1}
-          isAnimationActive={false}
-        />
-        <Area
-          type="linear"
-          stroke={color.area.success}
-          fill={color.area.success}
-          dataKey="number_of_successes"
-          name="Success"
-          stackId={1}
-          isAnimationActive={false}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
-  )
+  return <DefaultChart options={options} syncGroup={syncGroup} />
 }
 RequestsChart.propTypes = {
   data: PropTypes.array,

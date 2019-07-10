@@ -1,16 +1,11 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { withStyles } from '@material-ui/core'
-import { ChartTooltip } from '~components'
-
-import { formatThousands } from '~utils/numbers'
 import { formatScaledDuration } from '~utils/datetime'
+import { TooltipBuilder } from '~utils/echartUtils'
+import { DefaultChart } from '~components'
 
-export function TimeDistributionChart({ data, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
-
+export function TimeDistributionChart({ data }) {
   const dataAsArray = useMemo(() => {
     const percentiles = [50, 66, 75, 80, 90, 95, 99, 100]
     return percentiles.map(percentile => ({
@@ -19,58 +14,48 @@ export function TimeDistributionChart({ data, theme }) {
     }))
   }, [data])
 
-  return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart
-        data={dataAsArray}
-        margin={{
-          top: 10,
-          bottom: 0,
-          right: 0,
-          left: 60,
-        }}
-        barCategoryGap="20%"
-        barGap={5}
-        barSize={20}
-      >
-        <XAxis
-          axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          dataKey="percentile"
-          type="category"
-          tick={{ ...font }}
-          tickFormatter={value => `${value}%`}
-          name="Time Distribution"
-        />
-        <YAxis
-          axisLine={{ strokeDasharray: gridLine.dash }}
-          dataKey="value"
-          name="Value"
-          tick={{ width: 130, ...font }}
-          tickFormatter={formatScaledDuration}
-        />
+  const options = useMemo(() => {
+    return {
+      tooltip: {
+        axisPointer: {
+          type: 'shadow',
+        },
 
-        <Tooltip
-          content={<ChartTooltip />}
-          isAnimationActive={false}
-          cursor={false}
-          labelFormatter={label => `${label}th percentile`}
-          formatter={value => `${formatThousands(value)} ms`}
-        />
-
-        <Bar
-          {...font}
-          stroke={color.area.primary}
-          fill={color.area.primary}
-          dataKey="value"
-          name="Time"
-        />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+        formatter: data => {
+          return new TooltipBuilder(data)
+            .withDefaultHeader()
+            .withDurationLine('Time')
+            .getHtml()
+        },
+      },
+      xAxis: {
+        boundaryGap: true,
+        type: 'category',
+        data: dataAsArray.map(d => d.percentile),
+        axisLabel: {
+          formatter: value => `${value}%`,
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: formatScaledDuration,
+        },
+      },
+      series: [
+        {
+          name: 'Time',
+          type: 'bar',
+          barWidth: 20,
+          data: dataAsArray.map(datum => datum.value),
+        },
+      ],
+    }
+  }, [dataAsArray])
+  return <DefaultChart options={options} />
 }
 TimeDistributionChart.propTypes = {
   data: PropTypes.object,
-  theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(TimeDistributionChart)
+export default TimeDistributionChart

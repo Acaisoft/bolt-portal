@@ -2,80 +2,54 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import {
-  BarChart,
-  Bar,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
-
-import { withStyles } from '@material-ui/core'
-import { ChartTooltip } from '~components'
+import { TooltipBuilder } from '~utils/echartUtils'
 import { formatThousands } from '~utils/numbers'
+import { DefaultChart } from '~components'
 
 const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 
-export function RequestsPerSecondChart({ data, execution, theme }) {
-  const { color, gridLine, font } = theme.palette.chart
-
-  return (
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart
-        style={{ ...font }}
-        data={data}
-        margin={{
-          top: 10,
-          bottom: 30,
-          right: 0,
-          left: 70,
-        }}
-        layout="vertical"
-        barCategoryGap="20%"
-        barGap={5}
-        barSize={20}
-      >
-        <CartesianGrid strokeDasharray={gridLine.dash} stroke={gridLine.color} />
-        <XAxis
-          axisLine={{ strokeDasharray: gridLine.dash, stroke: gridLine.color }}
-          scale="linear"
-          type="number"
-          tick={{ ...font }}
-          tickFormatter={formatThousands}
-        />
-        <YAxis
-          axisLine={{ strokeDasharray: gridLine.dash }}
-          dataKey="name"
-          name="Name"
-          type="category"
-          tickFormatter={formatLabel}
-          tick={{ width: 140, ...font }}
-        />
-
-        <Tooltip
-          content={<ChartTooltip />}
-          isAnimationActive={false}
-          cursor={false}
-          formatter={formatThousands}
-        />
-
-        <Bar
-          stroke={color.area.primary}
-          fill={color.area.primary}
-          dataKey="requests_per_second"
-          name="Requests/s"
-          stackId={1}
-        />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+export function RequestsPerSecondChart({ data }) {
+  const options = React.useMemo(() => {
+    return {
+      tooltip: {
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: data => {
+          return new TooltipBuilder(data)
+            .withDefaultHeader()
+            .withNumericDataLine('Requests/s')
+            .getHtml()
+        },
+      },
+      xAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: value => formatThousands(value),
+        },
+      },
+      yAxis: {
+        type: 'category',
+        data: data.map(d => d.name),
+        axisLabel: {
+          formatter: formatLabel,
+        },
+      },
+      series: [
+        {
+          name: 'Requests/s',
+          type: 'bar',
+          barWidth: 20,
+          data: data.map(datum => Math.round(datum.requests_per_second)),
+        },
+      ],
+    }
+  }, [data])
+  return <DefaultChart options={options} />
 }
 RequestsPerSecondChart.propTypes = {
   data: PropTypes.array,
   execution: PropTypes.object,
-  theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(RequestsPerSecondChart)
+export default RequestsPerSecondChart
