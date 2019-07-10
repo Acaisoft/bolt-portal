@@ -14,21 +14,8 @@ describe('module:', () => {
       }
       const exampleData = [
         {
-          timestamp: 1234,
-          data: {
-            data: {
-              testNodeName: [
-                {
-                  testValue: 1,
-                  testLabel: 'label1',
-                },
-                {
-                  testValue: 2,
-                  testLabel: 'label2',
-                },
-              ],
-            },
-          },
+          data:
+            '{"timestamp":1234,"data":{"testNodeName":[{"testValue":1,"testLabel":"label1"},{"testValue":2,"testLabel":"label2"}]}}',
         },
       ]
       expect(getDataForChart(exampleConfig, exampleData)).toEqual({
