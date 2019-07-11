@@ -20,7 +20,7 @@ function ChartFilter({ groupNames, selected, onChange }) {
         value={selected}
         onChange={onChange}
         renderValue={selected =>
-          `${selected.length} line${selected.length !== 1 ? 's' : ''} selected`
+          `${selected.length} serie${selected.length !== 1 ? 's' : ''} selected`
         }
         MenuProps={{
           MenuListProps: {
