@@ -38,6 +38,7 @@ export function ResponseTimeChart({ data, syncGroup }) {
         {
           name: 'Avg. response time',
           type: 'line',
+          symbol: 'none',
           data: data.map(datum => datum.average_response_time),
         },
       ],

@@ -93,6 +93,7 @@ function DefaultChart({ options: overridingOptions, syncGroup }) {
     <ReactEcharts
       ref={chartRef}
       option={options}
+      notMerge={true}
       opts={{
         renderer: 'canvas',
         width: 'auto',

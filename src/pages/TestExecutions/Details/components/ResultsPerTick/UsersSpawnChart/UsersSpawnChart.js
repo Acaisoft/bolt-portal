@@ -37,6 +37,7 @@ export function UsersSpawnChart({ data, syncGroup }) {
         {
           name: 'Users Spawn',
           type: 'line',
+          symbol: 'none',
           data: data.map(datum => datum.number_of_users),
         },
       ],

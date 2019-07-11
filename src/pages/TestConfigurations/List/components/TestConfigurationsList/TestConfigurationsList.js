@@ -165,7 +165,6 @@ export function TestConfigurationsList({
                   value={successRate * 100}
                   size={20}
                   variant="multicolor"
-                  innerRadiusMultiplier={0.15}
                 />
 
                 <span className={classes.rateMeter}>
