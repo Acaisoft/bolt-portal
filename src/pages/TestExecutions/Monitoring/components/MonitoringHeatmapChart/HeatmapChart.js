@@ -20,7 +20,7 @@ function getVisualMapForFormat({ yFormat, activeColor, theme, legendLabels }) {
       calculable: false,
       orient: 'horizontal',
       left: 'center',
-      bottom: '15%',
+      bottom: '5%',
       splitNumber: 2,
       textStyle: font.color,
       pieces: [
@@ -72,8 +72,10 @@ function HeatmapChart({
         fontFamily: font.fontFamily,
       },
       grid: {
-        height: '50%',
-        y: '10%',
+        left: '3%',
+        right: '4%',
+        top: '3%',
+        containLabel: true,
       },
       visualMap: getVisualMapForFormat({
         yFormat,
@@ -81,20 +83,6 @@ function HeatmapChart({
         theme,
         legendLabels,
       }),
-      dataZoom: [
-        {
-          type: 'slider',
-          show: true,
-          borderColor: slider.border,
-          fillerColor: slider.background,
-          handleStyle: {
-            borderColor: slider.border,
-          },
-        },
-        {
-          type: 'inside',
-        },
-      ],
     }
 
     return _.merge(defaultOptions, overridingOptions)
