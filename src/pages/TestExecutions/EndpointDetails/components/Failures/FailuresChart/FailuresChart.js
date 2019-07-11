@@ -1,145 +1,93 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { ResponsiveContainer, PieChart, Pie, Sector, Cell, Text } from 'recharts'
 import { withStyles } from '@material-ui/core'
 
-import { formatThousands, formatPercent } from '~utils/numbers'
+import ReactEcharts from 'echarts-for-react'
+import { TooltipBuilder } from '~utils/echartUtils'
 
-const renderActiveShape = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  startAngle,
-  endAngle,
-  fill,
-  payload,
-  percent,
-  value,
-  theme,
-  total,
-  activeColor,
-}) => {
-  const RADIAN = Math.PI / 180
-  const sin = Math.sin(-RADIAN * midAngle)
-  const cos = Math.cos(-RADIAN * midAngle)
-  const sx = cx + (outerRadius + 10) * cos
-  const sy = cy + (outerRadius + 10) * sin
-  const mx = cx + (outerRadius + 30) * cos
-  const my = cy + (outerRadius + 30) * sin
-  const ex = mx + (cos >= 0 ? 1 : -1) * 12
-  const ey = my
-  const textAnchor = cos >= 0 ? 'start' : 'end'
-
-  const { gridLine, font } = theme.palette.chart
-
-  return (
-    <g>
-      <Text
-        x={cx}
-        y={cy}
-        textAnchor="middle"
-        verticalAnchor="middle"
-        width={100}
-        {...font}
-      >
-        {`${formatThousands(payload.number_of_occurrences)}\n/ ${formatThousands(
-          total
-        )}\n${formatPercent(percent)}`}
-      </Text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={activeColor}
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 10}
-        outerRadius={outerRadius + 10}
-        stroke={gridLine.color}
-        strokeWidth={3}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={gridLine.color}
-        fill="none"
-      />
-      <circle cx={sx} cy={sy} r={4} fill={activeColor} stroke="none" />
-      <Text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        width={35}
-        {...font}
-      >
-        {payload.exception_data}
-      </Text>
-    </g>
-  )
+function formatLabel(params) {
+  const label = _.truncate(params.name, { length: 20, omission: '...' })
+  return `${label}`
 }
 
 export function FailuresChart({ data = [], theme }) {
-  const { color } = theme.palette.chart
-
-  const [activeIndex, setActiveIndex] = useState(0)
-  const onPieEnter = useCallback((data, index) => setActiveIndex(index), [])
+  const { color, gridLine, tooltip, font } = theme.palette.chart
 
   const totalErrors = useMemo(() => _.sumBy(data, 'number_of_occurrences'), [data])
 
-  const getColor = useCallback(
-    index => {
-      const colors = [color.area.secondary]
-      return colors[index % colors.length]
-    },
-    [color.area.secondary]
-  )
+  const colors = [color.area.secondary, color.line.primary]
 
-  const activeShapeRenderer = useCallback(
-    props =>
-      renderActiveShape({
-        ...props,
-        theme,
-        total: totalErrors,
-        activeColor: getColor(activeIndex),
-      }),
-    [activeIndex, getColor, theme, totalErrors]
-  )
+  const options = useMemo(() => {
+    return {
+      title: {
+        top: 'center',
+        left: 'center',
+        text: `Total: ${totalErrors}`,
+        textStyle: {
+          color: font.color,
+          fontFamily: font.fontFamily,
+        },
+      },
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: tooltip.fill,
+        textStyle: {
+          color: font.color,
+          fontFamily: font.fontFamily,
+        },
+        formatter: data => {
+          return new TooltipBuilder(data).getTooltipForFailuresPieChart(totalErrors)
+        },
+      },
+      grid: {
+        containLabel: true,
+      },
+      color: colors,
+      series: [
+        {
+          name: 'Failures',
+          type: 'pie',
+          radius: ['60%', '70%'],
+          roseType: 'radius',
+          hoverAnimation: false,
+          label: {
+            formatter: formatLabel,
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                color: gridLine.color,
+              },
+            },
+          },
+          itemStyle: {
+            normal: {
+              color: color.area.secondary,
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+          data: data.map(datum => ({
+            name: datum.exception_data,
+            value: datum.number_of_occurrences,
+          })),
+        },
+      ],
+    }
+  }, [data, color, colors, font, gridLine, tooltip, totalErrors])
 
   return (
-    <div style={{ width: '100%', height: 300 }}>
-      <ResponsiveContainer>
-        <PieChart margin={{ top: 20 }}>
-          <Pie
-            activeIndex={activeIndex}
-            activeShape={activeShapeRenderer}
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius="60%"
-            outerRadius="70%"
-            stroke="transparent"
-            dataKey="number_of_occurrences"
-            nameKey="exception_data"
-            onMouseEnter={onPieEnter}
-            paddingAngle={2}
-          >
-            {data.map((entry, index) => (
-              <Cell key={entry.id} fill={getColor(index)} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+    <ReactEcharts
+      option={options}
+      notMerge={true}
+      opts={{
+        renderer: 'canvas',
+        width: 'auto',
+        height: 'auto',
+      }}
+    />
   )
 }
 FailuresChart.propTypes = {
