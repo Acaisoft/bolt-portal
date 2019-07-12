@@ -41,10 +41,10 @@ export function LineChart({ data, config, groupNames }) {
         data: data.map(d => formatTimestamp(d.timestamp)),
       },
       yAxis: {
-        min: config.y_format === 'percent' ? 0 : null,
-        max: config.y_format === 'percent' ? 1 : null,
+        min: config.min ? config.min : config.y_format === 'percent' ? 0 : null,
+        max: config.max ? config.max : config.y_format === 'percent' ? 1 : null,
         interval: maxValue === 0 && config.y_format === 'number' ? 1 : null,
-        type: 'value',
+        type: config.scale ? config.scale : 'value',
         axisLabel: {
           formatter: formatters[config.y_format],
         },
