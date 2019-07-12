@@ -51,7 +51,7 @@ function HeatmapChart({
 
   const options = React.useMemo(() => {
     const {
-      chart: { font, slider, tooltip },
+      chart: { font, tooltip },
     } = theme.palette
 
     const defaultOptions = {
