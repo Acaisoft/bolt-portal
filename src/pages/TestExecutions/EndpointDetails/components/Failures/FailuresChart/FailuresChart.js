@@ -72,6 +72,17 @@ export function FailuresChart({ data = [], theme }) {
           color: font.color,
           fontFamily: font.fontFamily,
         },
+        tooltip: {
+          show: true,
+          backgroundColor: tooltip.fill,
+          textStyle: {
+            color: font.color,
+            fontFamily: font.fontFamily,
+          },
+          formatter: data => {
+            return new TooltipBuilder(data).getTooltipForFailuresPieChartLegend()
+          },
+        },
       },
       tooltip: {
         trigger: 'item',

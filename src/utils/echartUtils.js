@@ -102,7 +102,7 @@ export class TooltipBuilder {
     <div style="padding: 16px; overflow: hidden; max-width: 400px; display: flex">
        <div style="margin-right: 4px;">${this.series.marker}</div>
        <div>
-         <div style="font-weight: bold; white-space: normal">${
+         <div style="font-weight: bold; white-space: normal; word-break: break-all">${
            this.series.data.name
          }</div>
       <div style="color: #fff; font-weight: 600;">${
@@ -114,6 +114,19 @@ export class TooltipBuilder {
   </div>
     `
   }
+
+  getTooltipForFailuresPieChartLegend(totalErrors) {
+    return `
+    <div style="padding: 16px; overflow: hidden; max-width: 400px; display: flex">
+       <div>
+         <div style="font-weight: bold; white-space: normal; word-break: break-all">${
+           this.series.name
+         }</div>
+
+  </div>
+    `
+  }
+
   getHtml() {
     return this.html
   }
