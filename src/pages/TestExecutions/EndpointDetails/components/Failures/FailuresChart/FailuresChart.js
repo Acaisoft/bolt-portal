@@ -9,7 +9,7 @@ import { TooltipBuilder } from '~utils/echartUtils'
 import ReactResizeDetector from 'react-resize-detector'
 
 export function FailuresChart({ data = [], theme }) {
-  const { color, gridLine, tooltip, font } = theme.palette.chart
+  const { color, tooltip, font } = theme.palette.chart
 
   const totalErrors = useMemo(() => _.sumBy(data, 'number_of_occurrences'), [data])
 
@@ -17,15 +17,15 @@ export function FailuresChart({ data = [], theme }) {
 
   const getTrimLength = useCallback(width => {
     const rangeOfTrim = [
-      [700, 45],
-      [600, 35],
-      [500, 25],
-      [450, 20],
-      [400, 15],
-      [350, 10],
-      [320, 8],
-      [300, 7],
-      [250, 5],
+      [750, 75],
+      [700, 65],
+      [600, 55],
+      [500, 40],
+      [450, 30],
+      [400, 20],
+      [350, 15],
+      [300, 15],
+      [250, 10],
     ]
 
     for (let [step, trim] of rangeOfTrim) {
@@ -35,17 +35,6 @@ export function FailuresChart({ data = [], theme }) {
       }
     }
   }, [])
-
-  const formatLabel = useCallback(
-    params => {
-      const label = _.truncate(params.name, {
-        length: trimLength,
-        omission: '...',
-      })
-      return `${label}`
-    },
-    [trimLength]
-  )
 
   const colors = [
     color.area.secondary,
@@ -64,8 +53,21 @@ export function FailuresChart({ data = [], theme }) {
     return {
       title: {
         top: 'center',
-        left: 'center',
+        left: 70,
         text: `Total: ${totalErrors}`,
+        textStyle: {
+          color: font.color,
+          fontFamily: font.fontFamily,
+        },
+      },
+      legend: {
+        type: 'scroll',
+        orient: 'vertical',
+        right: 0,
+        top: 20,
+        bottom: 20,
+        formatter: value =>
+          _.truncate(value, { length: trimLength, omission: '...' }),
         textStyle: {
           color: font.color,
           fontFamily: font.fontFamily,
@@ -87,18 +89,19 @@ export function FailuresChart({ data = [], theme }) {
         {
           name: 'Failures',
           type: 'pie',
-          radius: ['60%', '70%'],
-          hoverAnimation: false,
           label: {
-            formatter: formatLabel,
+            normal: {
+              show: false,
+            },
           },
           labelLine: {
             normal: {
-              lineStyle: {
-                color: gridLine.color,
-              },
+              show: false,
             },
           },
+          hoverAnimation: false,
+          radius: ['50%', '60%'],
+          center: [120, '50%'],
           data: data.map(datum => ({
             name: datum.exception_data,
             value: datum.number_of_occurrences,
@@ -106,7 +109,7 @@ export function FailuresChart({ data = [], theme }) {
         },
       ],
     }
-  }, [data, colors, font, gridLine, tooltip, totalErrors, formatLabel])
+  }, [data, colors, font, tooltip, totalErrors, trimLength])
 
   return (
     <React.Fragment>
