@@ -16,7 +16,17 @@ export function FailuresChart({ data = [], theme }) {
   const [trimLength, setTrimLength] = useState()
 
   const getTrimLength = useCallback(width => {
-    const rangeOfTrim = [[700, 40], [500, 20], [450, 15], [350, 10], [300, 5]]
+    const rangeOfTrim = [
+      [700, 45],
+      [600, 35],
+      [500, 25],
+      [450, 20],
+      [400, 15],
+      [350, 10],
+      [320, 8],
+      [300, 7],
+      [250, 5],
+    ]
 
     for (let [step, trim] of rangeOfTrim) {
       if (width >= step) {
