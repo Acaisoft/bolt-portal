@@ -4,7 +4,6 @@ import moment from 'moment'
 
 import { useTheme } from '@material-ui/styles'
 import { SectionHeader, NoDataPlaceholder } from '~components'
-import { truncateStart } from '~utils/strings'
 import HeatmapChart from './HeatmapChart'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
@@ -22,8 +21,7 @@ function MonitoringHeatmapChart({ data, config, groupNames }) {
         type: 'category',
         data: groupNames,
         axisLabel: {
-          formatter: value => truncateStart(value, { length: 12, omission: '...' }),
-          width: 90,
+          formatter: value => value.split('.').pop(),
         },
       },
       series: groupNames.map((groupName, groupIndex) => {
