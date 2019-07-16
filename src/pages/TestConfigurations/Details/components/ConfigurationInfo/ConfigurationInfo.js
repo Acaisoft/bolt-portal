@@ -47,7 +47,14 @@ export function ConfigurationInfo({
     mutation: deleteConfiguration,
   } = useConfigurationDelete(configuration.id)
 
-  const handleClone = useConfigurationClone({ onClone })
+  const { loading: isCloning, mutation: cloneConfiguration } = useConfigurationClone(
+    configuration.id
+  )
+
+  const handleClone = useCallback(async () => {
+    const { errorMessage } = await cloneConfiguration()
+    onClone(errorMessage)
+  }, [cloneConfiguration, onClone])
 
   const handleRun = useCallback(
     async ({ coldStart = false }) => {
@@ -120,6 +127,7 @@ export function ConfigurationInfo({
             icon={FileCopyOutlined}
             variant="outlined"
             color="default"
+            disabled={isCloning}
             onClick={() => handleClone(configuration.id)}
           >
             <Typography variant="body2">Clone</Typography>
