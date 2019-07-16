@@ -26,10 +26,12 @@ import {
   SUBSCRIBE_TO_TEST_CONFIGURATION_AGGREGATE_LIST_ITEM,
 } from './graphql'
 import useStyles from './TestConfigurationsList.styles'
+import ConfigurationActionsMenu from './ConfigurationActionsMenu'
 
 export function TestConfigurationsList({
   getTestConfigurationCreateUrl = () => {},
   getTestConfigurationDetailsUrl = () => {},
+  getTestConfigurationEditUrl = () => {},
   onRun = () => {},
   projectId,
 }) {
@@ -217,6 +219,17 @@ export function TestConfigurationsList({
             )
           }}
           title="Actions"
+        />
+        <DataTable.Column
+          key="actionsMenu"
+          render={configuration => {
+            return (
+              <ConfigurationActionsMenu
+                configuration={configuration}
+                editUrl={getTestConfigurationEditUrl(configuration)}
+              />
+            )
+          }}
         />
       </DataTable>
     </React.Fragment>

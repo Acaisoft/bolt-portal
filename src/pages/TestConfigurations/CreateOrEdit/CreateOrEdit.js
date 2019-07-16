@@ -6,9 +6,12 @@ import { getUrl } from '~utils/router'
 import routes from '~config/routes'
 import { useNotification } from '~hooks'
 
-export function CreateOrEdit({ history, match }) {
+export function CreateOrEdit({ history, match, location }) {
   const { projectId, configurationId } = match.params
   const mode = configurationId ? 'edit' : 'create'
+
+  const urlParams = new URLSearchParams(location.search)
+  const targetLocation = urlParams.get('from')
 
   const goToList = useCallback(() => {
     history.push(getUrl(routes.projects.configurations.list, { ...match.params }))
@@ -19,12 +22,12 @@ export function CreateOrEdit({ history, match }) {
   }, [history, match.params])
 
   const handleCancel = useCallback(() => {
-    if (configurationId) {
-      goToDetails()
-    } else {
+    if (targetLocation === 'list' || !configurationId) {
       goToList()
+    } else {
+      goToDetails()
     }
-  }, [configurationId, goToDetails, goToList])
+  }, [configurationId, goToDetails, goToList, targetLocation])
 
   const notify = useNotification()
 

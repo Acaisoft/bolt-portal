@@ -32,3 +32,19 @@ export function useConfigurationDelete(configurationId) {
 
   return { loading, mutation, error }
 }
+
+const CLONE_SCENARIO = gql`
+  mutation clone_scenario($configurationId: UUID!) {
+    testrun_configuration_clone(configuration_id: $configurationId) {
+      affected_rows
+    }
+  }
+`
+
+export function useConfigurationClone(configurationId) {
+  const { loading, mutation, error } = useMutationWithState(CLONE_SCENARIO, {
+    variables: { configurationId },
+  })
+
+  return { loading, mutation, error }
+}

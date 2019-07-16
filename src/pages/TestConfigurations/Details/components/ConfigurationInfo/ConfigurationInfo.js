@@ -3,7 +3,13 @@ import PropTypes from 'prop-types'
 
 import { Tooltip, IconButton, MenuItem, Typography } from '@material-ui/core'
 
-import { PlayArrow, MoreVert, Delete, Edit } from '@material-ui/icons'
+import {
+  PlayArrow,
+  MoreVert,
+  Delete,
+  Edit,
+  FileCopyOutlined,
+} from '@material-ui/icons'
 import {
   SectionHeader,
   SubmitCancelModal,
@@ -14,7 +20,11 @@ import {
 
 import { useToggle } from '~hooks'
 
-import { useConfigurationRun, useConfigurationDelete } from '../../../hooks'
+import {
+  useConfigurationRun,
+  useConfigurationDelete,
+  useConfigurationClone,
+} from '../../../hooks'
 
 import useStyles from './ConfigurationInfo.styles'
 import TestConfigurationDetails from '../TestConfigurationDetails'
@@ -22,6 +32,7 @@ import TestConfigurationDetails from '../TestConfigurationDetails'
 export function ConfigurationInfo({
   configuration,
   onEdit = () => {},
+  onClone = () => {},
   onDelete = () => {},
   onRun = () => {},
 }) {
@@ -35,6 +46,8 @@ export function ConfigurationInfo({
     loading: isDeleting,
     mutation: deleteConfiguration,
   } = useConfigurationDelete(configuration.id)
+
+  const handleClone = useConfigurationClone({ onClone })
 
   const handleRun = useCallback(
     async ({ coldStart = false }) => {
@@ -102,6 +115,14 @@ export function ConfigurationInfo({
         <TestConfigurationDetails configurationId={id}>
           <Button icon={Edit} variant="outlined" color="default" onClick={onEdit}>
             <Typography variant="body2">Edit</Typography>
+          </Button>
+          <Button
+            icon={FileCopyOutlined}
+            variant="outlined"
+            color="default"
+            onClick={() => handleClone(configuration.id)}
+          >
+            <Typography variant="body2">Clone</Typography>
           </Button>
 
           <Tooltip

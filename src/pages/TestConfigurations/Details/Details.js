@@ -23,10 +23,13 @@ function Details({ history, match }) {
   const { getMonitoringDetailsUrl, getTestDetailsUrl, getDebugUrl } = useUrlGetters(
     match.params
   )
-  const { handleEdit, handleDelete, handleRun, handleTerminate } = useHandlers(
-    history,
-    match.params
-  )
+  const {
+    handleEdit,
+    handleDelete,
+    handleRun,
+    handleTerminate,
+    handleClone,
+  } = useHandlers(history, match.params)
 
   const {
     loading,
@@ -58,6 +61,7 @@ function Details({ history, match }) {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onRun={handleRun}
+        onClone={handleClone}
       />
       <div className={classes.tableContainer}>
         <TestExecutionsList
@@ -134,6 +138,17 @@ function useHandlers(history, params) {
     [history, notify, params]
   )
 
+  const handleClone = useCallback(
+    error => {
+      if (error) {
+        notify.error(`Could not clone: ${error}`)
+      } else {
+        notify.success(`Scenario has been cloned.`)
+      }
+    },
+    [notify]
+  )
+
   const handleRun = useCallback(
     error => {
       if (error) {
@@ -156,7 +171,7 @@ function useHandlers(history, params) {
     [notify]
   )
 
-  return { handleEdit, handleDelete, handleRun, handleTerminate }
+  return { handleEdit, handleDelete, handleRun, handleTerminate, handleClone }
 }
 
 export default Details

@@ -14,6 +14,7 @@ export function List({ history, match }) {
   const {
     getTestConfigurationCreateUrl,
     getTestConfigurationDetailsUrl,
+    getTestConfigurationEditUrl,
   } = useHandlers(history, match)
 
   return (
@@ -22,6 +23,7 @@ export function List({ history, match }) {
         projectId={projectId}
         getTestConfigurationCreateUrl={getTestConfigurationCreateUrl}
         getTestConfigurationDetailsUrl={getTestConfigurationDetailsUrl}
+        getTestConfigurationEditUrl={getTestConfigurationEditUrl}
       />
     </div>
   )
@@ -58,6 +60,15 @@ function useHandlers(history, match) {
     [getRedirectUrl]
   )
 
+  const getTestConfigurationEditUrl = useCallback(
+    configuration => {
+      return getRedirectUrl(routes.projects.configurations.edit, {
+        configurationId: configuration.id,
+      })
+    },
+    [getRedirectUrl]
+  )
+
   const notify = useNotification()
 
   const handleRun = useCallback(
@@ -71,7 +82,12 @@ function useHandlers(history, match) {
     [notify]
   )
 
-  return { getTestConfigurationCreateUrl, getTestConfigurationDetailsUrl, handleRun }
+  return {
+    getTestConfigurationCreateUrl,
+    getTestConfigurationDetailsUrl,
+    handleRun,
+    getTestConfigurationEditUrl,
+  }
 }
 
 export default List
