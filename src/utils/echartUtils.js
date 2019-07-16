@@ -44,8 +44,10 @@ export class TooltipBuilder {
   withNumericDataLine(seriesName) {
     const formatter = EChartUtils.GetFormatter(EChartsFormatterType.Numeric)
     const series = this.findSeriesByName(seriesName)
-    const value = formatter(series.data)
-    this.html += this.getHtmlForValue(series, value)
+    if (series) {
+      const value = formatter(series.data)
+      this.html += this.getHtmlForValue(series, value)
+    }
     return this
   }
   withDurationLine(seriesName) {

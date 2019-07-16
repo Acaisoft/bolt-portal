@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
@@ -12,8 +12,24 @@ const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function RequestsChart({ data, theme, syncGroup }) {
   const { color } = theme.palette.chart
-  const areaColors = [color.area.error, color.area.success]
-  const options = React.useMemo(() => {
+
+  const hasFailures = data.some(item => item.number_of_fails > 0)
+  const hasSuccesses = data.some(item => item.number_of_successes > 0)
+
+  const areaColors = useMemo(() => {
+    let colorsArray = []
+
+    if (hasFailures) {
+      colorsArray.push(color.area.error)
+    }
+    if (hasSuccesses) {
+      colorsArray.push(color.area.success)
+    }
+
+    return colorsArray
+  }, [color, hasFailures, hasSuccesses])
+
+  const options = useMemo(() => {
     return {
       tooltip: {
         formatter: data => {
@@ -26,7 +42,7 @@ export function RequestsChart({ data, theme, syncGroup }) {
       },
       legend: {
         show: true,
-        data: ['Fail', 'Success'],
+        data: [hasFailures && 'Fail', hasSuccesses && 'Success'],
       },
       color: areaColors,
       xAxis: {
@@ -40,25 +56,29 @@ export function RequestsChart({ data, theme, syncGroup }) {
         },
       },
       series: [
-        {
-          name: 'Fail',
-          type: 'line',
-          areaStyle: {},
-          stack: 'requests',
-          symbol: 'none',
-          data: data.map(datum => datum.number_of_fails),
-        },
-        {
-          name: 'Success',
-          type: 'line',
-          areaStyle: {},
-          stack: 'requests',
-          symbol: 'none',
-          data: data.map(datum => datum.number_of_successes),
-        },
+        hasFailures
+          ? {
+              name: 'Fail',
+              type: 'line',
+              areaStyle: {},
+              stack: 'requests',
+              symbol: 'none',
+              data: data.map(datum => datum.number_of_fails),
+            }
+          : null,
+        hasSuccesses
+          ? {
+              name: 'Success',
+              type: 'line',
+              areaStyle: {},
+              stack: 'requests',
+              symbol: 'none',
+              data: data.map(datum => datum.number_of_successes),
+            }
+          : null,
       ],
     }
-  }, [data, areaColors])
+  }, [data, areaColors, hasFailures, hasSuccesses])
 
   return <DefaultChart options={options} syncGroup={syncGroup} />
 }
