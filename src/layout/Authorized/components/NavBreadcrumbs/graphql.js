@@ -26,7 +26,7 @@ export const SUBSCRIBE_TO_EXECUTIONS = gql`
   subscription subscribeToExecutionsForSelector($configurationId: uuid!) {
     executions: execution(
       where: { configuration_id: { _eq: $configurationId } }
-      order_by: { start_locust: desc, start: desc }
+      order_by: { start: desc, start_locust: desc }
     ) {
       id
       start
