@@ -39,7 +39,8 @@ export default makeStyles(({ palette, spacing }) => ({
     borderRadius: spacing(0.5),
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    width: 120,
   },
   title: {
     fontSize: '0.8rem',
@@ -48,6 +49,5 @@ export default makeStyles(({ palette, spacing }) => ({
   },
   wrapper: {
     display: 'flex',
-    justifyContent: 'center',
   },
 }))
