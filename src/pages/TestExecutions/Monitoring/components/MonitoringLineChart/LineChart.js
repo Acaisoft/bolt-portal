@@ -10,7 +10,7 @@ import { DefaultChart } from '~components'
 const formatters = {
   kBytes: value => filesize(value, { round: 3 }),
   bytes: value => filesize(value, { round: 2, exponent: 3 }),
-  number: value => formatThousands(value),
+  number: value => (value > 10 ? formatThousands(value) : value),
   percent: value => formatPercent(value, 0),
 }
 
@@ -31,7 +31,7 @@ export function LineChart({ data, config, groupNames }) {
       yAxis: {
         min: config.min ? config.min : config.y_format === 'percent' ? 0 : null,
         max: config.max ? config.max : config.y_format === 'percent' ? 1 : null,
-        type: config.scale ? config.scale : 'value',
+        type: config.scale === 'log' ? config.scale : 'value',
         axisLabel: {
           formatter: formatters[config.y_format],
         },
@@ -43,7 +43,9 @@ export function LineChart({ data, config, groupNames }) {
           showSymbol: false,
           animation: false,
           data: data.map(datum => {
-            return datum.groups[groupName]
+            return config.y_format === 'number'
+              ? Math.round(datum.groups[groupName])
+              : datum.groups[groupName]
           }),
         }
       }),
