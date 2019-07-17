@@ -17,18 +17,6 @@ const formatters = {
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 
 export function LineChart({ data, config, groupNames }) {
-  const maxValue = useMemo(() => {
-    const values = []
-
-    groupNames.forEach(groupName => {
-      data.forEach(datum => {
-        values.push(datum.groups[groupName])
-      })
-    })
-
-    return Math.max(...values)
-  }, [data, groupNames])
-
   const options = React.useMemo(() => {
     return {
       tooltip: {
@@ -43,7 +31,6 @@ export function LineChart({ data, config, groupNames }) {
       yAxis: {
         min: config.min ? config.min : config.y_format === 'percent' ? 0 : null,
         max: config.max ? config.max : config.y_format === 'percent' ? 1 : null,
-        interval: maxValue === 0 && config.y_format === 'number' ? 1 : null,
         type: config.scale ? config.scale : 'value',
         axisLabel: {
           formatter: formatters[config.y_format],
@@ -61,7 +48,7 @@ export function LineChart({ data, config, groupNames }) {
         }
       }),
     }
-  }, [data, config, groupNames, maxValue])
+  }, [data, config, groupNames])
 
   return <DefaultChart options={options} />
 }
