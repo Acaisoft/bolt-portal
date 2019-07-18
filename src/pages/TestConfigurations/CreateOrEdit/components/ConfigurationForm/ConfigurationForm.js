@@ -23,7 +23,6 @@ import { useMutationWithState } from '~hooks'
 import {
   GET_CONFIGURATION,
   ADD_CONFIGURATION_MUTATION,
-  EDIT_PERFORMED_CONFIGURATION_MUTATION,
   EDIT_CONFIGURATION_MUTATION,
 } from './graphql'
 import { useFormSchema, prepareInitialValues, preparePayload } from './formSchema'
@@ -46,7 +45,6 @@ export function ConfigurationForm({
       skip: mode !== 'edit',
     }
   )
-  const isPerformed = Boolean(configuration && configuration.performed)
 
   const { fields, loading: fieldsLoading } = useFormSchema({ mode, projectId })
 
@@ -54,7 +52,6 @@ export function ConfigurationForm({
     configurationId,
     projectId,
     mode,
-    isPerformed,
     onSubmit,
   })
   const handleValidate = useCallback(
@@ -83,11 +80,6 @@ export function ConfigurationForm({
         <form onSubmit={form.handleSubmit}>
           <SectionHeader
             title={mode === 'create' ? 'New Scenario' : 'Update Scenario'}
-            description={
-              isPerformed
-                ? 'We want to keep your data consistent and be able to prepare really precisely reports. This is why you can’t change the parameters of already performed scenarios.'
-                : null
-            }
             alignItems="flex-start"
             marginBottom
           >
@@ -124,7 +116,6 @@ export function ConfigurationForm({
                 <FormField
                   name="configuration_type"
                   field={fields.configuration_type}
-                  disabled={isPerformed}
                   variant="filled"
                   fullWidth
                 >
@@ -145,7 +136,6 @@ export function ConfigurationForm({
                   <FormField
                     name={`scenario_parts.${name}`}
                     field={field}
-                    disabled={isPerformed}
                     type="checkbox"
                     component={CheckboxField}
                   />
@@ -186,7 +176,6 @@ export function ConfigurationForm({
                                 <FormField
                                   name={`parameters.${id}`}
                                   field={options}
-                                  disabled={isPerformed}
                                   fullWidth
                                   variant="filled"
                                 />
@@ -216,7 +205,6 @@ export function ConfigurationForm({
                           <FormField
                             name="test_source_type"
                             field={fields.test_source_type}
-                            disabled={isPerformed}
                             fullWidth
                             variant="filled"
                           >
@@ -240,7 +228,6 @@ export function ConfigurationForm({
                                   field={
                                     fields.test_source.fields[selectedSourceType]
                                   }
-                                  disabled={isPerformed}
                                   fullWidth
                                   variant="filled"
                                 >
@@ -333,19 +320,9 @@ ConfigurationForm.propTypes = {
   projectId: PropTypes.string,
 }
 
-function useConfigurationSubmit({
-  mode,
-  isPerformed,
-  configurationId,
-  projectId,
-  onSubmit,
-}) {
+function useConfigurationSubmit({ mode, configurationId, projectId, onSubmit }) {
   const { mutation: submitMutation } = useMutationWithState(
-    mode === 'create'
-      ? ADD_CONFIGURATION_MUTATION
-      : isPerformed
-      ? EDIT_PERFORMED_CONFIGURATION_MUTATION
-      : EDIT_CONFIGURATION_MUTATION,
+    mode === 'create' ? ADD_CONFIGURATION_MUTATION : EDIT_CONFIGURATION_MUTATION,
     {
       refetchQueries: [
         'getTestConfigurations',
@@ -358,14 +335,13 @@ function useConfigurationSubmit({
     async values => {
       const variables = preparePayload(values, {
         mode,
-        isPerformed,
         configurationId,
         projectId,
       })
       const { errorMessage } = await submitMutation({ variables })
       onSubmit({ values, errorMessage })
     },
-    [submitMutation, isPerformed, mode, configurationId, projectId, onSubmit]
+    [submitMutation, mode, configurationId, projectId, onSubmit]
   )
 
   return handleSubmit
