@@ -126,7 +126,7 @@ export function ConfigurationInfo({
       </SectionHeader>
 
       <ExpandablePanel defaultExpanded={false} title="Scenario Details">
-        <TestConfigurationDetails configurationId={id}>
+        <TestConfigurationDetails configuration={configuration}>
           <Button icon={Edit} variant="outlined" color="default" onClick={onEdit}>
             <Typography variant="body2">Edit</Typography>
           </Button>
