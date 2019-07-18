@@ -10,7 +10,7 @@ import { DefaultChart } from '~components'
 const formatters = {
   kBytes: value => filesize(value, { round: 3 }),
   bytes: value => filesize(value, { round: 2, exponent: 3 }),
-  number: value => (value > 10 ? formatThousands(value) : value),
+  number: value => (value >= 1000 ? formatThousands(value) : value),
   percent: value => formatPercent(value, 0),
 }
 
@@ -43,9 +43,7 @@ export function LineChart({ data, config, groupNames }) {
           showSymbol: false,
           animation: false,
           data: data.map(datum => {
-            return config.y_format === 'number'
-              ? Math.round(datum.groups[groupName])
-              : datum.groups[groupName]
+            return datum.groups[groupName]
           }),
         }
       }),

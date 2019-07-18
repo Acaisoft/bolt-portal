@@ -138,7 +138,7 @@ export class EChartUtils {
     return formatPercent(value, 2)
   }
   static NumericFormatter(value) {
-    return formatThousands(value)
+    return value >= 1000 ? formatThousands(value) : value
   }
   static NumericTowDecimalsFormatter(value) {
     return Number(value).toFixed(2)
