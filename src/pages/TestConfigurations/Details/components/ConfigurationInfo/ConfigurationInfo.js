@@ -28,6 +28,7 @@ import {
 
 import useStyles from './ConfigurationInfo.styles'
 import TestConfigurationDetails from '../TestConfigurationDetails'
+import _ from 'lodash'
 
 export function ConfigurationInfo({
   configuration,
@@ -52,8 +53,14 @@ export function ConfigurationInfo({
   )
 
   const handleClone = useCallback(async () => {
-    const { errorMessage } = await cloneConfiguration()
-    onClone(errorMessage)
+    const { errorMessage, response } = await cloneConfiguration()
+    const result = _.get(
+      response,
+      'data.testrun_configuration_clone.returning[0].new_configuration_id',
+      null
+    )
+
+    onClone(errorMessage, result)
   }, [cloneConfiguration, onClone])
 
   const handleRun = useCallback(

@@ -139,14 +139,20 @@ function useHandlers(history, params) {
   )
 
   const handleClone = useCallback(
-    error => {
+    (error, newConfigurationId) => {
       if (error) {
         notify.error(`Could not clone: ${error}`)
       } else {
         notify.success(`Scenario has been cloned.`)
+        history.push(
+          getUrl(routes.projects.configurations.edit, {
+            projectId: params.projectId,
+            configurationId: newConfigurationId,
+          })
+        )
       }
     },
-    [notify]
+    [notify, history, params]
   )
 
   const handleRun = useCallback(

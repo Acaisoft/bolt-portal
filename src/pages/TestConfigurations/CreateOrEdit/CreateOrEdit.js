@@ -21,7 +21,7 @@ export function CreateOrEdit({ history, match, location }) {
     history.push(getUrl(routes.projects.configurations.details, { ...match.params }))
   }, [history, match.params])
 
-  const handleCancel = useCallback(() => {
+  const handleClose = useCallback(() => {
     if (targetLocation === 'list' || !configurationId) {
       goToList()
     } else {
@@ -39,10 +39,10 @@ export function CreateOrEdit({ history, match, location }) {
         notify.success(
           `Scenario ${configurationId ? 'updated' : 'created'} successfully`
         )
-        history.push(getUrl(routes.projects.configurations.list, match.params))
+        handleClose()
       }
     },
-    [configurationId, history, match.params, notify]
+    [configurationId, notify, handleClose]
   )
 
   return (
@@ -50,7 +50,7 @@ export function CreateOrEdit({ history, match, location }) {
       mode={mode}
       projectId={projectId}
       configurationId={configurationId}
-      onCancel={handleCancel}
+      onCancel={handleClose}
       onSubmit={handleSubmit}
     />
   )

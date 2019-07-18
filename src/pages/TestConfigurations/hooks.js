@@ -36,6 +36,9 @@ export function useConfigurationDelete(configurationId) {
 const CLONE_SCENARIO = gql`
   mutation clone_scenario($configurationId: UUID!) {
     testrun_configuration_clone(configuration_id: $configurationId) {
+      returning {
+        new_configuration_id
+      }
       affected_rows
     }
   }
