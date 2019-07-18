@@ -1,43 +1,21 @@
 import React from 'react'
-import { Grid, Paper, Box } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 
-import {
-  SectionHeader,
-  LabeledValue,
-  LoadingPlaceholder,
-  ErrorPlaceholder,
-  NotFoundPlaceholder,
-} from '~components'
+import { SectionHeader, LabeledValue, NoDataPlaceholder } from '~components'
 import useStyles from './TestConfigurationDetails.styles'
 import { TestSourceType } from '~config/constants'
 import { Details } from '~assets/icons'
-import { useQuery } from 'react-apollo-hooks'
 
-import { GET_CONFIGURATION } from '../../graphql'
-
-function TestConfigurationDetails({ children, configurationId }) {
+function TestConfigurationDetails({ children, configuration }) {
   const classes = useStyles()
 
-  const {
-    data: { configuration },
-    loading,
-    error,
-  } = useQuery(GET_CONFIGURATION, {
-    variables: { configurationId },
-    fetchPolicy: 'cache-first',
-  })
-
-  if (loading || error || !configuration) {
+  if (!configuration) {
     return (
-      <Box p={3}>
-        {loading ? (
-          <LoadingPlaceholder title="Loading test run details..." />
-        ) : error ? (
-          <ErrorPlaceholder error={error} />
-        ) : (
-          <NotFoundPlaceholder title="Test run not found" />
-        )}
-      </Box>
+      <Grid item xs={12}>
+        <Paper square className={classes.paper}>
+          <NoDataPlaceholder title="Details not found" />
+        </Paper>
+      </Grid>
     )
   }
 
@@ -110,14 +88,17 @@ function TestConfigurationDetails({ children, configurationId }) {
                   .filter(parameter =>
                     parameter.parameter_slug.includes('monitoring')
                   )
-                  .map(parameter => (
-                    <Grid key={parameter.parameter_slug} item xs={12} md={3}>
-                      <LabeledValue
-                        label={parameter.parameter.name}
-                        value={parameter.value}
-                      />
-                    </Grid>
-                  ))}
+                  .map(
+                    parameter =>
+                      parameter.parameter && (
+                        <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                          <LabeledValue
+                            label={parameter.parameter.name}
+                            value={parameter.value}
+                          />
+                        </Grid>
+                      )
+                  )}
               </React.Fragment>
             )}
 
@@ -130,14 +111,17 @@ function TestConfigurationDetails({ children, configurationId }) {
                   .filter(parameter =>
                     parameter.parameter_slug.includes('load_tests')
                   )
-                  .map(parameter => (
-                    <Grid key={parameter.parameter_slug} item xs={12} md={3}>
-                      <LabeledValue
-                        label={parameter.parameter.name}
-                        value={parameter.value}
-                      />
-                    </Grid>
-                  ))}
+                  .map(
+                    parameter =>
+                      parameter.parameter && (
+                        <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                          <LabeledValue
+                            label={parameter.parameter.name}
+                            value={parameter.value}
+                          />
+                        </Grid>
+                      )
+                  )}
               </React.Fragment>
             )}
 

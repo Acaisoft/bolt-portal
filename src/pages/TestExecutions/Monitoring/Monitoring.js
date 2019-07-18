@@ -98,7 +98,9 @@ function Monitoring({ match, history, location }) {
 
       <div className={classes.configDetails}>
         <ExpandablePanel defaultExpanded={false} title="Scenario Details">
-          <TestConfigurationDetails configurationId={configurationId} />
+          <TestConfigurationDetails
+            configuration={execution ? execution.configuration_snapshot : null}
+          />
         </ExpandablePanel>
       </div>
 

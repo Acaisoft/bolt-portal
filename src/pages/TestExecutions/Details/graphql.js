@@ -26,6 +26,7 @@ export const SUBSCRIBE_TO_EXECUTION = gql`
         id
         name
       }
+      configuration_snapshot
       ...executionTimeParameter
     }
   }

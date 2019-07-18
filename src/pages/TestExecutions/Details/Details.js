@@ -66,7 +66,9 @@ export function Details({ history, match }) {
       </SectionHeader>
       <div className={classes.configDetails}>
         <ExpandablePanel defaultExpanded={false} title="Scenario Details">
-          <TestConfigurationDetails configurationId={configurationId} />
+          <TestConfigurationDetails
+            configuration={execution.configuration_snapshot}
+          />
         </ExpandablePanel>
       </div>
       <Grid container spacing={2}>
