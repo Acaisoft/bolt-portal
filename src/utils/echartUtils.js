@@ -13,8 +13,9 @@ export const EChartsFormatterType = {
 export class TooltipBuilder {
   html = ''
 
-  constructor(series) {
+  constructor(series, { showEmpty = false } = {}) {
     this.series = series
+    this.showEmpty = showEmpty
   }
 
   findSeriesByName(name) {
@@ -63,39 +64,68 @@ export class TooltipBuilder {
     this.html += this.getHtmlForValue(series, value)
     return this
   }
+
+  isEmptyValue(value) {
+    return typeof value === 'undefined' || value === null
+  }
+
   getHtmlForValue(series, value) {
-    return `<ul style="margin: 8px; padding: 0; list-style: none">
-  <li style="margin: 0px; display: flex; flex-wrap: wrap; flex-grow: 1; flex-basis: 30%; align-items: center">
-    <div style="margin-right: 4px;">${series.marker}</div>
-    <div style="font-weight: bold;">${series.seriesName}</div>
-    <div style="flex-basis: 100%; margin-left: 17px">${value}</div>
-  </li>
+    if (!this.showEmpty && this.isEmptyValue(value)) {
+      return ''
+    }
+
+    return `
+  <ul style="margin: 8px; padding: 0; list-style: none">
+    <li style="margin: 0px; display: flex; flex-wrap: wrap; flex-grow: 1; flex-basis: 30%; align-items: center">
+      <div style="margin-right: 4px;">${series.marker}</div>
+      <div style="font-weight: bold;">${series.seriesName}</div>
+      <div style="flex-basis: 100%; margin-left: 17px">${value}</div>
+    </li>
   </ul>`
   }
 
   getTooltipForMonitoring(format) {
+    const formatter = EChartUtils.GetFormatter(format)
+
+    let series = this.series.map(serie => {
+      const value =
+        format === EChartsFormatterType.Heatmap ? serie.value[2] : serie.value
+
+      return { ...serie, value }
+    })
+
+    if (!this.showEmpty) {
+      series = series.filter(serie => !this.isEmptyValue(serie.value))
+    }
+
+    let htmlList = ''
+    if (series.length === 0) {
+      htmlList = 'No Data'
+    } else {
+      htmlList = `
+      <ul style="margin: 8px; padding: 0; list-style: none">
+        ${series
+          .map((serie, index) => {
+            return `
+            <li style="margin: 0px; display: flex; flex-wrap: wrap; flex-grow: 1; flex-basis: 30%; align-items: center">
+            <div style="margin-right: 4px;">${serie.marker}</div>
+            <div style="font-weight: bold;">${serie.seriesName}</div>
+            <div style="flex-basis: 100%; margin-left: 17px">
+              ${formatter(serie.value)}
+            </div>
+            </li>
+            `
+          })
+          .join('\n')}
+      </ul>
+      `
+    }
+
     return `
   <div style="padding: 16px;">
-  <div>${this.series[0].name}</div>
-  <ul style="margin: 8px; padding: 0; list-style: none">
-  ${this.series
-    .map((serie, index) => {
-      const formatter = EChartUtils.GetFormatter(format)
-      const value = formatter(serie.value)
-
-      return `
-  <li style="margin: 0px; display: flex; flex-wrap: wrap; flex-grow: 1; flex-basis: 30%; align-items: center">
-    <div style="margin-right: 4px;">${serie.marker}</div>
-    <div style="font-weight: bold;">${serie.seriesName}</div>
-    <div style="flex-basis: 100%; margin-left: 17px">${
-      format === EChartsFormatterType.Heatmap ? serie.value[2] : value
-    }</div>
-  </li>
-    `
-    })
-    .join('\n')}
-  </ul>
-</div>
+    <div>${this.series[0].name}</div>
+    ${htmlList}
+  </div>
   `
   }
 
