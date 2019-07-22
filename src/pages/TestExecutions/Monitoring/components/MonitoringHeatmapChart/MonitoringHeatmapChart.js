@@ -53,7 +53,10 @@ function MonitoringHeatmapChart({ data, config, groupNames }) {
           activeColor={theme.palette.error.main}
           options={options}
           yFormat={config.y_format}
-          legendLabels={['not backpressed', 'backpressed']}
+          legendLabels={[
+            config.y_true_label || `Not ${config.y_data_key}`,
+            config.y_false_label || config.y_data_key,
+          ]}
         />
       ) : (
         <NoDataPlaceholder title="No Data" height={300} />
