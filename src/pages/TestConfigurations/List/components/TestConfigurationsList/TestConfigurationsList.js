@@ -32,6 +32,7 @@ export function TestConfigurationsList({
   getTestConfigurationCreateUrl = () => {},
   getTestConfigurationDetailsUrl = () => {},
   getTestConfigurationEditUrl = () => {},
+  onClone = () => {},
   onRun = () => {},
   projectId,
 }) {
@@ -227,6 +228,7 @@ export function TestConfigurationsList({
               <ConfigurationActionsMenu
                 configuration={configuration}
                 editUrl={getTestConfigurationEditUrl(configuration)}
+                onClone={onClone}
               />
             )
           }}

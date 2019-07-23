@@ -9,21 +9,27 @@ import { useNotification } from '~hooks'
 import { useConfigurationClone, useConfigurationDelete } from '../../../hooks'
 import { Link } from 'react-router-dom'
 import { useToggle } from '~hooks'
+import _ from 'lodash'
 
-function ConfigurationActionsMenu({ configuration, editUrl }) {
+function ConfigurationActionsMenu({ configuration, editUrl, onClone }) {
   const isPerformed = Boolean(configuration.performed)
 
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle(false)
 
-  const { onClone, onDelete } = useHandlers()
+  const { onDelete } = useHandlers()
 
   const { loading: isCloning, mutation: cloneConfiguration } = useConfigurationClone(
     configuration.id
   )
 
   const handleCloneSubmit = useCallback(async () => {
-    const { errorMessage } = await cloneConfiguration()
-    onClone(errorMessage)
+    const { errorMessage, response } = await cloneConfiguration()
+    const result = _.get(
+      response,
+      'data.testrun_configuration_clone.returning[0].new_configuration_id',
+      null
+    )
+    onClone(errorMessage, result)
   }, [cloneConfiguration, onClone])
 
   const {
@@ -92,17 +98,6 @@ function ConfigurationActionsMenu({ configuration, editUrl }) {
 function useHandlers() {
   const notify = useNotification()
 
-  const onClone = useCallback(
-    error => {
-      if (error) {
-        notify.error(`Could not clone: ${error}`)
-      } else {
-        notify.success(`Scenario has been cloned.`)
-      }
-    },
-    [notify]
-  )
-
   const onDelete = useCallback(
     error => {
       if (error) {
@@ -114,7 +109,7 @@ function useHandlers() {
     [notify]
   )
 
-  return { onClone, onDelete }
+  return { onDelete }
 }
 
 ConfigurationActionsMenu.propTypes = {

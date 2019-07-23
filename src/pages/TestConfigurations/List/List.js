@@ -15,6 +15,7 @@ export function List({ history, match }) {
     getTestConfigurationCreateUrl,
     getTestConfigurationDetailsUrl,
     getTestConfigurationEditUrl,
+    handleClone,
   } = useHandlers(history, match)
 
   return (
@@ -24,6 +25,7 @@ export function List({ history, match }) {
         getTestConfigurationCreateUrl={getTestConfigurationCreateUrl}
         getTestConfigurationDetailsUrl={getTestConfigurationDetailsUrl}
         getTestConfigurationEditUrl={getTestConfigurationEditUrl}
+        onClone={handleClone}
       />
     </div>
   )
@@ -71,6 +73,22 @@ function useHandlers(history, match) {
 
   const notify = useNotification()
 
+  const handleClone = useCallback(
+    (error, newConfigurationId) => {
+      if (error) {
+        notify.error(`Could not clone: ${error}`)
+      } else {
+        notify.success(`Scenario has been cloned.`)
+        history.push(
+          getRedirectUrl(routes.projects.configurations.edit, {
+            configurationId: newConfigurationId,
+          })
+        )
+      }
+    },
+    [notify, history, getRedirectUrl]
+  )
+
   const handleRun = useCallback(
     ({ configuration, error }) => {
       if (error) {
@@ -87,6 +105,7 @@ function useHandlers(history, match) {
     getTestConfigurationDetailsUrl,
     handleRun,
     getTestConfigurationEditUrl,
+    handleClone,
   }
 }
 
