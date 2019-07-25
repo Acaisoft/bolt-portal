@@ -8,12 +8,14 @@ import { TestRunStageStatus } from '~config/constants'
 function Step({ stepName, stepData }, ref) {
   const classes = useStyles()
 
+  const isActive = stepData && stepData !== TestRunStageStatus.NOT_STARTED
+
   return (
     <div className={classes.step}>
       <div
         className={classNames(
           classes.circle,
-          stepData !== TestRunStageStatus.NOT_STARTED && classes.active,
+          isActive && classes.active,
           classes[stepData]
         )}
         ref={ref}

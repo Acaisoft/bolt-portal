@@ -65,9 +65,11 @@ function getCurrentStatus(data, config) {
 }
 
 function getFinishStepStatus(stagesData, executionStatus) {
-  const isFinished = Object.values(stagesData).every(
-    value => value === TestRunStageStatus.SUCCEEDED
-  )
+  delete stagesData.finished
+
+  const isFinished =
+    Object.values(stagesData).length > 0 &&
+    Object.values(stagesData).every(value => value === TestRunStageStatus.SUCCEEDED)
 
   const hasError = Object.values(stagesData).find(
     value =>
@@ -128,6 +130,12 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   }, [executionStatus, execution_stage_log])
 
   const stagesData = useMemo(() => {
+    if ((!execution_stage_log || execution_stage_log.length === 0) && isStarted) {
+      return {
+        [Stages.DOWNLOADING_SOURCE]: TestRunStageStatus.RUNNING,
+      }
+    }
+
     if (!execution_stage_log || execution_stage_log.length === 0) {
       return {}
     }
@@ -145,7 +153,8 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
 
     if (
       isStarted &&
-      tempData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.NOT_STARTED
+      (!tempData[Stages.DOWNLOADING_SOURCE] ||
+        tempData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.NOT_STARTED)
     ) {
       tempData[Stages.DOWNLOADING_SOURCE] = TestRunStageStatus.RUNNING
     }
@@ -154,16 +163,30 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
       tempData[Stages.DOWNLOADING_SOURCE] === TestRunStageStatus.SUCCEEDED &&
       tempData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.NOT_STARTED
     ) {
-      tempData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
+      tempData[Stages.DOWNLOADING_SOURCE] = TestRunStageStatus.RUNNING
+    }
+
+    if (tempData[Stages.LOAD_TESTS] === TestRunStageStatus.PENDING) {
+      tempData[Stages.LOAD_TESTS] = TestRunStageStatus.NOT_STARTED
+    }
+
+    if (tempData[Stages.MONITORING] === TestRunStageStatus.PENDING) {
+      tempData[Stages.MONITORING] = TestRunStageStatus.NOT_STARTED
     }
 
     if (tempData[Stages.IMAGE_PREPARATION] === TestRunStageStatus.SUCCEEDED) {
-      if (tempData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED) {
-        tempData[Stages.LOAD_TESTS] = TestRunStageStatus.RUNNING
-      }
-
-      if (tempData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED) {
-        tempData[Stages.MONITORING] = TestRunStageStatus.RUNNING
+      if (configuration.has_monitoring && configuration.has_load_tests) {
+        if (
+          tempData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED &&
+          tempData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED
+        ) {
+          tempData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
+        }
+      } else if (
+        tempData[Stages.LOAD_TESTS] === TestRunStageStatus.NOT_STARTED ||
+        tempData[Stages.MONITORING] === TestRunStageStatus.NOT_STARTED
+      ) {
+        tempData[Stages.IMAGE_PREPARATION] = TestRunStageStatus.RUNNING
       }
     }
 
