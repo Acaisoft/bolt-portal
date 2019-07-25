@@ -52,7 +52,7 @@ function ResultsPerTick({ classes, execution }) {
           <SectionHeader
             size="small"
             className={classes.tileTitle}
-            title="All Requests"
+            title="Requests/s"
           >
             <ZoomButton
               isZoomed={isZoomed}
