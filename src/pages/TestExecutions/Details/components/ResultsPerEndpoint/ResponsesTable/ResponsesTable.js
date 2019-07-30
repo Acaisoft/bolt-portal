@@ -21,7 +21,13 @@ export function ResponsesTable({
       requests: _.sum(data.map(x => +x.num_requests)),
       successes: _.sum(data.map(x => +x.num_successes)),
       failures: _.sum(data.map(x => +x.num_failures)),
-      requestsPerSecond: _.sum(data.map(x => +x.requests_per_second)),
+      requestsPerSecond: _.sum(
+        data.map(x =>
+          +x.requests_per_second < 1 && x.requests_per_second > 0
+            ? 1
+            : x.requests_per_second
+        )
+      ),
       minResponseTime: _.min(data.map(x => +x.min_response_time)),
       averageResponseTime: _.mean(data.map(x => +x.average_response_time)),
       maxResponseTime: _.max(data.map(x => +x.max_response_time)),
@@ -119,7 +125,13 @@ export function ResponsesTable({
           />
           <DataTable.Column
             key="requests_per_second"
-            render={response => formatThousands(response.requests_per_second)}
+            render={response =>
+              formatThousands(
+                response.requests_per_second < 1 && response.requests_per_second > 0
+                  ? 1
+                  : response.requests_per_second
+              )
+            }
             renderFooter={() => formatThousands(summary.requestsPerSecond)}
             title="Req/s"
           />

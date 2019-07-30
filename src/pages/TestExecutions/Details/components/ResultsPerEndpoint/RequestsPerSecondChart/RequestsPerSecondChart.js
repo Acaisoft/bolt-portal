@@ -25,7 +25,7 @@ export function RequestsPerSecondChart({ data }) {
       xAxis: {
         type: 'value',
         axisLabel: {
-          formatter: value => formatThousands(value),
+          formatter: value => (value > 1 ? formatThousands(value) : value),
         },
       },
       yAxis: {
@@ -40,7 +40,13 @@ export function RequestsPerSecondChart({ data }) {
           name: 'Requests/s',
           type: 'bar',
           barWidth: 20,
-          data: data.map(datum => Math.round(datum.requests_per_second)),
+          data: data.map(datum =>
+            Math.round(
+              datum.requests_per_second < 1 && datum.requests_per_second > 0
+                ? 1
+                : datum.requests_per_second
+            )
+          ),
         },
       ],
     }
