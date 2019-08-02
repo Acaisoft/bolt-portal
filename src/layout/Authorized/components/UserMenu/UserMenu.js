@@ -1,12 +1,14 @@
-import { IconButton, ListItemIcon, ListItemText, MenuItem } from '@material-ui/core'
-import { ExitToApp } from '@material-ui/icons'
+import { ListItemIcon, ListItemText, MenuItem } from '@material-ui/core'
+import { ExitToApp, ExpandMore } from '@material-ui/icons'
 import React, { useContext } from 'react'
-import { PopoverMenu } from '~components'
+import { PopoverMenu, Button } from '~components'
 import { AuthKeycloakContext } from '~contexts'
 import UserAvatar from '../UserAvatar'
+import useStyles from './UserMenu.styles'
 
 function UserMenu() {
-  const { logout } = useContext(AuthKeycloakContext)
+  const { logout, user } = useContext(AuthKeycloakContext)
+  const classes = useStyles()
 
   return (
     <div>
@@ -14,9 +16,11 @@ function UserMenu() {
         id="user-menu"
         closeOnClick
         trigger={
-          <IconButton aria-label="User Menu" color="inherit">
+          <Button aria-label="User Menu" color="inherit">
             <UserAvatar />
-          </IconButton>
+            <span className={classes.userName}>{user.firstName}</span>
+            <ExpandMore className={classes.expandIcon} />
+          </Button>
         }
         MenuProps={{
           getContentAnchorEl: null, // Required to be able to set anchorOrigin.vertical
