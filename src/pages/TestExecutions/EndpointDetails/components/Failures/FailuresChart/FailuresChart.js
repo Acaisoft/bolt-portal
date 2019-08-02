@@ -20,8 +20,8 @@ export function FailuresChart({ data = [], theme }) {
       [750, 75],
       [700, 65],
       [600, 55],
-      [500, 40],
-      [450, 30],
+      [500, 35],
+      [450, 20],
       [400, 20],
       [350, 15],
       [300, 15],
@@ -58,6 +58,7 @@ export function FailuresChart({ data = [], theme }) {
         textStyle: {
           color: font.color,
           fontFamily: font.fontFamily,
+          fontSize: 15,
         },
       },
       legend: {

@@ -2,7 +2,12 @@ import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 
 import { Paper } from '@material-ui/core'
-import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
+import {
+  SectionHeader,
+  LoadingPlaceholder,
+  ErrorPlaceholder,
+  NoDataPlaceholder,
+} from '~components'
 
 import FailuresChart from './FailuresChart'
 import { GET_ENDPOINT_FAILURES } from './graphql'
@@ -19,10 +24,7 @@ function Failures({ classes, endpointId }) {
         ) : error ? (
           <ErrorPlaceholder error={error} height={Chart.HEIGHT} />
         ) : (
-          <LoadingPlaceholder
-            title="Waiting for endpoint results..."
-            height={Chart.HEIGHT}
-          />
+          <NoDataPlaceholder title="No failures" height={Chart.HEIGHT} />
         )}
       </Paper>
     )
