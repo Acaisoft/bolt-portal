@@ -5,6 +5,7 @@ import { SectionHeader, LabeledValue, NoDataPlaceholder } from '~components'
 import useStyles from './TestConfigurationDetails.styles'
 import { TestSourceType } from '~config/constants'
 import { Details } from '~assets/icons'
+import _ from 'lodash'
 
 function TestConfigurationDetails({ children, configuration }) {
   const classes = useStyles()
@@ -49,7 +50,10 @@ function TestConfigurationDetails({ children, configuration }) {
               <SectionHeader size="medium" title="General" />
             </Grid>
             <Grid item xs={12} md={3}>
-              <LabeledValue label="Test Source Type" value={source_type || '--'} />
+              <LabeledValue
+                label="Test Source Type"
+                value={source_type ? _.startCase(source_type) : '--'}
+              />
             </Grid>
             <Grid item xs={12} md={3}>
               <LabeledValue
