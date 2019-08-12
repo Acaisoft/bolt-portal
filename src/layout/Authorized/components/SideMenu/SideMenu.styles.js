@@ -45,8 +45,8 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
     },
   },
   title: {
-    ...typography.h6,
-    color: palette.text.primary,
+    height: '100%',
+    padding: '30px 0px 30px 50px',
   },
   icon: {
     marginRight: spacing(2),
@@ -54,5 +54,8 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
   button: {
     marginLeft: -12,
     marginRight: 20,
+  },
+  logo: {
+    height: '100%',
   },
 }))

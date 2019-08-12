@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { withRouter, Link, matchPath } from 'react-router-dom'
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Toolbar } from '@material-ui/core'
 
 import routes from '~config/routes'
 import { useMenu } from '~hooks'
@@ -13,6 +13,7 @@ import NavBreadcrumbs from '../NavBreadcrumbs'
 import SideMenu from '../SideMenu'
 import UserMenu from '../UserMenu'
 import { Button } from '~components'
+import logo from '~assets/images/bolt-logo.png'
 
 export function TopBar({ history, location }) {
   const classes = useStyles()
@@ -46,9 +47,7 @@ export function TopBar({ history, location }) {
           )}
 
           <Link to="/" className={classes.title}>
-            <Typography variant="h6" noWrap>
-              Acai Bolt
-            </Typography>
+            <img src={logo} alt="logo" className={classes.logo} />
           </Link>
 
           <div className={classes.navBreadcrumbs}>

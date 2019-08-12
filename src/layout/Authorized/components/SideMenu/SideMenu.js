@@ -6,7 +6,6 @@ import {
   ClickAwayListener,
   Paper,
   IconButton,
-  Typography,
   MenuList,
   MenuItem,
   Backdrop,
@@ -16,6 +15,7 @@ import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons
 
 import routes from '~config/routes'
 import { getUrl } from '~utils/router'
+import logo from '~assets/images/bolt-logo.png'
 
 import useStyles from './SideMenu.styles'
 
@@ -68,9 +68,10 @@ function SideMenu({ isOpen, onClose, projectId }) {
             <IconButton className={classes.button} onClick={onClose}>
               <Close />
             </IconButton>
-            <Typography variant="h1" className={classes.title}>
-              Acai Bolt
-            </Typography>
+
+            <div className={classes.title}>
+              <img src={logo} alt="logo" className={classes.logo} />
+            </div>
           </div>
           <MenuList component="div" className={classes.menu}>
             {items.map(item => (

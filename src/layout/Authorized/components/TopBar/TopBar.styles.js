@@ -24,12 +24,8 @@ export default makeStyles(
       borderRadius: 7,
     },
     title: {
-      color: palette.text.primary,
-      textDecoration: 'none',
-      display: 'none',
-      [breakpoints.up('sm')]: {
-        display: 'block',
-      },
+      height: '100%',
+      padding: '30px 0px 30px 50px',
     },
 
     sectionDesktop: {
@@ -43,6 +39,9 @@ export default makeStyles(
       [breakpoints.up('md')]: {
         display: 'none',
       },
+    },
+    logo: {
+      height: '100%',
     },
   })
 )
