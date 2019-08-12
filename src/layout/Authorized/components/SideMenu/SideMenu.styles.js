@@ -46,7 +46,7 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
   },
   title: {
     height: '100%',
-    padding: '30px 0px 30px 50px',
+    padding: '30px 0px',
   },
   icon: {
     marginRight: spacing(2),

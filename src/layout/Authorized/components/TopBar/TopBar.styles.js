@@ -25,7 +25,7 @@ export default makeStyles(
     },
     title: {
       height: '100%',
-      padding: '30px 0px 30px 50px',
+      padding: '30px 0px',
     },
 
     sectionDesktop: {
