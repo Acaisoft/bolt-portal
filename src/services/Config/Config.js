@@ -33,8 +33,8 @@ export class Config {
       case 'stage':
         this.hasura = {
           ...this.hasura,
-          wsUri: 'wss://hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
-          apiUri: 'https://hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
+          wsUri: 'wss://www.hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
+          apiUri: 'https://www.hasura.dev.bolt.acaisoft.io/v1alpha1/graphql',
           accessKey: '26ec3dc5f542a792890f',
           userID: 'aaaaaaaa-ef65-4556-a1a5-96ff1f0068cb',
         }
