@@ -37,7 +37,11 @@ export function LineChart({ data, config, groupNames }) {
         },
       },
       series: groupNames.map(groupName => {
+        const isStacked = config.type === 'stacked'
+
         return {
+          areaStyle: isStacked ? {} : undefined,
+          stack: isStacked ? 'defaultStack' : undefined,
           name: groupName,
           type: 'line',
           showSymbol: false,

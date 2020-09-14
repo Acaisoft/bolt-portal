@@ -79,7 +79,7 @@ export function ConfigurationInfo({
     onDelete(errorMessage)
   }, [deleteConfiguration, onDelete, toggleDeleteModal])
 
-  const { test_source, configuration_type, name, performed, id } = configuration
+  const { test_source, configuration_type, name, performed } = configuration
 
   const isPerformed = Boolean(performed)
   const canRun = Boolean(test_source)
