@@ -45,7 +45,7 @@ function TestConfigurationDetails({ children, configuration }) {
           </Grid>
         </Grid>
         <Grid item xs>
-          <Grid container spacing={4} alignItems="center">
+          <Grid container spacing={4} alignItems="flex-start">
             <Grid item xs={12}>
               <SectionHeader size="medium" title="General" />
             </Grid>
