@@ -11,5 +11,6 @@ export default makeStyles(({ palette, typography }) => ({
   },
   value: {
     ...typography.body2,
+    wordBreak: 'break-all',
   },
 }))
