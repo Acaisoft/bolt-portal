@@ -61,7 +61,7 @@ node('docker') {
             if (env.BRANCH_NAME == DEV_BRANCH) {
                 echo "Deploy to dev"
                 withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
-                    docker.image('node:9.10-alpine').inside("-u root") {
+                    docker.image('node:10.20-alpine').inside("-u root") {
                         sh "npm install -g firebase-tools"
                         sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt"
                     }
@@ -72,7 +72,7 @@ node('docker') {
             if (env.BRANCH_NAME == PROD_BRANCH) {
                 echo "Deploy to prod"
                 withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
-                    docker.image('node:9.10-alpine').inside("-u root") {
+                    docker.image('node:10.20-alpine').inside("-u root") {
                         sh "npm install -g firebase-tools"
                         sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt-prod"
                     }
@@ -84,7 +84,7 @@ node('docker') {
             if (env.BRANCH_NAME == DEV_LITE_BRANCH) {
                 echo "Deploy to prod"
                 withCredentials([string(credentialsId: FIREBASE_CI_TOKEN, variable: 'TOKEN')]) {
-                    docker.image('node:9.10-alpine').inside("-u root") {
+                    docker.image('node:10.20-alpine').inside("-u root") {
                         sh "npm install -g firebase-tools"
                         sh "firebase deploy --non-interactive --token ${TOKEN} --only hosting:acai-bolt-lite"
                     }
