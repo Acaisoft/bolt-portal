@@ -3,7 +3,7 @@ import React from 'react'
 import useStyles from './StatusGraph.styles'
 
 import classNames from 'classnames'
-import { TestRunStageStatus } from '~config/constants'
+import { TestRunStageStatus } from 'config/constants'
 
 function Step({ stepName, stepData }, ref) {
   const classes = useStyles()

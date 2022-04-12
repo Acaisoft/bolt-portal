@@ -2,10 +2,10 @@ import React from 'react'
 import moment from 'moment'
 
 import filesize from 'filesize'
-import { formatThousands, formatPercent } from '~utils/numbers'
+import { formatThousands, formatPercent } from 'utils/numbers'
 
-import { TooltipBuilder } from '~utils/echartUtils'
-import { DefaultChart } from '~components'
+import { TooltipBuilder } from 'utils/echartUtils'
+import { DefaultChart } from 'components'
 
 const formatters = {
   kBytes: value => filesize(value, { round: 3 }),

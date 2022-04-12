@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react'
 import moment from 'moment'
-
-import { useSubscription } from 'react-apollo-hooks'
-import { Link, withRouter, matchPath } from 'react-router-dom'
+import { useSubscription } from '@apollo/client'
+import { Link, matchPath, useLocation } from 'react-router-dom'
 import { ExpandMore } from '@material-ui/icons'
-import { Loader, Breadcrumbs } from '~components'
+import { Loader, Breadcrumbs } from 'components'
 
-import routes from '~config/routes'
+import routes from 'config/routes'
 
 import useStyles from './NavBreadcrumbs.styles'
 
@@ -18,9 +17,10 @@ import {
   SUBSCRIBE_TO_EXECUTIONS,
 } from './graphql'
 import { TextField, MenuItem } from '@material-ui/core'
-import { getUrl } from '~utils/router'
+import { getUrl } from 'utils/router'
 
-function NavBreadcrumbs({ history, location }) {
+function NavBreadcrumbs() {
+  const location = useLocation()
   const { projectId, configurationId, executionId } = getRouteParams(
     location.pathname
   )
@@ -154,10 +154,13 @@ function getRouteParams(url) {
   ]
 
   for (let i = 0; i < routesMatchingBreadcrumbs.length; ++i) {
-    const match = matchPath(url, {
-      exact: false,
-      path: routesMatchingBreadcrumbs[i],
-    })
+    const match = matchPath(
+      {
+        path: routesMatchingBreadcrumbs[i],
+        end: false,
+      },
+      url
+    )
 
     if (match) {
       return match.params
@@ -174,14 +177,12 @@ function useSelectorsData({ projectId, configurationId, executionId }) {
       fetchPolicy: 'cache-first',
     }
   )
-  const {
-    data: { configurations = [] } = {},
-    configurationsLoading,
-  } = useSubscription(SUBSCRIBE_TO_SCENARIOS, {
-    fetchPolicy: 'cache-first',
-    variables: { projectId },
-    skip: !configurationId,
-  })
+  const { data: { configurations = [] } = {}, configurationsLoading } =
+    useSubscription(SUBSCRIBE_TO_SCENARIOS, {
+      fetchPolicy: 'cache-first',
+      variables: { projectId },
+      skip: !configurationId,
+    })
   const { data: { executions = [] } = {}, executionsLoading } = useSubscription(
     SUBSCRIBE_TO_EXECUTIONS,
     {
@@ -227,4 +228,4 @@ function useUrlGetters({ projectId, configurationId, executionId }) {
   return { getProjectUrl, getConfigurationUrl, getExecutionUrl }
 }
 
-export default withRouter(NavBreadcrumbs)
+export default NavBreadcrumbs

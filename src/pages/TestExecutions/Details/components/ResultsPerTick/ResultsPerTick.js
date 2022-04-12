@@ -1,14 +1,14 @@
-import echarts from 'echarts'
+import { connect as echartsConnect } from 'echarts'
 import React, { useState, useMemo, useEffect } from 'react'
-import { useSubscription } from 'react-apollo-hooks'
+import { useSubscription } from '@apollo/client'
 import { Grid, Paper } from '@material-ui/core'
 import {
   SectionHeader,
   ZoomButton,
   LoadingPlaceholder,
   ErrorPlaceholder,
-} from '~components'
-import { Chart } from '~config/constants'
+} from 'components'
+import { Chart } from 'config/constants'
 
 import RequestsChart from './RequestsChart'
 import ResponseTimeChart from './ResponseTimeChart'
@@ -23,7 +23,7 @@ function ResultsPerTick({ classes, execution }) {
   const syncGroup = 'chartsGroup'
 
   useEffect(() => {
-    echarts.connect(syncGroup)
+    echartsConnect(syncGroup)
   }, [])
 
   if (loading || error || resultsPerTick.length === 0) {
@@ -106,13 +106,14 @@ function ResultsPerTick({ classes, execution }) {
 }
 
 function useResultsPerTickQuery(executionId) {
-  const { data: { resultsPerTick } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK,
-    {
-      variables: { executionId },
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const {
+    data: { resultsPerTick } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK, {
+    variables: { executionId },
+    fetchPolicy: 'cache-and-network',
+  })
 
   const preparedData = useMemo(
     () =>

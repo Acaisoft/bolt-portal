@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { useSubscription } from 'react-apollo-hooks'
+import { useSubscription } from '@apollo/client'
 
 import { IconButton, Box } from '@material-ui/core'
 import { Add, History } from '@material-ui/icons'
@@ -13,13 +13,13 @@ import {
   NoDataPlaceholder,
   LoadingPlaceholder,
   ErrorPlaceholder,
-} from '~components'
-import { Pagination } from '~containers'
-import { useListFilters } from '~hooks'
+} from 'components'
+import { Pagination } from 'containers'
+import { useListFilters } from 'hooks'
 
-import { formatPercent, formatThousands } from '~utils/numbers'
+import { formatPercent, formatThousands } from 'utils/numbers'
 
-import { SuccessRatePieChart } from '~components'
+import { SuccessRatePieChart } from 'components'
 
 import {
   SUBSCRIBE_TO_TEST_CONFIGURATION_LIST_ITEM,

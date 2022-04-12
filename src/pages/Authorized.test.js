@@ -1,20 +1,23 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { MemoryRouter } from 'react-router-dom'
+import { render, screen } from '@testing-library/react'
+import { MockedProvider } from '@apollo/client/testing'
 
 import { Authorized } from './Authorized'
 
-jest.mock('./Projects', () => 'ProjectsMock')
-
-const initAuthorized = overrides => {
-  const wrapper = shallow(<Authorized {...overrides} />)
-  return { wrapper }
-}
+jest.unmock('@material-ui/core')
 
 describe('page: Authorized', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      const { wrapper } = initAuthorized()
-      expect(wrapper).toBeTruthy()
+      render(
+        <MockedProvider mocks={[]}>
+          <MemoryRouter>
+            <Authorized />
+          </MemoryRouter>
+        </MockedProvider>
+      )
+      expect(screen.getByText('Loading projects...'))
     })
   })
 })

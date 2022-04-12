@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import { useTheme } from '@material-ui/styles'
-import { SectionHeader, NoDataPlaceholder } from '~components'
+import { SectionHeader, NoDataPlaceholder } from 'components'
 import HeatmapChart from './HeatmapChart'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')

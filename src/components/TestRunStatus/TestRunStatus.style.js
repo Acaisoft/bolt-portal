@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import { TestRunStatus as Status } from '~config/constants'
+import { TestRunStatus as Status } from 'config/constants'
 
 export default makeStyles(({ palette, spacing }) => ({
   icon: {

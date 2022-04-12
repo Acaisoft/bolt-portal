@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 
-export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => ({
+export default makeStyles(({ palette, spacing, zIndex }) => ({
   root: {
     position: 'fixed',
     top: 0,
@@ -23,7 +23,6 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
     borderTop: `1px solid ${palette.divider}`,
   },
   header: {
-    ...mixins.gutters(),
     height: 85,
     display: 'flex',
     alignItems: 'center',
@@ -52,7 +51,6 @@ export default makeStyles(({ mixins, palette, spacing, typography, zIndex }) => 
     marginRight: spacing(2),
   },
   button: {
-    marginLeft: -12,
     marginRight: 20,
   },
   logo: {

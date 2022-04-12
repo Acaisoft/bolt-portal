@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { withStyles } from '@material-ui/core'
 
 import ReactEcharts from 'echarts-for-react'
-import { TooltipBuilder } from '~utils/echartUtils'
+import { TooltipBuilder } from 'utils/echartUtils'
 import ReactResizeDetector from 'react-resize-detector'
 
 export function FailuresChart({ data = [], theme }) {

@@ -1,26 +1,21 @@
 import React, { useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { Card, Box } from '@material-ui/core'
-import { ErrorPlaceholder, LoadingPlaceholder, SectionHeader } from '~components'
+import { ErrorPlaceholder, LoadingPlaceholder, SectionHeader } from 'components'
 
 import { GET_PROJECT_SUMMARIES } from './graphql'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 import useStyles from './ProjectsList.styles'
 import { BackgroundImage, ProjectFormInCard, NewProjectCard, ProjectCard } from '..'
 
-function ProjectsList({ getProjectDetailsUrl }) {
+function ProjectsList() {
   const classes = useStyles()
   const { summaries, loading, error } = useProjectSummaries()
 
-  const {
-    editedItem,
-    handleClickCreate,
-    handleClickEdit,
-    handleFormClose,
-  } = useProjectsListState()
+  const { editedItem, handleClickCreate, handleClickEdit, handleFormClose } =
+    useProjectsListState()
 
   if (loading || error) {
     return (
@@ -76,11 +71,7 @@ function ProjectsList({ getProjectDetailsUrl }) {
                   ) : isNewProject ? (
                     <NewProjectCard onCreate={handleClickCreate} />
                   ) : (
-                    <ProjectCard
-                      getProjectDetailsUrl={getProjectDetailsUrl}
-                      onEdit={handleClickEdit}
-                      project={project}
-                    />
+                    <ProjectCard onEdit={handleClickEdit} project={project} />
                   )}
                 </div>
               </Card>
@@ -92,19 +83,16 @@ function ProjectsList({ getProjectDetailsUrl }) {
   )
 }
 
-ProjectsList.propTypes = {
-  getProjectDetailsUrl: PropTypes.func.isRequired,
-}
-
 function useProjectSummaries() {
-  const { data: { summaries = {} } = {}, loading, error } = useQuery(
-    GET_PROJECT_SUMMARIES,
-    {
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const {
+    data: { summaries = {} } = {},
+    loading,
+    error,
+  } = useQuery(GET_PROJECT_SUMMARIES, {
+    fetchPolicy: 'cache-and-network',
+  })
 
-  return { loading, error, summaries: summaries.projects || [] }
+  return { loading, error, summaries: summaries?.projects || [] }
 }
 
 function useProjectsListState() {

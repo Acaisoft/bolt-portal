@@ -1,7 +1,7 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA = gql`
-  query getMetricsDataConfig($executionId: uuid!) {
+  subscription getMetricsDataConfig($executionId: uuid!) {
     execution: execution_by_pk(id: $executionId) {
       id
       start

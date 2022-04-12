@@ -1,13 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-
+import { Mutation } from '@apollo/client/react/components'
 import { Form } from 'react-final-form'
-import { Mutation } from 'react-apollo'
 
 import { createFormConfig } from './formSchema'
-import { validateForm, mutators } from '~utils/forms'
+import { validateForm, mutators } from 'utils/forms'
 import { ADD_PROJECT, EDIT_PROJECT } from './graphql'
-import { useNotification } from '~hooks'
+import { useNotification } from 'hooks'
 
 export function ProjectForm({
   children,

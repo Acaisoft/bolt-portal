@@ -4,9 +4,9 @@ import moment from 'moment'
 
 import { withStyles } from '@material-ui/core'
 
-import { TooltipBuilder } from '~utils/echartUtils'
-import { formatThousands } from '~utils/numbers'
-import { DefaultChart } from '~components'
+import { TooltipBuilder } from 'utils/echartUtils'
+import { formatThousands } from 'utils/numbers'
+import { DefaultChart } from 'components'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 

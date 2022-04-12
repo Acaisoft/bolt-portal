@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const GET_ENDPOINT_DISTRIBUTION = gql`
   query getEndpointDistribution($endpointId: String!) {

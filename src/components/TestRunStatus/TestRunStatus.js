@@ -4,8 +4,8 @@ import classNames from 'classnames'
 import { Typography, CircularProgress } from '@material-ui/core'
 import { Close, Done, ArrowRightAlt, ErrorOutline } from '@material-ui/icons'
 
-import { TestRunStatus as Status } from '~config/constants'
-import { Monitor, Terminate } from '~assets/icons'
+import { TestRunStatus as Status } from 'config/constants'
+import { Monitor, Terminate } from 'assets/icons'
 
 import useStyles from './TestRunStatus.style'
 

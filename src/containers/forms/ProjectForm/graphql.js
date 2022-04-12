@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const ADD_PROJECT = gql`
   mutation addProject($name: String!, $description: String, $image_url: String) {

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { TestSourceType } from '~config/constants'
-import { validateOnFieldValue } from '~utils/forms'
+import { TestSourceType } from 'config/constants'
+import { validateOnFieldValue } from 'utils/forms'
 import { GET_CONFIGURATION_TYPES_QUERY } from './graphql'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 const sourceTypeOptions = Object.entries(TestSourceType).map(([type, value]) => ({
   key: type,
@@ -11,10 +11,9 @@ const sourceTypeOptions = Object.entries(TestSourceType).map(([type, value]) => 
 }))
 
 function useFormSchema({ mode }) {
-  const {
-    data: { configurationTypes },
-    loading,
-  } = useQuery(GET_CONFIGURATION_TYPES_QUERY)
+  const { data: { configurationTypes } = {}, loading } = useQuery(
+    GET_CONFIGURATION_TYPES_QUERY
+  )
 
   const fields = useMemo(
     () =>

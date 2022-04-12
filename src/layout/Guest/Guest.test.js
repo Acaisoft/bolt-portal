@@ -5,7 +5,7 @@ import { Guest } from './Guest'
 
 jest.unmock('@material-ui/core')
 
-jest.mock('~pages/Guest', () => () => <div>test guest pages</div>)
+jest.mock('pages/Guest', () => () => <div>test guest pages</div>)
 
 describe('layout: Guest', () => {
   afterEach(cleanup)

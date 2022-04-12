@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import ReactEcharts from 'echarts-for-react'
 import { useTheme } from '@material-ui/styles'
-import { TooltipBuilder } from '~utils/echartUtils'
+import { TooltipBuilder } from 'utils/echartUtils'
 
 function getVisualMapForFormat({ yFormat, activeColor, theme, legendLabels }) {
   const {

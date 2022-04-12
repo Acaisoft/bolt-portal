@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 const TEST_CONFIGURATION_LIST_ITEM = gql`
   fragment testConfigurationListItem on configuration {

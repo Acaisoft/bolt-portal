@@ -1,25 +1,29 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 
 import { ConfigurationForm } from './components'
-import { getUrl } from '~utils/router'
-import routes from '~config/routes'
-import { useNotification } from '~hooks'
+import { getUrl } from 'utils/router'
+import routes from 'config/routes'
+import { useNotification } from 'hooks'
 
-export function CreateOrEdit({ history, match, location }) {
-  const { projectId, configurationId } = match.params
+export function CreateOrEdit() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const params = useParams()
+  const { projectId, configurationId } = params
+
   const mode = configurationId ? 'edit' : 'create'
 
   const urlParams = new URLSearchParams(location.search)
   const targetLocation = urlParams.get('from')
 
   const goToList = useCallback(() => {
-    history.push(getUrl(routes.projects.configurations.list, { ...match.params }))
-  }, [history, match.params])
+    navigate(getUrl(routes.projects.configurations.list, { ...params }))
+  }, [navigate, params])
 
   const goToDetails = useCallback(() => {
-    history.push(getUrl(routes.projects.configurations.details, { ...match.params }))
-  }, [history, match.params])
+    navigate(getUrl(routes.projects.configurations.details, { ...params }))
+  }, [navigate, params])
 
   const handleClose = useCallback(() => {
     if (targetLocation === 'list' || !configurationId) {
@@ -54,18 +58,6 @@ export function CreateOrEdit({ history, match, location }) {
       onSubmit={handleSubmit}
     />
   )
-}
-
-CreateOrEdit.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      configurationId: PropTypes.string,
-      projectId: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
 }
 
 export default CreateOrEdit

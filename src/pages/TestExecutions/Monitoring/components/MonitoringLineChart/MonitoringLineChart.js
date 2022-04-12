@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { SectionHeader, NoDataPlaceholder } from '~components'
+import { SectionHeader, NoDataPlaceholder } from 'components'
 
 import ChartFilter from '../ChartFilter'
 import LineChart from './LineChart'

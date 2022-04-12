@@ -2,13 +2,13 @@ import React, { useCallback } from 'react'
 
 import { IconButton, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
-import { PopoverMenu } from '~components'
-import { Debug, Terminate } from '~assets/icons'
-import { useNotification } from '~hooks'
+import { PopoverMenu } from 'components'
+import { Debug, Terminate } from 'assets/icons'
+import { useNotification } from 'hooks'
 
-import routes from '~config/routes'
-import { TestRunStatus as TestRunStatusEnum } from '~config/constants'
-import { getUrl } from '~utils/router'
+import routes from 'config/routes'
+import { TestRunStatus as TestRunStatusEnum } from 'config/constants'
+import { getUrl } from 'utils/router'
 
 import { useExecutionTerminate } from '../../hooks'
 

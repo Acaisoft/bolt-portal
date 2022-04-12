@@ -1,17 +1,17 @@
 import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { cleanup, render } from '@testing-library/react'
 
 import { Breadcrumbs } from './Breadcrumbs'
-import { ClassesProxy, MockedRouter } from '~utils/tests/mocks'
+import { ClassesProxy } from 'utils/tests/mocks'
 
 afterEach(cleanup)
 
-jest.unmock('react-router-dom')
 jest.unmock('@material-ui/core')
 jest.unmock('@material-ui/icons')
 
 function renderWithRouter(ui) {
-  return render(<MockedRouter>{ui}</MockedRouter>)
+  return render(<MemoryRouter>{ui}</MemoryRouter>)
 }
 
 describe('Breadcrumbs', () => {

@@ -1,20 +1,22 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { TestSourcesList } from './components'
 
-import routes from '~config/routes'
-import { getUrl } from '~utils/router'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
 
 import useStyles from './List.styles'
 
-export function List({ history, match }) {
-  const { projectId } = match.params
+export function List() {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { projectId } = params
   const classes = useStyles()
 
   const { getCreateTestSourceUrl, getEditTestSourceUrl } = useHandlers(
-    history,
-    match
+    navigate,
+    params
   )
 
   return (
@@ -27,23 +29,13 @@ export function List({ history, match }) {
     </div>
   )
 }
-List.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectId: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-}
 
-function useHandlers(history, match) {
+function useHandlers(navigate, params) {
   const getRedirectUr = useCallback(
-    (path, params = {}) => {
-      return getUrl(path, { ...match.params, ...params })
+    (path, callbackParams = {}) => {
+      return getUrl(path, { ...params, ...callbackParams })
     },
-    [match]
+    [params]
   )
 
   const getCreateTestSourceUrl = useCallback(() => {

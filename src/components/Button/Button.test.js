@@ -1,12 +1,10 @@
 import React from 'react'
-
+import { MemoryRouter } from 'react-router-dom'
 import { render, cleanup, getByTestId, act, fireEvent } from '@testing-library/react'
-import { MockedRouter } from '~utils/tests/mocks'
 
 import { Button } from './Button'
 
 jest.unmock('@material-ui/core')
-jest.unmock('react-router-dom')
 
 let label
 
@@ -44,9 +42,9 @@ describe('component: Button', () => {
     test('as <a /> when href passed', () => {
       const href = '/some/url'
       const { getByRole } = render(
-        <MockedRouter>
+        <MemoryRouter>
           <Button href={href}>{label}</Button>
-        </MockedRouter>
+        </MemoryRouter>
       )
 
       const button = getByRole('button')

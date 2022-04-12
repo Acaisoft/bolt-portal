@@ -2,9 +2,9 @@ import React, { useMemo } from 'react'
 
 import { Grid, Paper } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
-import { Line } from '~components'
-import { useCallbackRef } from '~hooks'
-import { TestRunStageStatus } from '~config/constants'
+import { Line } from 'components'
+import { useCallbackRef } from 'hooks'
+import { TestRunStageStatus } from 'config/constants'
 import {
   SUBSCRIBE_TO_EXECUTION_STATUS,
   GET_GRAPH_CONFIGURATION,
@@ -12,8 +12,8 @@ import {
 
 import Step from './Step'
 import useStyles from './StatusGraph.styles'
-import { useSubscription, useQuery } from 'react-apollo-hooks'
-import { LoadingPlaceholder, ErrorPlaceholder } from '~components'
+import { useSubscription, useQuery } from '@apollo/client'
+import { LoadingPlaceholder, ErrorPlaceholder } from 'components'
 
 const Stages = {
   START: 'start',
@@ -95,20 +95,19 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
   const classes = useStyles()
   const theme = useTheme()
 
-  const {
-    data: { configuration },
-  } = useQuery(GET_GRAPH_CONFIGURATION, {
+  const { data: { configuration = {} } = {} } = useQuery(GET_GRAPH_CONFIGURATION, {
     variables: { configurationId },
     fetchPolicy: 'cache-first',
   })
 
-  const { data: { execution_stage_log } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION_STATUS,
-    {
-      variables: { executionId },
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const {
+    data: { execution_stage_log } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTION_STATUS, {
+    variables: { executionId },
+    fetchPolicy: 'cache-and-network',
+  })
 
   const [startEl, startRef] = useCallbackRef()
   const [sourceEl, sourceRef] = useCallbackRef()
@@ -286,12 +285,12 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
             wrap="nowrap"
           >
             <Grid item className={classes.section}>
-              <Grid container justify="center" alignItems="center">
+              <Grid container justifyContent="center" alignItems="center">
                 <Step stepName="Started" ref={startRef} stepData={isStarted} />
               </Grid>
             </Grid>
             <Grid item className={classes.section}>
-              <Grid container justify="center" alignItems="center">
+              <Grid container justifyContent="center" alignItems="center">
                 <Step
                   stepName="Downloading Source"
                   ref={sourceRef}
@@ -300,7 +299,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
               </Grid>
             </Grid>
             <Grid item className={classes.section}>
-              <Grid container justify="center" alignItems="center">
+              <Grid container justifyContent="center" alignItems="center">
                 <Step
                   stepName="Image preparation"
                   ref={preparationRef}
@@ -314,7 +313,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
               <Grid item className={classes.section}>
                 <Grid container direction="column">
                   {Boolean(configuration.has_monitoring) && (
-                    <Grid container justify="center" alignItems="center">
+                    <Grid container justifyContent="center" alignItems="center">
                       <Step
                         stepName="Run Monitoring"
                         ref={monitoringRef}
@@ -324,7 +323,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
                   )}
 
                   {Boolean(configuration.has_load_tests) && (
-                    <Grid container justify="center" alignItems="center">
+                    <Grid container justifyContent="center" alignItems="center">
                       <Step
                         stepName="Run Tests"
                         ref={loadTestsRef}
@@ -337,7 +336,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
             )}
 
             <Grid item className={classes.section}>
-              <Grid container justify="center" alignItems="center">
+              <Grid container justifyContent="center" alignItems="center">
                 <Step
                   stepName="Clean-up"
                   ref={cleanupRef}
@@ -347,7 +346,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
             </Grid>
 
             <Grid item className={classes.section}>
-              <Grid container justify="center" alignItems="center">
+              <Grid container justifyContent="center" alignItems="center">
                 <Step
                   stepName="Finished"
                   ref={finishRef}

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const TEST_EXECUTION_ITEM_FRAGMENT = gql`
   fragment testExecutionItemInConfigurationDetails on execution {

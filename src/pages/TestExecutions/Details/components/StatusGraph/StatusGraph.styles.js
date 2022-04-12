@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core'
-import { fade } from '@material-ui/core/styles/colorManipulator'
-import { TestRunStageStatus as Status } from '~config/constants'
+import { makeStyles, alpha } from '@material-ui/core'
+import { TestRunStageStatus as Status } from 'config/constants'
 
 export default makeStyles(({ palette, spacing }) => ({
   circle: {
@@ -23,7 +22,7 @@ export default makeStyles(({ palette, spacing }) => ({
       height: 30,
       width: 30,
       borderRadius: '50%',
-      background: fade(palette.success.main, 0.4),
+      background: alpha(palette.success.main, 0.4),
     },
   },
 
@@ -45,21 +44,21 @@ export default makeStyles(({ palette, spacing }) => ({
     background: palette.chart.graph.line.failed,
 
     '&::before': {
-      background: fade(palette.error.main, 0.4),
+      background: alpha(palette.error.main, 0.4),
     },
   },
   [Status.ERROR]: {
     background: palette.chart.graph.line.failed,
 
     '&::before': {
-      background: fade(palette.error.main, 0.4),
+      background: alpha(palette.error.main, 0.4),
     },
   },
   [Status.TERMINATED]: {
     background: palette.warning.main,
 
     '&::before': {
-      background: fade(palette.warning.secondary, 0.4),
+      background: alpha(palette.warning.secondary, 0.4),
     },
   },
 

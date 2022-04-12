@@ -1,4 +1,4 @@
-import { makeGetProxy } from '~utils/proxies'
+import { makeGetProxy } from 'utils/proxies'
 
 // Custom mocks
 const definedMocks = {}

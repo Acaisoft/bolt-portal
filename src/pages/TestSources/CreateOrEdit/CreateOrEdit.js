@@ -1,18 +1,20 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import { useParams, useNavigate } from 'react-router-dom'
 
-import routes from '~config/routes'
-import { getUrl } from '~utils/router'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
 
 import { TestSourceForm } from './components'
 
-export function CreateOrEdit({ history, match }) {
-  const { projectId, sourceId } = match.params
+export function CreateOrEdit() {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { projectId, sourceId } = params
   const mode = sourceId ? 'edit' : 'create'
 
   const goToList = useCallback(() => {
-    history.push(getUrl(routes.projects.sources.list, { ...match.params }))
-  }, [history, match.params])
+    navigate(getUrl(routes.projects.sources.list, { ...params }))
+  }, [navigate, params])
 
   const handleSubmit = useCallback(
     values => {
@@ -34,17 +36,6 @@ export function CreateOrEdit({ history, match }) {
       sourceId={sourceId}
     />
   )
-}
-CreateOrEdit.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectId: PropTypes.string.isRequired,
-      sourceId: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
 }
 
 export default CreateOrEdit

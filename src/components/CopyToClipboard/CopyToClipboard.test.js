@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, cleanup, fireEvent, act } from '@testing-library/react'
 
-import { copyValueFromInput } from '~utils/browser'
+import { copyValueFromInput } from 'utils/browser'
 import { CopyToClipboard } from './CopyToClipboard'
 
-jest.mock('~utils/browser', () => ({
+jest.mock('utils/browser', () => ({
   copyValueFromInput: jest.fn(),
 }))
 

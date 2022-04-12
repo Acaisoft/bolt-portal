@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
-import { TestSourceType } from '~config/constants'
-import { validateOnFieldValue } from '~utils/forms'
+import { TestSourceType } from 'config/constants'
+import { validateOnFieldValue } from 'utils/forms'
 
 import {
   GET_PARAMETERS,
@@ -34,25 +34,23 @@ const scenarioParts = [
 ]
 
 function useFormSchema({ projectId, mode }) {
-  const {
-    data: { parameters },
-    loading: parametersLoading,
-  } = useQuery(GET_PARAMETERS, {
-    fetchPolicy: 'cache-and-network',
-  })
-  const {
-    data: { configurationTypes },
-    loading: configurationTypesLoading,
-  } = useQuery(GET_CONFIGURATION_TYPES, {
-    fetchPolicy: 'cache-and-network',
-  })
-  const {
-    data: { testSources },
-    loading: testSourcesLoading,
-  } = useQuery(GET_TEST_SOURCES_FOR_PROJECT, {
-    fetchPolicy: 'cache-and-network',
-    variables: { projectId },
-  })
+  const { data: { parameters } = {}, loading: parametersLoading } = useQuery(
+    GET_PARAMETERS,
+    {
+      fetchPolicy: 'cache-and-network',
+    }
+  )
+  const { data: { configurationTypes } = {}, loading: configurationTypesLoading } =
+    useQuery(GET_CONFIGURATION_TYPES, {
+      fetchPolicy: 'cache-and-network',
+    })
+  const { data: { testSources } = {}, loading: testSourcesLoading } = useQuery(
+    GET_TEST_SOURCES_FOR_PROJECT,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: { projectId },
+    }
+  )
 
   const fields = useMemo(
     () =>

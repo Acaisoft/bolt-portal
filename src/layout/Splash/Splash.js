@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LoadingPlaceholder } from '~components'
+import { LoadingPlaceholder } from 'components'
 
 import useStyles from './Splash.styles'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Close } from '@material-ui/icons'
-import { ErrorPlaceholder as ErrorPlaceholderImage } from '~assets/icons'
+import { ErrorPlaceholder as ErrorPlaceholderImage } from 'assets/icons'
 import SectionPlaceholder from '../SectionPlaceholder'
 
 function ErrorPlaceholder({

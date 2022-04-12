@@ -1,11 +1,9 @@
 import React, { useContext } from 'react'
-
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ToastContainer } from 'react-toastify'
-import { withRouter } from 'react-router-dom'
-import { AuthKeycloakContext } from '~contexts'
+import { AuthKeycloakContext } from 'contexts'
 
-import { CloseToast } from '~assets/icons'
+import { CloseToast } from 'assets/icons'
 import Authorized from './Authorized'
 import Guest from './Guest'
 import Splash from './Splash'
@@ -22,7 +20,11 @@ export function Layout() {
 
   return (
     <React.Fragment>
-      <ToastContainer autoClose={8000} closeButton={<CloseButton />} />
+      <ToastContainer
+        className={classes.toastContainer}
+        autoClose={8000}
+        closeButton={<CloseButton />}
+      />
       <div className={classes.root}>
         {isInitialized ? isAuthenticated ? <Authorized /> : <Guest /> : <Splash />}
       </div>
@@ -30,4 +32,4 @@ export function Layout() {
   )
 }
 
-export default withRouter(Layout)
+export default Layout

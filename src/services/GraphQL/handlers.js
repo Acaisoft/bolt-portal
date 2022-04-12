@@ -1,13 +1,10 @@
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { persistCache } from 'apollo-cache-persist'
-import { HttpLink } from 'apollo-link-http'
-import { onError } from 'apollo-link-error'
-import { ApolloLink, Observable } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { setContext } from 'apollo-link-context'
-import { getMainDefinition } from 'apollo-utilities'
+import { HttpLink, ApolloLink, Observable } from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
+import { onError } from '@apollo/client/link/error'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { setContext } from '@apollo/client/link/context'
 
-import Config from '~services/Config'
+import Config from 'services/Config'
 
 /*
  * Links
@@ -24,8 +21,9 @@ export function makeErrorHandlingLink() {
           `[GraphQL error] Error: ${message}`,
           parsedLocations && `, Locations: ${parsedLocations}`,
           path && `, Path: ${path}`,
-          `\nFor operation: ${operation.operationName ||
-            '[no name]'} with variables: ${JSON.stringify(operation.variables)}`
+          `\nFor operation: ${
+            operation.operationName || '[no name]'
+          } with variables: ${JSON.stringify(operation.variables)}`
         )
       })
     }
@@ -106,18 +104,4 @@ export function makeTransportLinks({ getFreshToken, getToken }) {
     wsLink,
     httpLink
   )
-}
-
-/*
- * Cache & Local State
- */
-export function makeCache() {
-  const cache = new InMemoryCache()
-
-  persistCache({
-    cache,
-    storage: window.localStorage,
-  })
-
-  return cache
 }

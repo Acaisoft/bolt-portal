@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { useQuery, useSubscription } from 'react-apollo-hooks'
+import { useQuery, useSubscription } from '@apollo/client'
 
 import { Box } from '@material-ui/core'
 import {
@@ -12,12 +12,12 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   TestRunStatus,
-} from '~components'
-import { Pagination } from '~containers'
-import { useListFilters } from '~hooks'
-import { ExecutionActionsMenu } from '~pages/TestExecutions/components'
+} from 'components'
+import { Pagination } from 'containers'
+import { useListFilters } from 'hooks'
+import { ExecutionActionsMenu } from 'pages/TestExecutions/components'
 
-import { formatThousands, formatPercent } from '~utils/numbers'
+import { formatThousands, formatPercent } from 'utils/numbers'
 
 import {
   GET_TEST_EXECUTIONS_AGGREGATE,
@@ -39,7 +39,7 @@ function TestExecutionsList({
     orderBy: [{ start: 'desc' }],
   })
 
-  const { data: { executionsAggregate } = {} } = useQuery(
+  const { data: { executionsAggregate = {} } = {} } = useQuery(
     GET_TEST_EXECUTIONS_AGGREGATE,
     {
       fetchPolicy: 'cache-and-network',
@@ -47,18 +47,19 @@ function TestExecutionsList({
     }
   )
 
-  const { data: { executions = [] } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS,
-    {
-      fetchPolicy: 'cache-and-network',
-      variables: {
-        configurationId,
-        limit: pagination.rowsPerPage,
-        offset: pagination.offset,
-        order_by: orderBy,
-      },
-    }
-  )
+  const {
+    data: { executions = [] } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_CONFIGURATION_EXECUTIONS, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      configurationId,
+      limit: pagination.rowsPerPage,
+      offset: pagination.offset,
+      order_by: orderBy,
+    },
+  })
 
   if (loading || error) {
     return (
@@ -73,7 +74,7 @@ function TestExecutionsList({
   }
 
   const totalCount =
-    (executionsAggregate && executionsAggregate.aggregate.count) || 0
+    (executionsAggregate && executionsAggregate?.aggregate?.count) || 0
 
   return (
     <div>

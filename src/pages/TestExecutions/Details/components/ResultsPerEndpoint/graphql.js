@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION = gql`
   subscription subscribeToExecutionResultsDistribution($executionId: uuid!) {

@@ -1,5 +1,6 @@
 import React from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
 
 import { Grid, Box } from '@material-ui/core'
 import {
@@ -7,17 +8,15 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   NotFoundPlaceholder,
-} from '~components'
+} from 'components'
 
 import { Failures, TimeDistribution, Stats } from './components'
 import { GET_ENDPOINT } from './graphql'
 import useStyles from './EndpointDetails.styles'
 
-function EndpointDetails({ history, match }) {
-  const { endpointId } = match.params
-
+function EndpointDetails() {
+  const { endpointId } = useParams()
   const classes = useStyles()
-
   const { endpoint, loading, error } = useEndpointQuery(endpointId)
 
   if (loading || error || !endpoint) {
@@ -59,7 +58,7 @@ function useEndpointQuery(endpointId) {
   const {
     loading,
     error,
-    data: { endpoint = [] },
+    data: { endpoint = [] } = {},
   } = useQuery(GET_ENDPOINT, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',

@@ -21,17 +21,14 @@ export const validateForm = (values, schema) => {
 
 // Base, general conditional validator for creating other.
 // It applies the validation constraints only if the predicate returns true
-export const validateWhen = (predicate, validation) => (
-  value,
-  attributes,
-  attributeName
-) => {
-  if (!predicate(value, attributes, attributeName)) {
-    return null
-  }
+export const validateWhen =
+  (predicate, validation) => (value, attributes, attributeName) => {
+    if (!predicate(value, attributes, attributeName)) {
+      return null
+    }
 
-  return validation
-}
+    return validation
+  }
 
 // e.g. validateOnFieldValue('some.field', 'expected value', { ... })
 export const validateOnFieldValue = (fieldPath, value, validation) => {
@@ -69,13 +66,15 @@ export const uniqueInArray = (arrayPath, fieldPath) => (value, allValues) => {
   }
 }
 
-export const composeValidators = (...validators) => (value, allValues) => {
-  if (validators.length === 0) {
-    return
-  }
+export const composeValidators =
+  (...validators) =>
+  (value, allValues) => {
+    if (validators.length === 0) {
+      return
+    }
 
-  return validators.reduce(
-    (err, validator) => err || validator(value, allValues),
-    undefined
-  )
-}
+    return validators.reduce(
+      (err, validator) => err || validator(value, allValues),
+      undefined
+    )
+  }

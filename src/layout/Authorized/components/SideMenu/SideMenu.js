@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-
-import { NavLink } from 'react-router-dom'
 import {
   ClickAwayListener,
   Paper,
@@ -11,11 +9,11 @@ import {
   Backdrop,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
-import { Dashboard, TestRun, TestConfiguration, TestSource } from '~assets/icons'
-
-import routes from '~config/routes'
-import { getUrl } from '~utils/router'
-import logo from '~assets/images/bolt-logo.png'
+import { NavLink } from 'components'
+import { Dashboard, TestRun, TestConfiguration, TestSource } from 'assets/icons'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
+import logo from 'assets/images/bolt-logo.png'
 
 import useStyles from './SideMenu.styles'
 
@@ -32,25 +30,25 @@ function SideMenu({ isOpen, onClose, projectId }) {
         label: 'Dashboard',
         linkTo: getUrl(routes.projects.list),
         icon: Dashboard,
-        exact: true,
+        end: true,
       },
       {
         label: 'Test Runs',
         linkTo: getUrl(routes.projects.executions.list, { projectId }),
         icon: TestRun,
-        exact: false,
+        end: false,
       },
       {
         label: 'Test Scenarios',
         linkTo: getUrl(routes.projects.configurations.list, { projectId }),
         icon: TestConfiguration,
-        exact: false,
+        end: false,
       },
       {
         label: 'Test Sources',
         linkTo: getUrl(routes.projects.sources.list, { projectId }),
         icon: TestSource,
-        exact: false,
+        end: false,
       },
     ]
   }, [projectId])
@@ -79,7 +77,7 @@ function SideMenu({ isOpen, onClose, projectId }) {
                 key={item.linkTo}
                 component={NavLink}
                 to={item.linkTo}
-                exact={item.exact}
+                end={item.end}
                 activeClassName={classes.itemSelected}
                 className={classes.item}
                 onClick={onClose}

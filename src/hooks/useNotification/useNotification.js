@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { makeStyles } from '@material-ui/styles'
-import { ToastSuccess, ToastError, ToastInfo } from '~assets/icons'
+import { ToastSuccess, ToastError, ToastInfo } from 'assets/icons'
 import { ToastContent } from './components'
 
 const variants = {

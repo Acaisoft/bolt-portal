@@ -1,20 +1,16 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { MemoryRouter } from 'react-router-dom'
+import { render, screen } from '@testing-library/react'
 
 import { Guest } from './Guest'
 
-jest.mock('./Login', () => 'LoginMock')
-
-const initGuest = overrides => {
-  const wrapper = shallow(<Guest {...overrides} />)
-  return { wrapper }
-}
+jest.unmock('@material-ui/core')
 
 describe('page: Guest', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      const { wrapper } = initGuest()
-      expect(wrapper).toBeTruthy()
+      render(<Guest />, { wrapper: MemoryRouter })
+      expect(screen.getByText('Login Form')).toBeInTheDocument()
     })
   })
 })

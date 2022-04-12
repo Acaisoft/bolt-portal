@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from 'react'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import _ from 'lodash'
 
-import { useMutationWithState } from '~hooks'
+import { useMutationWithState } from 'hooks'
 
 export const TERMINATE_EXECUTION = gql`
   mutation terminateExecution($argoName: String!) {
@@ -14,9 +14,11 @@ export const TERMINATE_EXECUTION = gql`
 `
 
 export function useExecutionTerminate({ onTerminate }) {
-  const { error, data, mutation: terminate } = useMutationWithState(
-    TERMINATE_EXECUTION
-  )
+  const {
+    error,
+    data,
+    mutation: terminate,
+  } = useMutationWithState(TERMINATE_EXECUTION)
 
   const handleExecutionTerminate = useCallback(
     execution =>

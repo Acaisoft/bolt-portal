@@ -5,7 +5,7 @@ import FileUploader from './FileUploader.component'
 
 import { REQUEST_UPLOAD_URL } from './graphql'
 import { getFileHash, readFile, uploadFileToGCS } from './FileUploader.module'
-import { useMutationWithState } from '~hooks'
+import { useMutationWithState } from 'hooks'
 
 export function FileUploadContainer({
   accept,

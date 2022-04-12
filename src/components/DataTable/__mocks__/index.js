@@ -1,4 +1,4 @@
-import { mocks } from '~utils/tests'
+import { mocks } from 'utils/tests'
 
 const DataTable = mocks.makeNamedComponent('DataTable')
 DataTable.Column = 'Column'

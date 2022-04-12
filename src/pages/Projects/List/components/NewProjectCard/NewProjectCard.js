@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { CardContent, CardActions } from '@material-ui/core'
-import { Button } from '~components'
+import { Button } from 'components'
 
 import { Add } from '@material-ui/icons'
-import { CreateProject } from '~assets/icons'
+import { CreateProject } from 'assets/icons'
 
 import useStyles from './NewProjectCard.styles'
 

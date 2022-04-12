@@ -19,6 +19,7 @@ export { default as SuccessRatePieChart } from './SuccessRatePieChart'
 export { default as ZoomButton } from './ZoomButton'
 export { default as TestRunStatus } from './TestRunStatus'
 export { default as DefaultChart } from './DefaultChart'
+export { default as NavLink } from './NavLink'
 
 export { default as SectionPlaceholder } from './placeholders/SectionPlaceholder'
 export { default as NoDataPlaceholder } from './placeholders/NoDataPlaceholder'

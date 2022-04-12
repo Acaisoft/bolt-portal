@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@material-ui/core'
 
+// TODO: change this to functional component
 export class DeleteModal extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,

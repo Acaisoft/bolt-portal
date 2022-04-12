@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 import { Form } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import arrayMutators from 'final-form-arrays'
 import { Grid, MenuItem, Typography, IconButton } from '@material-ui/core'
-import { FormField, CheckboxField, FormValue } from '~containers'
-import { ExpandablePanel, SectionHeader, Loader, Button } from '~components'
+import { FormField, CheckboxField, FormValue } from 'containers'
+import { ExpandablePanel, SectionHeader, Loader, Button } from 'components'
 import { Delete, Add } from '@material-ui/icons'
 
 import {
@@ -17,8 +17,8 @@ import {
   requireWhenOtherIsSet,
   composeValidators,
   uniqueInArray,
-} from '~utils/forms'
-import { useMutationWithState } from '~hooks'
+} from 'utils/forms'
+import { useMutationWithState } from 'hooks'
 
 import {
   GET_CONFIGURATION,
@@ -147,7 +147,7 @@ export function ConfigurationForm({
           <FormValue name="configuration_type">
             {configurationType => (
               <React.Fragment>
-                <FormValue type="checkbox" name="scenario_parts">
+                <FormValue name="scenario_parts">
                   {scenarioParts => (
                     <ExpandablePanel
                       key={`${configurationType}-step2`} // Re-render to reinitialize defaultExpanded
@@ -156,8 +156,8 @@ export function ConfigurationForm({
                     >
                       <Grid container spacing={4}>
                         {!configurationType ||
-                        (!scenarioParts.has_load_tests &&
-                          !scenarioParts.has_monitoring) ? (
+                        (!scenarioParts?.has_load_tests &&
+                          !scenarioParts?.has_monitoring) ? (
                           <Grid item xs={12}>
                             <Typography variant="body1">
                               Select test type and scenario parts to see available
@@ -169,7 +169,7 @@ export function ConfigurationForm({
                             .filter(
                               ([name, options]) =>
                                 options.group === configurationType &&
-                                scenarioParts[`has_${options.scenarioPart}`]
+                                scenarioParts?.[`has_${options.scenarioPart}`]
                             )
                             .map(([id, options]) => (
                               <Grid key={id} item xs={6}>

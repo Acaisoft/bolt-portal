@@ -1,9 +1,9 @@
-import { ClassesProxy } from '~utils/tests/mocks'
-import { makeGetProxy } from '~utils/proxies'
+import { ClassesProxy } from 'utils/tests/mocks'
+import { makeGetProxy } from 'utils/proxies'
 
 // Custom mocks
 const definedMocks = {
-  createMuiTheme: jest.fn(),
+  createTheme: jest.fn(),
   withStyles: jest.fn(() => jest.fn(component => component)),
   makeStyles: jest.fn(() => jest.fn(() => ClassesProxy)),
 }

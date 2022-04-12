@@ -1,19 +1,18 @@
 import React from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 import { Paper } from '@material-ui/core'
-import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
+import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from 'components'
 
 import TimeDistributionChart from './TimeDistributionChart'
 import { GET_ENDPOINT_DISTRIBUTION } from './graphql'
-import { Chart } from '~config/constants'
+import { Chart } from 'config/constants'
 
 function TimeDistribution({ classes, endpointId }) {
-  const { endpointDistribution, loading, error } = useEndpointDistributionQuery(
-    endpointId
-  )
+  const { endpointDistribution, loading, error } =
+    useEndpointDistributionQuery(endpointId)
 
-  if (loading || error || endpointDistribution.length === 0) {
+  if (loading || error || !Object.keys(endpointDistribution).length) {
     return (
       <Paper square className={classes.tile}>
         {loading ? (
@@ -44,11 +43,7 @@ function TimeDistribution({ classes, endpointId }) {
 }
 
 function useEndpointDistributionQuery(endpointId) {
-  const {
-    loading,
-    error,
-    data: { endpointDistribution = [] },
-  } = useQuery(GET_ENDPOINT_DISTRIBUTION, {
+  const { loading, error, data } = useQuery(GET_ENDPOINT_DISTRIBUTION, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',
   })
@@ -56,7 +51,7 @@ function useEndpointDistributionQuery(endpointId) {
   return {
     loading,
     error,
-    endpointDistribution: endpointDistribution[0] || {},
+    endpointDistribution: data?.endpointDistribution?.[0] || {},
   }
 }
 

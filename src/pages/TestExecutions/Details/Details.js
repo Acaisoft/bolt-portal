@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import { useParams } from 'react-router-dom'
 import moment from 'moment'
-
-import { useSubscription } from 'react-apollo-hooks'
+import { useSubscription } from '@apollo/client'
 import { Grid, Box } from '@material-ui/core'
 import {
   SectionHeader,
@@ -11,32 +10,33 @@ import {
   ErrorPlaceholder,
   NotFoundPlaceholder,
   ExpandablePanel,
-} from '~components'
-import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
+} from 'components'
+import { TestConfigurationDetails } from 'pages/TestConfigurations/Details/components'
 
-import { getUrl } from '~utils/router'
-import routes from '~config/routes'
+import { getUrl } from 'utils/router'
+import routes from 'config/routes'
 
 import { ResultsPerEndpoint, ResultsPerTick, StatusGraph } from './components'
 import { ExecutionActionsMenu } from '../components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 import useStyles from './Details.styles'
 
-export function Details({ history, match }) {
-  const { executionId } = match.params
-  const { configurationId } = match.params
+export function Details() {
+  const params = useParams()
+  const { executionId, configurationId } = params
 
   const classes = useStyles()
 
-  const { data: { execution } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION,
-    {
-      variables: { executionId },
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const {
+    data: { execution } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTION, {
+    variables: { executionId },
+    fetchPolicy: 'cache-and-network',
+  })
 
-  const { getEndpointDetailsUrl, getMonitoringUrl } = useUrlGetters(match.params)
+  const { getEndpointDetailsUrl, getMonitoringUrl } = useUrlGetters(params)
 
   if (loading || error || !execution) {
     return (
@@ -86,14 +86,6 @@ export function Details({ history, match }) {
       </Grid>
     </div>
   )
-}
-
-Details.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      executionId: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
 }
 
 function useUrlGetters(matchParams) {

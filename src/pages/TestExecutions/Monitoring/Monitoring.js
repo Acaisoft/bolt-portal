@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
+import { useParams } from 'react-router-dom'
+import { useQuery, useSubscription } from '@apollo/client'
 import moment from 'moment'
-
-import { useQuery, useSubscription } from 'react-apollo-hooks'
 import { Grid, Paper } from '@material-ui/core'
 import {
   SectionHeader,
@@ -10,12 +10,10 @@ import {
   ErrorPlaceholder,
   NotFoundPlaceholder,
   ExpandablePanel,
-} from '~components'
-import { TestRunStatus as Status } from '~config/constants'
-
-import { getUrl } from '~utils/router'
-import routes from '~config/routes'
-
+} from 'components'
+import { TestRunStatus as Status } from 'config/constants'
+import { getUrl } from 'utils/router'
+import routes from 'config/routes'
 import { ExecutionActionsMenu } from '../components'
 import { MonitoringLineChart, MonitoringHeatmapChart } from './components'
 import { StatusGraph } from '../Details/components'
@@ -24,21 +22,22 @@ import {
   SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
   GET_METRICS_DATA,
 } from './graphql'
+import { TestConfigurationDetails } from 'pages/TestConfigurations/Details/components'
 import useStyles from './Monitoring.styles'
-import { TestConfigurationDetails } from '~pages/TestConfigurations/Details/components'
 
-function Monitoring({ match, history, location }) {
-  const { executionId } = match.params
-  const { configurationId } = match.params
+function Monitoring() {
+  const params = useParams()
+  const { executionId, configurationId } = params
 
   const classes = useStyles()
 
-  const { data: { execution } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
-    {
-      variables: { executionId },
-    }
-  )
+  const {
+    data: { execution } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA, {
+    variables: { executionId },
+  })
 
   const pollInterval = [Status.RUNNING, Status.PENDING, Status.MONITORING].includes(
     execution && execution.status
@@ -73,10 +72,8 @@ function Monitoring({ match, history, location }) {
   }, [execution, monitoring])
 
   const getTestDetailsUrl = useCallback(() => {
-    return getUrl(routes.projects.configurations.executions.details, {
-      ...match.params,
-    })
-  }, [match.params])
+    return getUrl(routes.projects.configurations.executions.details, { ...params })
+  }, [params])
 
   return (
     <div>

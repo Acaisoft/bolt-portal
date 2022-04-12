@@ -1,5 +1,5 @@
-import { formatScaledDuration } from '~utils/datetime'
-import { formatThousands, formatPercent } from '~utils/numbers'
+import { formatScaledDuration } from 'utils/datetime'
+import { formatThousands, formatPercent } from 'utils/numbers'
 import filesize from 'filesize'
 
 export const EChartsFormatterType = {
@@ -134,12 +134,8 @@ export class TooltipBuilder {
     <div style="padding: 16px; overflow: hidden; max-width: 400px; display: flex">
        <div style="margin-right: 4px;">${this.series.marker}</div>
        <div>
-         <div style="font-weight: bold; white-space: normal; word-break: break-all">${
-           this.series.data.name
-         }</div>
-      <div style="color: #fff; font-weight: 600;">${
-        this.series.data.value
-      }/${totalErrors} </div>
+         <div style="font-weight: bold; white-space: normal; word-break: break-all">${this.series.data.name}</div>
+      <div style="color: #fff; font-weight: 600;">${this.series.data.value}/${totalErrors} </div>
       <div style="color: #fff; font-weight: 600;">${this.series.percent}% </div>
        </div>
 
@@ -151,9 +147,7 @@ export class TooltipBuilder {
     return `
     <div style="padding: 16px; overflow: hidden; max-width: 400px; display: flex">
        <div>
-         <div style="font-weight: bold; white-space: normal; word-break: break-all">${
-           this.series.name
-         }</div>
+         <div style="font-weight: bold; white-space: normal; word-break: break-all">${this.series.name}</div>
 
   </div>
     `

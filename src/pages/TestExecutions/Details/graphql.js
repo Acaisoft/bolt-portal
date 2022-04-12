@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 const EXECUTION_TIME_PARAMETER_FRAGMENT = gql`
   fragment executionTimeParameter on execution {

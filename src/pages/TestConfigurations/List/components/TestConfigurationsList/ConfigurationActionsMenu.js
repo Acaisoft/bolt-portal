@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 import { IconButton, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { MoreVert, FileCopyOutlined, Edit, Delete } from '@material-ui/icons'
-import { PopoverMenu, SubmitCancelModal } from '~components'
-import { useNotification } from '~hooks'
+import { PopoverMenu, SubmitCancelModal } from 'components'
+import { useNotification } from 'hooks'
 
 import { useConfigurationClone, useConfigurationDelete } from '../../../hooks'
 import { Link } from 'react-router-dom'
-import { useToggle } from '~hooks'
+import { useToggle } from 'hooks'
 import _ from 'lodash'
 
 function ConfigurationActionsMenu({ configuration, editUrl, onClone }) {
@@ -32,10 +32,8 @@ function ConfigurationActionsMenu({ configuration, editUrl, onClone }) {
     onClone(errorMessage, result)
   }, [cloneConfiguration, onClone])
 
-  const {
-    loading: isDeleting,
-    mutation: deleteConfiguration,
-  } = useConfigurationDelete(configuration.id)
+  const { loading: isDeleting, mutation: deleteConfiguration } =
+    useConfigurationDelete(configuration.id)
 
   const handleDeleteSubmit = useCallback(async () => {
     const { errorMessage } = await deleteConfiguration()

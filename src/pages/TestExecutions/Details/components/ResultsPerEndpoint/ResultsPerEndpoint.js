@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
-import { useSubscription } from 'react-apollo-hooks'
+import { useSubscription } from '@apollo/client'
 import { Grid, Paper } from '@material-ui/core'
-import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from '~components'
-import { Chart } from '~config/constants'
+import { SectionHeader, LoadingPlaceholder, ErrorPlaceholder } from 'components'
+import { Chart } from 'config/constants'
 
 import ResultsPerEndpointChart from './ResultsPerEndpointChart'
 import RequestsPerSecondChart from './RequestsPerSecondChart'
@@ -71,13 +71,14 @@ function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
 }
 
 function useResultsPerEndpointQuery(executionId) {
-  const { data: { resultsPerEndpoint } = {}, loading, error } = useSubscription(
-    SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION,
-    {
-      variables: { executionId },
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const {
+    data: { resultsPerEndpoint } = {},
+    loading,
+    error,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION, {
+    variables: { executionId },
+    fetchPolicy: 'cache-and-network',
+  })
 
   const preparedData = useMemo(
     () =>

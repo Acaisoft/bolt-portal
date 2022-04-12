@@ -1,37 +1,24 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import ListPage from './List'
 import DetailsPage from './Details'
 import EndpointDetailsPage from './EndpointDetails'
 import MonitoringPage from './Monitoring'
 
-export function TestExecutions({ match }) {
+export function TestExecutions() {
   return (
-    <Switch>
-      <Route path={`${match.path}`} exact component={ListPage} />
-      <Route path={`${match.path}/:executionId`} exact component={DetailsPage} />
+    <Routes>
+      <Route index element={<ListPage />} />
+      <Route path=":executionId" element={<DetailsPage />} />
       <Route
-        path={`${match.path}/:executionId/endpoint/:endpointId`}
-        exact
-        component={EndpointDetailsPage}
+        path=":executionId/endpoint/:endpointId"
+        element={<EndpointDetailsPage />}
       />
-      <Route
-        path={`${match.path}/:executionId/monitoring`}
-        exact
-        component={MonitoringPage}
-      />
-      <Redirect from="*" to={match.url} />
-    </Switch>
+      <Route path=":executionId/monitoring" element={<MonitoringPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
-}
-TestExecutions.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 export default TestExecutions

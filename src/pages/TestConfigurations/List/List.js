@@ -1,14 +1,16 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { getUrl } from '~utils/router'
-import routes from '~config/routes'
+import { getUrl } from 'utils/router'
+import routes from 'config/routes'
 import { TestConfigurationsList } from './components'
+import { useNotification } from 'hooks'
 import useStyles from './List.styles'
-import { useNotification } from '~hooks'
 
-export function List({ history, match }) {
-  const { projectId } = match.params
+export function List() {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { projectId } = params
   const classes = useStyles()
 
   const {
@@ -16,7 +18,7 @@ export function List({ history, match }) {
     getTestConfigurationDetailsUrl,
     getTestConfigurationEditUrl,
     handleClone,
-  } = useHandlers(history, match)
+  } = useHandlers(navigate, params)
 
   return (
     <div className={classes.root}>
@@ -30,23 +32,13 @@ export function List({ history, match }) {
     </div>
   )
 }
-List.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectId: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-}
 
-function useHandlers(history, match) {
+function useHandlers(navigate, params) {
   const getRedirectUrl = useCallback(
-    (path, params = {}) => {
-      return getUrl(path, { ...match.params, ...params })
+    (path, callbackParams = {}) => {
+      return getUrl(path, { ...params, ...callbackParams })
     },
-    [match]
+    [params]
   )
 
   const getTestConfigurationCreateUrl = useCallback(() => {
@@ -79,14 +71,14 @@ function useHandlers(history, match) {
         notify.error(`Could not clone: ${error}`)
       } else {
         notify.success(`Scenario has been cloned.`)
-        history.push(
+        navigate(
           getRedirectUrl(routes.projects.configurations.edit, {
             configurationId: newConfigurationId,
           })
         )
       }
     },
-    [notify, history, getRedirectUrl]
+    [notify, navigate, getRedirectUrl]
   )
 
   const handleRun = useCallback(

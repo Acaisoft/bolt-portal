@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 import { Add } from '@material-ui/icons'
-import { Pagination } from '~containers'
+import { Pagination } from 'containers'
 import {
   Button,
   DataTable,
@@ -11,10 +11,10 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   NoDataPlaceholder,
-} from '~components'
+} from 'components'
 
-import { useListFilters } from '~hooks'
-import { TestSourceType } from '~config/constants'
+import { useListFilters } from 'hooks'
+import { TestSourceType } from 'config/constants'
 
 import { GET_TEST_SOURCES } from './graphql'
 import useStyles from './TestSourcesList.styles'
@@ -32,7 +32,7 @@ function TestSourcesList({
   })
 
   const {
-    data: { testSources = [], testSourcesAggregate },
+    data: { testSources = [], testSourcesAggregate } = {},
     loading,
     error,
   } = useQuery(GET_TEST_SOURCES, {

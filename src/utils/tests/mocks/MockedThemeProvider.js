@@ -1,9 +1,9 @@
 import React from 'react'
-import { CssBaseline, MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { CssBaseline, MuiThemeProvider, createTheme } from '@material-ui/core'
 
-import theme from '~config/theme'
+import theme from 'config/theme'
 
-const muiTheme = createMuiTheme(theme)
+const muiTheme = createTheme(theme)
 
 function MockedThemeProvider({ children }) {
   return (

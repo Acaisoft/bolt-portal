@@ -4,19 +4,19 @@ import PropTypes from 'prop-types'
 import { Typography } from '@material-ui/core'
 import { Add, Edit, Close } from '@material-ui/icons'
 import { Field } from 'react-final-form'
-import { FileUploader, FormField } from '~containers'
-import { ProjectForm } from '~containers/forms'
+import { FileUploader, FormField } from 'containers'
+import { ProjectForm } from 'containers/forms'
 
-import { Button, ImagePreview } from '~components'
-import { CreateProject } from '~assets/icons'
+import { Button, ImagePreview } from 'components'
+import { CreateProject } from 'assets/icons'
 
 import useStyles from './ProjectFormInCard.styles'
 
 function ProjectFormInCard({
   initialValues,
   mode,
-  onCancel = () => { },
-  onSubmit = () => { },
+  onCancel = () => {},
+  onSubmit = () => {},
 }) {
   const classes = useStyles()
 

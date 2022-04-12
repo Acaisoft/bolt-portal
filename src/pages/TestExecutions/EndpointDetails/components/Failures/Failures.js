@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
 import { Paper } from '@material-ui/core'
 import {
@@ -7,11 +7,11 @@ import {
   LoadingPlaceholder,
   ErrorPlaceholder,
   NoDataPlaceholder,
-} from '~components'
+} from 'components'
 
 import FailuresChart from './FailuresChart'
 import { GET_ENDPOINT_FAILURES } from './graphql'
-import { Chart } from '~config/constants'
+import { Chart } from 'config/constants'
 
 function Failures({ classes, endpointId }) {
   const { endpointFailures, loading, error } = useEndpointFailures(endpointId)
@@ -44,7 +44,7 @@ function useEndpointFailures(endpointId) {
   const {
     loading,
     error,
-    data: { endpointFailures = [] },
+    data: { endpointFailures = [] } = {},
   } = useQuery(GET_ENDPOINT_FAILURES, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',

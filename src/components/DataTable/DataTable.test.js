@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { ClassesProxy } from '~utils/tests/mocks'
+import { ClassesProxy } from 'utils/tests/mocks'
 
 import {
   DataTable,
@@ -18,6 +18,8 @@ const initDataTable = overrides => {
   return { wrapper }
 }
 
+// TODO: These tests are legacy code because enzyme doesn't provide an adapter for React v18.
+//  We should try rewrite this component (make it use hooks) and these tests with react-testing-library, although with some of them it might be impossible
 describe('component: DataTable', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {

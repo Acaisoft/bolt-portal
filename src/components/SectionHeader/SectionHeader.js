@@ -20,7 +20,7 @@ function SectionHeader({
 
   const gridProps = {
     alignItems: 'center',
-    justify: 'space-between',
+    justifyContent: 'space-between',
     spacing: 4,
     ...containerProps,
   }
@@ -44,7 +44,7 @@ function SectionHeader({
       </Grid>
       {children && (
         <Grid item className={classes.children}>
-          <Grid container justify="flex-end" alignItems="center">
+          <Grid container justifyContent="flex-end" alignItems="center">
             {children}
           </Grid>
         </Grid>

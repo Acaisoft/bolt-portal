@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 import filesize from 'filesize'
 
 import { Grid, Paper } from '@material-ui/core'
@@ -8,12 +8,12 @@ import {
   LabeledValue,
   LoadingPlaceholder,
   ErrorPlaceholder,
-} from '~components'
+} from 'components'
 
-import { formatThousands } from '~utils/numbers'
+import { formatThousands } from 'utils/numbers'
 
 import { GET_ENDPOINT_TOTALS } from './graphql'
-import { Chart } from '~config/constants'
+import { Chart } from 'config/constants'
 
 function Stats({ classes, endpointId }) {
   const { endpointTotals, loading, error } = useEndpointTotals(endpointId)
@@ -108,7 +108,7 @@ function useEndpointTotals(endpointId) {
   const {
     loading,
     error,
-    data: { endpointTotals = [] },
+    data: { endpointTotals = [] } = {},
   } = useQuery(GET_ENDPOINT_TOTALS, {
     variables: { endpointId },
     fetchPolicy: 'cache-and-network',

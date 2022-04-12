@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { CircularProgress } from '@material-ui/core'
 import { Check, Close } from '@material-ui/icons'
 
-import { Button } from '~components'
+import { Button } from 'components'
 
 import useStyles from './ButtonWithState.styles'
 

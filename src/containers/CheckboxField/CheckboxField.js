@@ -20,9 +20,7 @@ function CheckboxField({
   return (
     <FormControl disabled={disabled} error={error}>
       <FormControlLabel
-        control={
-          <Checkbox {...input} value={input.name} checked={Boolean(input.value)} />
-        }
+        control={<Checkbox {...input} value={input.name} checked={input.checked} />}
         label={label}
       />
       {description && <FormHelperText>{helperText}</FormHelperText>}

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { CssBaseline } from '@material-ui/core'
 
-import AuthorizedPages from '~pages/Authorized'
+import AuthorizedPages from 'pages/Authorized'
 
 import TopBar from './components/TopBar'
 import useStyles from './Authorized.styles'

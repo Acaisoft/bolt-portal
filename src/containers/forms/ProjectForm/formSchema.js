@@ -1,4 +1,4 @@
-import { makeFlatValidationSchema, makeEmptyInitialValues } from '~utils/forms'
+import { makeFlatValidationSchema, makeEmptyInitialValues } from 'utils/forms'
 
 const createFormConfig = () => {
   const fields = {

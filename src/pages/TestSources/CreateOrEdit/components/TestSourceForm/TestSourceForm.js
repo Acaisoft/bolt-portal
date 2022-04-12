@@ -1,26 +1,26 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 import { Form } from 'react-final-form'
 import { Grid, MenuItem, FormHelperText } from '@material-ui/core'
 import { Add, VpnKey } from '@material-ui/icons'
-import { FormField, FormCondition } from '~containers'
+import { FormField, FormCondition } from 'containers'
 import {
   SectionHeader,
   Button,
   CopyToClipboard,
   Loader,
   ButtonWithState,
-} from '~components'
+} from 'components'
 
-import { TestSourceType } from '~config/constants'
-import { useToggle, useMutationWithState } from '~hooks'
+import { TestSourceType } from 'config/constants'
+import { useToggle, useMutationWithState } from 'hooks'
 import {
   makeEmptyInitialValues,
   makeFlatValidationSchema,
   validateForm,
-} from '~utils/forms'
+} from 'utils/forms'
 
 import {
   GET_REPOSITORY_KEY,
@@ -44,12 +44,12 @@ function TestSourceForm({
   const classes = useStyles()
   const [isKeyVisible, toggleKeyInput] = useToggle(false)
 
-  const {
-    data: { repositoryKey },
-    loading: repositoryKeyLoading,
-  } = useQuery(GET_REPOSITORY_KEY, {
-    fetchPolicy: 'cache-first',
-  })
+  const { data: { repositoryKey } = {}, loading: repositoryKeyLoading } = useQuery(
+    GET_REPOSITORY_KEY,
+    {
+      fetchPolicy: 'cache-first',
+    }
+  )
 
   const { data: { testSource } = {}, loading: testSourceLoading } = useQuery(
     GET_TEST_SOURCE,
@@ -195,7 +195,7 @@ function TestSourceForm({
                   <div>
                     {isKeyVisible && (
                       <CopyToClipboard
-                        text={repositoryKey}
+                        text={repositoryKey || ''}
                         label="Repository Key"
                         margin="normal"
                         variant="filled"

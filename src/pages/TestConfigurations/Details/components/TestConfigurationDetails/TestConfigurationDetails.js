@@ -1,10 +1,10 @@
 import React from 'react'
 import { Grid, Paper } from '@material-ui/core'
 
-import { SectionHeader, LabeledValue, NoDataPlaceholder } from '~components'
+import { SectionHeader, LabeledValue, NoDataPlaceholder } from 'components'
 import useStyles from './TestConfigurationDetails.styles'
-import { TestSourceType } from '~config/constants'
-import { Details } from '~assets/icons'
+import { TestSourceType } from 'config/constants'
+import { Details } from 'assets/icons'
 import _ from 'lodash'
 
 function TestConfigurationDetails({ children, configuration }) {
@@ -39,7 +39,7 @@ function TestConfigurationDetails({ children, configuration }) {
   return (
     <Paper square className={classes.paper}>
       <Grid container spacing={5} alignItems="center">
-        <Grid item hidden="sm" md={1} container justify="center">
+        <Grid item hidden="sm" md={1} container justifyContent="center">
           <Grid item>
             <Details height={80} width={70} />
           </Grid>
@@ -153,7 +153,7 @@ function TestConfigurationDetails({ children, configuration }) {
           item
           xs={12}
           container
-          justify="flex-end"
+          justifyContent="flex-end"
           alignItems="center"
           spacing={1}
         >

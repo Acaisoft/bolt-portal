@@ -16,9 +16,9 @@ import {
   Button,
   ExpandablePanel,
   PopoverMenu,
-} from '~components'
+} from 'components'
 
-import { useToggle } from '~hooks'
+import { useToggle } from 'hooks'
 
 import {
   useConfigurationRun,
@@ -43,10 +43,8 @@ export function ConfigurationInfo({
   const { loading: isStartingRun, mutation: runConfiguration } = useConfigurationRun(
     configuration.id
   )
-  const {
-    loading: isDeleting,
-    mutation: deleteConfiguration,
-  } = useConfigurationDelete(configuration.id)
+  const { loading: isDeleting, mutation: deleteConfiguration } =
+    useConfigurationDelete(configuration.id)
 
   const { loading: isCloning, mutation: cloneConfiguration } = useConfigurationClone(
     configuration.id

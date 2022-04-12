@@ -1,8 +1,8 @@
 import { ListItemIcon, ListItemText, MenuItem } from '@material-ui/core'
 import { ExitToApp, ExpandMore } from '@material-ui/icons'
 import React, { useContext } from 'react'
-import { PopoverMenu, Button } from '~components'
-import { AuthKeycloakContext } from '~contexts'
+import { PopoverMenu, Button } from 'components'
+import { AuthKeycloakContext } from 'contexts'
 import UserAvatar from '../UserAvatar'
 import useStyles from './UserMenu.styles'
 

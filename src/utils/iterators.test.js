@@ -2,19 +2,14 @@ import { traverseRecursively } from './iterators'
 
 describe('utils: iterators', () => {
   describe('traverseRecursively', () => {
-    const options = {
+    const getMockOptions = () => ({
       childKey: 'fields',
       nodeCallback: jest.fn(({ newSubtree }) => newSubtree),
       leafCallback: jest.fn(({ value }) => value),
-    }
-
-    beforeEach(() => {
-      options.nodeCallback.mockClear()
-      options.leafCallback.mockClear()
     })
 
     it('should return empty object on empty input parameter', () => {
-      expect(traverseRecursively({}, options)).toEqual({})
+      expect(traverseRecursively({}, getMockOptions())).toEqual({})
     })
 
     it('should throw an error on invalid callbacks', () => {
@@ -41,6 +36,7 @@ describe('utils: iterators', () => {
           },
         },
       }
+      const options = getMockOptions()
 
       traverseRecursively(subtree, options)
 
@@ -74,6 +70,7 @@ describe('utils: iterators', () => {
         age: 30,
         status: 'active',
       }
+      const options = getMockOptions()
 
       traverseRecursively(subtree, options)
 

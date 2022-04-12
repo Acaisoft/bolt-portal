@@ -1,15 +1,14 @@
 import React from 'react'
-
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import LoginPage from './Login'
 
 export function Guest() {
   return (
-    <Switch>
-      <Route path="/login" exact component={LoginPage} />
-      <Redirect from="*" to="/login" />
-    </Switch>
+    <Routes>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="*" element={<Navigate to="login" replace />} />
+    </Routes>
   )
 }
 

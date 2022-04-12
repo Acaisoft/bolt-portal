@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Add } from '@material-ui/icons'
-import { Button } from '~components'
-import { NoDataPlaceholder as NoDataPlaceholderImage } from '~assets/icons'
+import { Button } from 'components'
+import { NoDataPlaceholder as NoDataPlaceholderImage } from 'assets/icons'
 import SectionPlaceholder from '../SectionPlaceholder'
 
 function NoDataPlaceholder({

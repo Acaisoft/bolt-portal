@@ -1,9 +1,9 @@
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
-import { MockedThemeProvider } from '~utils/tests/mocks'
+import { MockedThemeProvider } from 'utils/tests/mocks'
 
 import { TestRunStatus, configurations } from './TestRunStatus'
-import { TestRunStatus as Status } from '~config/constants'
+import { TestRunStatus as Status } from 'config/constants'
 
 jest.unmock('@material-ui/core')
 jest.unmock('@material-ui/icons')

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import { withStyles } from '@material-ui/core'
-import { TooltipBuilder } from '~utils/echartUtils'
-import { formatThousands } from '~utils/numbers'
-import { DefaultChart } from '~components'
+import { TooltipBuilder } from 'utils/echartUtils'
+import { formatThousands } from 'utils/numbers'
+import { DefaultChart } from 'components'
 
 const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 

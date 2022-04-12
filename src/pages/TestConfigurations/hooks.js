@@ -1,6 +1,6 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
-import { useMutationWithState } from '~hooks'
+import { useMutationWithState } from 'hooks'
 
 const RUN_TEST_CONFIGURATION = gql`
   mutation runTestConfiguration($configurationId: UUID!, $coldStart: Boolean) {

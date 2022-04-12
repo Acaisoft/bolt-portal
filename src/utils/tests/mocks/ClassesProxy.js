@@ -27,7 +27,7 @@
  *  )
  *
  * -- ./Component.test.js --
- * import { ClassesProxy } from '~utils/tests/mocks'
+ * import { ClassesProxy } from 'utils/tests/mocks'
  *
  * const initComponent = overrides => {
  *  const wrapper = <Component classes={ClassesProxy} {...overrides} />
@@ -35,6 +35,6 @@
  * }
  * */
 
-import { makeGetProxy } from '~utils/proxies'
+import { makeGetProxy } from 'utils/proxies'
 
 export default makeGetProxy({}, (target, name) => name)

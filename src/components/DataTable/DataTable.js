@@ -9,7 +9,7 @@ import {
   DefaultHeaderRenderer,
 } from './renderers'
 
-import { areArraysEqual } from '~utils/collections'
+import { areArraysEqual } from 'utils/collections'
 
 import styles from './DataTable.styles'
 
@@ -33,6 +33,7 @@ export const calculateColumnSettings = children =>
     key: column.key,
   }))
 
+// TODO: change this to functional component
 export class DataTable extends Component {
   static Column = Column
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import { Loader } from '~components'
+import { Loader } from 'components'
 import { TableBody, TableRow, TableCell, Checkbox } from '@material-ui/core'
 
 function DefaultBodyRenderer({

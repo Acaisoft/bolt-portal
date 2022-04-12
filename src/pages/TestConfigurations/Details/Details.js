@@ -1,46 +1,38 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { useQuery } from 'react-apollo-hooks'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
 
 import { Box } from '@material-ui/core'
 import {
   NotFoundPlaceholder,
   LoadingPlaceholder,
   ErrorPlaceholder,
-} from '~components'
-import { useNotification } from '~hooks'
-import routes from '~config/routes'
-import { getUrl } from '~utils/router'
+} from 'components'
+import { useNotification } from 'hooks'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
 
 import { ConfigurationInfo, TestExecutionsList } from './components'
 import { GET_CONFIGURATION } from './graphql'
 import useStyles from './Details.styles'
 
-function Details({ history, match }) {
-  const { configurationId } = match.params
+function Details() {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { configurationId } = params
   const classes = useStyles()
 
-  const { getMonitoringDetailsUrl, getTestDetailsUrl, getDebugUrl } = useUrlGetters(
-    match.params
-  )
-  const {
-    handleEdit,
-    handleDelete,
-    handleRun,
-    handleTerminate,
-    handleClone,
-  } = useHandlers(history, match.params)
+  const { getMonitoringDetailsUrl, getTestDetailsUrl, getDebugUrl } =
+    useUrlGetters(params)
+  const { handleEdit, handleDelete, handleRun, handleTerminate, handleClone } =
+    useHandlers(navigate, params)
 
-  const {
-    loading,
-    data: { configuration },
-    error,
-  } = useQuery(GET_CONFIGURATION, {
+  const { loading, data, error } = useQuery(GET_CONFIGURATION, {
     variables: { configurationId },
     fetchPolicy: 'cache-and-network',
   })
 
-  if (loading || error || !configuration) {
+  if (loading || error || !data?.configuration) {
     return (
       <Box p={3}>
         {loading ? (
@@ -54,6 +46,7 @@ function Details({ history, match }) {
     )
   }
 
+  const { configuration } = data
   return (
     <div className={classes.root}>
       <ConfigurationInfo
@@ -75,16 +68,6 @@ function Details({ history, match }) {
       </div>
     </div>
   )
-}
-
-Details.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      configurationId: PropTypes.string.isRequired,
-    }).isRequired,
-    path: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 function useUrlGetters(params) {
@@ -119,10 +102,10 @@ function useUrlGetters(params) {
   }
 }
 
-function useHandlers(history, params) {
+function useHandlers(navigate, params) {
   const handleEdit = useCallback(() => {
-    history.push(getUrl(routes.projects.configurations.edit, params))
-  }, [history, params])
+    navigate(getUrl(routes.projects.configurations.edit, params))
+  }, [navigate, params])
 
   const notify = useNotification()
 
@@ -132,10 +115,10 @@ function useHandlers(history, params) {
         notify.error(error)
       } else {
         notify.success('Configuration has been deleted.')
-        history.push(getUrl(routes.projects.configurations.list, params))
+        navigate(getUrl(routes.projects.configurations.list, params))
       }
     },
-    [history, notify, params]
+    [navigate, notify, params]
   )
 
   const handleClone = useCallback(
@@ -144,7 +127,7 @@ function useHandlers(history, params) {
         notify.error(`Could not clone: ${error}`)
       } else {
         notify.success(`Scenario has been cloned.`)
-        history.push(
+        navigate(
           getUrl(routes.projects.configurations.edit, {
             projectId: params.projectId,
             configurationId: newConfigurationId,
@@ -152,7 +135,7 @@ function useHandlers(history, params) {
         )
       }
     },
-    [notify, history, params]
+    [notify, navigate, params]
   )
 
   const handleRun = useCallback(

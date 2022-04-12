@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Typography,
 } from '@material-ui/core'
 import { ExpandMore } from '@material-ui/icons'
@@ -15,13 +15,13 @@ export function ExpandablePanel({ children, title, ...panelProps }) {
   const classes = useStyles()
 
   return (
-    <ExpansionPanel
+    <Accordion
       data-testid="expansion-panel"
       className={classes.root}
       elevation={0}
       {...panelProps}
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         data-testid="expansion-panel-summary"
         expandIcon={<ExpandMore />}
         classes={{
@@ -33,11 +33,9 @@ export function ExpandablePanel({ children, title, ...panelProps }) {
         <Typography variant="subtitle1" className={classes.title}>
           {title}
         </Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>
-        {children}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionSummary>
+      <AccordionDetails className={classes.details}>{children}</AccordionDetails>
+    </Accordion>
   )
 }
 

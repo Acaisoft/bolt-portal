@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-import { formatScaledDuration } from '~utils/datetime'
-import { TooltipBuilder } from '~utils/echartUtils'
-import { DefaultChart } from '~components'
+import { formatScaledDuration } from 'utils/datetime'
+import { TooltipBuilder } from 'utils/echartUtils'
+import { DefaultChart } from 'components'
 
 export function TimeDistributionChart({ data }) {
   const dataAsArray = useMemo(() => {

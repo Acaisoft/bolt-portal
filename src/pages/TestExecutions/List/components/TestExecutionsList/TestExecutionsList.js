@@ -1,13 +1,13 @@
 import React from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/client'
 
-import { DataTable, SectionHeader, NoWrap, Button } from '~components'
-import { useListFilters } from '~hooks'
+import { DataTable, SectionHeader, NoWrap, Button } from 'components'
+import { useListFilters } from 'hooks'
 
 import { GET_TEST_EXECUTIONS } from './graphql'
-import { Pagination } from '~containers'
-import { formatThousands } from '~utils/numbers'
+import { Pagination } from 'containers'
+import { formatThousands } from 'utils/numbers'
 
 function TestExecutionsList({ projectId, getExecutionDetailsUrl }) {
   const { pagination, orderBy, setPagination } = useListFilters({
@@ -15,18 +15,18 @@ function TestExecutionsList({ projectId, getExecutionDetailsUrl }) {
     orderBy: [{ start: 'desc' }],
   })
 
-  const {
-    data: { executions = [], executionsAggregate },
-    loading,
-  } = useQuery(GET_TEST_EXECUTIONS, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      projectId,
-      limit: pagination.rowsPerPage,
-      offset: pagination.offset,
-      order_by: orderBy,
-    },
-  })
+  const { data: { executions = [], executionsAggregate } = {}, loading } = useQuery(
+    GET_TEST_EXECUTIONS,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        projectId,
+        limit: pagination.rowsPerPage,
+        offset: pagination.offset,
+        order_by: orderBy,
+      },
+    }
+  )
 
   const totalCount =
     (executionsAggregate && executionsAggregate.aggregate.count) || 0

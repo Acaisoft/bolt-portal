@@ -54,7 +54,7 @@ describe('component: SectionPlaceholder', () => {
       test.each([
         [undefined, '100%'], // default
         ['20vh', '20vh'],
-        [100, 100],
+        ['100px', '100px'],
       ])('when height is %s, should set to %s', (height, expected) => {
         const { getByTestId } = render(
           <SectionPlaceholder title={title} height={height} />

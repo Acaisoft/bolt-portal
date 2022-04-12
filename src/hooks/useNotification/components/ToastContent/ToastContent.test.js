@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
 
-import { ClassesProxy } from '~utils/tests/mocks'
+import { ClassesProxy } from 'utils/tests/mocks'
 import { ToastContent } from './ToastContent'
 
 jest.unmock('@material-ui/core')

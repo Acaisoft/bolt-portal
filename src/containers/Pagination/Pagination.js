@@ -22,14 +22,14 @@ function Pagination({
       rowsPerPage={rowsPerPage}
       count={totalCount}
       page={page}
-      onChangePage={(e, newPage) => {
+      onPageChange={(e, newPage) => {
         onChange({
           page: newPage,
           offset: pageToOffset(newPage, rowsPerPage),
           rowsPerPage,
         })
       }}
-      onChangeRowsPerPage={e => {
+      onRowsPerPageChange={e => {
         onChange({
           page: 0,
           offset: 0,

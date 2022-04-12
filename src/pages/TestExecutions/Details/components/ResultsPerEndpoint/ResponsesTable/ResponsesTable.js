@@ -2,9 +2,9 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { DataTable, SectionHeader, Button, NoWrap } from '~components'
+import { DataTable, SectionHeader, Button, NoWrap } from 'components'
 
-import { formatThousands, formatPercent } from '~utils/numbers'
+import { formatThousands, formatPercent } from 'utils/numbers'
 
 import useStyles from './ResponsesTable.styles'
 

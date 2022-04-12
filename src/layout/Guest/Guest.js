@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { withRouter } from 'react-router-dom'
-
-import GuestPages from '~pages/Guest'
+import GuestPages from 'pages/Guest'
 
 import useStyles from './Guest.styles'
 
@@ -19,4 +17,4 @@ export function Guest() {
   )
 }
 
-export default withRouter(Guest)
+export default Guest

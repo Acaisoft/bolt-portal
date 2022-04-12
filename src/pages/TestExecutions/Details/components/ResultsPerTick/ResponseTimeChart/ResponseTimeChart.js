@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { TooltipBuilder } from '~utils/echartUtils'
-import { formatScaledDuration } from '~utils/datetime'
+import { TooltipBuilder } from 'utils/echartUtils'
+import { formatScaledDuration } from 'utils/datetime'
 
-import { DefaultChart } from '~components'
+import { DefaultChart } from 'components'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 

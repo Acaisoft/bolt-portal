@@ -1,16 +1,16 @@
 import { useState, useCallback } from 'react'
-import { useMutation } from 'react-apollo-hooks'
+import { useMutation } from '@apollo/client'
 import {
   parseGraphqlResponseError,
   parseGraphqlException,
-} from '~utils/errorHandling'
+} from 'utils/errorHandling'
 
 function useMutationWithState(mutationDoc, options) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [data, setData] = useState(null)
 
-  const rawMutation = useMutation(mutationDoc, options)
+  const [rawMutation] = useMutation(mutationDoc, options)
 
   const mutation = useCallback(
     async mutationCallOptions => {

@@ -10,14 +10,14 @@ import {
   CardActions,
   MenuItem,
 } from '@material-ui/core'
-import { Button, PopoverMenu } from '~components'
+import { Button, PopoverMenu } from 'components'
 
 import { MoreHoriz, ChevronRight } from '@material-ui/icons'
 
 import useStyles from './ProjectCard.styles'
 import { useTheme } from '@material-ui/styles'
 
-function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
+function ProjectCard({ project, onEdit }) {
   const theme = useTheme()
 
   const { num_scenarios = 0, num_sources = 0 } = project
@@ -80,7 +80,7 @@ function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
         <Button
           variant="contained"
           color="primary"
-          href={getProjectDetailsUrl(project)}
+          href={`${project.id}/configs`}
           icon={ChevronRight}
         >
           More
@@ -90,7 +90,6 @@ function ProjectCard({ project, getProjectDetailsUrl, onEdit }) {
   )
 }
 ProjectCard.propTypes = {
-  getProjectDetailsUrl: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   project: PropTypes.shape({
     id: PropTypes.string.isRequired,

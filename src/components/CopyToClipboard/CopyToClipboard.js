@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 
 import { TextField, InputAdornment, IconButton, Tooltip } from '@material-ui/core'
 import { FileCopy, Check } from '@material-ui/icons'
-import { copyValueFromInput } from '~utils/browser'
+import { copyValueFromInput } from 'utils/browser'
 
 export function CopyToClipboard({ label, text, timeout = 2000, ...textFieldProps }) {
   const [copied, setCopied] = useState(false)

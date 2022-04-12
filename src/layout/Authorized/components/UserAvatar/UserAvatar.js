@@ -1,6 +1,6 @@
 import React from 'react'
 import Badge from '@material-ui/core/Badge'
-import { DefaultAvatar } from '~assets/icons'
+import { DefaultAvatar } from 'assets/icons'
 import useStyles from './UserAvatar.styles'
 
 function UserAvatar({ avatar, indicatorContent }) {
@@ -10,6 +10,7 @@ function UserAvatar({ avatar, indicatorContent }) {
       classes={{ badge: classes.badge }}
       badgeContent={indicatorContent}
       color="primary"
+      overlap="rectangular"
     >
       <div className={classes.avatarContainer}>
         {avatar ? (
