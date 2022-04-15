@@ -90,7 +90,12 @@ function generateFields({ configurationTypes }) {
 
 function prepareInitialValues(data) {
   if (!data) {
-    return {}
+    return {
+      source_type: TestSourceType.REPOSITORY,
+      repository: {
+        type_slug: 'load_tests',
+      },
+    }
   }
 
   const formValues = {
@@ -111,17 +116,18 @@ function prepareInitialValues(data) {
   return formValues
 }
 
-function preparePayload(formValues, { mode, projectId, sourceId }) {
+function preparePayload(formValues, { mode, projectId, sourceId, testPerformed }) {
   if (!formValues) {
     return {}
   }
 
   const { repository } = formValues
+  const cannotEditSlug = mode === 'edit' && testPerformed
 
   const dbValues = {
     name: repository.name,
     repository_url: repository.url,
-    type_slug: repository.type_slug,
+    ...(!cannotEditSlug && { type_slug: repository.type_slug }),
   }
 
   if (mode === 'create') {

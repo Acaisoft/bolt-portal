@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { useQuery } from '@apollo/client'
@@ -15,23 +15,17 @@ import {
 } from 'components'
 
 import { TestSourceType } from 'config/constants'
-import { useToggle, useMutationWithState } from 'hooks'
+import { useToggle } from 'hooks'
 import {
   makeEmptyInitialValues,
   makeFlatValidationSchema,
   validateForm,
 } from 'utils/forms'
 
-import {
-  GET_REPOSITORY_KEY,
-  GET_TEST_SOURCE,
-  ADD_REPOSITORY_MUTATION,
-  EDIT_REPOSITORY_MUTATION,
-  ADD_REPOSITORY_VALIDATE_MUTATION,
-  EDIT_REPOSITORY_VALIDATE_MUTATION,
-} from './graphql'
+import { GET_REPOSITORY_KEY, GET_TEST_SOURCE } from './graphql'
+import { useFormSchema, prepareInitialValues } from './formSchema'
+import { useConnectionTest, useTestSourceSubmit } from './TestSourceForm.utils'
 import useStyles from './TestSourceForm.styles'
-import { useFormSchema, preparePayload, prepareInitialValues } from './formSchema'
 
 function TestSourceForm({
   mode,
@@ -62,28 +56,38 @@ function TestSourceForm({
 
   const { fields, loading: fieldsLoading } = useFormSchema({ mode })
 
-  const handleSubmit = useTestSourceSubmit({
-    sourceId,
-    projectId,
-    mode,
-    onSubmit,
-  })
-  const handleValidate = useCallback(
-    values => validateForm(values, makeFlatValidationSchema(fields)),
-    [fields]
-  )
-
   const {
     isConnectionOk,
     connectionError,
     isTestingConnection,
     handleConnectionTest,
+    testPerformed,
+    setIsConnectionOk,
   } = useConnectionTest({ mode, projectId, sourceId, onTestConnection })
+
+  const handleSubmit = useTestSourceSubmit({
+    sourceId,
+    projectId,
+    mode,
+    onSubmit,
+    testPerformed,
+  })
+
+  const handleValidate = useCallback(
+    values => validateForm(values, makeFlatValidationSchema(fields)),
+    [fields]
+  )
 
   const initialValues = useMemo(
     () => makeEmptyInitialValues(fields, prepareInitialValues(testSource)),
     [fields, testSource]
   )
+
+  useEffect(() => {
+    if (mode === 'edit') {
+      handleConnectionTest(initialValues)
+    }
+  }, [])
 
   if (repositoryKeyLoading || testSourceLoading || fieldsLoading) {
     return <Loader loading />
@@ -145,6 +149,8 @@ function TestSourceForm({
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  // TODO: remove disable prop when TEST_CREATOR will be available
+                  disabled
                 >
                   {fields.source_type.options.map(type => (
                     <MenuItem
@@ -162,20 +168,13 @@ function TestSourceForm({
               <FormCondition when="source_type" is={TestSourceType.REPOSITORY}>
                 <Grid item xs={12} md={6}>
                   <FormField
-                    name="repository.name"
-                    field={repositoryFields.name}
-                    margin="normal"
-                    variant="filled"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <FormField
                     name="repository.type_slug"
                     field={repositoryFields.type_slug}
                     margin="normal"
                     variant="filled"
                     fullWidth
+                    // TODO: remove disabled prop when more options will be added
+                    disabled
                   >
                     {repositoryFields.type_slug.options.map(type => (
                       <MenuItem key={type.key} value={type.value}>
@@ -184,6 +183,17 @@ function TestSourceForm({
                     ))}
                   </FormField>
                 </Grid>
+                <Grid item xs={12} md={6} />
+                <Grid item xs={12} md={6}>
+                  <FormField
+                    name="repository.name"
+                    field={repositoryFields.name}
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} />
                 <Grid item xs={12} md={6}>
                   <FormField
                     name="repository.url"
@@ -191,8 +201,19 @@ function TestSourceForm({
                     margin="normal"
                     variant="filled"
                     fullWidth
+                    disabled={testPerformed}
+                    parse={value => {
+                      setIsConnectionOk(false)
+                      return value
+                    }}
                   />
                   <div>
+                    {testPerformed && (
+                      <FormHelperText>
+                        You cannot change repository url - a test has been performed
+                        using this repository
+                      </FormHelperText>
+                    )}
                     {isKeyVisible && (
                       <CopyToClipboard
                         text={repositoryKey || ''}
@@ -240,6 +261,7 @@ function TestSourceForm({
     </Form>
   )
 }
+
 TestSourceForm.propTypes = {
   mode: PropTypes.oneOf(['create', 'edit']),
   onCancel: PropTypes.func,
@@ -247,75 +269,6 @@ TestSourceForm.propTypes = {
   onTestConnection: PropTypes.func,
   projectId: PropTypes.string,
   sourceId: PropTypes.string,
-}
-
-function useTestSourceSubmit({ mode, sourceId, projectId, onSubmit }) {
-  const { mutation: submitRepositoryMutation } = useMutationWithState(
-    mode === 'create' ? ADD_REPOSITORY_MUTATION : EDIT_REPOSITORY_MUTATION,
-    {
-      refetchQueries: ['getTestSources'],
-    }
-  )
-
-  // TODO: submitTestCreatorMutation
-
-  const handleSubmit = useCallback(
-    async values => {
-      const variables = preparePayload(values, { mode, projectId, sourceId })
-
-      const { errorMessage } =
-        values.source_type === TestSourceType.REPOSITORY
-          ? await submitRepositoryMutation({ variables })
-          : {} // TODO: submitTestCreatorMutation
-
-      onSubmit({ values, errorMessage })
-    },
-    [submitRepositoryMutation, mode, sourceId, projectId, onSubmit]
-  )
-
-  return handleSubmit
-}
-
-function useConnectionTest({ mode, projectId, sourceId, onTestConnection }) {
-  const [connectionError, setConnectionError] = useState(null)
-  const [isConnectionOk, setIsConnectionOk] = useState(false)
-  const [isTestingConnection, setIsTestingConnection] = useState(false)
-
-  const { mutation: validateRepositoryMutation } = useMutationWithState(
-    mode === 'create'
-      ? ADD_REPOSITORY_VALIDATE_MUTATION
-      : EDIT_REPOSITORY_VALIDATE_MUTATION
-  )
-
-  // TODO: validateTestCreatorMutation
-
-  const handleConnectionTest = useCallback(
-    async values => {
-      setIsTestingConnection(true)
-      setIsConnectionOk(false)
-      setConnectionError(null)
-      const variables = preparePayload(values, { mode, projectId, sourceId })
-
-      const { errorMessage } =
-        values.source_type === TestSourceType.REPOSITORY
-          ? await validateRepositoryMutation({ variables })
-          : {} // TODO: validateTestCreatorMutation
-
-      setIsTestingConnection(false)
-      setConnectionError(errorMessage || null)
-      setIsConnectionOk(!errorMessage)
-
-      onTestConnection({ variables, errorMessage })
-    },
-    [validateRepositoryMutation, mode, sourceId, projectId, onTestConnection]
-  )
-
-  return {
-    isConnectionOk,
-    connectionError,
-    isTestingConnection,
-    handleConnectionTest,
-  }
 }
 
 export default TestSourceForm

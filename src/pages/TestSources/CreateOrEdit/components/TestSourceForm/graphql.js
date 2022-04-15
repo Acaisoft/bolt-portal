@@ -51,7 +51,7 @@ export const EDIT_REPOSITORY_MUTATION = gql`
     $id: UUID!
     $name: String!
     $repository_url: String!
-    $type_slug: String!
+    $type_slug: String
   ) {
     repository: testrun_repository_update(
       id: $id
@@ -89,7 +89,7 @@ export const EDIT_REPOSITORY_VALIDATE_MUTATION = gql`
     $id: UUID!
     $name: String!
     $repository_url: String!
-    $type_slug: String!
+    $type_slug: String
   ) {
     validationResult: testrun_repository_update_validate(
       id: $id
