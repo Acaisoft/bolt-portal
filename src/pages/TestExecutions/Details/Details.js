@@ -55,7 +55,7 @@ export function Details() {
   return (
     <div className={classes.root}>
       <SectionHeader
-        title={moment(execution.start_locust || execution.start).format(
+        title={moment(execution.start || execution.start_locust).format(
           'YYYY-MM-DD HH:mm:ss'
         )}
       >

@@ -80,7 +80,7 @@ function Monitoring() {
       <SectionHeader
         title={`Monitoring for Test Run ${
           execution
-            ? moment(execution.start_locust || execution.start).format(
+            ? moment(execution.start || execution.start_locust).format(
                 'YYYY-MM-DD HH:mm:ss'
               )
             : ''
