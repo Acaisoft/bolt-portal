@@ -33,13 +33,14 @@ describe('component: ConfigurationForm', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('should not display inputs with test parameters when checkboxes load tests and monitoring are not checked', async () => {
+  it('should display only load tests options by default', async () => {
     render(
       customRender(
         <ConfigurationForm
           mode="create"
           projectId="83150c3c-239f-4bec-8d0e-973b96ca3c7a"
-        />
+        />,
+        [testSourcesMock, testParametersMock, configurationTypesMock]
       )
     )
 
@@ -48,20 +49,20 @@ describe('component: ConfigurationForm', () => {
     })
 
     expect(
-      screen.getByText(
+      screen.queryByText(
         'Select test type and scenario parts to see available parameters list'
       )
-    ).toBeInTheDocument()
+    ).not.toBeInTheDocument()
 
     // all monitoring options
     expect(screen.queryByText('monitoring interval')).not.toBeInTheDocument()
     expect(screen.queryByText('monitoring duration')).not.toBeInTheDocument()
 
     // all load tests options
-    expect(screen.queryByText('time')).not.toBeInTheDocument()
-    expect(screen.queryByText('users/second')).not.toBeInTheDocument()
-    expect(screen.queryByText('users')).not.toBeInTheDocument()
-    expect(screen.queryByText('host')).not.toBeInTheDocument()
+    expect(screen.getByText('time')).toBeInTheDocument()
+    expect(screen.getByText('users/second')).toBeInTheDocument()
+    expect(screen.getByText('users')).toBeInTheDocument()
+    expect(screen.getByText('host')).toBeInTheDocument()
   })
 
   it('should display all monitoring options when monitoring checkbox is checked', async () => {
@@ -85,24 +86,11 @@ describe('component: ConfigurationForm', () => {
       })
     )
 
-    await waitFor(() => {
-      expect(
-        screen.queryByText(
-          'Select test type and scenario parts to see available parameters list'
-        )
-      ).not.toBeInTheDocument()
-    })
-
     expect(screen.getByText('monitoring interval')).toBeInTheDocument()
     expect(screen.getByText('monitoring duration')).toBeInTheDocument()
-
-    expect(screen.queryByText('time')).not.toBeInTheDocument()
-    expect(screen.queryByText('users/second')).not.toBeInTheDocument()
-    expect(screen.queryByText('users')).not.toBeInTheDocument()
-    expect(screen.queryByText('host')).not.toBeInTheDocument()
   })
 
-  it('should display all load tests options when load tests checkbox is checked', async () => {
+  it('should hide all load tests options when load tests checkbox is unchecked', async () => {
     render(
       customRender(
         <ConfigurationForm
@@ -123,21 +111,10 @@ describe('component: ConfigurationForm', () => {
       })
     )
 
-    await waitFor(() => {
-      expect(
-        screen.queryByText(
-          'Select test type and scenario parts to see available parameters list'
-        )
-      ).not.toBeInTheDocument()
-    })
-
-    expect(screen.getByText('time')).toBeInTheDocument()
-    expect(screen.getByText('users/second')).toBeInTheDocument()
-    expect(screen.getByText('users')).toBeInTheDocument()
-    expect(screen.getByText('host')).toBeInTheDocument()
-
-    expect(screen.queryByText('monitoring interval')).not.toBeInTheDocument()
-    expect(screen.queryByText('monitoring duration')).not.toBeInTheDocument()
+    expect(screen.queryByText('time')).not.toBeInTheDocument()
+    expect(screen.queryByText('users/second')).not.toBeInTheDocument()
+    expect(screen.queryByText('users')).not.toBeInTheDocument()
+    expect(screen.queryByText('host')).not.toBeInTheDocument()
   })
 
   it('should display all monitoring and load tests options when both checkboxes are checked', async () => {
@@ -157,22 +134,9 @@ describe('component: ConfigurationForm', () => {
 
     fireEvent.click(
       screen.getByRole('checkbox', {
-        name: 'Load Tests',
-      })
-    )
-    fireEvent.click(
-      screen.getByRole('checkbox', {
         name: 'Monitoring',
       })
     )
-
-    await waitFor(() => {
-      expect(
-        screen.queryByText(
-          'Select test type and scenario parts to see available parameters list'
-        )
-      ).not.toBeInTheDocument()
-    })
 
     expect(screen.getByText('time')).toBeInTheDocument()
     expect(screen.getByText('users/second')).toBeInTheDocument()

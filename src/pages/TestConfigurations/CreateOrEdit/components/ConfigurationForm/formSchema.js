@@ -213,6 +213,10 @@ function prepareInitialValues(data) {
     return {
       configuration_type: 'load_tests',
       configuration_envvars: [{ name: '', value: '' }],
+      test_source_type: 'repository',
+      scenario_parts: {
+        has_load_tests: true,
+      },
     }
   }
 

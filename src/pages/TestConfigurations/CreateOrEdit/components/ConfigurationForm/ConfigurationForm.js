@@ -5,7 +5,13 @@ import { useQuery } from '@apollo/client'
 import { Form } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import arrayMutators from 'final-form-arrays'
-import { Grid, MenuItem, Typography, IconButton } from '@material-ui/core'
+import {
+  Grid,
+  MenuItem,
+  Typography,
+  IconButton,
+  FormHelperText,
+} from '@material-ui/core'
 import { FormField, CheckboxField, FormValue } from 'containers'
 import { ExpandablePanel, SectionHeader, Loader, Button } from 'components'
 import { Delete, Add } from '@material-ui/icons'
@@ -27,6 +33,9 @@ import {
 } from './graphql'
 import { useFormSchema, prepareInitialValues, preparePayload } from './formSchema'
 import useStyles from './ConfigurationForm.styles'
+
+const testsPerformedMessage =
+  'You cannot change test source - a test has been performed'
 
 export function ConfigurationForm({
   mode,
@@ -118,6 +127,8 @@ export function ConfigurationForm({
                   field={fields.configuration_type}
                   variant="filled"
                   fullWidth
+                  // TODO: remove disabled prop when more options will be added
+                  disabled
                 >
                   {fields.configuration_type.options.map(option => (
                     <MenuItem key={option.key} value={option.value}>
@@ -207,6 +218,8 @@ export function ConfigurationForm({
                             field={fields.test_source_type}
                             fullWidth
                             variant="filled"
+                            // TODO: remove disabled prop when more options will be added
+                            disabled
                           >
                             {fields.test_source_type.options.map(option => (
                               <MenuItem key={option.key} value={option.value}>
@@ -230,6 +243,7 @@ export function ConfigurationForm({
                                   }
                                   fullWidth
                                   variant="filled"
+                                  disabled={configuration?.performed}
                                 >
                                   {fields.test_source.fields[
                                     selectedSourceType
@@ -242,6 +256,10 @@ export function ConfigurationForm({
                               )
                             }}
                           </FormValue>
+
+                          {!!configuration?.performed && (
+                            <FormHelperText>{testsPerformedMessage}</FormHelperText>
+                          )}
                         </Grid>
                       </React.Fragment>
                     )}
