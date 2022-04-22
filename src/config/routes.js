@@ -7,6 +7,7 @@ const routes = {
   projects: {
     list: '/projects',
     details: '/projects/:projectId',
+    compare: '/projects/:projectId/compare/:compareIdFirst/to/:compareIdSecond',
     sources: {
       list: '/projects/:projectId/sources',
       create: '/projects/:projectId/sources/create',

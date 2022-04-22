@@ -15,8 +15,8 @@ import ResponseTimeChart from './ResponseTimeChart'
 import UsersSpawnChart from './UsersSpawnChart'
 import { SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK } from './graphql'
 
-function ResultsPerTick({ classes, execution }) {
-  const [isZoomed, setIsZoomed] = useState(false)
+function ResultsPerTick({ classes, execution, hideZoom = false }) {
+  const [isZoomed, setIsZoomed] = useState(!!hideZoom)
 
   const { resultsPerTick, loading, error } = useResultsPerTickQuery(execution.id)
 
@@ -54,11 +54,13 @@ function ResultsPerTick({ classes, execution }) {
             className={classes.tileTitle}
             title="Requests/s"
           >
-            <ZoomButton
-              isZoomed={isZoomed}
-              onZoomIn={() => setIsZoomed(true)}
-              onZoomOut={() => setIsZoomed(false)}
-            />
+            {!hideZoom && (
+              <ZoomButton
+                isZoomed={isZoomed}
+                onZoomIn={() => setIsZoomed(true)}
+                onZoomOut={() => setIsZoomed(false)}
+              />
+            )}
           </SectionHeader>
           <div className={classes.chartContainer}>
             <RequestsChart data={resultsPerTick} syncGroup={syncGroup} />
@@ -72,11 +74,13 @@ function ResultsPerTick({ classes, execution }) {
             className={classes.tileTitle}
             title="Requests Response Time"
           >
-            <ZoomButton
-              isZoomed={isZoomed}
-              onZoomIn={() => setIsZoomed(true)}
-              onZoomOut={() => setIsZoomed(false)}
-            />
+            {!hideZoom && (
+              <ZoomButton
+                isZoomed={isZoomed}
+                onZoomIn={() => setIsZoomed(true)}
+                onZoomOut={() => setIsZoomed(false)}
+              />
+            )}
           </SectionHeader>
           <div className={classes.chartContainer}>
             <ResponseTimeChart data={resultsPerTick} syncGroup={syncGroup} />
@@ -90,11 +94,13 @@ function ResultsPerTick({ classes, execution }) {
             className={classes.tileTitle}
             title="Users Spawn"
           >
-            <ZoomButton
-              isZoomed={isZoomed}
-              onZoomIn={() => setIsZoomed(true)}
-              onZoomOut={() => setIsZoomed(false)}
-            />
+            {!hideZoom && (
+              <ZoomButton
+                isZoomed={isZoomed}
+                onZoomIn={() => setIsZoomed(true)}
+                onZoomOut={() => setIsZoomed(false)}
+              />
+            )}
           </SectionHeader>
           <div className={classes.chartContainer}>
             <UsersSpawnChart data={resultsPerTick} syncGroup={syncGroup} />

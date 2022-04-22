@@ -19,12 +19,12 @@ export default makeStyles(({ spacing }) => {
     chartContainer: {
       marginBottom: spacing(-4),
     },
-    configDetails: {
-      marginBottom: spacing(2),
-    },
     paper: {
       padding: spacing(4),
       width: '100%',
+    },
+    configDetails: {
+      marginBottom: spacing(2),
     },
   }
 })

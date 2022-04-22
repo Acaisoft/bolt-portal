@@ -1,0 +1,192 @@
+import React, { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useSubscription } from '@apollo/client'
+import { Box, Grid, MenuItem } from '@material-ui/core'
+import { Form } from 'react-final-form'
+import moment from 'moment'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
+import { Details } from 'assets/icons'
+import { useListFilters } from 'hooks'
+import { FormField, FormValue } from 'containers'
+import {
+  Button,
+  ErrorPlaceholder,
+  LoadingPlaceholder,
+  NotFoundPlaceholder,
+  SectionHeader,
+} from 'components'
+import { getFilteredConfigurations } from './CompareResults.utils'
+import { SUBSCRIBE_TO_EXECUTIONS_LIST, SUBSCRIBE_TO_SCENARIOS_LIST } from './graphql'
+
+function CompareResults() {
+  const navigate = useNavigate()
+  const { projectId, executionId } = useParams()
+  const [selectedConfigId, setSelectedConfigId] = useState('')
+  const { orderBy } = useListFilters({
+    orderBy: [{ id: 'asc' }],
+  })
+
+  const {
+    data: { configurations = [] } = {},
+    loading: configurationsLoading,
+    error: configurationsError,
+  } = useSubscription(SUBSCRIBE_TO_SCENARIOS_LIST, {
+    variables: {
+      projectId,
+      order_by: orderBy,
+    },
+    fetchPolicy: 'cache-and-network',
+  })
+
+  const {
+    data: { executions = [] } = {},
+    loading: executionsLoading,
+    error: executionsError,
+  } = useSubscription(SUBSCRIBE_TO_EXECUTIONS_LIST, {
+    fetchPolicy: 'cache-first',
+    variables: {
+      configurationId: selectedConfigId,
+    },
+    skip: !selectedConfigId,
+  })
+
+  const fields = {
+    scenario_id: {
+      options: [],
+      inputProps: {
+        select: true,
+        label: 'Scenario',
+      },
+    },
+    execution_to_compare_id: {
+      options: [],
+      inputProps: {
+        select: true,
+        label: 'Test Run',
+      },
+    },
+  }
+
+  function handleSubmit({ execution_to_compare_id }) {
+    navigate(
+      getUrl(routes.projects.compare, {
+        projectId,
+        compareIdFirst: executionId,
+        compareIdSecond: execution_to_compare_id,
+      })
+    )
+  }
+
+  if (configurationsLoading) {
+    return (
+      <Box p={3}>
+        <LoadingPlaceholder title="Loading data to compare..." />
+      </Box>
+    )
+  }
+
+  if (configurationsError || executionsError) {
+    return (
+      <Box p={3}>
+        <ErrorPlaceholder error={configurationsError || executionsError} />
+      </Box>
+    )
+  }
+
+  if (!configurations?.length) {
+    return (
+      <Box p={3}>
+        <NotFoundPlaceholder title="Data to compare not found" />
+      </Box>
+    )
+  }
+
+  return (
+    <Grid container spacing={5} alignItems="center">
+      <Grid item hidden="sm" md={1} container justifyContent="center">
+        <Grid item>
+          <Details height={80} width={70} />
+        </Grid>
+      </Grid>
+
+      <Grid item xs>
+        <Form onSubmit={handleSubmit} keepDirtyOnReinitialize>
+          {form => (
+            <form onSubmit={form.handleSubmit}>
+              <Grid container spacing={4}>
+                <Grid item xs={12}>
+                  <SectionHeader size="medium" title="Compare to" />
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <FormField
+                    id="scenario_id"
+                    name="scenario_id"
+                    field={fields.scenario_id}
+                    variant="outlined"
+                    fullWidth
+                    disabled={configurationsLoading || executionsLoading}
+                  >
+                    {getFilteredConfigurations(configurations, executionId).map(
+                      ({ id, name }) => (
+                        <MenuItem
+                          key={id}
+                          value={id}
+                          onClick={() => setSelectedConfigId(id)}
+                        >
+                          {name}
+                        </MenuItem>
+                      )
+                    )}
+                  </FormField>
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <FormValue name="scenario_id">
+                    {scenarioName => (
+                      <FormField
+                        id="execution_to_compare_id"
+                        name="execution_to_compare_id"
+                        field={fields.execution_to_compare_id}
+                        variant="outlined"
+                        fullWidth
+                        disabled={
+                          !scenarioName || configurationsLoading || executionsLoading
+                        }
+                      >
+                        {executions
+                          .filter(({ id }) => id !== executionId)
+                          .map(({ id, start }) => (
+                            <MenuItem key={id} value={id}>
+                              {moment(start).format('YYYY-MM-DD HH:mm')}
+                            </MenuItem>
+                          ))}
+                      </FormField>
+                    )}
+                  </FormValue>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    type="submit"
+                    disabled={
+                      !form.dirty ||
+                      form.isSubmitting ||
+                      form.invalid ||
+                      !form.values.scenario_id ||
+                      !form.values.execution_to_compare_id
+                    }
+                  >
+                    Compare
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          )}
+        </Form>
+      </Grid>
+    </Grid>
+  )
+}
+
+export default CompareResults

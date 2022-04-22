@@ -1,11 +1,10 @@
 import React from 'react'
 import { Grid, Paper } from '@material-ui/core'
-
-import { SectionHeader, LabeledValue, NoDataPlaceholder } from 'components'
-import useStyles from './TestConfigurationDetails.styles'
+import _ from 'lodash'
 import { TestSourceType } from 'config/constants'
 import { Details } from 'assets/icons'
-import _ from 'lodash'
+import { SectionHeader, LabeledValue, NoDataPlaceholder } from 'components'
+import useStyles from './TestConfigurationDetails.styles'
 
 function TestConfigurationDetails({ children, configuration }) {
   const classes = useStyles()

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
 import { useSubscription } from '@apollo/client'
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box, Paper } from '@material-ui/core'
 import {
   SectionHeader,
   Button,
@@ -10,13 +10,16 @@ import {
   ErrorPlaceholder,
   NotFoundPlaceholder,
   ExpandablePanel,
+  TestConfigurationDetails,
 } from 'components'
-import { TestConfigurationDetails } from 'pages/TestConfigurations/Details/components'
-
 import { getUrl } from 'utils/router'
 import routes from 'config/routes'
-
-import { ResultsPerEndpoint, ResultsPerTick, StatusGraph } from './components'
+import {
+  ResultsPerEndpoint,
+  ResultsPerTick,
+  StatusGraph,
+  CompareResults,
+} from './components'
 import { ExecutionActionsMenu } from '../components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 import useStyles from './Details.styles'
@@ -69,6 +72,12 @@ export function Details() {
           <TestConfigurationDetails
             configuration={execution.configuration_snapshot}
           />
+        </ExpandablePanel>
+
+        <ExpandablePanel defaultExpanded={false} title="Compare results">
+          <Paper className={classes.paper}>
+            <CompareResults />
+          </Paper>
         </ExpandablePanel>
       </div>
       <Grid container spacing={2}>

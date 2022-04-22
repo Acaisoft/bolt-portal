@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-
+import _ from 'lodash'
 import { Tooltip, IconButton, MenuItem, Typography } from '@material-ui/core'
-
 import {
   PlayArrow,
   MoreVert,
@@ -16,19 +15,15 @@ import {
   Button,
   ExpandablePanel,
   PopoverMenu,
+  TestConfigurationDetails,
 } from 'components'
-
 import { useToggle } from 'hooks'
-
 import {
   useConfigurationRun,
   useConfigurationDelete,
   useConfigurationClone,
-} from '../../../hooks'
-
+} from 'pages/TestConfigurations/hooks'
 import useStyles from './ConfigurationInfo.styles'
-import TestConfigurationDetails from '../TestConfigurationDetails'
-import _ from 'lodash'
 
 export function ConfigurationInfo({
   configuration,

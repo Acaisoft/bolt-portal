@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router-dom'
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing'
 import { MockedThemeProvider } from '.'
 
-export const customRender = (ui, mocks = []) => (
+export const customRender = (ui, mocks = [], initialEntries) => (
   <MockedApolloProvider mocks={mocks}>
-    <MemoryRouter>
+    <MemoryRouter initialEntries={initialEntries}>
       <MockedThemeProvider>{ui}</MockedThemeProvider>
     </MemoryRouter>
   </MockedApolloProvider>

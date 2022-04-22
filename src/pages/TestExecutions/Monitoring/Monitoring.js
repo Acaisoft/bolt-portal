@@ -10,6 +10,7 @@ import {
   ErrorPlaceholder,
   NotFoundPlaceholder,
   ExpandablePanel,
+  TestConfigurationDetails,
 } from 'components'
 import { TestRunStatus as Status } from 'config/constants'
 import { getUrl } from 'utils/router'
@@ -22,7 +23,6 @@ import {
   SUBSCRIBE_TO_EXECUTION_WITH_MONITORING_DATA,
   GET_METRICS_DATA,
 } from './graphql'
-import { TestConfigurationDetails } from 'pages/TestConfigurations/Details/components'
 import useStyles from './Monitoring.styles'
 
 function Monitoring() {
