@@ -37,6 +37,7 @@ function ProjectsList() {
         title="Your Projects"
         subtitle={`(${summaries.length})`}
         marginBottom
+        aria-label="Your Projects"
       />
 
       <div className={classes.gridContainer}>
@@ -53,7 +54,9 @@ function ProjectsList() {
               key={project.id}
             >
               <Card
-                aria-label="Project Form"
+                aria-label={
+                  isNewProject ? 'Project Form' : `project ${project.name}`
+                }
                 className={classNames({
                   [classes.card]: true,
                   [classes.formCard]: isNewProject,

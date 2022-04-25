@@ -39,12 +39,14 @@ function ProjectFormInCard({
             <form onSubmit={form.handleSubmit} className={classes.form}>
               <div className={classes.formFields}>
                 <FormField
+                  id="name"
                   name="name"
                   field={fields.name}
                   margin="normal"
                   fullWidth
                 />
                 <FormField
+                  id="description"
                   name="description"
                   field={fields.description}
                   margin="normal"
