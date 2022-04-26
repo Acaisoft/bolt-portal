@@ -7,7 +7,7 @@ import {
   ZoomButton,
   LoadingPlaceholder,
   ErrorPlaceholder,
-} from 'components'
+} from 'components/index'
 import { Chart } from 'config/constants'
 
 import RequestsChart from './RequestsChart'
@@ -15,8 +15,13 @@ import ResponseTimeChart from './ResponseTimeChart'
 import UsersSpawnChart from './UsersSpawnChart'
 import { SUBSCRIBE_TO_EXECUTION_RESULTS_PER_TICK } from './graphql'
 
-function ResultsPerTick({ classes, execution, hideZoom = false }) {
-  const [isZoomed, setIsZoomed] = useState(!!hideZoom)
+function ResultsPerTick({
+  classes,
+  execution,
+  hideZoom = false,
+  initZoomOut = false,
+}) {
+  const [isZoomed, setIsZoomed] = useState(initZoomOut)
 
   const { resultsPerTick, loading, error } = useResultsPerTickQuery(execution.id)
 

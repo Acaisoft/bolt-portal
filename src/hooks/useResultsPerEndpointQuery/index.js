@@ -1,0 +1,1 @@
+export { useResultsPerEndpointQuery } from './useResultsPerEndpointQuery'

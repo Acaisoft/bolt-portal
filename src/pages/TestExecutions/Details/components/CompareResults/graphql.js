@@ -27,7 +27,10 @@ export const SUBSCRIBE_TO_SCENARIOS_LIST = gql`
 export const SUBSCRIBE_TO_EXECUTIONS_LIST = gql`
   subscription subscribeToExecutionsList($configurationId: uuid!) {
     executions: execution(
-      where: { configuration_id: { _eq: $configurationId } }
+      where: {
+        configuration_id: { _eq: $configurationId }
+        _or: [{ status: { _eq: "FINISHED" } }, { status: { _eq: "SUCCEEDED" } }]
+      }
       order_by: { start: desc }
     ) {
       id

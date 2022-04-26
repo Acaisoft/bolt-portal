@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import moment from 'moment'
+import { TestRunStatus } from 'config/constants'
 import { customRender } from 'utils/tests/mocks'
 import CompareResults from './CompareResults'
 import {
@@ -23,13 +24,14 @@ console.warn = jest.fn()
 
 const renderWithRoute = (
   configsMock = configurationsListMock,
-  executionsMock = executionsListMock
+  executionsMock = executionsListMock,
+  status = TestRunStatus.SUCCEEDED
 ) =>
   customRender(
     <Routes>
       <Route
         path="/projects/:projectId/configs/:configurationId/runs/:executionId"
-        element={<CompareResults />}
+        element={<CompareResults status={status} />}
       />
     </Routes>,
     [configsMock, executionsMock],
@@ -74,10 +76,18 @@ function selectScenario() {
 describe('component: CompareResults', () => {
   it('should display a loader while data is loading', () => {
     render(
-      customRender(<CompareResults />, [configurationsListMock, executionsListMock])
+      customRender(<CompareResults status={TestRunStatus.SUCCEEDED} />, [
+        configurationsListMock,
+        executionsListMock,
+      ])
     )
 
     expect(screen.getByText('Loading data to compare...')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('form', {
+        name: 'Compare Form',
+      })
+    ).not.toBeInTheDocument()
   })
 
   it('should display whole compare form when data are loaded', async () => {
@@ -85,6 +95,11 @@ describe('component: CompareResults', () => {
 
     await loadForm()
 
+    expect(
+      screen.getByRole('form', {
+        name: 'Compare Form',
+      })
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('button', {
         name: 'Compare',
@@ -248,5 +263,24 @@ describe('component: CompareResults', () => {
     fireEvent.click(screen.getByText(newName))
 
     expect(screen.queryByText(formattedDate)).not.toBeInTheDocument()
+  })
+
+  it('should hide form when current test run has FAILED status', async () => {
+    render(
+      renderWithRoute(
+        configurationsListMock,
+        executionsListMock,
+        TestRunStatus.FAILED
+      )
+    )
+
+    await loadForm()
+
+    expect(screen.getByText("You can't compare failed tests.")).toBeInTheDocument()
+    expect(
+      screen.queryByRole('form', {
+        name: 'Compare Form',
+      })
+    ).not.toBeInTheDocument()
   })
 })

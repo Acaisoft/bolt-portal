@@ -2,9 +2,6 @@ import { makeStyles } from '@material-ui/core'
 
 export default makeStyles(({ spacing }) => {
   return {
-    root: {
-      flexGrow: 1,
-    },
     tableContainer: {
       width: '100%',
       marginTop: 30,

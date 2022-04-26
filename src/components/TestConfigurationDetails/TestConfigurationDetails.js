@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Grid, Paper } from '@material-ui/core'
 import _ from 'lodash'
 import { TestSourceType } from 'config/constants'
@@ -6,8 +7,14 @@ import { Details } from 'assets/icons'
 import { SectionHeader, LabeledValue, NoDataPlaceholder } from 'components'
 import useStyles from './TestConfigurationDetails.styles'
 
-function TestConfigurationDetails({ children, configuration }) {
+function TestConfigurationDetails({ children, configuration, gridProps = {} }) {
   const classes = useStyles()
+  const {
+    configParameterItemProps,
+    generalSectionProps,
+    generalSectionItemProps,
+    iconContainerProps,
+  } = gridProps
 
   if (!configuration) {
     return (
@@ -38,30 +45,37 @@ function TestConfigurationDetails({ children, configuration }) {
   return (
     <Paper square className={classes.paper}>
       <Grid container spacing={5} alignItems="center">
-        <Grid item hidden="sm" md={1} container justifyContent="center">
+        <Grid
+          item
+          hidden="sm"
+          md={1}
+          container
+          justifyContent="center"
+          {...iconContainerProps}
+        >
           <Grid item>
             <Details height={80} width={70} />
           </Grid>
         </Grid>
-        <Grid item xs>
+        <Grid item xs {...generalSectionProps}>
           <Grid container spacing={4} alignItems="flex-start">
             <Grid item xs={12}>
               <SectionHeader size="medium" title="General" />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={3} {...generalSectionItemProps}>
               <LabeledValue
                 label="Test Source Type"
                 value={source_type ? _.startCase(source_type) : '--'}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={3} {...generalSectionItemProps}>
               <LabeledValue
                 label="Test Source Name"
                 value={test_source ? test_source[source_type].name : '--'}
               />
             </Grid>
             {isRepository && (
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} {...generalSectionItemProps}>
                 <LabeledValue
                   label="Test Source URL"
                   value={test_source[source_type].url}
@@ -94,7 +108,13 @@ function TestConfigurationDetails({ children, configuration }) {
                   .map(
                     parameter =>
                       parameter.parameter && (
-                        <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                        <Grid
+                          key={parameter.parameter_slug}
+                          item
+                          xs={12}
+                          md={3}
+                          {...configParameterItemProps}
+                        >
                           <LabeledValue
                             label={parameter.parameter.name}
                             value={parameter.value}
@@ -117,7 +137,13 @@ function TestConfigurationDetails({ children, configuration }) {
                   .map(
                     parameter =>
                       parameter.parameter && (
-                        <Grid key={parameter.parameter_slug} item xs={12} md={3}>
+                        <Grid
+                          key={parameter.parameter_slug}
+                          item
+                          xs={12}
+                          md={3}
+                          {...configParameterItemProps}
+                        >
                           <LabeledValue
                             label={parameter.parameter.name}
                             value={parameter.value}
@@ -161,6 +187,17 @@ function TestConfigurationDetails({ children, configuration }) {
       </Grid>
     </Paper>
   )
+}
+
+TestConfigurationDetails.propTypes = {
+  children: PropTypes.node,
+  configuration: PropTypes.object,
+  gridProps: PropTypes.shape({
+    iconContainerProps: PropTypes.object,
+    generalSectionProps: PropTypes.object,
+    generalSectionItemProps: PropTypes.object,
+    configParameterItemProps: PropTypes.object,
+  }),
 }
 
 export default TestConfigurationDetails

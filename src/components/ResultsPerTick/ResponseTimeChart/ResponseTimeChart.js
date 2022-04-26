@@ -5,7 +5,7 @@ import moment from 'moment'
 import { TooltipBuilder } from 'utils/echartUtils'
 import { formatScaledDuration } from 'utils/datetime'
 
-import { DefaultChart } from 'components'
+import { DefaultChart } from 'components/index'
 
 const formatTimestamp = timestamp => moment(timestamp).format('HH:mm:ss')
 

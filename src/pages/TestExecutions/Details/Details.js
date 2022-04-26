@@ -11,16 +11,12 @@ import {
   NotFoundPlaceholder,
   ExpandablePanel,
   TestConfigurationDetails,
+  ResultsPerTick,
 } from 'components'
 import { getUrl } from 'utils/router'
 import routes from 'config/routes'
-import {
-  ResultsPerEndpoint,
-  ResultsPerTick,
-  StatusGraph,
-  CompareResults,
-} from './components'
 import { ExecutionActionsMenu } from '../components'
+import { CompareResults, StatusGraph, ResultsPerEndpoint } from './components'
 import { SUBSCRIBE_TO_EXECUTION } from './graphql'
 import useStyles from './Details.styles'
 
@@ -76,7 +72,7 @@ export function Details() {
 
         <ExpandablePanel defaultExpanded={false} title="Compare results">
           <Paper className={classes.paper}>
-            <CompareResults />
+            <CompareResults status={execution.status} />
           </Paper>
         </ExpandablePanel>
       </div>

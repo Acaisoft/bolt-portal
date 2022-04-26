@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { gql } from '@apollo/client'
 import _ from 'lodash'
-
 import { useMutationWithState } from 'hooks'
 
 export const TERMINATE_EXECUTION = gql`

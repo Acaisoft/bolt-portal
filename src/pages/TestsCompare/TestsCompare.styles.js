@@ -5,8 +5,11 @@ export default makeStyles(({ spacing }) => {
     title: {
       marginBottom: spacing(4),
     },
-    bottomSection: {
-      marginTop: spacing(4),
+    detailsSection: {
+      flexBasis: '50%',
+    },
+    firstRun: {
+      marginRight: '16px',
     },
   }
 })

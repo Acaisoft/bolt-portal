@@ -9,9 +9,10 @@ import {
   RequestsPerSecondChart,
 } from 'components'
 import { Chart } from 'config/constants'
-import ResponsesTable from './ResponsesTable'
+import CompareResponsesTable from './CompareResponsesTable'
+import CompareResponsesSummary from './CompareResponsesSummary'
 
-function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
+function CompareEndpointResults({ classes, execution, getEndpointDetailsUrl }) {
   const { resultsPerEndpoint, loading, error } = useResultsPerEndpointQuery(
     execution.id
   )
@@ -37,7 +38,7 @@ function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
 
   return (
     <React.Fragment>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} xl={6}>
         <Paper square className={classes.tile}>
           <SectionHeader
             size="small"
@@ -47,7 +48,7 @@ function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
           <ResultsPerEndpointChart data={resultsPerEndpoint} />
         </Paper>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} xl={6}>
         <Paper square className={classes.tile}>
           <SectionHeader
             size="small"
@@ -60,14 +61,20 @@ function ResultsPerEndpoint({ classes, execution, getEndpointDetailsUrl }) {
 
       <Grid item xs={12}>
         <Paper square className={classes.tile}>
-          <ResponsesTable
+          <CompareResponsesTable
             data={resultsPerEndpoint}
             getEndpointDetailsUrl={getEndpointDetailsUrl}
           />
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Paper square className={classes.tile}>
+          <CompareResponsesSummary data={resultsPerEndpoint} />
         </Paper>
       </Grid>
     </React.Fragment>
   )
 }
 
-export default ResultsPerEndpoint
+export default CompareEndpointResults

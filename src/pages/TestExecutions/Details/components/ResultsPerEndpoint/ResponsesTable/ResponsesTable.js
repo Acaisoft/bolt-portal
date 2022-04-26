@@ -1,11 +1,8 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
-
 import { DataTable, SectionHeader, Button, NoWrap } from 'components'
-
 import { formatThousands, formatPercent } from 'utils/numbers'
-
+import { useEndpointSummary } from 'hooks'
 import useStyles from './ResponsesTable.styles'
 
 export function ResponsesTable({
@@ -15,25 +12,7 @@ export function ResponsesTable({
 }) {
   const ownClasses = useStyles()
   const classes = { ...parentClasses, ownClasses }
-
-  const summary = useMemo(
-    () => ({
-      requests: _.sum(data.map(x => +x.num_requests)),
-      successes: _.sum(data.map(x => +x.num_successes)),
-      failures: _.sum(data.map(x => +x.num_failures)),
-      requestsPerSecond: _.sum(
-        data.map(x =>
-          +x.requests_per_second < 1 && x.requests_per_second > 0
-            ? 1
-            : x.requests_per_second
-        )
-      ),
-      minResponseTime: _.min(data.map(x => +x.min_response_time)),
-      averageResponseTime: _.mean(data.map(x => +x.average_response_time)),
-      maxResponseTime: _.max(data.map(x => +x.max_response_time)),
-    }),
-    [data]
-  )
+  const summary = useEndpointSummary(data)
 
   return (
     <React.Fragment>

@@ -1,20 +1,14 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-
-import { withStyles } from '@material-ui/core'
 import { TooltipBuilder } from 'utils/echartUtils'
 import { formatThousands } from 'utils/numbers'
 import { DefaultChart } from 'components'
 
 const formatLabel = label => _.truncate(label, { length: 15, omission: '...' })
 
-export function ResultsPerEndpointChart({ data, theme }) {
-  const { color } = theme.palette.chart
-
-  const barColors = [color.area.error, color.area.success]
-
-  const options = useMemo(() => {
+export function RequestsPerSecondChart({ data }) {
+  const options = React.useMemo(() => {
     return {
       tooltip: {
         axisPointer: {
@@ -23,16 +17,14 @@ export function ResultsPerEndpointChart({ data, theme }) {
         formatter: data => {
           return new TooltipBuilder(data)
             .withDefaultHeader()
-            .withNumericDataLine('Fail')
-            .withNumericDataLine('Success')
+            .withNumericDataLine('Requests/s')
             .getHtml()
         },
       },
-      color: barColors,
       xAxis: {
         type: 'value',
         axisLabel: {
-          formatter: value => formatThousands(value),
+          formatter: value => (value > 1 ? formatThousands(value) : value),
         },
       },
       yAxis: {
@@ -44,28 +36,25 @@ export function ResultsPerEndpointChart({ data, theme }) {
       },
       series: [
         {
-          name: 'Fail',
+          name: 'Requests/s',
           type: 'bar',
-          stack: 'group',
           barWidth: 20,
-          data: data.map(datum => datum.num_failures),
-        },
-        {
-          name: 'Success',
-          type: 'bar',
-          stack: 'group',
-          barWidth: 20,
-          data: data.map(datum => datum.num_successes),
+          data: data.map(datum =>
+            Math.round(
+              datum.requests_per_second < 1 && datum.requests_per_second > 0
+                ? 1
+                : datum.requests_per_second
+            )
+          ),
         },
       ],
     }
-  }, [data, barColors])
+  }, [data])
   return <DefaultChart options={options} />
 }
-ResultsPerEndpointChart.propTypes = {
+RequestsPerSecondChart.propTypes = {
   data: PropTypes.array,
   execution: PropTypes.object,
-  theme: PropTypes.object.isRequired,
 }
 
-export default withStyles({}, { withTheme: true })(ResultsPerEndpointChart)
+export default RequestsPerSecondChart

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useSubscription } from '@apollo/client'
-import { Box } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import {
   LoadingPlaceholder,
   ErrorPlaceholder,
@@ -66,12 +66,15 @@ function TestsCompare() {
         size="large"
         title="Test Runs Comparison"
       />
-      <TestDetails titleStart="Test no. 1: " execution={execution} />
-      <TestDetails
-        className={classes.bottomSection}
-        titleStart="Test no. 2: "
-        execution={compareExecution}
-      />
+
+      <Grid container spacing={2}>
+        <Grid item xs={12} lg={6}>
+          <TestDetails titleStart="Test no. 1: " execution={execution} />
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <TestDetails titleStart="Test no. 2: " execution={compareExecution} />
+        </Grid>
+      </Grid>
     </>
   )
 }
