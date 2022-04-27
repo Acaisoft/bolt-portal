@@ -4,6 +4,7 @@ export const SUBSCRIBE_TO_EXECUTION_RESULTS_DISTRIBUTION = gql`
   subscription subscribeToExecutionResultsDistribution($executionId: uuid!) {
     resultsPerEndpoint: execution_request_totals(
       where: { execution_id: { _eq: $executionId } }
+      order_by: { name: desc }
     ) {
       identifier
       method
