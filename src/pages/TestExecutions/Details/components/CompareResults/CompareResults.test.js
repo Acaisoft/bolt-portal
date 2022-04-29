@@ -1,6 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import moment from 'moment'
 import { TestRunStatus } from 'config/constants'
 import { customRender } from 'utils/tests/mocks'
@@ -26,19 +27,23 @@ const renderWithRoute = (
   configsMock = configurationsListMock,
   executionsMock = executionsListMock,
   status = TestRunStatus.SUCCEEDED
-) =>
-  customRender(
-    <Routes>
-      <Route
-        path="/projects/:projectId/configs/:configurationId/runs/:executionId"
-        element={<CompareResults status={status} />}
-      />
-    </Routes>,
-    [configsMock, executionsMock],
-    [
-      `/projects/83150c3c-239f-4bec-8d0e-973b96ca3c7a/configs/${selectedConfigId}/runs/${selectedExecutionId}`,
-    ]
-  )
+) => ({
+  user: userEvent.setup(),
+  ...render(
+    customRender(
+      <Routes>
+        <Route
+          path="/projects/:projectId/configs/:configurationId/runs/:executionId"
+          element={<CompareResults status={status} />}
+        />
+      </Routes>,
+      [configsMock, executionsMock],
+      [
+        `/projects/83150c3c-239f-4bec-8d0e-973b96ca3c7a/configs/${selectedConfigId}/runs/${selectedExecutionId}`,
+      ]
+    )
+  ),
+})
 
 async function loadForm() {
   await waitFor(() => {
@@ -46,8 +51,9 @@ async function loadForm() {
   })
 }
 
-function showSelectOptions(name) {
-  fireEvent.mouseDown(
+async function showSelectOptions(user, name) {
+  // select is opened on mouseDown event, user-events dispatches it under the hood
+  await user.click(
     screen.getByRole('button', {
       name: new RegExp(name, 'i'),
       hidden: true,
@@ -66,9 +72,9 @@ async function waitForEnabledTestRunSelect() {
   })
 }
 
-function selectScenario() {
+async function selectScenario(user) {
   const { name } = mockedConfigurationsList.configurations[0]
-  fireEvent.click(screen.getByText(name))
+  await user.click(screen.getByText(name))
 
   return name
 }
@@ -91,7 +97,7 @@ describe('component: CompareResults', () => {
   })
 
   it('should display whole compare form when data are loaded', async () => {
-    render(renderWithRoute())
+    renderWithRoute()
 
     await loadForm()
 
@@ -110,7 +116,7 @@ describe('component: CompareResults', () => {
   })
 
   it('test run compare button should be disabled when no scenario and test run are selected', async () => {
-    render(renderWithRoute())
+    renderWithRoute()
 
     await loadForm()
 
@@ -122,7 +128,7 @@ describe('component: CompareResults', () => {
   })
 
   it('test run select should be disabled when no scenario is selected', async () => {
-    render(renderWithRoute())
+    renderWithRoute()
 
     await loadForm()
 
@@ -135,10 +141,10 @@ describe('component: CompareResults', () => {
   })
 
   it('should show all scenarios with test runs different than the current one in scenario select', async () => {
-    render(renderWithRoute())
+    const { user } = renderWithRoute()
 
     await loadForm()
-    showSelectOptions('scenario')
+    await showSelectOptions(user, 'scenario')
 
     expect(screen.getByRole('listbox')).toBeInTheDocument()
 
@@ -159,10 +165,10 @@ describe('component: CompareResults', () => {
   })
 
   it('should not show current scenario in scenario select when current test run is the only one in it', async () => {
-    render(renderWithRoute(hideConfigMock))
+    const { user } = renderWithRoute(hideConfigMock)
 
     await loadForm()
-    showSelectOptions('scenario')
+    await showSelectOptions(user, 'scenario')
 
     const configWithCurrentExecution = mockedHideConfigList.configurations.find(
       ({ executions }) => {
@@ -177,11 +183,11 @@ describe('component: CompareResults', () => {
   })
 
   it('test run select should not be disabled when scenario is selected', async () => {
-    render(renderWithRoute())
+    const { user } = renderWithRoute()
 
     await loadForm()
-    showSelectOptions('scenario')
-    const name = selectScenario()
+    await showSelectOptions(user, 'scenario')
+    const name = await selectScenario(user)
 
     expect(
       screen.getByRole('button', {
@@ -193,20 +199,20 @@ describe('component: CompareResults', () => {
   })
 
   it('test run select should show all test runs from the chosen scenario, excluding a current test run', async () => {
-    render(renderWithRoute())
+    const { user } = renderWithRoute()
 
     await loadForm()
-    showSelectOptions('scenario')
+    await showSelectOptions(user, 'scenario')
 
     const { name } = mockedConfigurationsList.configurations.find(
       ({ executions }) => {
         return executions.findIndex(({ id }) => id === selectedExecutionId) !== -1
       }
     )
-    fireEvent.click(screen.getByText(name))
+    await user.click(screen.getByText(name))
 
     await waitForEnabledTestRunSelect()
-    showSelectOptions('test run')
+    await showSelectOptions(user, 'test run')
 
     const visibleExecutions = mockedExecutionsList.executions.filter(
       ({ id }) => id !== selectedExecutionId
@@ -226,17 +232,17 @@ describe('component: CompareResults', () => {
   })
 
   it('submit button should be enabled when both scenario and test run are selected', async () => {
-    render(renderWithRoute())
+    const { user } = renderWithRoute()
 
     await loadForm()
-    showSelectOptions('scenario')
-    selectScenario()
+    await showSelectOptions(user, 'scenario')
+    await selectScenario(user)
     await waitForEnabledTestRunSelect()
-    showSelectOptions('test run')
+    await showSelectOptions(user, 'test run')
 
     const { start } = mockedExecutionsList.executions[1]
     const formattedDate = moment(start).format('YYYY-MM-DD HH:mm')
-    fireEvent.click(screen.getByText(formattedDate))
+    await user.click(screen.getByText(formattedDate))
 
     expect(
       screen.getByRole('button', {
@@ -246,33 +252,27 @@ describe('component: CompareResults', () => {
   })
 
   it('selected test run should reset when different scenario was selected', async () => {
-    render(renderWithRoute())
+    const { user } = renderWithRoute()
 
     await loadForm()
-    showSelectOptions('scenario')
-    selectScenario()
+    await showSelectOptions(user, 'scenario')
+    await selectScenario(user)
     await waitForEnabledTestRunSelect()
-    showSelectOptions('test run')
+    await showSelectOptions(user, 'test run')
 
     const { start } = mockedExecutionsList.executions[1]
     const formattedDate = moment(start).format('YYYY-MM-DD HH:mm')
-    fireEvent.click(screen.getByText(formattedDate))
+    await user.click(screen.getByText(formattedDate))
 
     const { name: newName } = mockedConfigurationsList.configurations[1]
-    showSelectOptions('scenario')
-    fireEvent.click(screen.getByText(newName))
+    await showSelectOptions(user, 'scenario')
+    await user.click(screen.getByText(newName))
 
     expect(screen.queryByText(formattedDate)).not.toBeInTheDocument()
   })
 
   it('should hide form when current test run has FAILED status', async () => {
-    render(
-      renderWithRoute(
-        configurationsListMock,
-        executionsListMock,
-        TestRunStatus.FAILED
-      )
-    )
+    renderWithRoute(configurationsListMock, executionsListMock, TestRunStatus.FAILED)
 
     await loadForm()
 

@@ -1,4 +1,4 @@
-export function mockGraphqlData(query, data, variables) {
+export function mockGraphqlData(query, data, variables, errors) {
   return {
     request: {
       query,
@@ -6,6 +6,7 @@ export function mockGraphqlData(query, data, variables) {
     },
     result: {
       data,
+      errors,
     },
   }
 }

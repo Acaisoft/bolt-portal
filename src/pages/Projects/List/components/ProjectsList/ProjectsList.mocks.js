@@ -13,7 +13,6 @@ export const mockedProjectsList = {
         num_sources: 4,
         num_tests_failed: 366,
         num_tests_passed: 1171,
-        __typename: 'SummaryItem',
       },
       {
         id: '83150c3c-239f-4bec-8d0e-973b96ca3c7a',
@@ -24,7 +23,6 @@ export const mockedProjectsList = {
         num_sources: 0,
         num_tests_failed: 0,
         num_tests_passed: 0,
-        __typename: 'SummaryItem',
       },
       {
         id: '1e63ce59-87c1-4a7f-aaad-cb19a6e0211f',
@@ -35,7 +33,6 @@ export const mockedProjectsList = {
         num_sources: 1,
         num_tests_failed: 129429,
         num_tests_passed: 193054,
-        __typename: 'SummaryItem',
       },
       {
         id: '4544e188-be5f-4206-9dc3-f3f124b898c6',
@@ -46,7 +43,6 @@ export const mockedProjectsList = {
         num_sources: 1,
         num_tests_failed: 11025068,
         num_tests_passed: 1518794,
-        __typename: 'SummaryItem',
       },
       {
         id: 'bddffe85-1f54-46eb-ac31-b15589cceef0',
@@ -57,10 +53,8 @@ export const mockedProjectsList = {
         num_sources: 0,
         num_tests_failed: 0,
         num_tests_passed: 0,
-        __typename: 'SummaryItem',
       },
     ],
-    __typename: 'SummaryResponse',
   },
 }
 

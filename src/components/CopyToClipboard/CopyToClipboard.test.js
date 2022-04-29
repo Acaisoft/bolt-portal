@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, cleanup, fireEvent, act } from '@testing-library/react'
+import { render, cleanup, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { copyValueFromInput } from 'utils/browser'
 import { CopyToClipboard } from './CopyToClipboard'
@@ -33,7 +34,8 @@ describe('CopyToClipboard', () => {
     expect(input).toHaveAttribute('value', text)
   })
 
-  test('clicking should copy and switch icons', () => {
+  test('clicking should copy and switch icons', async () => {
+    const user = userEvent.setup({ delay: null })
     const { getByTestId, queryByTestId } = render(
       <CopyToClipboard label={label} text={text} timeout={100} />
     )
@@ -43,9 +45,7 @@ describe('CopyToClipboard', () => {
     expect(queryByTestId('copied-button')).not.toBeInTheDocument()
 
     // Clicking to copy
-    act(() => {
-      fireEvent.click(getByTestId('copy-button'))
-    })
+    await user.click(getByTestId('copy-button'))
 
     // After clicking
     expect(copyValueFromInput).toHaveBeenCalled()
@@ -53,7 +53,7 @@ describe('CopyToClipboard', () => {
     expect(getByTestId('copied-button')).toBeVisible()
 
     // After timeout
-    act(() => {
+    await act(() => {
       jest.runOnlyPendingTimers()
     })
 

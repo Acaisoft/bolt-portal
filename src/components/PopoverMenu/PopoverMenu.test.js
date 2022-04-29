@@ -1,11 +1,13 @@
 import React from 'react'
 import { act, render, cleanup, fireEvent, queries } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import PopoverMenu from './PopoverMenu'
 
 jest.unmock('@material-ui/core')
 
 function renderComponent({ id, trigger, items, onClose, onOpen, closeOnClick }) {
+  const user = userEvent.setup()
   const helpers = render(
     <PopoverMenu
       id={id}
@@ -20,10 +22,8 @@ function renderComponent({ id, trigger, items, onClose, onOpen, closeOnClick }) 
 
   return {
     ...helpers,
-    openMenu: () => {
-      act(() => {
-        fireEvent.click(helpers.getByText('Trigger'))
-      })
+    openMenu: async () => {
+      await user.click(helpers.getByText('Trigger'))
     },
     closeMenu: () => {
       const menuEl = document.body.querySelector(`#${id}`)
@@ -31,12 +31,10 @@ function renderComponent({ id, trigger, items, onClose, onOpen, closeOnClick }) 
         fireEvent.keyDown(menuEl, { key: 'Escape' })
       })
     },
-    clickOnItem: itemText => {
+    clickOnItem: async itemText => {
       const menuEl = document.body.querySelector(`#${id} `)
       const item = queries.getByText(menuEl, itemText)
-      act(() => {
-        fireEvent.click(item)
-      })
+      await user.click(item)
     },
   }
 }
@@ -68,14 +66,14 @@ describe('component: PopoverMenu', () => {
     expect(queryByText('three')).toBeNull()
   })
 
-  test('render items after clicking the trigger', () => {
+  test('render items after clicking the trigger', async () => {
     const { getByText, openMenu } = renderComponent({
       id,
       trigger,
       items,
     })
 
-    openMenu()
+    await openMenu()
 
     expect(getByText('one')).toBeVisible()
     expect(getByText('two')).toBeVisible()
@@ -83,7 +81,7 @@ describe('component: PopoverMenu', () => {
   })
 
   describe('callbacks', () => {
-    test('call onOpen on menu open', () => {
+    test('call onOpen on menu open', async () => {
       const onOpen = jest.fn()
       const { openMenu } = renderComponent({
         id,
@@ -92,12 +90,12 @@ describe('component: PopoverMenu', () => {
         items,
       })
 
-      openMenu()
+      await openMenu()
 
       expect(onOpen).toHaveBeenCalledWith(expect.any(Object))
     })
 
-    test('call onClose on menu close', () => {
+    test('call onClose on menu close', async () => {
       const onClose = jest.fn()
       const { openMenu, closeMenu } = renderComponent({
         id,
@@ -106,14 +104,14 @@ describe('component: PopoverMenu', () => {
         items,
       })
 
-      openMenu()
+      await openMenu()
       closeMenu()
 
       expect(onClose).toHaveBeenCalledTimes(1)
     })
 
     describe('clicking on items', () => {
-      test("call item's onClick and then close menu if closeOnClick is true", () => {
+      test("call item's onClick and then close menu if closeOnClick is true", async () => {
         const onClick = jest.fn()
         const onClose = jest.fn()
         items = [
@@ -130,14 +128,14 @@ describe('component: PopoverMenu', () => {
           closeOnClick: true,
         })
 
-        openMenu()
-        clickOnItem('one')
+        await openMenu()
+        await clickOnItem('one')
 
         expect(onClick).toHaveBeenCalledTimes(1)
         expect(onClose).toHaveBeenCalledTimes(1)
       })
 
-      test("call item's onClick without closing menu if closeOnClick is false", () => {
+      test("call item's onClick without closing menu if closeOnClick is false", async () => {
         const onClick = jest.fn()
         const onClose = jest.fn()
         items = [
@@ -154,8 +152,8 @@ describe('component: PopoverMenu', () => {
           closeOnClick: false,
         })
 
-        openMenu()
-        clickOnItem('one')
+        await openMenu()
+        await clickOnItem('one')
 
         expect(onClick).toHaveBeenCalledTimes(1)
         expect(onClose).toHaveBeenCalledTimes(0)

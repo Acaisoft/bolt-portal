@@ -1,5 +1,6 @@
 import React from 'react'
-import { screen, waitFor, render, fireEvent } from '@testing-library/react'
+import { screen, waitFor, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { customRender } from 'utils/tests/mocks'
 import ConfigurationForm from './ConfigurationForm'
 import {
@@ -66,6 +67,7 @@ describe('component: ConfigurationForm', () => {
   })
 
   it('should display all monitoring options when monitoring checkbox is checked', async () => {
+    const user = userEvent.setup()
     render(
       customRender(
         <ConfigurationForm
@@ -80,7 +82,7 @@ describe('component: ConfigurationForm', () => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
     })
 
-    fireEvent.click(
+    await user.click(
       screen.getByRole('checkbox', {
         name: 'Monitoring',
       })
@@ -91,6 +93,7 @@ describe('component: ConfigurationForm', () => {
   })
 
   it('should hide all load tests options when load tests checkbox is unchecked', async () => {
+    const user = userEvent.setup()
     render(
       customRender(
         <ConfigurationForm
@@ -105,7 +108,7 @@ describe('component: ConfigurationForm', () => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
     })
 
-    fireEvent.click(
+    await user.click(
       screen.getByRole('checkbox', {
         name: 'Load Tests',
       })
@@ -118,6 +121,7 @@ describe('component: ConfigurationForm', () => {
   })
 
   it('should display all monitoring and load tests options when both checkboxes are checked', async () => {
+    const user = userEvent.setup()
     render(
       customRender(
         <ConfigurationForm
@@ -132,7 +136,7 @@ describe('component: ConfigurationForm', () => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
     })
 
-    fireEvent.click(
+    await user.click(
       screen.getByRole('checkbox', {
         name: 'Monitoring',
       })

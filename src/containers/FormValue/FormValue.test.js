@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Form } from 'react-final-form'
 
 import { FormValue } from './FormValue'
@@ -7,7 +8,8 @@ import { FormValue } from './FormValue'
 afterEach(cleanup)
 
 describe('FormValue', () => {
-  it('should re-render on each value change', () => {
+  it('should re-render on each value change', async () => {
+    const user = userEvent.setup()
     const { getByTestId, getByText } = render(
       <Form
         initialValues={{
@@ -32,7 +34,7 @@ describe('FormValue', () => {
     expect(lastNameDiv.textContent).toEqual('Doe')
 
     const button = getByText('Change name')
-    fireEvent.click(button)
+    await user.click(button)
 
     expect(lastNameDiv.textContent).toEqual('Williams')
   })

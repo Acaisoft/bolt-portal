@@ -1,5 +1,6 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { customRender } from 'utils/tests/mocks'
 import ProjectsList from './ProjectsList'
 import { mockedProjectsList, projectsGraphqlMock } from './ProjectsList.mocks'
@@ -61,12 +62,13 @@ describe('component: ProjectsList', () => {
   })
 
   it('should display new project form after clicking new button', async () => {
+    const user = userEvent.setup()
     render(customRender(<ProjectsList />, [projectsGraphqlMock]))
 
     await loadProjects()
 
     expect(screen.getByLabelText('Project Form')).toBeInTheDocument()
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: 'New',
       })
@@ -88,6 +90,7 @@ describe('component: ProjectsList', () => {
   })
 
   it('should display project edit form with populated inputs after menu click', async () => {
+    const user = userEvent.setup()
     render(customRender(<ProjectsList />, [projectsGraphqlMock]))
 
     await loadProjects()
@@ -95,8 +98,8 @@ describe('component: ProjectsList', () => {
     const { name, description } = mockedProjectsList.summaries.projects[0]
     const project = document.querySelector(`[aria-label="project ${name}"]`)
 
-    fireEvent.click(within(project).getByRole('button', { name: 'Project Menu' }))
-    fireEvent.click(
+    await user.click(within(project).getByRole('button', { name: 'Project Menu' }))
+    await user.click(
       screen.getByRole('menuitem', {
         name: 'Edit project',
       })

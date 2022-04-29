@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup, getByTestId, act, fireEvent } from '@testing-library/react'
+import { render, cleanup, getByTestId } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Button } from './Button'
 
@@ -65,14 +66,13 @@ describe('component: Button', () => {
   })
 
   describe('events', () => {
-    test('onClick', () => {
+    test('onClick', async () => {
+      const user = userEvent.setup()
       const onClick = jest.fn()
       const { getByText } = render(<Button onClick={onClick}>{label}</Button>)
 
       const button = getByText(label)
-      act(() => {
-        fireEvent.click(button)
-      })
+      await user.click(button)
 
       expect(onClick).toHaveBeenCalled()
     })

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { useParams } from 'react-router-dom'
 
 import { useQuery } from '@apollo/client'
 import { Form } from 'react-final-form'
@@ -32,10 +33,10 @@ function TestSourceForm({
   onCancel,
   onSubmit,
   onTestConnection = () => {},
-  projectId,
   sourceId,
 }) {
   const classes = useStyles()
+  const { projectId } = useParams()
   const [isKeyVisible, toggleKeyInput] = useToggle(false)
 
   const { data: { repositoryKey } = {}, loading: repositoryKeyLoading } = useQuery(
@@ -144,6 +145,7 @@ function TestSourceForm({
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <FormField
+                  aria-label="source type select"
                   name="source_type"
                   field={fields.source_type}
                   margin="normal"
@@ -168,6 +170,7 @@ function TestSourceForm({
               <FormCondition when="source_type" is={TestSourceType.REPOSITORY}>
                 <Grid item xs={12} md={6}>
                   <FormField
+                    aria-label="repository type select"
                     name="repository.type_slug"
                     field={repositoryFields.type_slug}
                     margin="normal"
@@ -186,6 +189,7 @@ function TestSourceForm({
                 <Grid item xs={12} md={6} />
                 <Grid item xs={12} md={6}>
                   <FormField
+                    id="repository.name"
                     name="repository.name"
                     field={repositoryFields.name}
                     margin="normal"
@@ -196,6 +200,7 @@ function TestSourceForm({
                 <Grid item xs={12} md={6} />
                 <Grid item xs={12} md={6}>
                   <FormField
+                    id="repository.url"
                     name="repository.url"
                     field={repositoryFields.url}
                     margin="normal"
@@ -267,7 +272,6 @@ TestSourceForm.propTypes = {
   onCancel: PropTypes.func,
   onSubmit: PropTypes.func,
   onTestConnection: PropTypes.func,
-  projectId: PropTypes.string,
   sourceId: PropTypes.string,
 }
 

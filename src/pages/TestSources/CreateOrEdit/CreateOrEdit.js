@@ -9,7 +9,7 @@ import { TestSourceForm } from './components'
 export function CreateOrEdit() {
   const navigate = useNavigate()
   const params = useParams()
-  const { projectId, sourceId } = params
+  const { sourceId } = params
   const mode = sourceId ? 'edit' : 'create'
 
   const goToList = useCallback(() => {
@@ -32,7 +32,6 @@ export function CreateOrEdit() {
       mode={mode}
       onCancel={handleCancel}
       onSubmit={handleSubmit}
-      projectId={projectId}
       sourceId={sourceId}
     />
   )

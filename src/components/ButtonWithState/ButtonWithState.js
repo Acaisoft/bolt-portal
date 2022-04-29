@@ -22,6 +22,7 @@ function ButtonWithState({
   if (loading) {
     icon = props => (
       <CircularProgress
+        data-testid="loader"
         color="inherit"
         variant="indeterminate"
         size={15}
@@ -29,9 +30,9 @@ function ButtonWithState({
       />
     )
   } else if (error) {
-    icon = Close
+    icon = props => <Close data-testid="error" {...props} />
   } else if (success) {
-    icon = Check
+    icon = props => <Check data-testid="success" {...props} />
   }
 
   return (

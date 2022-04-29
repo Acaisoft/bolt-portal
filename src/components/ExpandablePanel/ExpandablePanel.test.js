@@ -1,5 +1,6 @@
 import React from 'react'
-import { cleanup, fireEvent, render, act } from '@testing-library/react'
+import { cleanup, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { ExpandablePanel } from './ExpandablePanel'
 
@@ -38,18 +39,15 @@ describe('ExpandablePanel', () => {
     expect(queryAllByText('Test label')).toHaveLength(1)
     expect(expansionPanelSummary).toHaveAttribute('aria-expanded', 'true')
   })
-  test('show/hide content on click', () => {
+  test('show/hide content on click', async () => {
+    const user = userEvent.setup()
     const { queryByTestId } = render(<ExpandablePanel>Test label</ExpandablePanel>)
     const expansionPanelSummary = queryByTestId('expansion-panel-summary')
 
     expect(expansionPanelSummary).toHaveAttribute('aria-expanded', 'false')
-    act(() => {
-      fireEvent.click(expansionPanelSummary)
-    })
+    await user.click(expansionPanelSummary)
     expect(expansionPanelSummary).toHaveAttribute('aria-expanded', 'true')
-    act(() => {
-      fireEvent.click(expansionPanelSummary)
-    })
+    await user.click(expansionPanelSummary)
     expect(expansionPanelSummary).toHaveAttribute('aria-expanded', 'false')
   })
 })
