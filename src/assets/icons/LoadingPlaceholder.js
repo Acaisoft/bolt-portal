@@ -8,6 +8,7 @@ function LoadingPlaceholder(props) {
       viewBox="0 0 126 79"
       fill="none"
       fontSize="inherit"
+      data-testid="loadingPlaceholderIcon"
       {...props}
     >
       <title>loading-placeholder</title>

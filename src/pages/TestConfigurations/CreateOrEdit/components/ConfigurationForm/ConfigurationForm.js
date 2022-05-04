@@ -86,7 +86,7 @@ export function ConfigurationForm({
       keepDirtyOnReinitialize
     >
       {form => (
-        <form onSubmit={form.handleSubmit}>
+        <form data-testid="ConfigurationForm" onSubmit={form.handleSubmit}>
           <SectionHeader
             title={mode === 'create' ? 'New Scenario' : 'Update Scenario'}
             alignItems="flex-start"

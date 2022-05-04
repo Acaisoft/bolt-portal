@@ -4,7 +4,7 @@ import { SvgIcon } from '@material-ui/core'
 
 function Debug(props) {
   return (
-    <SvgIcon viewBox="0 0 19 20" fill="none" {...props}>
+    <SvgIcon viewBox="0 0 19 20" fill="none" data-testid="debugIcon" {...props}>
       <rect
         x="3.65"
         y="6.65"

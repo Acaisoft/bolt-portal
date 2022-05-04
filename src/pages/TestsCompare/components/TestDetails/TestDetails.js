@@ -42,7 +42,7 @@ function TestDetails({ titleStart, execution, className }) {
   )
 
   return (
-    <div className={className}>
+    <div className={className} data-testid="CompareTestDetails">
       <SectionHeader title={`${titleStart}${testDate}`} />
       <div className={classes.configDetails}>
         <ExpandablePanel defaultExpanded={false} title="Scenario Details">

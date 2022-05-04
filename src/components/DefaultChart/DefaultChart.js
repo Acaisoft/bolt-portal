@@ -91,6 +91,7 @@ function DefaultChart({ options: overridingOptions, syncGroup }) {
   }, [overridingOptions, font, gridLine, lineColors, tooltip])
   return (
     <ReactEcharts
+      data-testid="DefaultChart"
       ref={chartRef}
       option={options}
       notMerge={true}

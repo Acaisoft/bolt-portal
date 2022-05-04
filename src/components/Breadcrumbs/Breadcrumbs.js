@@ -14,7 +14,7 @@ export function Breadcrumbs({ items = [] }) {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="Breadcrumbs">
       {items.map(({ url, label, render, key = url }, index) => (
         <React.Fragment key={key}>
           {render ? (

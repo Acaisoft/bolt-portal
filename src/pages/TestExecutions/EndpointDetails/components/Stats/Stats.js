@@ -37,7 +37,12 @@ function Stats({ classes, endpointId }) {
 
   return (
     <React.Fragment>
-      <Grid item xs={12} className={classes.verticalGridItem}>
+      <Grid
+        item
+        xs={12}
+        className={classes.verticalGridItem}
+        data-testid="EndpointStats"
+      >
         <Paper square className={classes.tile}>
           <SectionHeader title="Response Times" size="small" />
           <div className={classes.tileContent}>

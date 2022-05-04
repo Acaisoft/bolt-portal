@@ -130,7 +130,13 @@ function Monitoring() {
           ) : (
             chartsWithData.map(({ groupNames, chartConfig, data }, index) => {
               return (
-                <Grid item xs={12} md={6} key={`chart-${index}`}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  key={`chart-${index}`}
+                  data-testid={`monitoring-chart-${index}`}
+                >
                   <Paper square className={classes.tile}>
                     {chartConfig.type === 'heatmap' ? (
                       <MonitoringHeatmapChart

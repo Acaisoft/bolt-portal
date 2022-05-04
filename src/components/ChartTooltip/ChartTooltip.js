@@ -19,7 +19,7 @@ function ChartTooltip({
   }
 
   return (
-    <Paper className={classes.root} elevation={4}>
+    <Paper className={classes.root} elevation={4} data-testid="ChartTooltip">
       <div className={classes.label}>{labelFormatter(label)}</div>
       <ul className={classes.list}>
         {payload.map(item => (

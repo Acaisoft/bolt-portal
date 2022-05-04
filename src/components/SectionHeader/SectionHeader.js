@@ -27,6 +27,7 @@ function SectionHeader({
 
   return (
     <Grid
+      data-testid="SectionHeader"
       container
       className={classNames(className, {
         [classes.marginBottom]: Boolean(marginBottom),

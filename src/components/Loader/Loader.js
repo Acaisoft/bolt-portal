@@ -16,7 +16,9 @@ export function Loader({
     return children
   }
 
-  const loader = <CircularProgress color={color} className={classes.root} />
+  const loader = (
+    <CircularProgress color={color} className={classes.root} data-testid="loader" />
+  )
 
   return fill ? <div className={classes.holder}>{loader}</div> : loader
 }

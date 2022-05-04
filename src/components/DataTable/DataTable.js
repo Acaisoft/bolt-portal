@@ -101,7 +101,10 @@ export class DataTable extends Component {
     const { classes, responsive } = this.props
 
     return (
-      <div className={classNames({ [classes.responsiveContainer]: responsive })}>
+      <div
+        className={classNames({ [classes.responsiveContainer]: responsive })}
+        data-testid="DataTable"
+      >
         <Table>
           {this.renderHeader()}
           {this.renderBody()}

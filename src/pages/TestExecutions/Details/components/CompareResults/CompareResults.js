@@ -118,7 +118,11 @@ function CompareResults({ status }) {
     return (
       <Form onSubmit={handleSubmit} keepDirtyOnReinitialize>
         {form => (
-          <form aria-label="Compare Form" onSubmit={form.handleSubmit}>
+          <form
+            data-testid="Compare Form"
+            aria-label="Compare Form"
+            onSubmit={form.handleSubmit}
+          >
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <SectionHeader size="medium" title="Compare to" />

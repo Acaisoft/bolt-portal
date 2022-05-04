@@ -27,6 +27,7 @@ export class DeleteModal extends React.Component {
         onClose={onClose}
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
+        data-testid="DeleteModal"
       >
         <DialogTitle id="delete-dialog-title">Delete {type}</DialogTitle>
         <DialogContent>

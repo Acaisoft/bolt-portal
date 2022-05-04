@@ -4,7 +4,7 @@ import { SvgIcon } from '@material-ui/core'
 
 function Terminate(props) {
   return (
-    <SvgIcon viewBox="0 0 19 19" fill="none" {...props}>
+    <SvgIcon viewBox="0 0 19 19" fill="none" data-testid="terminateIcon" {...props}>
       <mask id="path-1-inside-1" fill="white">
         <path
           fillRule="evenodd"

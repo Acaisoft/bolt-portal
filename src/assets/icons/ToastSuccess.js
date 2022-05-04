@@ -4,7 +4,14 @@ import { SvgIcon } from '@material-ui/core'
 
 function ToastSuccess(props) {
   return (
-    <SvgIcon width="41" height="41" viewBox="0 0 41 41" fill="none" {...props}>
+    <SvgIcon
+      width="41"
+      height="41"
+      viewBox="0 0 41 41"
+      fill="none"
+      data-testid="toastSuccessIcon"
+      {...props}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

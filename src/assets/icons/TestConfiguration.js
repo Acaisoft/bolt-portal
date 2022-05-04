@@ -4,7 +4,7 @@ import { SvgIcon } from '@material-ui/core'
 
 function TestConfiguration(props) {
   return (
-    <SvgIcon viewBox="0 0 18 13" {...props}>
+    <SvgIcon viewBox="0 0 18 13" data-testid="testConfigIcon" {...props}>
       <path
         d="M2.00049 1.44727L4.64299 9.90328C4.90445 10.7399 6.0393 10.8593 6.46905 10.0953L10.5697 2.80527C10.9269 2.17026 11.8214 2.11813 12.25 2.70736L16.6667 8.78038"
         stroke="currentColor"

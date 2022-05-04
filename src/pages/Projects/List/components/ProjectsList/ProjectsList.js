@@ -40,7 +40,7 @@ function ProjectsList() {
         aria-label="Your Projects"
       />
 
-      <div className={classes.gridContainer}>
+      <div className={classes.gridContainer} data-testid="ProjectsList">
         {projectsItems.map(project => {
           const isNewProject = project.id === 'new-project'
           const isEditedProject = editedItem && editedItem.id === project.id

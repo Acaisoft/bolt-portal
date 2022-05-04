@@ -43,7 +43,7 @@ function TestConfigurationDetails({ children, configuration, gridProps = {} }) {
   })
 
   return (
-    <Paper square className={classes.paper}>
+    <Paper square className={classes.paper} data-testid="TestConfigDetails">
       <Grid container spacing={5} alignItems="center">
         <Grid
           item

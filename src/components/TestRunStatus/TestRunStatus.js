@@ -64,7 +64,7 @@ export function TestRunStatus({ status }) {
 
   const { icon: Icon, name, title } = validConfiguration
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} data-testid="TestRunStatus">
       <div
         className={classNames(classes.root, classes[name])}
         data-testid="test-run-status-wrapper"

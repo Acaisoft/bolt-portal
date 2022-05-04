@@ -3,7 +3,14 @@ import { SvgIcon } from '@material-ui/core'
 
 function Monitor(props) {
   return (
-    <SvgIcon width="12" height="12" viewBox="0 0 12 12" fill="none" {...props}>
+    <SvgIcon
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      data-testid="monitorIcon"
+      {...props}
+    >
       <mask id="path-1-inside-1" fill="currentColor">
         <rect width="12" height="9" rx="1" fill="white" />
       </mask>

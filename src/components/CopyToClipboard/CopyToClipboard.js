@@ -30,6 +30,7 @@ export function CopyToClipboard({ label, text, timeout = 2000, ...textFieldProps
       label={label}
       value={text}
       id="copy-to-clipboard"
+      data-testid="CopyToClipboard"
       InputProps={{
         readOnly: true,
         endAdornment: (

@@ -8,6 +8,7 @@ function Details(props) {
       viewBox="40 44 90 76"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      data-testid="detailsIcon"
       {...props}
     >
       <path

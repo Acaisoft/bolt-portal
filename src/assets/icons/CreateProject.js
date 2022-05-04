@@ -7,6 +7,7 @@ function CreateProject(props) {
       viewBox="0 0 108 79"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      data-testid="createProjectIcon"
       {...props}
     >
       <path

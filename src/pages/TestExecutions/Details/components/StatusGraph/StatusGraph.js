@@ -276,7 +276,7 @@ export function StatusGraph({ executionId, configurationId, executionStatus }) {
           />
         ))}
 
-      <Grid item xs={12}>
+      <Grid item xs={12} data-testid="StatusGraph">
         <Paper square>
           <Grid
             container

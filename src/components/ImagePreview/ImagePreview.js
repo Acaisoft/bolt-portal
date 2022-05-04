@@ -11,7 +11,7 @@ function ImagePreview({ alt, src }) {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="ImagePreview">
       <img src={src} alt={alt} className={classes.image} />
     </div>
   )

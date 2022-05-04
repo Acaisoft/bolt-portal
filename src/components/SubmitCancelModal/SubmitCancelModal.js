@@ -21,6 +21,7 @@ export function SubmitCancelModal({
 }) {
   return (
     <Dialog
+      data-testid="SubmitCancelModal"
       open={isOpen}
       onClose={onClose}
       aria-labelledby={`${id}-title`}

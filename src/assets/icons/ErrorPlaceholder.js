@@ -8,6 +8,7 @@ function ErrorPlaceholder(props) {
       viewBox="0 0 106 77"
       fill="none"
       fontSize="inherit"
+      data-testid="errorPlaceholderIcon"
       {...props}
     >
       <title>error-placeholder</title>

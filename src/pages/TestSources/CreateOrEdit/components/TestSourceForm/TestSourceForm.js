@@ -141,7 +141,7 @@ function TestSourceForm({
             </Button>
           </SectionHeader>
 
-          <form onSubmit={form.handleSubmit}>
+          <form data-testid="TestSourceForm" onSubmit={form.handleSubmit}>
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <FormField

@@ -31,7 +31,7 @@ function Failures({ classes, endpointId }) {
   }
 
   return (
-    <Paper square className={classes.tile}>
+    <Paper square className={classes.tile} data-testid="EndpointFailures">
       <SectionHeader title="Failures" size="small" />
       <div className={classes.tileContent}>
         <FailuresChart data={endpointFailures} />

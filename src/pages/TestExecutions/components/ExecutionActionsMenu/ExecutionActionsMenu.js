@@ -36,6 +36,7 @@ function ExecutionActionsMenu({ execution }) {
 
   return (
     <PopoverMenu
+      data-testid="ExecutionActions"
       id={execution.id}
       closeOnClick
       trigger={

@@ -33,7 +33,7 @@ function TimeDistribution({ classes, endpointId }) {
   }
 
   return (
-    <Paper square className={classes.tile}>
+    <Paper square className={classes.tile} data-testid="EndpointTimeDistribution">
       <SectionHeader title="Time Distribution" size="small" />
       <div className={classes.tileContent}>
         <TimeDistributionChart data={endpointDistribution} />
