@@ -104,8 +104,9 @@ export const mockedExecutionsList = {
   ],
 }
 
-export const selectedConfigId = '01c5b2c8-a5ea-44f8-8f74-d4813042b22c'
-export const selectedExecutionId = '8621971c-1125-48a7-8610-5d08a2ef4bee'
+export const projectId = '83150c3c-239f-4bec-8d0e-973b96ca3c7a'
+export const configurationId = '01c5b2c8-a5ea-44f8-8f74-d4813042b22c'
+export const executionId = '8621971c-1125-48a7-8610-5d08a2ef4bee'
 
 export const configurationsListMock = mockGraphqlData(
   SUBSCRIBE_TO_SCENARIOS_LIST,
@@ -129,6 +130,6 @@ export const executionsListMock = mockGraphqlData(
   SUBSCRIBE_TO_EXECUTIONS_LIST,
   mockedExecutionsList,
   {
-    configurationId: selectedConfigId,
+    configurationId,
   }
 )

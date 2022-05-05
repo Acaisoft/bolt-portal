@@ -9,8 +9,6 @@ import { TestSourceForm } from './components'
 export function CreateOrEdit() {
   const navigate = useNavigate()
   const params = useParams()
-  const { sourceId } = params
-  const mode = sourceId ? 'edit' : 'create'
 
   const goToList = useCallback(() => {
     navigate(getUrl(routes.projects.sources.list, { ...params }))
@@ -27,14 +25,7 @@ export function CreateOrEdit() {
     goToList()
   }, [goToList])
 
-  return (
-    <TestSourceForm
-      mode={mode}
-      onCancel={handleCancel}
-      onSubmit={handleSubmit}
-      sourceId={sourceId}
-    />
-  )
+  return <TestSourceForm onCancel={handleCancel} onSubmit={handleSubmit} />
 }
 
 export default CreateOrEdit

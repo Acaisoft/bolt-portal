@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client'
 
 import { TestSourceType } from 'config/constants'
 import { validateOnFieldValue } from 'utils/forms'
+import { capitalizeWords } from 'utils/strings'
 
 import {
   GET_PARAMETERS,
@@ -33,7 +34,15 @@ const scenarioParts = [
   },
 ]
 
-function useFormSchema({ projectId, mode }) {
+const testSourceParameters = ['load_tests_repository_branch', 'load_tests_file_path']
+
+const nonEmptyRepoValidator = {
+  validator: validateOnFieldValue('test_source_type', TestSourceType.REPOSITORY, {
+    presence: { allowEmpty: false },
+  }),
+}
+
+function useFormSchema({ projectId }) {
   const { data: { parameters } = {}, loading: parametersLoading } = useQuery(
     GET_PARAMETERS,
     {
@@ -79,6 +88,26 @@ function generateFields({
   testSources,
   testSourceTypes,
 }) {
+  const filteredParameters = parameters.filter(
+    ({ slug_name }) => !testSourceParameters.includes(slug_name)
+  )
+
+  const additionalTestSourceParams = parameters
+    .filter(({ slug_name }) => testSourceParameters.includes(slug_name))
+    .reduce(
+      (acc, { slug_name, name, default_value }) => ({
+        [slug_name]: {
+          inputProps: {
+            label: capitalizeWords(name),
+          },
+          defaultValue: default_value,
+          ...nonEmptyRepoValidator,
+        },
+        ...acc,
+      }),
+      {}
+    )
+
   const configurationTypeOptions = configurationTypes.map(ct => ({
     key: ct.id,
     label: ct.name,
@@ -139,7 +168,7 @@ function generateFields({
       ),
     },
     parameters: {
-      fields: parameters.reduce(
+      fields: filteredParameters.reduce(
         (acc, parameter) => ({
           ...acc,
           [parameter.slug_name]: {
@@ -201,10 +230,11 @@ function generateFields({
             },
           },
         }),
-        {}
+        { ...additionalTestSourceParams }
       ),
     },
   }
+
   return fields
 }
 
@@ -216,6 +246,10 @@ function prepareInitialValues(data) {
       test_source_type: 'repository',
       scenario_parts: {
         has_load_tests: true,
+      },
+      test_source: {
+        load_tests_repository_branch: 'master',
+        load_tests_file_path: 'load_tests',
       },
     }
   }
@@ -233,6 +267,19 @@ function prepareInitialValues(data) {
     configuration_envvars,
   } = data
 
+  const filteredParams = configuration_parameters.filter(
+    ({ parameter_slug }) => !testSourceParameters.includes(parameter_slug)
+  )
+  const loadTestsSourceParams = configuration_parameters
+    .filter(({ parameter_slug }) => testSourceParameters.includes(parameter_slug))
+    .reduce(
+      (acc, { parameter_slug, value }) => ({
+        [parameter_slug]: value,
+        ...acc,
+      }),
+      {}
+    )
+
   return {
     scenario_name: name,
     configuration_type: type_slug,
@@ -243,7 +290,7 @@ function prepareInitialValues(data) {
       has_load_tests,
       has_monitoring,
     },
-    parameters: configuration_parameters.reduce(
+    parameters: filteredParams.reduce(
       (acc, parameter) => ({
         ...acc,
         [parameter.parameter_slug]: parameter.value,
@@ -251,7 +298,9 @@ function prepareInitialValues(data) {
       {}
     ),
     test_source_type: test_source && test_source.source_type,
-    test_source: test_source ? { [test_source.source_type]: test_source.id } : null,
+    test_source: test_source
+      ? { [test_source.source_type]: test_source.id, ...loadTestsSourceParams }
+      : null,
     configuration_envvars: configuration_envvars.map(({ name, value }) => ({
       name,
       value,
@@ -274,6 +323,16 @@ function preparePayload(formValues, { mode, configurationId, projectId }) {
     configuration_envvars,
   } = formValues
 
+  const loadTestsSourceParams = Object.entries(test_source)
+    .filter(([slug]) => slug.includes('load_tests'))
+    .reduce(
+      (acc, [slug, value]) => ({
+        [slug]: value,
+        ...acc,
+      }),
+      {}
+    )
+
   const variables = {
     name: scenario_name,
     configuration_envvars: configuration_envvars.filter(
@@ -293,7 +352,10 @@ function preparePayload(formValues, { mode, configurationId, projectId }) {
     has_post_test,
     has_load_tests,
     has_monitoring,
-    configuration_parameters: Object.entries(parameters)
+    configuration_parameters: Object.entries({
+      ...parameters,
+      ...loadTestsSourceParams,
+    })
       .map(([slug, value]) => ({
         parameter_slug: slug,
         value,

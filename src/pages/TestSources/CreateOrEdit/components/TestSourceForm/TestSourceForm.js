@@ -28,15 +28,10 @@ import { useFormSchema, prepareInitialValues } from './formSchema'
 import { useConnectionTest, useTestSourceSubmit } from './TestSourceForm.utils'
 import useStyles from './TestSourceForm.styles'
 
-function TestSourceForm({
-  mode,
-  onCancel,
-  onSubmit,
-  onTestConnection = () => {},
-  sourceId,
-}) {
+function TestSourceForm({ onCancel, onSubmit, onTestConnection = () => {} }) {
   const classes = useStyles()
-  const { projectId } = useParams()
+  const { sourceId, projectId } = useParams()
+  const mode = sourceId ? 'edit' : 'create'
   const [isKeyVisible, toggleKeyInput] = useToggle(false)
 
   const { data: { repositoryKey } = {}, loading: repositoryKeyLoading } = useQuery(
@@ -268,11 +263,9 @@ function TestSourceForm({
 }
 
 TestSourceForm.propTypes = {
-  mode: PropTypes.oneOf(['create', 'edit']),
   onCancel: PropTypes.func,
   onSubmit: PropTypes.func,
   onTestConnection: PropTypes.func,
-  sourceId: PropTypes.string,
 }
 
 export default TestSourceForm

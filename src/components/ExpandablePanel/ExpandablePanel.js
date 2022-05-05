@@ -16,6 +16,7 @@ export function ExpandablePanel({ children, title, ...panelProps }) {
 
   return (
     <Accordion
+      aria-label={`${title} panel`}
       data-testid="expansion-panel"
       className={classes.root}
       elevation={0}

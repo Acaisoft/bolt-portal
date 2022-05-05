@@ -2,7 +2,10 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import routes from 'config/routes'
+import { getUrl } from 'utils/router'
 import { customRender } from 'utils/tests/mocks'
+import { getByRoleAndName } from 'utils/tests'
 import TestSourceForm from './TestSourceForm'
 import {
   repositoryKeyMock,
@@ -24,38 +27,37 @@ jest.unmock('@material-ui/icons')
 
 const renderWithRoute = (
   repositoryConnectionMock = addRepositoryConnectionSuccessMock,
-  mode = 'create',
   sourceId
-) => ({
-  user: userEvent.setup(),
-  ...render(
-    customRender(
-      <Routes>
-        <Route
-          path="/projects/:projectId/sources/create"
-          element={<TestSourceForm mode={mode} sourceId={sourceId} />}
-        />
-      </Routes>,
-      [
-        repositoryKeyMock,
-        configurationTypesMock,
-        repositoryConnectionMock,
-        getTestSourceMock,
-      ],
-      [`/projects/${projectId}/sources/create`]
-    )
-  ),
-})
+) => {
+  const mode = sourceId ? 'edit' : 'create'
+  const url = routes.projects.sources[mode]
+  const params = {
+    projectId,
+    ...(!!sourceId && { sourceId }),
+  }
+
+  return {
+    user: userEvent.setup(),
+    ...render(
+      customRender(
+        <Routes>
+          <Route path={url} element={<TestSourceForm />} />
+        </Routes>,
+        [
+          repositoryKeyMock,
+          configurationTypesMock,
+          repositoryConnectionMock,
+          getTestSourceMock,
+        ],
+        [getUrl(url, params)]
+      )
+    ),
+  }
+}
 
 async function loadData() {
   await waitFor(() => {
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
-  })
-}
-
-function getByRoleAndName(role, name) {
-  return screen.getByRole(role, {
-    name: new RegExp(name, 'i'),
   })
 }
 
@@ -178,7 +180,7 @@ describe('component: TestSourceForm', () => {
   })
 
   it('should populate repo url and name inputs when test source is being edited', async () => {
-    renderWithRoute(editRepositoryTestsNotPerformedMock, 'edit', sourceId)
+    renderWithRoute(editRepositoryTestsNotPerformedMock, sourceId)
 
     await loadData()
 
@@ -187,7 +189,7 @@ describe('component: TestSourceForm', () => {
   })
 
   it('should not enable url editing for existing test source when tests have been performed with it', async () => {
-    renderWithRoute(editRepositoryTestsPerformedMock, 'edit', sourceId)
+    renderWithRoute(editRepositoryTestsPerformedMock, sourceId)
 
     await loadData()
 
@@ -200,7 +202,7 @@ describe('component: TestSourceForm', () => {
   })
 
   it('should enable url editing for existing test source when tests have not been performed with it', async () => {
-    renderWithRoute(editRepositoryTestsNotPerformedMock, 'edit', sourceId)
+    renderWithRoute(editRepositoryTestsNotPerformedMock, sourceId)
 
     await loadData()
 

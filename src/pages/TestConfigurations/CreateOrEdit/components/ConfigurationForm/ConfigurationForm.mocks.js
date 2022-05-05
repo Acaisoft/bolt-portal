@@ -1,5 +1,6 @@
 import { mockGraphqlData } from 'utils/tests/mocks'
 import {
+  GET_CONFIGURATION,
   GET_CONFIGURATION_TYPES,
   GET_PARAMETERS,
   GET_TEST_SOURCES_FOR_PROJECT,
@@ -86,7 +87,102 @@ const testParametersMockData = {
       slug_name: 'monitoring_interval',
       type_slug: 'load_tests',
     },
+    {
+      id: 'c5c537f7-e1a8-40e7-ac50-45f54dc592bd',
+      name: 'file path',
+      param_name: '-f',
+      param_type: 'str',
+      default_value: 'load_tests',
+      slug_name: 'load_tests_file_path',
+      type_slug: 'load_tests',
+    },
+    {
+      id: 'a426ff2e-b12c-49e9-b0ef-79da32d6a113',
+      name: 'repository branch',
+      param_name: '-b',
+      param_type: 'str',
+      default_value: 'master',
+      slug_name: 'load_tests_repository_branch',
+      type_slug: 'load_tests',
+    },
   ],
+}
+
+export const projectId = 'f3e2db7e-20b7-43c7-a32c-a47f958a2647'
+export const configurationId = '6f0428ac-0579-4a65-bb86-2bb049398b57'
+export const testConfigurationBase = {
+  configuration: {
+    id: configurationId,
+    name: 'google (Cloned at 22/04/2022 - 09:30:30) MB',
+    configuration_parameters: [
+      {
+        parameter_slug: 'load_tests_duration',
+        value: '20',
+      },
+      {
+        parameter_slug: 'load_tests_rampup',
+        value: '1',
+      },
+      {
+        parameter_slug: 'load_tests_users',
+        value: '5',
+      },
+      {
+        parameter_slug: 'load_tests_host',
+        value: 'http://google.com',
+      },
+      {
+        parameter_slug: 'load_tests_file_path',
+        value: 'load_tests',
+      },
+      {
+        parameter_slug: 'load_tests_repository_branch',
+        value: 'master',
+      },
+    ],
+    type_slug: 'load_tests',
+    test_source: {
+      id: '529606f0-58ca-4ee6-8374-2bf4ca6d5635',
+      source_type: 'repository',
+    },
+    has_pre_test: false,
+    has_post_test: false,
+    has_load_tests: true,
+    has_monitoring: false,
+    configuration_envvars: [
+      {
+        name: 'TEST_KEY',
+        value: 'TEST_VALUE',
+      },
+      {
+        name: 'NEW_SECRET_KEY',
+        value: 'SECRET_VALUE',
+      },
+    ],
+  },
+}
+
+export function getParameterLabel(slug) {
+  const item = testParametersMockData.parameters.find(
+    ({ slug_name }) => slug_name === slug
+  )
+
+  if (!item) return ''
+  return item.name
+}
+
+const testConfigurationPerformed = {
+  configuration: {
+    ...testConfigurationBase.configuration,
+    performed: true,
+  },
+}
+
+const testConfigurationNotPerformed = {
+  configuration: {
+    ...testConfigurationBase.configuration,
+    performed: false,
+  },
 }
 
 export const configurationTypesMock = mockGraphqlData(
@@ -102,4 +198,15 @@ export const testSourcesMock = mockGraphqlData(
 export const testParametersMock = mockGraphqlData(
   GET_PARAMETERS,
   testParametersMockData
+)
+
+export const testConfigurationPerformedMock = mockGraphqlData(
+  GET_CONFIGURATION,
+  testConfigurationPerformed,
+  { configurationId }
+)
+export const testConfigurationNotPerformedMock = mockGraphqlData(
+  GET_CONFIGURATION,
+  testConfigurationNotPerformed,
+  { configurationId }
 )

@@ -10,9 +10,7 @@ export function CreateOrEdit() {
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
-  const { projectId, configurationId } = params
-
-  const mode = configurationId ? 'edit' : 'create'
+  const { configurationId } = params
 
   const urlParams = new URLSearchParams(location.search)
   const targetLocation = urlParams.get('from')
@@ -49,15 +47,7 @@ export function CreateOrEdit() {
     [configurationId, notify, handleClose]
   )
 
-  return (
-    <ConfigurationForm
-      mode={mode}
-      projectId={projectId}
-      configurationId={configurationId}
-      onCancel={handleClose}
-      onSubmit={handleSubmit}
-    />
-  )
+  return <ConfigurationForm onCancel={handleClose} onSubmit={handleSubmit} />
 }
 
 export default CreateOrEdit

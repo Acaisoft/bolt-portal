@@ -3,15 +3,19 @@ import { Routes, Route } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment'
+import routes from 'config/routes'
 import { TestRunStatus } from 'config/constants'
+import { getUrl } from 'utils/router'
 import { customRender } from 'utils/tests/mocks'
+import { getByRoleAndName } from 'utils/tests'
 import CompareResults from './CompareResults'
 import {
   configurationsListMock,
   executionsListMock,
   mockedConfigurationsList,
-  selectedConfigId,
-  selectedExecutionId,
+  configurationId,
+  executionId,
+  projectId,
   mockedHideConfigList,
   hideConfigMock,
   mockedExecutionsList,
@@ -33,13 +37,17 @@ const renderWithRoute = (
     customRender(
       <Routes>
         <Route
-          path="/projects/:projectId/configs/:configurationId/runs/:executionId"
+          path={routes.projects.configurations.executions.details}
           element={<CompareResults status={status} />}
         />
       </Routes>,
       [configsMock, executionsMock],
       [
-        `/projects/83150c3c-239f-4bec-8d0e-973b96ca3c7a/configs/${selectedConfigId}/runs/${selectedExecutionId}`,
+        getUrl(routes.projects.configurations.executions.details, {
+          projectId,
+          configurationId,
+          executionId,
+        }),
       ]
     )
   ),
@@ -53,21 +61,13 @@ async function loadForm() {
 
 async function showSelectOptions(user, name) {
   // select is opened on mouseDown event, user-events dispatches it under the hood
-  await user.click(
-    screen.getByRole('button', {
-      name: new RegExp(name, 'i'),
-      hidden: true,
-    })
-  )
+  await user.click(getByRoleAndName('button', name, { hidden: true }))
 }
 
 async function waitForEnabledTestRunSelect() {
   await waitFor(() => {
     expect(
-      screen.getByRole('button', {
-        name: /test run/i,
-        hidden: true,
-      })
+      getByRoleAndName('button', 'test run', { hidden: true })
     ).not.toHaveAttribute('aria-disabled')
   })
 }
@@ -101,16 +101,8 @@ describe('component: CompareResults', () => {
 
     await loadForm()
 
-    expect(
-      screen.getByRole('form', {
-        name: 'Compare Form',
-      })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', {
-        name: 'Compare',
-      })
-    ).toBeInTheDocument()
+    expect(getByRoleAndName('form', 'Compare Form')).toBeInTheDocument()
+    expect(getByRoleAndName('button', 'Compare')).toBeInTheDocument()
     expect(screen.getByLabelText('Scenario')).toBeInTheDocument()
     expect(screen.getByLabelText('Test Run')).toBeInTheDocument()
   })
@@ -120,11 +112,7 @@ describe('component: CompareResults', () => {
 
     await loadForm()
 
-    expect(
-      screen.getByRole('button', {
-        name: 'Compare',
-      })
-    ).toBeDisabled()
+    expect(getByRoleAndName('button', 'Compare')).toBeDisabled()
   })
 
   it('test run select should be disabled when no scenario is selected', async () => {
@@ -132,12 +120,10 @@ describe('component: CompareResults', () => {
 
     await loadForm()
 
-    expect(
-      screen.getByRole('button', {
-        name: /test run/i,
-        hidden: true,
-      })
-    ).toHaveAttribute('aria-disabled', 'true')
+    expect(getByRoleAndName('button', 'test run', { hidden: true })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    )
   })
 
   it('should show all scenarios with test runs different than the current one in scenario select', async () => {
@@ -150,7 +136,7 @@ describe('component: CompareResults', () => {
 
     const presentConfigs = getFilteredConfigurations(
       mockedConfigurationsList.configurations,
-      selectedExecutionId
+      executionId
     )
     const filteredOutConfigs = mockedConfigurationsList.configurations.filter(
       config => !presentConfigs.includes(config)
@@ -172,7 +158,7 @@ describe('component: CompareResults', () => {
 
     const configWithCurrentExecution = mockedHideConfigList.configurations.find(
       ({ executions }) => {
-        return executions.findIndex(({ id }) => id === selectedExecutionId) !== -1
+        return executions.findIndex(({ id }) => id === executionId) !== -1
       }
     )
 
@@ -190,10 +176,7 @@ describe('component: CompareResults', () => {
     const name = await selectScenario(user)
 
     expect(
-      screen.getByRole('button', {
-        name: /scenario/i,
-        hidden: true,
-      })
+      getByRoleAndName('button', 'scenario', { hidden: true })
     ).toHaveTextContent(name)
     await waitForEnabledTestRunSelect()
   })
@@ -206,7 +189,7 @@ describe('component: CompareResults', () => {
 
     const { name } = mockedConfigurationsList.configurations.find(
       ({ executions }) => {
-        return executions.findIndex(({ id }) => id === selectedExecutionId) !== -1
+        return executions.findIndex(({ id }) => id === executionId) !== -1
       }
     )
     await user.click(screen.getByText(name))
@@ -215,10 +198,10 @@ describe('component: CompareResults', () => {
     await showSelectOptions(user, 'test run')
 
     const visibleExecutions = mockedExecutionsList.executions.filter(
-      ({ id }) => id !== selectedExecutionId
+      ({ id }) => id !== executionId
     )
     const notVisibleExecutions = mockedExecutionsList.executions.filter(
-      ({ id }) => id === selectedExecutionId
+      ({ id }) => id === executionId
     )
 
     visibleExecutions.forEach(({ start }) => {
@@ -244,11 +227,7 @@ describe('component: CompareResults', () => {
     const formattedDate = moment(start).format('YYYY-MM-DD HH:mm')
     await user.click(screen.getByText(formattedDate))
 
-    expect(
-      screen.getByRole('button', {
-        name: 'Compare',
-      })
-    ).not.toBeDisabled()
+    expect(getByRoleAndName('button', 'Compare')).not.toBeDisabled()
   })
 
   it('selected test run should reset when different scenario was selected', async () => {
