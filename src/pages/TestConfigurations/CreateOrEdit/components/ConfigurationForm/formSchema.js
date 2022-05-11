@@ -336,7 +336,7 @@ function preparePayload(formValues, { mode, configurationId, projectId }) {
   const variables = {
     name: scenario_name,
     configuration_envvars: configuration_envvars.filter(
-      ce => ce.name !== '' && typeof ce.name !== 'undefined'
+      ce => ce?.name !== '' && typeof ce?.name !== 'undefined'
     ),
   }
 

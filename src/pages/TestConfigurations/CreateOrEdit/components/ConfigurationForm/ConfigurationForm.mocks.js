@@ -16,13 +16,14 @@ const mockedConfigurationTypesData = {
   ],
 }
 
+const testSourceId = '529606f0-58ca-4ee6-8374-2bf4ca6d5635'
 const mockedTestSourcesData = {
   testSources: [
     {
-      id: '80643454-5ef7-44e3-908e-c3570cd011dc',
+      id: testSourceId,
       source_type: 'repository',
       repository: {
-        id: '80643454-5ef7-44e3-908e-c3570cd011dc',
+        id: 'd8d3c51d-d177-4bf3-bde9-0309aa062701',
         name: 'LoadTestsRepo',
         type_slug: 'load_tests',
       },
@@ -133,7 +134,7 @@ export const testConfigurationBase = {
       },
       {
         parameter_slug: 'load_tests_file_path',
-        value: 'load_tests',
+        value: 'load_tests.py',
       },
       {
         parameter_slug: 'load_tests_repository_branch',
@@ -142,7 +143,7 @@ export const testConfigurationBase = {
     ],
     type_slug: 'load_tests',
     test_source: {
-      id: '529606f0-58ca-4ee6-8374-2bf4ca6d5635',
+      id: testSourceId,
       source_type: 'repository',
     },
     has_pre_test: false,
@@ -192,7 +193,8 @@ export const configurationTypesMock = mockGraphqlData(
 
 export const testSourcesMock = mockGraphqlData(
   GET_TEST_SOURCES_FOR_PROJECT,
-  mockedTestSourcesData
+  mockedTestSourcesData,
+  { projectId }
 )
 
 export const testParametersMock = mockGraphqlData(

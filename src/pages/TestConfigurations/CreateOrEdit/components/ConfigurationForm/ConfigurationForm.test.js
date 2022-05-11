@@ -237,4 +237,14 @@ describe('component: ConfigurationForm', () => {
     expect(screen.getByLabelText('Repository Branch')).not.toBeDisabled()
     expect(screen.getByLabelText('File Path')).not.toBeDisabled()
   })
+
+  it('should not keep update button disabled when empty env variable field was added', async () => {
+    const { user } = renderWithEditRoute([testConfigurationNotPerformedMock])
+
+    await loadData()
+
+    expect(getByRoleAndName('button', 'Update')).toBeDisabled()
+    await user.click(getByRoleAndName('button', 'Add a variable'))
+    expect(getByRoleAndName('button', 'Update')).not.toBeDisabled()
+  })
 })
