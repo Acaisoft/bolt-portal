@@ -24,6 +24,7 @@ export function Layout() {
         className={classes.toastContainer}
         autoClose={8000}
         closeButton={<CloseButton />}
+        theme="colored"
       />
       <div className={classes.root}>
         {isInitialized ? isAuthenticated ? <Authorized /> : <Guest /> : <Splash />}

@@ -40,17 +40,14 @@ function useNotification() {
   )
 }
 
-const useStyle = makeStyles(({ palette }) => {
+const useStyle = makeStyles(() => {
   return {
     className: {
-      borderRadius: 4,
-      minHeight: 80,
-      backgroundColor: ({ name }) => palette[name].main,
-      color: ({ name }) => palette[name].contrastText,
+      borderRadius: 5,
+      minHeight: 125,
     },
     progressClassName: {
-      height: 7,
-      background: 'rgba(255, 255, 255, 0.3)',
+      height: 10,
     },
   }
 })
@@ -71,6 +68,7 @@ function useVariant({ name, defaultTitle, icon }) {
         {
           ...toastifyOptions,
           ...classes,
+          icon: !icon,
         }
       )
     },
