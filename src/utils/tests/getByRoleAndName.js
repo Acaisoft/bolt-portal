@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react'
 
-export function getByRoleAndName(role, name, options) {
+export function getByRoleAndName(role, name, { noRegex, ...rest } = {}) {
   return screen.getByRole(role, {
-    name: new RegExp(name, 'i'),
-    ...options,
+    name: noRegex ? name : new RegExp(name, 'i'),
+    ...rest,
   })
 }

@@ -90,11 +90,11 @@ const testParametersMockData = {
     },
     {
       id: 'c5c537f7-e1a8-40e7-ac50-45f54dc592bd',
-      name: 'file path',
+      name: 'file name',
       param_name: '-f',
       param_type: 'str',
-      default_value: 'load_tests',
-      slug_name: 'load_tests_file_path',
+      default_value: 'load_tests.py',
+      slug_name: 'load_tests_file_name',
       type_slug: 'load_tests',
     },
     {
@@ -133,7 +133,7 @@ export const testConfigurationBase = {
         value: 'http://google.com',
       },
       {
-        parameter_slug: 'load_tests_file_path',
+        parameter_slug: 'load_tests_file_name',
         value: 'load_tests.py',
       },
       {

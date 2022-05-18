@@ -166,7 +166,7 @@ describe('component: ConfigurationForm', () => {
     expect(
       within(testSourcePanel).getByLabelText('Repository Branch')
     ).toBeInTheDocument()
-    expect(within(testSourcePanel).getByLabelText('File Path')).toBeInTheDocument()
+    expect(within(testSourcePanel).getByLabelText('File Name')).toBeInTheDocument()
   })
 
   it('should populate whole form in edit mode', async () => {
@@ -187,7 +187,7 @@ describe('component: ConfigurationForm', () => {
     } = testConfigurationBase.configuration
 
     // scenario section
-    expect(getByRoleAndName('textbox', 'Name')).toHaveValue(name)
+    expect(getByRoleAndName('textbox', 'Name', { noRegex: true })).toHaveValue(name)
     checkInputValue('configuration_type', type_slug)
 
     // scenario parts section
@@ -222,7 +222,7 @@ describe('component: ConfigurationForm', () => {
       'true'
     )
     expect(screen.getByLabelText('Repository Branch')).toBeDisabled()
-    expect(screen.getByLabelText('File Path')).toBeDisabled()
+    expect(screen.getByLabelText('File Name')).toBeDisabled()
   })
 
   it('should enable repo options editing when tests has not been performed using this scenario', async () => {
@@ -235,7 +235,7 @@ describe('component: ConfigurationForm', () => {
       'aria-disabled'
     )
     expect(screen.getByLabelText('Repository Branch')).not.toBeDisabled()
-    expect(screen.getByLabelText('File Path')).not.toBeDisabled()
+    expect(screen.getByLabelText('File Name')).not.toBeDisabled()
   })
 
   it('should not keep update button disabled when empty env variable field was added', async () => {

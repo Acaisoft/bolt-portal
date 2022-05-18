@@ -34,7 +34,7 @@ const scenarioParts = [
   },
 ]
 
-const testSourceParameters = ['load_tests_repository_branch', 'load_tests_file_path']
+const testSourceParameters = ['load_tests_repository_branch', 'load_tests_file_name']
 
 const nonEmptyRepoValidator = {
   validator: validateOnFieldValue('test_source_type', TestSourceType.REPOSITORY, {
@@ -249,7 +249,7 @@ function prepareInitialValues(data) {
       },
       test_source: {
         load_tests_repository_branch: 'master',
-        load_tests_file_path: 'load_tests',
+        load_tests_file_name: 'load_tests.py',
       },
     }
   }

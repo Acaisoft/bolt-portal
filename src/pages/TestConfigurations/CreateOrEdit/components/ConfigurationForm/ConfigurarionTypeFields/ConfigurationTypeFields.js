@@ -148,9 +148,9 @@ function ConfigurationTypeFields({ fields, configuration }) {
 
                         return (
                           <FormField
-                            id="test_source.load_tests_file_path"
-                            name="test_source.load_tests_file_path"
-                            field={fields.test_source.fields.load_tests_file_path}
+                            id="test_source.load_tests_file_name"
+                            name="test_source.load_tests_file_name"
+                            field={fields.test_source.fields.load_tests_file_name}
                             fullWidth
                             variant="filled"
                             disabled={configuration?.performed}
