@@ -10,7 +10,9 @@ export const getSubpageUrl = (match, relativePath, params = {}) => {
 }
 
 export const getParentUrl = (url, steps = 1) =>
-  url
-    .split('/')
-    .slice(0, -steps)
-    .join('/')
+  url.split('/').slice(0, -steps).join('/')
+
+export const redirectToExternalLoginPage = (fromUrl = window.location.href) => {
+  window.location.href = `${process.env.REACT_APP_AUTH_SERVICE_URL}?redirect_url=${fromUrl}`
+  return null
+}

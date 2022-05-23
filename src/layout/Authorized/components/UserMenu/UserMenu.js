@@ -1,14 +1,14 @@
 import { ListItemIcon, ListItemText, MenuItem } from '@material-ui/core'
 import { ExitToApp, ExpandMore } from '@material-ui/icons'
-import React, { useContext } from 'react'
+import React from 'react'
+import { useAuth } from 'contexts/AuthContext'
 import { PopoverMenu, Button } from 'components'
-import { AuthKeycloakContext } from 'contexts'
 import UserAvatar from '../UserAvatar'
 import useStyles from './UserMenu.styles'
 
 function UserMenu() {
-  const { logout, user } = useContext(AuthKeycloakContext)
   const classes = useStyles()
+  const { logout, user } = useAuth()
 
   return (
     <div>

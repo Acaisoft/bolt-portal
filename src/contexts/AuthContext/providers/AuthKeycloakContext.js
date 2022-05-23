@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, createContext } from 'react'
 
 const AuthKeycloakContext = createContext(null)
-const { Provider, Consumer } = AuthKeycloakContext
+const { Provider } = AuthKeycloakContext
 
 function StatefulProvider({ children, client }) {
   const [isInitialized, setIsInitialized] = useState(false)
@@ -74,6 +74,7 @@ function StatefulProvider({ children, client }) {
       logout,
       getToken: client.getToken,
       getFreshToken: client.getFreshToken,
+      hasToken: !!client.getToken(),
       ...state,
     }
   }, [shouldSync, isInitialized, client, state])
@@ -81,8 +82,4 @@ function StatefulProvider({ children, client }) {
   return <Provider value={context}>{children}</Provider>
 }
 
-export {
-  AuthKeycloakContext,
-  Consumer as AuthKeycloakConsumer,
-  StatefulProvider as AuthKeycloakProvider,
-}
+export { AuthKeycloakContext, StatefulProvider as AuthKeycloakProvider }

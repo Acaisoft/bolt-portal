@@ -29,3 +29,10 @@ export const TestRunStageStatus = {
   ERROR: 'ERROR',
   FINISHED: 'FINISHED',
 }
+
+export const AUTH_COOKIE_NAME = 'AUTH_TOKEN'
+
+export const AuthServiceName = {
+  KEYCLOAK: 'keycloak',
+  BOLT: 'bolt',
+}

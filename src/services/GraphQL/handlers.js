@@ -1,8 +1,9 @@
 import { HttpLink, ApolloLink, Observable } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { onError } from '@apollo/client/link/error'
-import { WebSocketLink } from '@apollo/client/link/ws'
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { setContext } from '@apollo/client/link/context'
+import { createClient } from 'graphql-ws'
 
 import Config from 'services/Config'
 
@@ -60,14 +61,13 @@ export function makeRequestLink() {
 }
 
 export function makeTransportLinks({ getFreshToken, getToken }) {
-  const wsLink = new WebSocketLink({
-    uri: Config.hasura.wsUri,
-    options: {
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: Config.hasura.wsUri,
       lazy: true,
-      reconnect: true,
-      reconnectionAttempts: 3,
+      retryAttempts: 3,
       connectionParams: async () => {
-        const token = await getFreshToken(20)
+        const token = await (getFreshToken ? getFreshToken(20) : getToken())
 
         if (token) {
           return {
@@ -77,8 +77,9 @@ export function makeTransportLinks({ getFreshToken, getToken }) {
           }
         }
       },
-    },
-  })
+    })
+  )
+
   const httpLink = new HttpLink({
     uri: Config.hasura.apiUri,
   })

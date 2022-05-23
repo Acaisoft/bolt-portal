@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ToastContainer } from 'react-toastify'
-import { AuthKeycloakContext } from 'contexts'
+import { useAuth } from 'contexts/AuthContext'
 
 import { CloseToast } from 'assets/icons'
 import Authorized from './Authorized'
@@ -12,7 +12,7 @@ import useStyles from './Layout.styles'
 
 export function Layout() {
   const classes = useStyles()
-  const { isAuthenticated, isInitialized } = useContext(AuthKeycloakContext)
+  const { isAuthenticated, isInitialized } = useAuth()
 
   function CloseButton({ closeToast }) {
     return <CloseToast onClick={closeToast} className={classes.closeIcon} />
