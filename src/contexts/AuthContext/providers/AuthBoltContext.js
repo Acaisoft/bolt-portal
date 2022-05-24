@@ -5,12 +5,31 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import Cookies from 'js-cookie'
+import axios from 'axios'
 import jwtDecode from 'jwt-decode'
-import { AUTH_COOKIE_NAME } from 'config/constants'
+import { AUTH_TOKEN_NAME } from 'config/constants'
 import { redirectToExternalLoginPage } from 'utils/router'
 
 const AuthBoltContext = createContext(null)
+
+const fetchToken = async logout => {
+  return await axios
+    .get(`${process.env.REACT_APP_AUTH_SERVICE_BASE_URL}/session`, {
+      withCredentials: true,
+    })
+    .then(({ data }) => data)
+    .catch(() => logout())
+}
+
+const requestToken = async logout => {
+  const resp = await fetchToken(logout)
+  if (!resp?.AUTH_TOKEN) return logout()
+
+  const token = resp?.AUTH_TOKEN
+  localStorage.setItem(AUTH_TOKEN_NAME, token)
+
+  return token
+}
 
 function AuthBoltProvider({ children }) {
   const [hasToken, setHasToken] = useState(false)
@@ -19,14 +38,13 @@ function AuthBoltProvider({ children }) {
   const [user, setUser] = useState(null)
 
   const logout = useCallback(() => {
-    Cookies.remove(AUTH_COOKIE_NAME, { path: '/', domain: window.location.hostname })
+    localStorage.removeItem(AUTH_TOKEN_NAME)
     return redirectToExternalLoginPage()
   }, [])
 
-  const getToken = useCallback(() => {
-    const token = Cookies.get(AUTH_COOKIE_NAME)
-    if (!token) return logout()
-
+  const getToken = useCallback(async () => {
+    let token = localStorage.getItem(AUTH_TOKEN_NAME)
+    if (!token) token = await requestToken(logout)
     setHasToken(true)
 
     try {
@@ -36,6 +54,7 @@ function AuthBoltProvider({ children }) {
 
       setIsAuthenticated(true)
       setUser({ firstName })
+      setIsInitialized(true)
 
       return token
     } catch (e) {
@@ -45,8 +64,11 @@ function AuthBoltProvider({ children }) {
   }, [logout])
 
   useEffect(() => {
-    setIsInitialized(true)
-    getToken()
+    async function initAuth() {
+      await getToken()
+    }
+
+    initAuth()
   }, [getToken])
 
   const context = useMemo(

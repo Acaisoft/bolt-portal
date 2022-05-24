@@ -30,7 +30,7 @@ export const TestRunStageStatus = {
   FINISHED: 'FINISHED',
 }
 
-export const AUTH_COOKIE_NAME = 'AUTH_TOKEN'
+export const AUTH_TOKEN_NAME = 'AUTH_TOKEN'
 
 export const AuthServiceName = {
   KEYCLOAK: 'keycloak',

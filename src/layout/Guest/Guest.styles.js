@@ -7,7 +7,7 @@ export default makeStyles(({ palette, spacing }) => ({
     alignItems: 'center',
     height: '100vh',
     padding: spacing(4),
-    backgroundColor: 'lightBlue',
+    backgroundColor: '#24223B',
     color: palette.common.white,
   },
 }))
