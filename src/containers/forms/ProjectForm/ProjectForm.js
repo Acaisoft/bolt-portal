@@ -19,7 +19,7 @@ export function ProjectForm({
 
   const handleSubmit = useCallback(
     async (values, { projectMutation }) => {
-      const { id, name, description, image_url } = values
+      const { id, name, description } = values
 
       try {
         await projectMutation({
@@ -27,7 +27,6 @@ export function ProjectForm({
             id: mode === 'create' ? undefined : id,
             name,
             description,
-            image_url,
           },
         })
         onSubmit(values)

@@ -76,9 +76,11 @@ describe('component: ProjectsList', () => {
 
     const projectForm = document.querySelector(`[aria-label="Project Form"]`)
     expect(within(projectForm).getByText('New Project')).toBeInTheDocument()
-    expect(
-      within(projectForm).getByRole('button', { name: 'Upload Image' })
-    ).toBeInTheDocument()
+
+    // TODO: uncomment when upload will be needed
+    // expect(
+    //   within(projectForm).getByRole('button', { name: 'Upload Image' })
+    // ).toBeInTheDocument()
 
     expect(within(projectForm).getByLabelText('Name')).toBeInTheDocument()
     expect(within(projectForm).getByLabelText('Description')).toBeInTheDocument()
@@ -106,9 +108,10 @@ describe('component: ProjectsList', () => {
     )
 
     expect(within(project).getByText('Update project data')).toBeInTheDocument()
-    expect(
-      within(project).getByRole('button', { name: 'Upload Image' })
-    ).toBeInTheDocument()
+    // TODO: uncomment when upload will be needed
+    // expect(
+    //   within(project).getByRole('button', { name: 'Upload Image' })
+    // ).toBeInTheDocument()
 
     expect(within(project).getByLabelText('Name')).toHaveValue(name)
     expect(within(project).getByLabelText('Description')).toHaveValue(description)

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 
 import { Typography } from '@material-ui/core'
 import { Add, Edit, Close } from '@material-ui/icons'
-import { Field } from 'react-final-form'
-import { FileUploader, FormField } from 'containers'
+import { FormField } from 'containers'
 import { ProjectForm } from 'containers/forms'
 
-import { Button, ImagePreview } from 'components'
+import { Button } from 'components'
 import { CreateProject } from 'assets/icons'
 
 import useStyles from './ProjectFormInCard.styles'
@@ -53,24 +52,24 @@ function ProjectFormInCard({
                   fullWidth
                 />
 
-                <div>
-                  <Field name="uploaded_image">
-                    {({ input }) => (
-                      <FileUploader
-                        {...fields.uploaded_image.inputProps}
-                        {...fields.uploaded_image.handlers(form, input)}
-                      />
-                    )}
-                  </Field>
-                </div>
-
-                <div className={classes.imagePreviewContainer}>
-                  <Field name="image_preview_url" subscription={{ value: true }}>
-                    {({ input: { value } }) => (
-                      <ImagePreview src={value} alt="Project logo preview" />
-                    )}
-                  </Field>
-                </div>
+                {/* TODO: uncomment when upload will be needed*/}
+                {/*<div>*/}
+                {/*  <Field name="uploaded_image">*/}
+                {/*    {({ input }) => (*/}
+                {/*      <FileUploader*/}
+                {/*        {...fields.uploaded_image.inputProps}*/}
+                {/*        {...fields.uploaded_image.handlers(form, input)}*/}
+                {/*      />*/}
+                {/*    )}*/}
+                {/*  </Field>*/}
+                {/*</div>*/}
+                {/*<div className={classes.imagePreviewContainer}>*/}
+                {/*  <Field name="image_preview_url" subscription={{ value: true }}>*/}
+                {/*    {({ input: { value } }) => (*/}
+                {/*      <ImagePreview src={value} alt="Project logo preview" />*/}
+                {/*    )}*/}
+                {/*  </Field>*/}
+                {/*</div>*/}
               </div>
 
               <div className={classes.actionButtons}>
