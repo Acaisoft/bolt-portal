@@ -35,7 +35,6 @@ import { GET_CONFIGURATION } from './graphql'
 import { useFormSchema, prepareInitialValues } from './formSchema'
 import ConfigurationTypeFields from './ConfigurarionTypeFields'
 import ScenarioFields from './ScenarioFields'
-import ScenarioPartsFields from './ScenarioPartsFields'
 import EnvVariablesFields from './EnvVariablesFields'
 import { useConfigurationSubmit } from './ConfigurationForm.utils'
 import useStyles from './ConfigurationForm.styles'
@@ -112,7 +111,8 @@ export function ConfigurationForm({ onCancel = () => {}, onSubmit = () => {} }) 
           </SectionHeader>
 
           <ScenarioFields fields={fields} />
-          <ScenarioPartsFields fields={fields} />
+          {/* TODO: uncomment when scenario parts section will be needed */}
+          {/*<ScenarioPartsFields fields={fields} />*/}
           <ConfigurationTypeFields fields={fields} configuration={configuration} />
           <EnvVariablesFields />
         </form>

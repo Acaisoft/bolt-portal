@@ -69,14 +69,15 @@ async function loadData() {
   })
 }
 
-function checkCheckboxValue(name, value) {
-  if (value) {
-    expect(getByRoleAndName('checkbox', name)).toBeChecked()
-    return
-  }
-
-  expect(getByRoleAndName('checkbox', name)).not.toBeChecked()
-}
+// TODO: uncomment when scenario parts section will be needed
+// function checkCheckboxValue(name, value) {
+//   if (value) {
+//     expect(getByRoleAndName('checkbox', name)).toBeChecked()
+//     return
+//   }
+//
+//   expect(getByRoleAndName('checkbox', name)).not.toBeChecked()
+// }
 
 function checkInputValue(inputName, value) {
   const input = document.querySelector(`input[name="${inputName}"]`)
@@ -112,7 +113,8 @@ describe('component: ConfigurationForm', () => {
     expect(screen.getByText('host')).toBeInTheDocument()
   })
 
-  it('should not allow unchecking load tests checkbox', async () => {
+  // TODO: unskip when scenario parts section will be needed
+  it.skip('should not allow unchecking load tests checkbox', async () => {
     render(
       customRender(<ConfigurationForm />, [
         testSourcesMock,
@@ -127,7 +129,8 @@ describe('component: ConfigurationForm', () => {
     expect(getByRoleAndName('checkbox', 'Load Tests')).toBeDisabled()
   })
 
-  it('should display all monitoring options when monitoring checkbox is checked', async () => {
+  // TODO: unskip when scenario parts section will be needed
+  it.skip('should display all monitoring options when monitoring checkbox is checked', async () => {
     const user = userEvent.setup()
     render(
       customRender(<ConfigurationForm />, [
@@ -145,7 +148,8 @@ describe('component: ConfigurationForm', () => {
     expect(screen.getByText('monitoring duration')).toBeInTheDocument()
   })
 
-  it('should display all monitoring and load tests options when both checkboxes are checked', async () => {
+  // TODO: unskip when scenario parts section will be needed
+  it.skip('should display all monitoring and load tests options when both checkboxes are checked', async () => {
     const user = userEvent.setup()
     render(
       customRender(<ConfigurationForm />, [
@@ -199,10 +203,6 @@ describe('component: ConfigurationForm', () => {
       name,
       configuration_parameters,
       configuration_envvars,
-      has_load_tests,
-      has_monitoring,
-      has_post_test,
-      has_pre_test,
       test_source: { source_type, id },
       type_slug,
     } = testConfigurationBase.configuration
@@ -212,10 +212,11 @@ describe('component: ConfigurationForm', () => {
     checkInputValue('configuration_type', type_slug)
 
     // scenario parts section
-    checkCheckboxValue('Before scenario', has_pre_test)
-    checkCheckboxValue('After Scenario', has_post_test)
-    checkCheckboxValue('Load Tests', has_load_tests)
-    checkCheckboxValue('Monitoring', has_monitoring)
+    // TODO: uncomment when scenario parts section will be needed
+    // checkCheckboxValue('Before scenario', has_pre_test)
+    // checkCheckboxValue('After Scenario', has_post_test)
+    // checkCheckboxValue('Load Tests', has_load_tests)
+    // checkCheckboxValue('Monitoring', has_monitoring)
 
     // test parameters and test source sections
     configuration_parameters.forEach(({ parameter_slug, value }) => {
