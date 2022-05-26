@@ -26,16 +26,13 @@ import _ from 'lodash'
 import { TestSourceType } from 'config/constants'
 import { Details } from 'assets/icons'
 import { SectionHeader, LabeledValue, NoDataPlaceholder } from 'components'
+import ScenarioPartsDetails from './ScenarioPartsDetails'
 import useStyles from './TestConfigurationDetails.styles'
 
 function TestConfigurationDetails({ children, configuration, gridProps = {} }) {
   const classes = useStyles()
-  const {
-    configParameterItemProps,
-    generalSectionProps,
-    generalSectionItemProps,
-    iconContainerProps,
-  } = gridProps
+  const { generalSectionProps, generalSectionItemProps, iconContainerProps } =
+    gridProps
 
   if (!configuration) {
     return (
@@ -47,15 +44,7 @@ function TestConfigurationDetails({ children, configuration, gridProps = {} }) {
     )
   }
 
-  const {
-    test_source,
-    configuration_parameters = [],
-    configuration_envvars = [],
-    has_pre_test,
-    has_post_test,
-    has_monitoring,
-    has_load_tests,
-  } = configuration
+  const { test_source, configuration_envvars = [] } = configuration
   const { source_type } = test_source || {}
   const isRepository = source_type === TestSourceType.REPOSITORY
 
@@ -104,76 +93,10 @@ function TestConfigurationDetails({ children, configuration, gridProps = {} }) {
               </Grid>
             )}
 
-            <Grid item xs={12}>
-              <SectionHeader size="medium" title="Scenario Parts" />
-            </Grid>
-            {Boolean(has_pre_test) && (
-              <Grid item xs={12}>
-                <LabeledValue label="Pre-test Script" value="Yes" />
-              </Grid>
-            )}
-            {Boolean(has_post_test) && (
-              <Grid item xs={12}>
-                <LabeledValue label="Post-test Script" value="Yes" />
-              </Grid>
-            )}
-            {Boolean(has_monitoring) && (
-              <React.Fragment>
-                <Grid item xs={12}>
-                  <LabeledValue label="Monitoring Script" value="Yes" />
-                </Grid>
-                {configuration_parameters
-                  .filter(parameter =>
-                    parameter.parameter_slug.includes('monitoring')
-                  )
-                  .map(
-                    parameter =>
-                      parameter.parameter && (
-                        <Grid
-                          key={parameter.parameter_slug}
-                          item
-                          xs={12}
-                          md={3}
-                          {...configParameterItemProps}
-                        >
-                          <LabeledValue
-                            label={parameter.parameter.name}
-                            value={parameter.value}
-                          />
-                        </Grid>
-                      )
-                  )}
-              </React.Fragment>
-            )}
-
-            {Boolean(has_load_tests) && (
-              <React.Fragment>
-                <Grid item xs={12}>
-                  <LabeledValue label="Load Tests Script" value="Yes" />
-                </Grid>
-                {configuration_parameters
-                  .filter(parameter =>
-                    parameter.parameter_slug.includes('load_tests')
-                  )
-                  .map(
-                    parameter =>
-                      parameter.parameter && (
-                        <Grid
-                          key={parameter.parameter_slug}
-                          item
-                          xs={12}
-                          md={3}
-                          {...configParameterItemProps}
-                        >
-                          <LabeledValue
-                            label={parameter.parameter.name}
-                            value={parameter.value}
-                          />
-                        </Grid>
-                      )
-                  )}
-              </React.Fragment>
-            )}
+            <ScenarioPartsDetails
+              configuration={configuration}
+              gridProps={gridProps}
+            />
 
             {configuration_envvars.length > 0 && (
               <React.Fragment>
