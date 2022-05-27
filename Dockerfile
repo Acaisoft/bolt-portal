@@ -1,23 +1,34 @@
 # build environment
-FROM node:8.12 as build
+FROM node:14.17.6 as build
 
-ENV REACT_APP_KEYCLOAK_URL "https://keycloak.bolt-us-dev.acaisoft.io/auth"
-ENV REACT_APP_HASURA_WS_URL "wss://hasura.bolt-us-dev.acaisoft.io/v1/graphql"
-ENV REACT_APP_HASURA_API_URL "https://hasura.bolt-us-dev.acaisoft.io/v1/graphql"
+ARG hasura_ws_url
+ARG hasura_api_url
+ARG auth_keycloak_url
+ARG auth_service="bolt"
+ARG auth_service_url
+
+ENV REACT_APP_AUTH_SERVICE=$auth_service
+ENV REACT_APP_AUTH_SERVICE_BASE_URL=$auth_service_url
+ENV REACT_APP_KEYCLOAK_URL=$auth_keycloak_url
+ENV REACT_APP_HASURA_WS_URL=$hasura_ws_url
+ENV REACT_APP_HASURA_API_URL=$hasura_api_url
+
+ENV PATH /app/node_modules/.bin:$PATH
 
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
+
 COPY package.json ./
+COPY public ./public/
+COPY src ./src/
+COPY .babelrc ./
+COPY jsconfig.json ./
+
+RUN printenv
 RUN yarn
-COPY . ./
 RUN yarn build
 
-# production environment
-FROM nginx:1.15-alpine
+# release environment
+FROM nginx:1.21.6-alpine
 
 COPY --from=build /app/build/ /usr/share/nginx/html/
 COPY nginx/nginx.conf /etc/nginx/
-
-# README
-# docker build -t eu.gcr.io/acai-bolt/bolt-portal .
-# docker run --rm --name bolt-portal -p 80:80 -t bolt-portal

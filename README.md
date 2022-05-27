@@ -1,4 +1,4 @@
-# Bolt Portal
+# AcaiBolt Portal - 1.0.0-beta
 
 ## Project Setup
 
@@ -185,3 +185,17 @@ There are 2 types of tests implemented in this project:
 - **Integration tests**, which are written in order to test if components are working togehter correctly in different parts of the application.
 
 - **Unit tests**, which are written in order to test signle functions or rendering of some of the components.
+
+## Image
+
+- set ENV variables:
+  - BOLT_AUTH_SERVICE_BASE_URL
+  - BOLT_HASURA_WS_URL
+  - BOLT_HASURA_API_URL
+- run:
+
+```
+make build
+```
+
+- tag image bolt-portal-local:latest with proper
